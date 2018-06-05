@@ -1,26 +1,44 @@
 <?php
 /**
- * Get the Sitewide Sale Options
+ * Accesses stored information about sale.
+ *
+ * @package pmpro-sitewide-sale/includes
  */
+
+/**
+ * Get the Sitewide Sale Options
+ **/
 function pmprosws_get_options() {
 
 	$options = get_option( 'pmpro_sitewide_sale' );
 
 	// Set the defaults.
-	if( empty( $options ) ) {
+	if ( empty( $options ) ) {
 		$options = array(
-			'discount_code_id' => false,
+			'discount_code_id'     => false,
 			'landing_page_post_id' => false,
-			//add other settings here
+			'use_banner'           => 'no',
+			'banner_title'         => '',
+			'banner_description'   => '',
+			'link_text'            => '',
+			'css_option'           => '',
+			'hide_for_levels'      => [],
+			'hide_on_checkout'     => false,
+			'times_code_used'      => 0,
+			'revenue'              => 0,
+			'num_landing'          => 0,
+			'num_checkout'         => 0,
+			'num_confirmation'     => 0,
 		);
 	}
-
 	return $options;
 }
 
 /**
- * Save Sitewide Sale Options
+ * [pmprosws_save_options description]
+ *
+ * @param array $options contains information about sale to be saved.
  */
 function pmprosws_save_options( $options ) {
-	return update_option( 'pmpro_sitewide_sale', $options, 'no');
+	return update_option( 'pmpro_sitewide_sale', $options, 'no' );
 }
