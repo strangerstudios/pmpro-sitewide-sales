@@ -19,7 +19,7 @@ define( 'PMPROSWS_BASENAME', plugin_basename( __FILE__ ) );
 require_once PMPROSWS_DIR . '/includes/common.php';
 require_once PMPROSWS_DIR . '/includes/admin.php';
 require_once PMPROSWS_DIR . '/includes/settings.php';
-require_once PMPROSWS_DIR . '/includes/automatic-discount.php';
+require_once PMPROSWS_DIR . '/includes/cookies.php';
 require_once PMPROSWS_DIR . '/includes/banners.php';
 
 add_action( 'admin_enqueue_scripts', 'pmpro_sws_admin_scripts' );
