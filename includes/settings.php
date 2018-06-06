@@ -12,8 +12,8 @@ add_action( 'admin_menu', 'pmpro_sws_menu' );
 function pmpro_sws_menu() {
 	add_submenu_page(
 		'pmpro-membershiplevels',
-		__( 'PMPro Sitewide Sale', 'pmpro-sitewide-sale' ),
-		__( 'PMPro Sitewide Sale', 'pmpro-sitewide-sale' ),
+		__( 'Sitewide Sale', 'pmpro-sitewide-sale' ),
+		__( 'Sitewide Sale', 'pmpro-sitewide-sale' ),
 		'manage_options',
 		'pmpro-sws',
 		'pmprosla_sws_options_page'
@@ -133,25 +133,24 @@ function pmpro_sws_sale_page_callback() {
  * Displays banner settings
  */
 function pmpro_sws_banners_callback() {
-	$options                          = pmprosws_get_options();
-	$use_banner_top_modifier          = ( 'top' === $options['use_banner'] ) ? ' selected="selected"' : '';
-	$use_banner_bottom_right_modifier = ( 'bottom-right' === $options['use_banner'] ) ? ' selected="selected"' : '';
+	$options = pmprosws_get_options();
 	?>
 	</br>
 		<table class="form-table"><tr>
 			<th scope="row" valign="top"><label><?php esc_html_e( 'Use the built-in banner?', 'pmpro-sitewide-sale' ); ?></label></th>
 			<td><select class="use_banner_select" id="pmpro_sws_use_banner_select" name="pmpro_sitewide_sale[use_banner]">
-				<option value="no"><?php esc_html_e( 'No', 'pmpro-sitewide-sale' ); ?></option>
-				<option value="top"' . $use_banner_top_modifier . '><?php esc_html_e( 'Yes. Top of Site.', 'pmpro-sitewide-sale' ); ?></option>
-				<option value="bottom-right"' . $use_banner_bottom_right_modifier . '><?php esc_html_e( 'Yes. Bottom Right of Site.', 'pmpro-sitewide-sale' ); ?></option>
+				<option value="no" <?php selected( $options['use_banner'], 'no'); ?>><?php esc_html_e( 'No', 'pmpro-sitewide-sale' ); ?></option>
+				<option value="top" <?php selected( $options['use_banner'], 'top' );?>><?php esc_html_e( 'Yes. Top of Site.', 'pmpro-sitewide-sale' ); ?></option>
+				<option value="bottom" <?php selected( $options['use_banner'], 'bottom' );?>><?php esc_html_e( 'Yes. Bottom of Site.', 'pmpro-sitewide-sale' ); ?></option>
+				<option value="bottom-right" <?php selected( $options['use_banner'], 'bottom-right' );?>><?php esc_html_e( 'Yes. Bottom Right of Site.', 'pmpro-sitewide-sale' ); ?></option>
 			</select></td>
 		</tr></table>
 		<table class="form-table" id="pmpro_sws_banner_options">
 	<?php
 	$banner_option_fields = array(
-		'banner_title'       => __( 'Banner Title:', 'pmpro-sitewide-sale' ),
-		'banner_description' => __( 'Banner Description:', 'pmpro-sitewide-sale' ),
-		'link_text'          => __( 'Link Text:', 'pmpro-sitewide-sale' ),
+		'banner_title'       => __( 'Banner Title', 'pmpro-sitewide-sale' ),
+		'banner_description' => __( 'Banner Description', 'pmpro-sitewide-sale' ),
+		'link_text'          => __( 'Button Text', 'pmpro-sitewide-sale' ),
 	);
 	foreach ( $banner_option_fields as $db_name => $output_name ) {
 		echo '
@@ -162,12 +161,12 @@ function pmpro_sws_banners_callback() {
 	}
 	echo '
 	<tr>
-		<th scope="row" valign="top"><label>' . esc_html( 'CSS Option:', 'pmpro-sitewide-sale' ) . '</label></th>
+		<th scope="row" valign="top"><label>' . esc_html( 'Custom Banner CSS', 'pmpro-sitewide-sale' ) . '</label></th>
 		<td><textarea name="pmpro_sitewide_sale[css_option]">' . esc_html( $options['css_option'] ) . '</textarea></td>
 	</tr>';
 	echo '
 		<tr>
-			<th scope="row" valign="top"><label>' . esc_html( 'Hide for Levels:', 'pmpro-sitewide-sale' ) . '</label></th>
+			<th scope="row" valign="top"><label>' . esc_html( 'Hide Banner by Membership Level', 'pmpro-sitewide-sale' ) . '</label></th>
 			<td><select id="pmpro_sws_hide_levels_select" name="pmpro_sitewide_sale[hide_for_levels][]" multiple/>';
 	$all_levels    = pmpro_getAllLevels( true, true );
 	$hidden_levels = $options[ hide_for_levels ];
@@ -178,7 +177,7 @@ function pmpro_sws_banners_callback() {
 	$checked_modifier = $options[ hide_on_checkout ] ? ' checked' : '';
 	echo '</td></tr>
 		<tr>
-			<th scope="row" valign="top"><label>' . esc_html( 'Hide on checkout:', 'pmpro-sitewide-sale' ) . '</label></th>
+			<th scope="row" valign="top"><label>' . esc_html( 'Hide Banner at Checkout', 'pmpro-sitewide-sale' ) . '</label></th>
 			<td><input type="checkbox" name="pmpro_sitewide_sale[hide_on_checkout]" ' . esc_html( $checked_modifier ) . '/></td>
 		</tr></table>';
 		?>
@@ -208,7 +207,7 @@ function pmpro_sws_validate( $input ) {
 		}
 	}
 
-	$possible_options = [ 'no', 'top', 'bottom-right' ];
+	$possible_options = [ 'no', 'top', 'bottom', 'bottom-right' ];
 	if ( ! empty( $input['use_banner'] ) && in_array( trim( $input['use_banner'] ), $possible_options, true ) ) {
 		$options['use_banner'] = trim( $input['use_banner'] );
 	} else {
