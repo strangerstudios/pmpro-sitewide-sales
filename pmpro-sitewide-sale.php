@@ -21,6 +21,7 @@ require_once PMPROSWS_DIR . '/includes/admin.php';
 require_once PMPROSWS_DIR . '/includes/settings.php';
 require_once PMPROSWS_DIR . '/includes/cookies.php';
 require_once PMPROSWS_DIR . '/includes/banners.php';
+require_once PMPROSWS_DIR . '/includes/reports.php';
 
 add_action( 'admin_enqueue_scripts', 'pmpro_sws_admin_scripts' );
 /**

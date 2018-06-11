@@ -30,7 +30,7 @@ add_action( 'init', 'pmpro_sws_check_cookie' );
 function pmpro_sws_check_cookie() {
 	global $wpdb, $post;
 
-	if ( ! pmpro_getOption( 'checkout_page_id' ) === $post->ID || empty( $_REQUEST['level'] ) || ! isset( $_COOKIE['pmpro_sws_tracking'] ) ) {
+	if ( !empty($post) && ! pmpro_getOption( 'checkout_page_id' ) === $post->ID || empty( $_REQUEST['level'] ) || ! isset( $_COOKIE['pmpro_sws_tracking'] ) ) {
 			return;
 	}
 
