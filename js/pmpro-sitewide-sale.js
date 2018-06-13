@@ -1,7 +1,7 @@
 function pmpro_sws_get_tracking_cookie() {
-	var cookie_string = wpCookies.get('pmpro_sitewide_sale_' + pmpro_sws.discount_code_id + '_tracking');
+	var cookie_string = wpCookies.get('pmpro_sitewide_sale_' + pmpro_sws.discount_code_id + '_tracking', '/');
 	var cookie_array;
-	if( ! cookie_string.length ) {
+	if( null == cookie_string ) {
 		cookie_array = {'banner': 0, 'landing_page': 0, 'confirmation_page': 0};
 	} else {
 		// get array from the cookie text
@@ -14,7 +14,16 @@ function pmpro_sws_get_tracking_cookie() {
 
 function pmpro_sws_set_tracking_cookie(cookie_array) {
 	var cookie_string = cookie_array.banner + ';' + cookie_array.landing_page + ';' + cookie_array.confirmation_page;
-	wpCookies.set('pmpro_sitewide_sale_' + pmpro_sws.discount_code_id + '_tracking', 86400*30 );
+	wpCookies.set('pmpro_sitewide_sale_' + pmpro_sws.discount_code_id + '_tracking', cookie_string, 86400*30, '/' );
+}
+
+function pmpro_sws_send_ajax(element) {
+	var data = {
+		'action': 'pmpro_sws_ajax_tracking',
+		'element': element,
+		'code_id': pmpro_sws.discount_code_id
+	};
+	jQuery.post(pmpro_sws.ajax_url, data);
 }
 
 function pmpro_sws_track() {
@@ -23,7 +32,7 @@ function pmpro_sws_track() {
 		var cookie = pmpro_sws_get_tracking_cookie();
 		if( cookie['banner'] == 0 ) {
 			cookie['banner'] = 1;
-			//increment the total banner impressions via AJAX
+			pmpro_sws_send_ajax('banner_impressions');
 			pmpro_sws_set_tracking_cookie(cookie);
 		}
 	}
@@ -33,24 +42,23 @@ function pmpro_sws_track() {
 		var cookie = pmpro_sws_get_tracking_cookie();
 		if( cookie['landing_page'] == 0 ) {
 			cookie['landing_page'] = 1;
-			//increment the total landing page impressions via AJAX
+			pmpro_sws_send_ajax('landing_page_visits');
 			pmpro_sws_set_tracking_cookie(cookie);
 		}
 	}
 
-	if( pmpro_sws.confirmation_page == 1 ) {
+	if( pmpro_sws.confirmation_page == 1 && cookie['landing_page'] == 1) {
 		// get the cookie
 		var cookie = pmpro_sws_get_tracking_cookie();
 		if( cookie['confirmation_page'] == 0 ) {
 			cookie['confirmation_page'] = 1;
-			//increment the total confirmation_page impressions via AJAX
+			pmpro_sws_send_ajax('langing_page_checkouts');
 			pmpro_sws_set_tracking_cookie(cookie);
 		}
 	}
 }
 
 jQuery(document).ready(function() {
-	console.log(pmpro_sws);
-
+	//console.log(pmpro_sws);
 	pmpro_sws_track();
 });

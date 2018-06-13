@@ -234,23 +234,6 @@ function pmpro_sws_validate( $input ) {
 	} else {
 		$options['hide_on_checkout'] = true;
 	}
-
-	$string_inputs = [ 'times_code_used', 'revenue', 'num_landing', 'num_checkout', 'num_confirmation' ];
-	foreach ( $string_inputs as $str ) {
-		if ( ! empty( $input[ $str ] ) ) {
-			if ( is_string( $input[ $str ] ) ) {
-				$input[ $str ] = intval( trim( $input[ $str ] ) );
-			}
-			if ( is_int( $input[ $str ] ) ) {
-				$options[ $str ] = $input[ $str ];
-			} else {
-				$options[ $str ] = 0;
-			}
-		} else {
-			$options[ $str ] = 0;
-		}
-	}
-
 	return $options;
 }
 
