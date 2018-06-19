@@ -131,7 +131,7 @@ function pmpro_sws_sale_page_callback() {
 		}
 		echo '<option value=' . esc_html( $page->ID ) . esc_html( $selected_modifier ) . '>' . esc_html( $page->post_title ) . '</option>';
 	}
-	echo '</select> ' . esc_html( 'or', 'pmpro_sitewide_sale' ) . ' <a href="' . esc_html( get_admin_url() ) . 'post-new.php?post_type=page&set_sitewide_sale=true">
+	echo '</select> ' . esc_html( 'or', 'pmpro_sitewide_sale' ) . ' <a href="' . esc_html( get_admin_url() ) . 'post-new.php?post_type=page&set_sitewide_sale=true&sws_default=true">
 			 ' . esc_html( 'create a new page', 'pmpro_sitewide_sale' ) . '</a>.';
 	?>
 	<script>
@@ -317,6 +317,20 @@ function pmpro_sws_page_meta() {
 	echo '<input name="' . esc_html( 'Sitewide Sale', 'pmpro-sitewide-sale' ) . '" type="checkbox" ' . ( $init_checked ? 'checked' : '' ) . ' />';
 }
 
+
+/**
+ * Sets defaults for sitewide sale page
+ *
+ * @param  string  $content original post content.
+ * @param  WP_Post $post    post info.
+ */
+function pmpro_sws_page_defaults( $content, $post ) {
+	if ( 'page' === $post->post_type && isset( $_REQUEST['sws_default'] ) && 'true' === $_REQUEST['sws_default'] ) {
+		$content = 'Welcome to the black friday sale page!';
+	}
+	return $content;
+}
+
 /**
  * Saves the contents of the sitewide sale checkbox
  *
@@ -341,4 +355,5 @@ function pmpro_sws_page_meta_wrapper() {
 if ( is_admin() ) {
 	add_action( 'admin_menu', 'pmpro_sws_page_meta_wrapper' );
 	add_action( 'save_post', 'pmpro_sws_page_save' );
+	add_filter( 'default_content', 'pmpro_sws_page_defaults', 10, 2 );
 }
