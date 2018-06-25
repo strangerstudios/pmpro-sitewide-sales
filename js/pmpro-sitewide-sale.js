@@ -41,18 +41,25 @@ function pmpro_sws_track() {
 		// get the cookie
 		var cookie = pmpro_sws_get_tracking_cookie();
 		if( cookie['landing_page'] == 0 ) {
+			if( cookie['banner'] == 0 ) {
+				pmpro_sws_send_ajax('landing_page_after_banner');
+			}
 			cookie['landing_page'] = 1;
 			pmpro_sws_send_ajax('landing_page_visits');
 			pmpro_sws_set_tracking_cookie(cookie);
 		}
 	}
 
-	if( pmpro_sws.confirmation_page == 1 && cookie['landing_page'] == 1) {
+	if( pmpro_sws.confirmation_page == 1 && ( cookie['landing_page'] == 1 || cookie['banner'] == 1) ) {
 		// get the cookie
 		var cookie = pmpro_sws_get_tracking_cookie();
 		if( cookie['confirmation_page'] == 0 ) {
 			cookie['confirmation_page'] = 1;
-			pmpro_sws_send_ajax('langing_page_checkouts');
+			if( pmpro_sws.confirmation_page == 1 ) {
+				pmpro_sws_send_ajax('checkout_conversions_with_code');
+			} else {
+				pmpro_sws_send_ajax('checkout_conversions_without_code');
+			}
 			pmpro_sws_set_tracking_cookie(cookie);
 		}
 	}
