@@ -19,9 +19,62 @@ $pmpro_reports['pmpro_sws_reports'] = __('PMPro Sitewide Sale', 'pmpro_sitewide_
  * Report Widget
  */
 function pmpro_report_pmpro_sws_reports_widget() {
+	echo pmpro_sws_get_report_for_code();
+}
+
+/**
+ * Report Page
+ */
+function pmpro_report_pmpro_sws_reports_page() {
+	global $wpdb;
+	$options          = pmprosws_get_options();
+	$codes            = $wpdb->get_results( "SELECT * FROM $wpdb->pmpro_discount_codes", OBJECT );
+	$current_discount = $options['discount_code_id'];
+	echo '<table><tr><td><h3>Choose Code to View Reports For: </h3></td><td><select id="pmpro_sws_discount_code_select">';
+	foreach ( $codes as $code ) {
+		$selected_modifier = '';
+		if ( $code->id === $current_discount ) {
+			$selected_modifier = ' selected="selected"';
+		}
+		echo '<option value = ' . esc_html( $code->id ) . esc_html( $selected_modifier ) . '>' . esc_html( $code->code, 'pmpro-sitewide-sale' ) . '</option>';
+	}
+	echo '</select></td></tr></table>';
+	echo '<div id="pmpro_sws_reports_container">';
+	echo pmpro_sws_get_report_for_code();
+	echo '</div>';
+	?>
+	<script>
+		jQuery( document ).ready(function() {
+			jQuery("#pmpro_sws_discount_code_select").selectWoo();
+			jQuery("#pmpro_sws_discount_code_select").change(function() {
+				var data = {
+					'action': 'pmpro_sws_ajax_reporting',
+					'code_id': jQuery("#pmpro_sws_discount_code_select").val()
+				};
+				jQuery.post('<?php echo esc_html( admin_url( 'admin-ajax.php' ) ); ?>', data, function(response) {
+					jQuery("#pmpro_sws_reports_container").html(response.slice(0, -1));
+				});
+			});
+		});
+	</script>
+	<?php
+}
+
+function pmpro_sws_ajax_reporting() {
+	echo pmpro_sws_get_report_for_code( $_POST['code_id'] );
+}
+add_action( 'wp_ajax_pmpro_sws_ajax_reporting', 'pmpro_sws_ajax_reporting' );
+
+function pmpro_sws_get_report_for_code( $code_id = null ) {
 	global $wpdb;
 	$options = pmprosws_get_options();
-	$code_id = $options['discount_code_id'];
+	if ( null === $code_id ) {
+		$code_id = $options['discount_code_id'];
+	}
+	if ( false === $code_id ) {
+		return 'No Discount Code Set.';
+	}
+	$code_id = $code_id . '';
 	$code_name = $wpdb->get_results( $wpdb->prepare( "SELECT code FROM $wpdb->pmpro_discount_codes WHERE id=%s", $code_id ) )[0]->code;
 	// check if discount_code_id is set.
 	$reports = get_option( 'pmpro_sitewide_sale_' . $code_id . '_tracking' );
@@ -38,7 +91,7 @@ function pmpro_report_pmpro_sws_reports_widget() {
 
 	// Reports regarding total sales.
 	$discount_code_dates  = $wpdb->get_results( $wpdb->prepare( "SELECT starts, expires FROM $wpdb->pmpro_discount_codes where id = %d", intval($code_id) ) )[0];
-	$orders_during_sale   = $wpdb->get_results( $wpdb->prepare( "SELECT orders.total, codes.code_id FROM $wpdb->pmpro_membership_orders orders LEFT JOIN wp_pmpro_discount_codes_uses codes ON orders.id = codes.order_id WHERE orders.timestamp >= %s AND orders.timestamp <= %s", $discount_code_dates->starts, $discount_code_dates->expires ) );
+	$orders_during_sale   = $wpdb->get_results( $wpdb->prepare( "SELECT orders.total, codes.code_id FROM $wpdb->pmpro_membership_orders orders LEFT JOIN wp_pmpro_discount_codes_uses codes ON orders.id = codes.order_id WHERE orders.timestamp >= %s AND orders.timestamp <= %s", $discount_code_dates->starts, date("Y-m-d", strtotime( '+1 day', strtotime( $discount_code_dates->expires ) ) ) ) );
 	$orders_with_code     = 0;
 	$revenue_with_code    = 0;
 	$orders_without_code  = 0;
@@ -66,173 +119,54 @@ function pmpro_report_pmpro_sws_reports_widget() {
 	$checkout_conversions_with_code    = $reports['checkout_conversions_with_code'];
 	$checkout_conversions_without_code = $reports['checkout_conversions_without_code'];
 	$checkout_conversions              = $checkout_conversions_with_code + $checkout_conversions_without_code;
-?>
-<span id="pmpro_sws_reports">
-	<table class="wp-list-table widefat fixed striped">
-		<thead>
-			<tr>
-				<th><?php esc_html_e( 'Code', 'pmpro_sitewide_sale' ); ?></th>
-				<th><strong><?php echo( esc_html( $code_name ) ); ?></strong></th>
-			</tr>
-		</thead>
-		<tbody>
-				<td scope="row"><?php esc_html_e( 'Total Sales', 'pmpro_sitewide_sale' ); ?></td>
-				<td><?php echo '$' . number_format_i18n( $total_revenue ) . ' (' . number_format_i18n( $total_sales ) . ')'; ?></td>
-			</tr>
-			<tr>
-				<th scope="row"><?php esc_html_e( 'With Sale Code', 'pmpro_sitewide_sale' ); ?></th>
-				<th><?php echo '$' . number_format_i18n( $revenue_with_code ) . ' (' . number_format_i18n( $orders_with_code ) . ')'; ?></th>
-			</tr>
-			<tr>
-				<th scope="row"><?php esc_html_e( 'Without Sale Code', 'pmpro_sitewide_sale' ); ?></th>
-				<th><?php echo '$' . number_format_i18n( $revenue_without_code ) . ' (' . number_format_i18n( $orders_without_code ) . ')'; ?></th>
-			</tr>
-			<tr>
-				<td scope="row"><?php esc_html_e( 'Banner Impressions', 'pmpro_sitewide_sale' ); ?></td>
-				<td><?php echo number_format_i18n( $banner_impressions ); ?></td>
-			</tr>
-			<tr>
-				<td scope="row"><?php esc_html_e( 'Sale Page Visits', 'pmpro_sitewide_sale' ); ?></td>
-				<td><?php echo number_format_i18n( $landing_page_visits ); ?></td>
-			</tr>
-			<tr>
-				<th scope="row"><?php esc_html_e( 'After Seeing Banner', 'pmpro_sitewide_sale' ); ?></th>
-				<th><?php echo number_format_i18n( $landing_page_after_banner ) . ' (' . number_format_i18n( $landing_page_after_banner_percent ) . '%)'; ?></th>
-			</tr>
-			<tr>
-				<td scope="row"><?php esc_html_e( 'Sales After Seeing Advertising', 'pmpro_sitewide_sale' ); ?></td>
-				<td><?php echo number_format_i18n( $checkout_conversions ); ?></td>
-			</tr>
-			<tr>
-				<th scope="row"><?php esc_html_e( 'Using Sale Code', 'pmpro_sitewide_sale' ); ?></th>
-				<th><?php echo number_format_i18n( $checkout_conversions_with_code ); ?></td>
-			</tr>
-			<tr>
-				<th scope="row"><?php esc_html_e( 'Without Sale Code', 'pmpro_sitewide_sale' ); ?></th>
-				<th><?php echo number_format_i18n( $checkout_conversions_without_code ); ?></th>
-			</tr>
-		</tbody>
-	</table>
-</span>
-<?php
-}
-
-/**
- * Report Page
- */
-function pmpro_report_pmpro_sws_reports_page() {
-	global $wpdb;
-	$options         = pmprosws_get_options();
-	$current_code_id = $options['discount_code_id'];
-	//make sure there is an entry for current code
-	if ( false === get_option( 'pmpro_sitewide_sale_' . $code_id . '_tracking' ) ) {
-		$reports = array(
-			'banner_impressions'                => 0,
-			'landing_page_visits'               => 0,
-			'landing_page_after_banner'         => 0,
-			'checkout_conversions_with_code'    => 0,
-			'checkout_conversions_without_code' => 0,
-		);
-		update_option( 'pmpro_sitewide_sale_' . $code_id . '_tracking', $reports, 'no' );
-	}
-
-	$codes = $wpdb->get_results( "SELECT * FROM $wpdb->pmpro_discount_codes" );
-	?>
+	return '
 	<span id="pmpro_sws_reports">
-		<table class="wp-list-table widefat fixed striped">
+		<table class="widefat fixed striped">
 			<thead>
 				<tr>
-					<th><?php esc_html_e( 'Code', 'pmpro_sitewide_sale' ); ?></th>
-	<?php
-	//arrays to keep track of all code info
-	$banner_impressions           = [];
-	$landing_page_visits          = [];
-	$landing_page_conversions     = [];
-	$landing_page_convert_percent = [];
-	$discount_code_uses           = [];
-	$revenue_from_sale            = [];
-
-	foreach ( $codes as $code ) {
-		$reports = get_option( 'pmpro_sitewide_sale_' . $code->id . '_tracking' );
-		if ( false === $reports ) {
-			continue;
-		}
-		if ( $code->id . '' === $current_code_id ) {
-			echo '<th><strong>' . esc_html( $code->code ) . '</strong></th>';
-		} else {
-			echo '<th>' . esc_html( $code->code ) . '</th>';
-		}
-		$banner_impressions[]              = $reports['banner_impressions'];
-		$landing_page_visits[]             = $reports['landing_page_visits'];
-		$landing_page_conversions[]        = $reports['langing_page_checkouts'];
-		$landing_page_convert_percent_temp = ( $reports['langing_page_checkouts'] / $reports['landing_page_visits'] ) * 100;
-		if ( is_nan( $landing_page_convert_percent_temp ) ) {
-			$landing_page_convert_percent_temp = 0;
-		}
-		$landing_page_convert_percent[] = $landing_page_convert_percent_temp;
-		$orders_with_code               = $wpdb->get_results( $wpdb->prepare( "SELECT orders.total FROM $wpdb->pmpro_membership_orders orders LEFT JOIN wp_pmpro_discount_codes_uses codes ON orders.id = codes.order_id WHERE codes.code_id = %s", $code->id ) );
-		$discount_code_uses[]           = count( $orders_with_code );
-		$revenue_from_sale_temp         = 0;
-		foreach ( $orders_with_code as $order ) {
-			$revenue_from_sale_temp += $order->total;
-		}
-		$revenue_from_sale[] = $revenue_from_sale_temp;
-	}
-	?>
-			</tr>
-		</thead>
-		<tbody>
-				<th scope="row"><?php esc_html_e( 'Banner Impressions', 'pmpro_sitewide_sale' ); ?></th>
-				<?php
-				foreach ( $banner_impressions as $ban_imp ) {
-					echo '<td>' . esc_html( number_format_i18n( $ban_imp ) ) . '</td>';
-				}
-				?>
-			</tr>
-			<tr>
-				<th scope="row"><?php esc_html_e( 'Landing Page Visits', 'pmpro_sitewide_sale' ); ?></th>
-				<?php
-				foreach ( $landing_page_visits as $lpv ) {
-					echo '<td>' . esc_html( number_format_i18n( $lpv ) ) . '</td>';
-				}
-				?>
-			</tr>
-			<tr>
-				<th scope="row"><?php esc_html_e( 'Landing Page Conversions', 'pmpro_sitewide_sale' ); ?></th>
-				<?php
-				foreach ( $landing_page_conversions as $lpc ) {
-					echo '<td>' . esc_html( number_format_i18n( $lpc ) ) . '</td>';
-				}
-				?>
-			</tr>
-			<tr>
-				<th scope="row"><?php esc_html_e( 'Landing Page Conversion %', 'pmpro_sitewide_sale' ); ?></th>
-				<?php
-				foreach ( $landing_page_convert_percent as $lpcp ) {
-					echo '<td>' . esc_html( number_format_i18n( $lpcp ) ) . '%</td>';
-				}
-				?>
-			</tr>
-			<tr>
-				<th scope="row"><?php esc_html_e( 'Discount Code Uses', 'pmpro_sitewide_sale' ); ?></th>
-				<?php
-				foreach ( $discount_code_uses as $dcu ) {
-					echo '<td>' . esc_html( number_format_i18n( $dcu ) ) . '</td>';
-				}
-				?>
-			</tr>
-			<tr>
-				<th scope="row"><?php esc_html_e( 'Revenue From Sale', 'pmpro_sitewide_sale' ); ?></th>
-				<?php
-				foreach ( $revenue_from_sale as $revenue ) {
-					echo '<td>$' . esc_html( number_format_i18n( $revenue ) ) . '</td>';
-				}
-				?>
-			</tr>
-		</tbody>
-	</table>
-</span>
-<?php
+					<td>' . esc_html( 'Code', 'pmpro_sitewide_sale' ) . '</td>
+					<td>' . esc_html( $code_name ) . '</td>
+				</tr>
+			</thead>
+			<tbody>
+					<th scope="row"><strong>' . esc_html( 'Total Sales', 'pmpro_sitewide_sale' ) . '</strong></th>
+					<th><strong>' . '$' . number_format_i18n( $total_revenue ) . ' (' . number_format_i18n( $total_sales ) . ')</strong></th>
+				</tr>
+				<tr>
+					<td scope="row">' . esc_html( 'With Sale Code', 'pmpro_sitewide_sale' ) . '</td>
+					<td>' . '$' . number_format_i18n( $revenue_with_code ) . ' (' . number_format_i18n( $orders_with_code ) . ')</td>
+				</tr>
+				<tr>
+					<td scope="row">' . esc_html( 'Without Sale Code', 'pmpro_sitewide_sale' ) . '</td>
+					<td>' . '$' . number_format_i18n( $revenue_without_code ) . ' (' . number_format_i18n( $orders_without_code ) . ')</td>
+				</tr>
+				<tr>
+					<th scope="row"><strong>' . esc_html( 'Banner Impressions', 'pmpro_sitewide_sale' ) . '</strong></th>
+					<th><strong>' . number_format_i18n( $banner_impressions ) . '</strong></th>
+				</tr>
+				<tr>
+					<th scope="row"><strong>' . esc_html( 'Sale Page Visits', 'pmpro_sitewide_sale' ) . '</strong></th>
+					<th><strong>' . number_format_i18n( $landing_page_visits ) . '</strong></th>
+				</tr>
+				<tr>
+					<td scope="row">' . esc_html( 'After Seeing Banner', 'pmpro_sitewide_sale' ) . '</td>
+					<td>' . number_format_i18n( $landing_page_after_banner ) . ' (' . number_format_i18n( $landing_page_after_banner_percent ) . '%)</td>
+				</tr>
+				<tr>
+					<th scope="row"><strong>' . esc_html( 'Sales After Seeing Advertising', 'pmpro_sitewide_sale' ) . '</strong></th>
+					<th><strong>' . number_format_i18n( $checkout_conversions ) . '</strong></th>
+				</tr>
+				<tr>
+					<td scope="row">' . esc_html( 'Using Sale Code', 'pmpro_sitewide_sale' ) . '</td>
+					<td>' . number_format_i18n( $checkout_conversions_with_code ) . '</th>
+				</tr>
+				<tr>
+					<td scope="row">' . esc_html( 'Without Sale Code', 'pmpro_sitewide_sale' ) . '</td>
+					<td>' . number_format_i18n( $checkout_conversions_without_code ) . '</td>
+				</tr>
+			</tbody>
+		</table>
+	</span>';
 }
 
 /**

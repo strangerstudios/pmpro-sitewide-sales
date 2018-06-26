@@ -314,7 +314,7 @@ function pmpro_sws_page_meta() {
 		$init_checked = true;
 	}
 
-	echo '<input name="' . esc_html( 'Sitewide Sale', 'pmpro-sitewide-sale' ) . '" type="checkbox" ' . ( $init_checked ? 'checked' : '' ) . ' />';
+	echo '<input name="sitewide_sale" type="checkbox" ' . ( $init_checked ? 'checked' : '' ) . ' />';
 }
 
 
