@@ -112,13 +112,22 @@ function pmpro_sws_get_report_for_code( $code_id = null ) {
 	$banner_impressions                = $reports['banner_impressions'];
 	$landing_page_visits               = $reports['landing_page_visits'];
 	$landing_page_after_banner         = $reports['landing_page_after_banner'];
-	$landing_page_after_banner_percent = ( $landing_page_after_banner / $landing_page_visits ) * 100;
+	$landing_page_after_banner_percent = ( $landing_page_after_banner / $banner_impressions ) * 100;
 	if ( is_nan( $landing_page_after_banner_percent ) ) {
 		$landing_page_after_banner_percent = 0;
+	}
+	$landing_page_not_after_banner         = $landing_page_visits - $landing_page_after_banner;
+	$landing_page_not_after_banner_percent = ( $landing_page_not_after_banner / $landing_page_visits ) * 100;
+	if ( is_nan( $landing_page_not_after_banner_percent ) ) {
+		$landing_page_not_after_banner_percent = 0;
 	}
 	$checkout_conversions_with_code    = $reports['checkout_conversions_with_code'];
 	$checkout_conversions_without_code = $reports['checkout_conversions_without_code'];
 	$checkout_conversions              = $checkout_conversions_with_code + $checkout_conversions_without_code;
+	$checkout_conversions_percent      = ( $checkout_conversions / $landing_page_visits ) * 100;
+	if ( is_nan( $checkout_conversions_percent ) ) {
+		$checkout_conversions_percent = 0;
+	}
 	return '
 	<span id="pmpro_sws_reports">
 		<table class="widefat fixed striped">
@@ -133,11 +142,11 @@ function pmpro_sws_get_report_for_code( $code_id = null ) {
 					<th><strong>' . '$' . number_format_i18n( $total_revenue ) . ' (' . number_format_i18n( $total_sales ) . ')</strong></th>
 				</tr>
 				<tr>
-					<td scope="row">' . esc_html( 'With Sale Code', 'pmpro_sitewide_sale' ) . '</td>
+					<td scope="row">' . esc_html( '- With the Discount Code "', 'pmpro_sitewide_sale' ) . $code_name . '"</td>
 					<td>' . '$' . number_format_i18n( $revenue_with_code ) . ' (' . number_format_i18n( $orders_with_code ) . ')</td>
 				</tr>
 				<tr>
-					<td scope="row">' . esc_html( 'Without Sale Code', 'pmpro_sitewide_sale' ) . '</td>
+					<td scope="row">' . esc_html( '- Other Revenue', 'pmpro_sitewide_sale' ) . '</td>
 					<td>' . '$' . number_format_i18n( $revenue_without_code ) . ' (' . number_format_i18n( $orders_without_code ) . ')</td>
 				</tr>
 				<tr>
@@ -145,23 +154,27 @@ function pmpro_sws_get_report_for_code( $code_id = null ) {
 					<th><strong>' . number_format_i18n( $banner_impressions ) . '</strong></th>
 				</tr>
 				<tr>
-					<th scope="row"><strong>' . esc_html( 'Sale Page Visits', 'pmpro_sitewide_sale' ) . '</strong></th>
+					<th scope="row"><strong>' . esc_html( 'Sitewide Sale Page Visits', 'pmpro_sitewide_sale' ) . '</strong></th>
 					<th><strong>' . number_format_i18n( $landing_page_visits ) . '</strong></th>
 				</tr>
 				<tr>
-					<td scope="row">' . esc_html( 'After Seeing Banner', 'pmpro_sitewide_sale' ) . '</td>
-					<td>' . number_format_i18n( $landing_page_after_banner ) . ' (' . number_format_i18n( $landing_page_after_banner_percent ) . '%)</td>
+					<td scope="row">' . esc_html( '- People Going to Sitewide Sale Page after Seeing Banner', 'pmpro_sitewide_sale' ) . '</td>
+					<td>' . number_format_i18n( $landing_page_after_banner ) . ' (' . number_format_i18n( $landing_page_after_banner_percent ) . '% of Banner Impressions)</td>
 				</tr>
 				<tr>
-					<th scope="row"><strong>' . esc_html( 'Sales After Seeing Advertising', 'pmpro_sitewide_sale' ) . '</strong></th>
-					<th><strong>' . number_format_i18n( $checkout_conversions ) . '</strong></th>
+					<td scope="row">' . esc_html( '- People Going Directly to Sitewide Sale Page without Seeing Banner', 'pmpro_sitewide_sale' ) . '</td>
+					<td>' . number_format_i18n( $landing_page_not_after_banner ) . ' (' . number_format_i18n( $landing_page_not_after_banner_percent ) . '% of Sitewide Sale Page Visits)</td>
 				</tr>
 				<tr>
-					<td scope="row">' . esc_html( 'Using Sale Code', 'pmpro_sitewide_sale' ) . '</td>
+					<th scope="row"><strong>' . esc_html( 'Sales After Visiting Sitewide Sale Page', 'pmpro_sitewide_sale' ) . '</strong></th>
+					<th><strong>' . number_format_i18n( $checkout_conversions ) . ' (' . number_format_i18n( $checkout_conversions_percent ) . '% of Sitewide Sale Page Visits)</strong></th>
+				</tr>
+				<tr>
+					<td scope="row">' . esc_html( '- Using the Discount Code "', 'pmpro_sitewide_sale' ) . $code_name . '"</td>
 					<td>' . number_format_i18n( $checkout_conversions_with_code ) . '</th>
 				</tr>
 				<tr>
-					<td scope="row">' . esc_html( 'Without Sale Code', 'pmpro_sitewide_sale' ) . '</td>
+					<td scope="row">' . esc_html( '- Other Sales', 'pmpro_sitewide_sale' ) . '</td>
 					<td>' . number_format_i18n( $checkout_conversions_without_code ) . '</td>
 				</tr>
 			</tbody>

@@ -50,7 +50,7 @@ function pmpro_sws_track() {
 		}
 	}
 
-	if( pmpro_sws.confirmation_page == 1 && ( cookie['landing_page'] == 1 || cookie['banner'] == 1) ) {
+	if( pmpro_sws.confirmation_page == 1 && cookie['landing_page'] == 1 ) {
 		// get the cookie
 		var cookie = pmpro_sws_get_tracking_cookie();
 		if( cookie['confirmation_page'] == 0 ) {
