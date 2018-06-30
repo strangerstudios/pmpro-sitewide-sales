@@ -10,7 +10,9 @@ add_action( 'wp', 'pmpro_sws_init_banners' );
  * Logic for when to show banners/which banner to show
  */
 function pmpro_sws_init_banners() {
+	global $pmpro_pages;
 	$options = pmprosws_get_options();
+	
 	if ( false !== $options['discount_code_id'] &&
 				false !== $options['landing_page_post_id'] &&
 				'no' !== $options['use_banner'] &&
