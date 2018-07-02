@@ -160,18 +160,22 @@ function pmpro_sws_banners_callback() {
 		</tr></table>
 		<table class="form-table" id="pmpro_sws_banner_options">
 	<?php
-	$banner_option_fields = array(
-		'banner_title'       => __( 'Banner Title', 'pmpro-sitewide-sale' ),
-		'banner_description' => __( 'Banner Description', 'pmpro-sitewide-sale' ),
-		'link_text'          => __( 'Button Text', 'pmpro-sitewide-sale' ),
-	);
-	foreach ( $banner_option_fields as $db_name => $output_name ) {
-		echo '
-		<tr>
-			<th scope="row" valign="top"><label>' . esc_html( $output_name ) . '</label></th>
-			<td><input class="pmpro_sws_option" type="text" name="pmpro_sitewide_sale[' . esc_html( $db_name ) . ']" value="' . esc_html( $options[ $db_name ] ) . '"/></td>
-		</tr>';
-	}
+	echo '
+	<tr>
+		<th scope="row" valign="top"><label>' . __( 'Banner Title', 'pmpro-sitewide-sale' ) . '</label></th>
+		<td><input class="pmpro_sws_option" type="text" name="pmpro_sitewide_sale[banner_title]" value="' . esc_html( $options['banner_title'] ) . '"/></td>
+	</tr>';
+	echo '
+	<tr>
+		<th scope="row" valign="top"><label>' . __( 'Banner Description', 'pmpro-sitewide-sale' ) . '</label></th>
+		<td><textarea rows="5" cols="20" class="pmpro_sws_option" name="pmpro_sitewide_sale[banner_description]">' . esc_textarea( $options['banner_description'] ) . '</textarea></td>
+	</tr>';
+	echo '
+	<tr>
+		<th scope="row" valign="top"><label>' . __( 'Button Text', 'pmpro-sitewide-sale' ) . '</label></th>
+		<td><input class="pmpro_sws_option" type="text" name="pmpro_sitewide_sale[link_text]" value="' . esc_html( $options['link_text'] ) . '"/></td>
+	</tr>';
+	
 	echo '
 	<tr>
 		<th scope="row" valign="top"><label>' . esc_html( 'Custom Banner CSS', 'pmpro-sitewide-sale' ) . '</label></th>
