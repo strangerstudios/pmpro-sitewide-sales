@@ -12,8 +12,8 @@ add_action( 'admin_menu', 'pmpro_sws_menu' );
 function pmpro_sws_menu() {
 	add_submenu_page(
 		'pmpro-membershiplevels',
-		__( 'PMPro Sitewide Sale', 'pmpro-sitewide-sale' ),
-		__( 'PMPro Sitewide Sale', 'pmpro-sitewide-sale' ),
+		__( 'Sitewide Sale', 'pmpro-sitewide-sale' ),
+		__( 'Sitewide Sale', 'pmpro-sitewide-sale' ),
 		'manage_options',
 		'pmpro-sws',
 		'pmprosla_sws_options_page'
@@ -29,12 +29,25 @@ function pmprosla_sws_options_page() {
 	<div class="wrap">
 		<?php require_once PMPRO_DIR . '/adminpages/admin_header.php'; ?>
 		<h1><?php esc_attr_e( 'Paid Memberships Pro - Sitewide Sale Add On', 'pmpro-sitewide-sale' ); ?></h1>
-		<form action="options.php" method="POST">
+		<form id="pmpro_sws_options" action="options.php" method="POST">
 			<?php settings_fields( 'pmpro-sws-group' ); ?>
 			<?php do_settings_sections( 'pmpro-sws' ); ?>
 			<?php submit_button(); ?>
 			<?php require_once PMPROSWS_DIR . '/includes/reports.php'; ?>
 		</form>
+		<script>
+
+			jQuery( document ).ready(function() {
+				jQuery(".pmpro_sws_option").change(function() {
+					window.onbeforeunload = function() {
+			    	return true;
+					};
+				});
+				jQuery("#pmpro_sws_options").submit(function() {
+					window.onbeforeunload = null;
+				});
+			});
+		</script>
 		<?php require_once PMPRO_DIR . '/adminpages/admin_footer.php'; ?>
 	</div>
 <?php
@@ -77,7 +90,7 @@ function pmpro_sws_discount_code_callback() {
 	$current_discount = $options['discount_code_id'];
 
 	?>
-	<select class="discount_code_select" id="pmpro_sws_discount_code_select" name="pmpro_sitewide_sale[discount_code_id]">
+	<select class="discount_code_select pmpro_sws_option" id="pmpro_sws_discount_code_select" name="pmpro_sitewide_sale[discount_code_id]">
 	<option value=-1></option>
 	<?php
 	foreach ( $codes as $code ) {
@@ -108,7 +121,7 @@ function pmpro_sws_sale_page_callback() {
 	$current_page = $options['landing_page_post_id'];
 
 	?>
-	<select class="landing_page_select" id="pmpro_sws_landing_page_select" name="pmpro_sitewide_sale[landing_page_post_id]">
+	<select class="landing_page_select pmpro_sws_option" id="pmpro_sws_landing_page_select" name="pmpro_sitewide_sale[landing_page_post_id]">
 	<option value=-1></option>
 	<?php
 	foreach ( $pages as $page ) {
@@ -148,42 +161,41 @@ function pmpro_sws_sale_page_callback() {
  * Displays banner settings
  */
 function pmpro_sws_banners_callback() {
-	$options                          = pmprosws_get_options();
-	$use_banner_top_modifier          = ( 'top' === $options['use_banner'] ) ? ' selected="selected"' : '';
-	$use_banner_bottom_right_modifier = ( 'bottom-right' === $options['use_banner'] ) ? ' selected="selected"' : '';
+	$options = pmprosws_get_options();
 	?>
 	</br>
 		<table class="form-table"><tr>
 			<th scope="row" valign="top"><label><?php esc_html_e( 'Use the built-in banner?', 'pmpro-sitewide-sale' ); ?></label></th>
-			<td><select class="use_banner_select" id="pmpro_sws_use_banner_select" name="pmpro_sitewide_sale[use_banner]">
-				<option value="no"><?php esc_html_e( 'No', 'pmpro-sitewide-sale' ); ?></option>
-				<option value="top"' . $use_banner_top_modifier . '><?php esc_html_e( 'Yes. Top of Site.', 'pmpro-sitewide-sale' ); ?></option>
-				<option value="bottom-right"' . $use_banner_bottom_right_modifier . '><?php esc_html_e( 'Yes. Bottom Right of Site.', 'pmpro-sitewide-sale' ); ?></option>
+			<td><select class="use_banner_select pmpro_sws_option" id="pmpro_sws_use_banner_select" name="pmpro_sitewide_sale[use_banner]">
+				<option value="no" <?php selected( $options['use_banner'], 'no'); ?>><?php esc_html_e( 'No', 'pmpro-sitewide-sale' ); ?></option>
+				<option value="top" <?php selected( $options['use_banner'], 'top' );?>><?php esc_html_e( 'Yes. Top of Site.', 'pmpro-sitewide-sale' ); ?></option>
+				<option value="bottom" <?php selected( $options['use_banner'], 'bottom' );?>><?php esc_html_e( 'Yes. Bottom of Site.', 'pmpro-sitewide-sale' ); ?></option>
+				<option value="bottom-right" <?php selected( $options['use_banner'], 'bottom-right' );?>><?php esc_html_e( 'Yes. Bottom Right of Site.', 'pmpro-sitewide-sale' ); ?></option>
 			</select></td>
 		</tr></table>
 		<table class="form-table" id="pmpro_sws_banner_options">
 	<?php
 	$banner_option_fields = array(
-		'banner_title'       => __( 'Banner Title:', 'pmpro-sitewide-sale' ),
-		'banner_description' => __( 'Banner Description:', 'pmpro-sitewide-sale' ),
-		'link_text'          => __( 'Link Text:', 'pmpro-sitewide-sale' ),
+		'banner_title'       => __( 'Banner Title', 'pmpro-sitewide-sale' ),
+		'banner_description' => __( 'Banner Description', 'pmpro-sitewide-sale' ),
+		'link_text'          => __( 'Button Text', 'pmpro-sitewide-sale' ),
 	);
 	foreach ( $banner_option_fields as $db_name => $output_name ) {
 		echo '
 		<tr>
 			<th scope="row" valign="top"><label>' . esc_html( $output_name ) . '</label></th>
-			<td><input type="text" name="pmpro_sitewide_sale[' . esc_html( $db_name ) . ']" value="' . esc_html( $options[ $db_name ] ) . '"/></td>
+			<td><input class="pmpro_sws_option" type="text" name="pmpro_sitewide_sale[' . esc_html( $db_name ) . ']" value="' . esc_html( $options[ $db_name ] ) . '"/></td>
 		</tr>';
 	}
 	echo '
 	<tr>
-		<th scope="row" valign="top"><label>' . esc_html( 'CSS Option:', 'pmpro-sitewide-sale' ) . '</label></th>
-		<td><textarea name="pmpro_sitewide_sale[css_option]">' . esc_html( $options['css_option'] ) . '</textarea></td>
+		<th scope="row" valign="top"><label>' . esc_html( 'Custom Banner CSS', 'pmpro-sitewide-sale' ) . '</label></th>
+		<td><textarea class="pmpro_sws_option" name="pmpro_sitewide_sale[css_option]">' . esc_html( $options['css_option'] ) . '</textarea></td>
 	</tr>';
 	echo '
 		<tr>
-			<th scope="row" valign="top"><label>' . esc_html( 'Hide for Levels:', 'pmpro-sitewide-sale' ) . '</label></th>
-			<td><select id="pmpro_sws_hide_levels_select" name="pmpro_sitewide_sale[hide_for_levels][]" multiple/>';
+			<th scope="row" valign="top"><label>' . esc_html( 'Hide Banner by Membership Level', 'pmpro-sitewide-sale' ) . '</label></th>
+			<td><select class="pmpro_sws_option" id="pmpro_sws_hide_levels_select" name="pmpro_sitewide_sale[hide_for_levels][]" style="width:12em" multiple/>';
 	$all_levels    = pmpro_getAllLevels( true, true );
 	$hidden_levels = $options[ hide_for_levels ];
 	foreach ( $all_levels as $level ) {
@@ -193,8 +205,8 @@ function pmpro_sws_banners_callback() {
 	$checked_modifier = $options[ hide_on_checkout ] ? ' checked' : '';
 	echo '</td></tr>
 		<tr>
-			<th scope="row" valign="top"><label>' . esc_html( 'Hide on checkout:', 'pmpro-sitewide-sale' ) . '</label></th>
-			<td><input type="checkbox" name="pmpro_sitewide_sale[hide_on_checkout]" ' . esc_html( $checked_modifier ) . '/></td>
+			<th scope="row" valign="top"><label>' . esc_html( 'Hide Banner at Checkout', 'pmpro-sitewide-sale' ) . '</label></th>
+			<td><input class="pmpro_sws_option" type="checkbox" name="pmpro_sitewide_sale[hide_on_checkout]" ' . esc_html( $checked_modifier ) . '/></td>
 		</tr></table>';
 		?>
 		<script>
@@ -223,7 +235,7 @@ function pmpro_sws_validate( $input ) {
 		}
 	}
 
-	$possible_options = [ 'no', 'top', 'bottom-right' ];
+	$possible_options = [ 'no', 'top', 'bottom', 'bottom-right' ];
 	if ( ! empty( $input['use_banner'] ) && in_array( trim( $input['use_banner'] ), $possible_options, true ) ) {
 		$options['use_banner'] = trim( $input['use_banner'] );
 	} else {
@@ -250,23 +262,6 @@ function pmpro_sws_validate( $input ) {
 	} else {
 		$options['hide_on_checkout'] = true;
 	}
-
-	$string_inputs = [ 'times_code_used', 'revenue', 'num_landing', 'num_checkout', 'num_confirmation' ];
-	foreach ( $string_inputs as $str ) {
-		if ( ! empty( $input[ $str ] ) ) {
-			if ( is_string( $input[ $str ] ) ) {
-				$input[ $str ] = intval( trim( $input[ $str ] ) );
-			}
-			if ( is_int( $input[ $str ] ) ) {
-				$options[ $str ] = $input[ $str ];
-			} else {
-				$options[ $str ] = 0;
-			}
-		} else {
-			$options[ $str ] = 0;
-		}
-	}
-
 	return $options;
 }
 
@@ -334,7 +329,21 @@ function pmpro_sws_page_meta() {
 		$init_checked = true;
 	}
 
-	echo '<input name="' . esc_html( 'Sitewide Sale', 'pmpro-sitewide-sale' ) . '" type="checkbox" ' . ( $init_checked ? 'checked' : '' ) . ' />';
+	echo '<input name="sitewide_sale" type="checkbox" ' . ( $init_checked ? 'checked' : '' ) . ' />';
+}
+
+
+/**
+ * Sets defaults for sitewide sale page
+ *
+ * @param  string  $content original post content.
+ * @param  WP_Post $post    post info.
+ */
+function pmpro_sws_page_defaults( $content, $post ) {
+	if ( 'page' === $post->post_type && isset( $_REQUEST['sws_default'] ) && 'true' === $_REQUEST['sws_default'] ) {
+		$content = 'Welcome to the black friday sale page!';
+	}
+	return $content;
 }
 
 /**
@@ -361,4 +370,5 @@ function pmpro_sws_page_meta_wrapper() {
 if ( is_admin() ) {
 	add_action( 'admin_menu', 'pmpro_sws_page_meta_wrapper' );
 	add_action( 'save_post', 'pmpro_sws_page_save' );
+	add_filter( 'default_content', 'pmpro_sws_page_defaults', 10, 2 );
 }

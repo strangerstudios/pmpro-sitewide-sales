@@ -24,11 +24,6 @@ function pmprosws_get_options() {
 			'css_option'           => '',
 			'hide_for_levels'      => [],
 			'hide_on_checkout'     => false,
-			'times_code_used'      => 0,
-			'revenue'              => 0,
-			'num_landing'          => 0,
-			'num_checkout'         => 0,
-			'num_confirmation'     => 0,
 		);
 	}
 	return $options;
