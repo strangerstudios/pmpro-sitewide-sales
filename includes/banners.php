@@ -41,5 +41,5 @@ function pmpro_sws_is_login_page() {
 		$slug = 'login';
 	}
 
-	return ( $slug === $post->post_name );
+	return ( $slug === $post->post_name || is_page( 'login' ) || in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) ) );
 }
