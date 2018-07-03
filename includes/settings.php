@@ -207,7 +207,13 @@ function pmpro_sws_banners_callback() {
 		<tr>
 			<th scope="row" valign="top"><label>' . esc_html( 'Hide Banner at Checkout', 'pmpro-sitewide-sale' ) . '</label></th>
 			<td><input class="pmpro_sws_option" type="checkbox" name="pmpro_sitewide_sale[hide_on_checkout]" ' . esc_html( $checked_modifier ) . '/></td>
-		</tr></table>';
+		</tr>';
+		$checked_modifier = $options[ hide_on_login ] ? ' checked' : '';
+		echo '</td></tr>
+			<tr>
+				<th scope="row" valign="top"><label>' . esc_html( 'Hide Banner on Login Page', 'pmpro-sitewide-sale' ) . '</label></th>
+				<td><input class="pmpro_sws_option" type="checkbox" name="pmpro_sitewide_sale[hide_on_login]" ' . esc_html( $checked_modifier ) . '/></td>
+			</tr></table>';
 		?>
 		<script>
 			jQuery( document ).ready(function() {
@@ -261,6 +267,11 @@ function pmpro_sws_validate( $input ) {
 		$options['hide_on_checkout'] = false;
 	} else {
 		$options['hide_on_checkout'] = true;
+	}
+	if ( empty( $input['hide_on_login'] ) ) {
+		$options['hide_on_login'] = false;
+	} else {
+		$options['hide_on_login'] = true;
 	}
 	return $options;
 }
