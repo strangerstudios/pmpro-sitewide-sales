@@ -157,12 +157,27 @@ function pmpro_sws_sale_page_callback() {
 		}
 		echo '<option value=' . esc_html( $page->ID ) . esc_html( $selected_modifier ) . '>' . esc_html( $page->post_title ) . '</option>';
 	}
-	echo '</select> ' . esc_html( 'or', 'pmpro_sitewide_sale' ) . ' <a href="' . esc_html( get_admin_url() ) . 'post-new.php?post_type=page&set_sitewide_sale=true&sws_default=true">
-			 ' . esc_html( 'create a new page', 'pmpro_sitewide_sale' ) . '</a>.';
+	echo '</select><span id="pmpro_sws_after_choose_page">';
+	if ( $current_page <= 0 ) {
+		echo esc_html( 'or', 'pmpro_sitewide_sale' ) . ' <a href="' . esc_html( get_admin_url() ) . 'post-new.php?post_type=page&set_sitewide_sale=true">
+				 ' . esc_html( 'create a new page', 'pmpro_sitewide_sale' ) . '</a>.';
+	} else {
+		?>
+				<a target="_blank" href="post.php?post=<?php echo $current_page ?>&action=edit"
+					 class="button button-secondary pmpro_page_edit"><?php _e('edit page', 'paid-memberships-pro' ); ?></a>
+				&nbsp;
+				<a target="_blank" href="<?php echo get_permalink($current_page); ?>"
+					 class="button button-secondary pmpro_page_view"><?php _e('view page', 'paid-memberships-pro' ); ?></a>
+		<?php
+	}
+	echo '</span>'
 	?>
 	<script>
 		jQuery( document ).ready(function() {
 			jQuery("#pmpro_sws_landing_page_select").selectWoo();
+			jQuery( "#pmpro_sws_landing_page_select" ).change(function() {
+				jQuery( "#pmpro_sws_after_choose_page" ).html('');
+			});
 		});
 	</script>
 	<?php
@@ -222,7 +237,13 @@ function pmpro_sws_banners_callback() {
 		<tr>
 			<th scope="row" valign="top"><label>' . esc_html( 'Hide Banner at Checkout', 'pmpro-sitewide-sale' ) . '</label></th>
 			<td><input class="pmpro_sws_option" type="checkbox" name="pmpro_sitewide_sale[hide_on_checkout]" ' . esc_html( $checked_modifier ) . '/></td>
-		</tr></table>';
+		</tr>';
+		$checked_modifier = $options[ hide_on_login ] ? ' checked' : '';
+		echo '</td></tr>
+			<tr>
+				<th scope="row" valign="top"><label>' . esc_html( 'Hide Banner on Login Page', 'pmpro-sitewide-sale' ) . '</label></th>
+				<td><input class="pmpro_sws_option" type="checkbox" name="pmpro_sitewide_sale[hide_on_login]" ' . esc_html( $checked_modifier ) . '/></td>
+			</tr></table>';
 		?>
 		<script>
 			jQuery( document ).ready(function() {
@@ -276,6 +297,11 @@ function pmpro_sws_validate( $input ) {
 		$options['hide_on_checkout'] = false;
 	} else {
 		$options['hide_on_checkout'] = true;
+	}
+	if ( empty( $input['hide_on_login'] ) ) {
+		$options['hide_on_login'] = false;
+	} else {
+		$options['hide_on_login'] = true;
 	}
 	return $options;
 }

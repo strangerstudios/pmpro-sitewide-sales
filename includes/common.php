@@ -24,6 +24,7 @@ function pmprosws_get_options() {
 			'css_option'           => '',
 			'hide_for_levels'      => [],
 			'hide_on_checkout'     => false,
+			'hide_on_login'        => false,
 		);
 	}
 	return $options;

@@ -27,9 +27,10 @@ function pmpro_sws_send_ajax(element) {
 }
 
 function pmpro_sws_track() {
+
+	var cookie = pmpro_sws_get_tracking_cookie();
+
 	if( jQuery('.pmpro_sws_banner').length ) {
-		// get the cookie
-		var cookie = pmpro_sws_get_tracking_cookie();
 		if( cookie['banner'] == 0 ) {
 			cookie['banner'] = 1;
 			pmpro_sws_send_ajax('banner_impressions');
@@ -38,8 +39,6 @@ function pmpro_sws_track() {
 	}
 
 	if( pmpro_sws.landing_page == 1 ) {
-		// get the cookie
-		var cookie = pmpro_sws_get_tracking_cookie();
 		if( cookie['landing_page'] == 0 ) {
 			if( cookie['banner'] == 1 ) {
 				pmpro_sws_send_ajax('landing_page_after_banner');
@@ -51,8 +50,6 @@ function pmpro_sws_track() {
 	}
 
 	if( pmpro_sws.confirmation_page == 1 && cookie['landing_page'] == 1 ) {
-		// get the cookie
-		var cookie = pmpro_sws_get_tracking_cookie();
 		if( cookie['confirmation_page'] == 0 ) {
 			cookie['confirmation_page'] = 1;
 			if( pmpro_sws.used_sale_code == 1 ) {
