@@ -70,7 +70,7 @@ function pmpro_sws_admin_init() {
 	// TODO: split all of the banner settings out into their own fields.
 
 	add_settings_section( 'pmpro-sws-section4', __( 'Step 4: Monitor Your Sale', 'pmpro_sitewide_sale' ), 'pmpro_sws_section_step4', 'pmpro-sws' );
-	
+
 }
 
 /**
@@ -157,12 +157,27 @@ function pmpro_sws_sale_page_callback() {
 		}
 		echo '<option value=' . esc_html( $page->ID ) . esc_html( $selected_modifier ) . '>' . esc_html( $page->post_title ) . '</option>';
 	}
-	echo '</select> ' . esc_html( 'or', 'pmpro_sitewide_sale' ) . ' <a href="' . esc_html( get_admin_url() ) . 'post-new.php?post_type=page&set_sitewide_sale=true&sws_default=true">
-			 ' . esc_html( 'create a new page', 'pmpro_sitewide_sale' ) . '</a>.';
+	echo '</select><span id="pmpro_sws_after_choose_page">';
+	if ( $current_page <= 0 ) {
+		echo esc_html( 'or', 'pmpro_sitewide_sale' ) . ' <a href="' . esc_html( get_admin_url() ) . 'post-new.php?post_type=page&set_sitewide_sale=true">
+	 		 ' . esc_html( 'create a new page', 'pmpro_sitewide_sale' ) . '</a>.';
+	} else {
+		?>
+		<a target="_blank" href="post.php?post=<?php echo $current_page ?>&action=edit"
+				class="button button-secondary pmpro_page_edit"><?php _e('edit page', 'paid-memberships-pro' ); ?></a>
+		&nbsp;
+		<a target="_blank" href="<?php echo get_permalink($current_page); ?>"
+				class="button button-secondary pmpro_page_view"><?php _e('view page', 'paid-memberships-pro' ); ?></a>
+		<?php
+	}
+		echo '</span>'
 	?>
 	<script>
 		jQuery( document ).ready(function() {
 			jQuery("#pmpro_sws_landing_page_select").selectWoo();
+			jQuery( "#pmpro_sws_landing_page_select" ).change(function() {
+				jQuery( "#pmpro_sws_after_choose_page" ).html('');
+		});
 		});
 	</script>
 	<?php
@@ -201,7 +216,7 @@ function pmpro_sws_banners_callback() {
 		<th scope="row" valign="top"><label>' . __( 'Button Text', 'pmpro-sitewide-sale' ) . '</label></th>
 		<td><input class="pmpro_sws_option" type="text" name="pmpro_sitewide_sale[link_text]" value="' . esc_html( $options['link_text'] ) . '"/></td>
 	</tr>';
-	
+
 	echo '
 	<tr>
 		<th scope="row" valign="top"><label>' . esc_html( 'Custom Banner CSS', 'pmpro-sitewide-sale' ) . '</label></th>
