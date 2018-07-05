@@ -59,24 +59,50 @@ add_action( 'admin_init', 'pmpro_sws_admin_init' );
  **/
 function pmpro_sws_admin_init() {
 	register_setting( 'pmpro-sws-group', 'pmpro_sitewide_sale', 'pmpro_sws_validate' );
-	add_settings_section( 'pmpro-sws-section', __( 'Sitewide Sale Settings', 'pmpro_sitewide_sale' ), 'pmpro_sws_section_callback', 'pmpro-sws' );
-	add_settings_field( 'pmpro-sws-discount-code', __( 'Discount Code', 'pmpro_sitewide_sale' ), 'pmpro_sws_discount_code_callback', 'pmpro-sws', 'pmpro-sws-section' );
-	add_settings_field( 'pmpro-sws-sale-page', __( 'Sale Page', 'pmpro_sitewide_sale' ), 'pmpro_sws_sale_page_callback', 'pmpro-sws', 'pmpro-sws-section' );
-	add_settings_field( 'pmpro-sws-banners', __( 'Banners', 'pmpro_sitewide_sale' ), 'pmpro_sws_banners_callback', 'pmpro-sws', 'pmpro-sws-section' );
+	add_settings_section( 'pmpro-sws-section1', __( 'Step 1: Choose Discount Code to Associate With Sale', 'pmpro_sitewide_sale' ), 'pmpro_sws_section_step1', 'pmpro-sws' );
+	add_settings_field( 'pmpro-sws-discount-code', __( 'Discount Code', 'pmpro_sitewide_sale' ), 'pmpro_sws_discount_code_callback', 'pmpro-sws', 'pmpro-sws-section1' );
+
+	add_settings_section( 'pmpro-sws-section2', __( 'Step 2: Create Landing Page', 'pmpro_sitewide_sale' ), 'pmpro_sws_section_step2', 'pmpro-sws' );
+	add_settings_field( 'pmpro-sws-sale-page', __( 'Sale Page', 'pmpro_sitewide_sale' ), 'pmpro_sws_sale_page_callback', 'pmpro-sws', 'pmpro-sws-section2' );
+
+	add_settings_section( 'pmpro-sws-section3', __( 'Step 3: Steup Banners', 'pmpro_sitewide_sale' ), 'pmpro_sws_section_step3', 'pmpro-sws' );
+	add_settings_field( 'pmpro-sws-banners', __( 'Banners', 'pmpro_sitewide_sale' ), 'pmpro_sws_banners_callback', 'pmpro-sws', 'pmpro-sws-section3' );
+	// TODO: split all of the banner settings out into their own fields.
+
+	add_settings_section( 'pmpro-sws-section4', __( 'Step 4: Monitor Your Sale', 'pmpro_sitewide_sale' ), 'pmpro_sws_section_step4', 'pmpro-sws' );
+	
 }
 
 /**
- * General plugin instructions
+ * Step 1 section.
  **/
-function pmpro_sws_section_callback() {
+function pmpro_sws_section_step1() {
 	?>
-	<ol>
-		<li><?php esc_html_e( 'Choose Discount Code to Associate With Sale', 'pmpro-sitewide-sale' ); ?></li>
-		<li><?php esc_html_e( 'Create Landing Page', 'pmpro-sitewide-sale' ); ?></li>
-		<li><?php esc_html_e( 'Setup Banners', 'pmpro-sitewide-sale' ); ?></li>
-		<li><?php esc_html_e( 'Monitor Your Sale', 'pmpro-sitewide-sale' ); ?></li>
-	</ol>
-	<hr>
+	<?php
+}
+
+/**
+ * Step 2 section.
+ **/
+function pmpro_sws_section_step2() {
+	?>
+	<?php
+}
+
+/**
+ * Step 3 section.
+ **/
+function pmpro_sws_section_step3() {
+	?>
+	<?php
+}
+
+/**
+ * Step 4 section.
+ **/
+function pmpro_sws_section_step4() {
+	?>
+	<a href="<?php echo admin_url('admin.php?page=pmpro-reports&report=pmpro_sws_reports');?>" target="_blank"><?php _e( 'Click here to view Sitewide Sale reports.', 'pmpro-sitewide-sale' ); ?></a>
 	<?php
 }
 
