@@ -1,0 +1,72 @@
+#pmpro_sws_banner_top {
+	width: 100%;
+	background: rgba(240,248,255,1);
+	text-align: center;
+	padding: 1rem;
+}
+#pmpro_sws_banner_top span {
+	margin-right: 2rem;
+	font-size: 2rem;
+}
+.pmpro_sws_banner h3 {
+	margin: 0 0 10px 0;
+	padding: 0;
+}
+.pmpro_sws_banner p {
+	margin: 0 0 10px 0;
+	padding: 0;
+}
+#pmpro_sws_banner_bottom_right {
+	background: rgba(74, 177, 173, .95);
+	bottom: 0;
+	box-shadow: 0 2px 20px 0 rgba(0,0,0,.2);
+	padding: 20px;
+	position: fixed;
+	right: 0;
+	max-width: 300px;
+	z-index: 400;
+}
+#pmpro_sws_banner_bottom_right .pmpro_btn {
+	display: block;
+}
+
+#pmpro_sws_banner_bottom_right a.dismiss,
+a.dismiss:active,
+a.dismiss:link,
+a.dismiss:visited {
+	color: #FFF;
+	float: right;
+	text-decoration: none;
+}
+#pmpro_sws_banner_bottom_right a.dismiss:hover {
+	text-decoration: underline;
+}
+
+#pmpro_sws_banner_bottom {
+	background: rgba(215, 215, 215, .95);
+	bottom: 0;
+	box-shadow: 0 2px 20px 0 rgba(0,0,0,.2);
+	left: 0;
+	padding: 20px 0;
+	position: fixed;
+	right: 0;
+	width: 100%;
+	z-index: 400;
+}
+#pmpro_sws_banner_bottom .pmpro_sws_banner-inner {
+	margin: 0 auto;
+	max-width: 1170px;
+}
+#pmpro_sws_banner_bottom .pmpro_sws_banner-inner-left {
+	display: inline-block;
+	padding-right: 5%;
+	width: 70%;
+}
+#pmpro_sws_banner_bottom .pmpro_sws_banner-inner-right {
+	display: inline-block;
+	width: 25%;
+}
+#pmpro_sws_banner_bottom .pmpro_sws_banner-inner-right .pmpro_btn {
+	display: block;
+}
+

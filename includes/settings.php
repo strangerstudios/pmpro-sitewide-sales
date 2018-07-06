@@ -37,16 +37,16 @@ function pmprosla_sws_options_page() {
 		</form>
 		<script>
 
-			jQuery( document ).ready(function() {
-				jQuery(".pmpro_sws_option").change(function() {
-					window.onbeforeunload = function() {
-			    	return true;
-					};
-				});
-				jQuery("#pmpro_sws_options").submit(function() {
-					window.onbeforeunload = null;
-				});
-			});
+// jQuery( document ).ready(function() {
+// 	jQuery(".pmpro_sws_option").change(function() {
+// 		window.onbeforeunload = function() {
+//     	return true;
+// 		};
+// 	});
+// 	jQuery("#pmpro_sws_options").submit(function() {
+// 		window.onbeforeunload = null;
+// 	});
+// });
 		</script>
 		<?php require_once PMPRO_DIR . '/adminpages/admin_footer.php'; ?>
 	</div>
@@ -68,11 +68,16 @@ function pmpro_sws_admin_init() {
 	add_settings_section( 'pmpro-sws-section3', __( 'Step 3: Steup Banners', 'pmpro_sitewide_sale' ), 'pmpro_sws_section_step3', 'pmpro-sws' );
 	add_settings_field( 'pmpro-sws-banners', __( 'Banners', 'pmpro_sitewide_sale' ), 'pmpro_sws_banners_callback', 'pmpro-sws', 'pmpro-sws-section3' );
 	// TODO: split all of the banner settings out into their own fields.
-
 	add_settings_section( 'pmpro-sws-section4', __( 'Step 4: Monitor Your Sale', 'pmpro_sitewide_sale' ), 'pmpro_sws_section_step4', 'pmpro-sws' );
-	
-}
 
+}
+function load_custom_wp_admin_scripts1( $hook ) {
+	wp_register_script( 'sws-options', plugins_url( 'js/pmpro-sws-option.js', dirname( __FILE__ ) ), array( 'jquery' ), '1.1' );
+	if ( $hook === 'memberships_page_pmpro-sws' ) {
+		wp_enqueue_script( 'sws-options' );
+	}
+}
+add_action( 'admin_enqueue_scripts', 'load_custom_wp_admin_scripts1' );
 /**
  * Step 1 section.
  **/
@@ -102,7 +107,7 @@ function pmpro_sws_section_step3() {
  **/
 function pmpro_sws_section_step4() {
 	?>
-	<a href="<?php echo admin_url('admin.php?page=pmpro-reports&report=pmpro_sws_reports');?>" target="_blank"><?php _e( 'Click here to view Sitewide Sale reports.', 'pmpro-sitewide-sale' ); ?></a>
+	<a href="<?php echo admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports' ); ?>" target="_blank"><?php _e( 'Click here to view Sitewide Sale reports.', 'pmpro-sitewide-sale' ); ?></a>
 	<?php
 }
 
@@ -131,7 +136,7 @@ function pmpro_sws_discount_code_callback() {
 		?>
 	<script>
 		jQuery( document ).ready(function() {
-			jQuery("#pmpro_sws_discount_code_select").selectWoo();
+			// jQuery("#pmpro_sws_discount_code_select").selectWoo();
 		});
 	</script>
 	<?php
@@ -162,7 +167,7 @@ function pmpro_sws_sale_page_callback() {
 	?>
 	<script>
 		jQuery( document ).ready(function() {
-			jQuery("#pmpro_sws_landing_page_select").selectWoo();
+			// jQuery("#pmpro_sws_landing_page_select").selectWoo();
 		});
 	</script>
 	<?php
@@ -178,10 +183,10 @@ function pmpro_sws_banners_callback() {
 		<table class="form-table"><tr>
 			<th scope="row" valign="top"><label><?php esc_html_e( 'Use the built-in banner?', 'pmpro-sitewide-sale' ); ?></label></th>
 			<td><select class="use_banner_select pmpro_sws_option" id="pmpro_sws_use_banner_select" name="pmpro_sitewide_sale[use_banner]">
-				<option value="no" <?php selected( $options['use_banner'], 'no'); ?>><?php esc_html_e( 'No', 'pmpro-sitewide-sale' ); ?></option>
-				<option value="top" <?php selected( $options['use_banner'], 'top' );?>><?php esc_html_e( 'Yes. Top of Site.', 'pmpro-sitewide-sale' ); ?></option>
-				<option value="bottom" <?php selected( $options['use_banner'], 'bottom' );?>><?php esc_html_e( 'Yes. Bottom of Site.', 'pmpro-sitewide-sale' ); ?></option>
-				<option value="bottom-right" <?php selected( $options['use_banner'], 'bottom-right' );?>><?php esc_html_e( 'Yes. Bottom Right of Site.', 'pmpro-sitewide-sale' ); ?></option>
+				<option value="no" <?php selected( $options['use_banner'], 'no' ); ?>><?php esc_html_e( 'No', 'pmpro-sitewide-sale' ); ?></option>
+				<option value="top" <?php selected( $options['use_banner'], 'top' ); ?>><?php esc_html_e( 'Yes. Top of Site.', 'pmpro-sitewide-sale' ); ?></option>
+				<option value="bottom" <?php selected( $options['use_banner'], 'bottom' ); ?>><?php esc_html_e( 'Yes. Bottom of Site.', 'pmpro-sitewide-sale' ); ?></option>
+				<option value="bottom-right" <?php selected( $options['use_banner'], 'bottom-right' ); ?>><?php esc_html_e( 'Yes. Bottom Right of Site.', 'pmpro-sitewide-sale' ); ?></option>
 			</select></td>
 		</tr></table>
 		<table class="form-table" id="pmpro_sws_banner_options">
@@ -201,7 +206,7 @@ function pmpro_sws_banners_callback() {
 		<th scope="row" valign="top"><label>' . __( 'Button Text', 'pmpro-sitewide-sale' ) . '</label></th>
 		<td><input class="pmpro_sws_option" type="text" name="pmpro_sitewide_sale[link_text]" value="' . esc_html( $options['link_text'] ) . '"/></td>
 	</tr>';
-	
+
 	echo '
 	<tr>
 		<th scope="row" valign="top"><label>' . esc_html( 'Custom Banner CSS', 'pmpro-sitewide-sale' ) . '</label></th>
@@ -226,8 +231,8 @@ function pmpro_sws_banners_callback() {
 		?>
 		<script>
 			jQuery( document ).ready(function() {
-				jQuery("#pmpro_sws_use_banner_select").selectWoo();
-				jQuery("#pmpro_sws_hide_levels_select").selectWoo();
+				// jQuery("#pmpro_sws_use_banner_select").selectWoo();
+				// jQuery("#pmpro_sws_hide_levels_select").selectWoo();
 			});
 		</script>
 		<?php

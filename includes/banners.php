@@ -12,16 +12,16 @@ add_action( 'wp', 'pmpro_sws_init_banners' );
 function pmpro_sws_init_banners() {
 	global $pmpro_pages;
 	$options = pmprosws_get_options();
-	
+
 	if ( false !== $options['discount_code_id'] &&
-				false !== $options['landing_page_post_id'] &&
-				'no' !== $options['use_banner'] &&
-				! is_page('login') &&
-				! in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) ) &&
-				! is_page( intval( $options['landing_page_post_id'] ) ) &&
-				! ( $options['hide_on_checkout'] && is_page( $pmpro_pages['checkout'] ) ) &&
-				! in_array( pmpro_getMembershipLevelForUser()->ID, $options['hide_for_levels'], true )
-			) {
+		false !== $options['landing_page_post_id'] &&
+		'no' !== $options['use_banner'] &&
+		! is_page( 'login' ) &&
+		! in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) ) &&
+		! is_page( intval( $options['landing_page_post_id'] ) ) &&
+		! ( $options['hide_on_checkout'] && is_page( $pmpro_pages['checkout'] ) ) &&
+		! in_array( pmpro_getMembershipLevelForUser()->ID, $options['hide_for_levels'], true )
+	) {
 
 		// Display the appropriate banner
 		// $options['use_banner'] will be something like top, bottom, etc.
