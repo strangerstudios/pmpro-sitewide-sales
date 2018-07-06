@@ -112,19 +112,19 @@ function pmpro_sws_get_report_for_code( $code_id = null ) {
 	$banner_impressions                = $reports['banner_impressions'];
 	$landing_page_visits               = $reports['landing_page_visits'];
 	$landing_page_after_banner         = $reports['landing_page_after_banner'];
-	$landing_page_after_banner_percent = ( $landing_page_after_banner / $banner_impressions ) * 100;
+	$landing_page_after_banner_percent = pmpro_sws_safe_divide( $landing_page_after_banner, $banner_impressions ) * 100;
 	if ( is_nan( $landing_page_after_banner_percent ) ) {
 		$landing_page_after_banner_percent = 0;
 	}
 	$landing_page_not_after_banner         = $landing_page_visits - $landing_page_after_banner;
-	$landing_page_not_after_banner_percent = ( $landing_page_not_after_banner / $landing_page_visits ) * 100;
+	$landing_page_not_after_banner_percent = pmpro_sws_safe_divide( $landing_page_not_after_banner, $landing_page_visits ) * 100;
 	if ( is_nan( $landing_page_not_after_banner_percent ) ) {
 		$landing_page_not_after_banner_percent = 0;
 	}
 	$checkout_conversions_with_code    = $reports['checkout_conversions_with_code'];
 	$checkout_conversions_without_code = $reports['checkout_conversions_without_code'];
 	$checkout_conversions              = $checkout_conversions_with_code + $checkout_conversions_without_code;
-	$checkout_conversions_percent      = ( $checkout_conversions / $landing_page_visits ) * 100;
+	$checkout_conversions_percent      = pmpro_sws_safe_divide( $checkout_conversions, $landing_page_visits ) * 100;
 	if ( is_nan( $checkout_conversions_percent ) ) {
 		$checkout_conversions_percent = 0;
 	}
@@ -180,6 +180,16 @@ function pmpro_sws_get_report_for_code( $code_id = null ) {
 			</tbody>
 		</table>
 	</span>';
+}
+
+function pmpro_sws_safe_divide( $num, $denom ) {
+	if ( $denom <= 0 ) {
+		if ( $num <= 0 ) {
+			return 0;
+		}
+		return 1; // 100%
+	}
+	return $num / $denom;
 }
 
 /**
