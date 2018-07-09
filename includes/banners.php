@@ -32,7 +32,7 @@ function pmpro_sws_init_banners() {
 	}
 }
 
-add_action( 'wp_head', 'pmpro_sws_custom_css' );
+add_action( 'wp_head', 'pmpro_sws_custom_css', 5 );
 /**
  * Logic for when to show banners/which banner to show
  */

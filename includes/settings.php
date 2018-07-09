@@ -179,6 +179,18 @@ function pmpro_sws_sale_page_callback() {
 function pmpro_sws_banners_callback() {
 	$options = pmprosws_get_options();
 	?>
+	<style type="text/css">
+		textarea {
+			line-height: 1.4;
+			resize: vertical;
+			width: 88%;
+			padding: 1rem;
+			min-height: 10rem;
+		}
+		#pmpro_sws_options > table:nth-child(6) > tbody > tr > td > span {
+			width: 88%;
+		}
+	</style>
 	</br>
 		<table class="form-table"><tr>
 			<th scope="row" valign="top"><label><?php esc_html_e( 'Use the built-in banner?', 'pmpro-sitewide-sale' ); ?></label></th>
@@ -199,7 +211,7 @@ function pmpro_sws_banners_callback() {
 	echo '
 	<tr>
 		<th scope="row" valign="top"><label>' . __( 'Banner Description', 'pmpro-sitewide-sale' ) . '</label></th>
-		<td><textarea rows="5" cols="20" class="pmpro_sws_option" name="pmpro_sitewide_sale[banner_description]">' . esc_textarea( $options['banner_description'] ) . '</textarea></td>
+		<td><textarea class="pmpro_sws_option" name="pmpro_sitewide_sale[banner_description]">' . esc_textarea( $options['banner_description'] ) . '</textarea></td>
 	</tr>';
 	echo '
 	<tr>

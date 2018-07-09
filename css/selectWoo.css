@@ -1,3 +1,9 @@
+textarea {
+    padding: 2px 6px;
+    line-height: 1.4;
+    resize: vertical;
+    width: 90%;
+}
 .select2-container {
 	box-sizing: border-box;
 	display: inline-block;
