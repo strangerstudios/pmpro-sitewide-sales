@@ -65,7 +65,7 @@ function pmpro_sws_admin_init() {
 	add_settings_section( 'pmpro-sws-section2', __( 'Step 2: Create Landing Page', 'pmpro_sitewide_sale' ), 'pmpro_sws_section_step2', 'pmpro-sws' );
 	add_settings_field( 'pmpro-sws-sale-page', __( 'Sale Page', 'pmpro_sitewide_sale' ), 'pmpro_sws_sale_page_callback', 'pmpro-sws', 'pmpro-sws-section2' );
 
-	add_settings_section( 'pmpro-sws-section3', __( 'Step 3: Steup Banners', 'pmpro_sitewide_sale' ), 'pmpro_sws_section_step3', 'pmpro-sws' );
+	add_settings_section( 'pmpro-sws-section3', __( 'Step 3: Setup Banners', 'pmpro_sitewide_sale' ), 'pmpro_sws_section_step3', 'pmpro-sws' );
 	add_settings_field( 'pmpro-sws-banners', __( 'Banners', 'pmpro_sitewide_sale' ), 'pmpro_sws_banners_callback', 'pmpro-sws', 'pmpro-sws-section3' );
 	// TODO: split all of the banner settings out into their own fields.
 	add_settings_section( 'pmpro-sws-section4', __( 'Step 4: Monitor Your Sale', 'pmpro_sitewide_sale' ), 'pmpro_sws_section_step4', 'pmpro-sws' );
@@ -211,6 +211,11 @@ function pmpro_sws_banners_callback() {
 	<tr>
 		<th scope="row" valign="top"><label>' . esc_html( 'Custom Banner CSS', 'pmpro-sitewide-sale' ) . '</label></th>
 		<td><textarea class="pmpro_sws_option" name="pmpro_sitewide_sale[css_option]">' . esc_html( $options['css_option'] ) . '</textarea></td>
+	</tr>';
+	echo '
+	<tr>
+		<th scope="row" valign="top"><label>' . esc_html( 'Customize CSS', 'pmpro-sitewide-sale' ) . '</label></th>
+		<td><div class="pmpro_sws_option"><a href="customize.php" type="button" class="button button-primary">Customize</a></div></td>
 	</tr>';
 	echo '
 		<tr>

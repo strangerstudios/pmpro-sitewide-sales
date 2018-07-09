@@ -31,3 +31,21 @@ function pmpro_sws_init_banners() {
 		}
 	}
 }
+
+add_action( 'wp_head', 'pmpro_sws_custom_css' );
+/**
+ * Logic for when to show banners/which banner to show
+ */
+function pmpro_sws_custom_css() {
+	$options = pmprosws_get_options();
+	?>
+	<style type="text/css">
+		<?php
+		if ( isset( $options['css_option'] ) && ! empty( $options['css_option'] ) ) {
+			echo $options['css_option'];
+		}
+		?>
+	</style>
+	<?php
+}
+

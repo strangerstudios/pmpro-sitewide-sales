@@ -45,9 +45,10 @@ class PMPro_SWS_Customizer {
 		wp_enqueue_style( 'customizer-inline', plugins_url( 'css/customizer-section.css', dirname( dirname( __FILE__ ) ) ), array( 'frontend' ) );
 		$bg_color = get_option( 'sws_background_color' );
 		$txt_color = get_option( 'sws_text_color' );
+		$bg_img = get_option( 'sws_bgimg_upload' );
 		$custom_css = "
                 #pmpro_sws_banner_bottom_right {
-                        background: {$bg_color};
+                        background: {$bg_color} url({$bg_img}) no-repeat center;;
                 }
                 #pmpro_sws_banner_bottom_right h3,
                 #pmpro_sws_banner_bottom_right {
@@ -66,10 +67,10 @@ class PMPro_SWS_Customizer {
 		echo '<div class="wrap">';
 		echo '<h2>' . __FUNCTION__ . '</h2>';
 		$user_id = 1;
-		$array = PMPro_Helpers\inc\classes\PMPro_Helper_Functions::get_pmpro_member_array( $user_id );
+		$options = pmprosws_get_options();
+
 		echo '<pre> get_pmpro_member_array ';
-		echo '<h2>' . $array['level_id'] . '</h2>';
-		print_r( $array );
+		print_r( $options );
 		echo '</pre>';
 		echo '</div>';
 	}
@@ -86,7 +87,7 @@ class PMPro_SWS_Customizer {
 			array(
 				'priority'    => 10,
 				'capability'  => 'edit_theme_options',
-				'description' => 'Wnat to switch pages via javascript',
+				'description' => 'Want to switch pages via javascript',
 				'title'       => __( 'PMPro SWS Panel', 'pmpro-sitewide-sale' ),
 			)
 		);
@@ -115,122 +116,23 @@ class PMPro_SWS_Customizer {
 		 * Radio control
 		 */
 		$pmpro_manager->add_setting(
-			'sws_response_radio',
+			'sws_bgimg_upload',
 			array(
-				'default'     => '1',
 				'type'        => 'option',
 			)
 		);
 
 		$pmpro_manager->add_control(
-			'sws_response_radio',
-			array(
-				'section'     => 'pmpro_section',
-				'type'        => 'radio',
-				'settings'    => 'sws_response_radio',
-				'label'       => 'Limit Post View Response',
-				'description' => 'After the limit has been reached, what behavior do you want to see ',
-				'choices'     => array(
-					'footer'   => 'Footer enlargement',
-					'popup'    => 'Pop Up',
-					'redirect' => 'Redirect',
-				),
-				'priority'    => 11,
+			new WP_Customize_Image_Control(
+				$pmpro_manager,
+				'sws_bgimg_upload',
+				array(
+					'label' => 'Upload Background Image',
+					'section' => 'pmpro_section',
+					'settings' => 'sws_bgimg_upload',
+				)
 			)
 		);
-
-		if ( 'footer' === get_option( 'sws_response_radio' ) ) {
-			$pmpro_manager->add_setting(
-				'footer_text_block', array(
-					'default'           => __( 'footer text', 'pmpro-sitewide-sale' ),
-					'sanitize_callback' => 'sanitize_text',
-				)
-			);
-			// Add control
-			$pmpro_manager->add_control(
-				new WP_Customize_Control(
-					$pmpro_manager,
-					'footer_text_block',
-					array(
-						'label'    => __( 'Footer Text', 'pmpro-sitewide-sale' ),
-						'section'  => 'pmpro_section',
-						'settings' => 'footer_text_block',
-						'type'     => 'text',
-						'priority'    => 12,
-					)
-				)
-			);
-		}
-		if ( 'popup' === get_option( 'sws_response_radio' ) ) {
-			// Add setting
-			$pmpro_manager->add_setting(
-				'modal_header_text', array(
-					'type'        => 'option',
-					'default'           => __( 'Modal header text', 'pmpro-sitewide-sale' ),
-					'sanitize_callback' => 'sanitize_text',
-				)
-			);
-			// Add control
-			$pmpro_manager->add_control(
-				new WP_Customize_Control(
-					$pmpro_manager,
-					'modal_header_text',
-					array(
-						'label'    => __( 'Modal Header Text', 'pmpro-sitewide-sale' ),
-						'section'  => 'pmpro_section',
-						'settings' => 'modal_header_text',
-						'type'     => 'text',
-						'priority'    => 15,
-					)
-				)
-			);
-
-			// Add setting
-			$pmpro_manager->add_setting(
-				'modal_body_text', array(
-					'type'        => 'option',
-					'default'           => __( 'Modal body text', 'pmpro-sitewide-sale' ),
-					'sanitize_callback' => 'sanitize_text',
-				)
-			);
-			// Add control
-			$pmpro_manager->add_control(
-				new WP_Customize_Control(
-					$pmpro_manager,
-					'modal_body_text',
-					array(
-						'label'    => __( 'Modal Body Text', 'pmpro-sitewide-sale' ),
-						'section'  => 'pmpro_section',
-						'settings' => 'modal_body_text',
-						'type'     => 'text',
-						'priority'    => 15,
-					)
-				)
-			);
-
-			// Add setting
-			$pmpro_manager->add_setting(
-				'modal_footer_text', array(
-					'type'        => 'option',
-					'default'           => __( 'Modal default text', 'pmpro-sitewide-sale' ),
-					'sanitize_callback' => 'sanitize_text',
-				)
-			);
-			// Add control
-			$pmpro_manager->add_control(
-				new WP_Customize_Control(
-					$pmpro_manager,
-					'modal_footer_text',
-					array(
-						'label'    => __( 'Modal Footer Text', 'pmpro-sitewide-sale' ),
-						'section'  => 'pmpro_section',
-						'settings' => 'modal_footer_text',
-						'type'     => 'text',
-						'priority' => 15,
-					)
-				)
-			);
-		}
 
 		$pmpro_manager->add_setting(
 			'sws_background_color',
