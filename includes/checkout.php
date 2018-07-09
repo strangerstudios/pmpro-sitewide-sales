@@ -11,7 +11,7 @@ add_action( 'posts_selection', 'pmpro_sws_check_cookie' );
  * Automatically applies discount code if user has the cookie set from sale page
  */
 function pmpro_sws_check_cookie() {
-	global $wpdb, $post, $pmpro_pags;
+	global $wpdb, $post, $pmpro_pages;
 
 	if ( ! is_page( $pmpro_pages['checkout'] ) || empty( $_REQUEST['level'] ) || ! empty( $_REQUEST['discount_code'] ) ) {
 		return;
