@@ -68,7 +68,7 @@ class PMPro_SWS_Customizer {
 		echo '<h2>' . __FUNCTION__ . '</h2>';
 		$user_id = 1;
 		$options = pmprosws_get_options();
-
+		echo '<a href="' . admin_url( 'admin.php?page=pmpro-sws' ) . '"><input type="button" class="button button-primary button-hero" value="Return to SWS Settings" /></a>';
 		echo '<pre> get_pmpro_member_array ';
 		print_r( $options );
 		echo '</pre>';

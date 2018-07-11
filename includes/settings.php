@@ -206,7 +206,9 @@ function pmpro_sws_banners_callback() {
 	echo '
 	<tr>
 		<th scope="row" valign="top"><label>' . __( 'Banner Title', 'pmpro-sitewide-sale' ) . '</label></th>
-		<td><input class="pmpro_sws_option" type="text" name="pmpro_sitewide_sale[banner_title]" value="' . esc_html( $options['banner_title'] ) . '"/></td>
+		<td><input class="pmpro_sws_option" type="text" name="pmpro_sitewide_sale[banner_title]" value="' . esc_html( $options['banner_title'] ) . '"/>
+		<a href="' . admin_url( 'index.php?page=pmpro-sws-dashboard.php' ) . '"><input type="button" class="button button-primary button-hero" value="print_r(settings)" /></a>
+		</td>
 	</tr>';
 	echo '
 	<tr>
@@ -226,8 +228,10 @@ function pmpro_sws_banners_callback() {
 	</tr>';
 	echo '
 	<tr>
-		<th scope="row" valign="top"><label>' . esc_html( 'Customize CSS', 'pmpro-sitewide-sale' ) . '</label></th>
-		<td><div class="pmpro_sws_option"><a href="customize.php" type="button" class="button button-primary">Customize</a></div></td>
+		<th scope="row" valign="top"><label>' . esc_html( 'Customize Stuff', 'pmpro-sitewide-sale' ) . '</label></th>
+		<td><div class="pmpro_sws_option"><a href="customize.php" type="button" class="button button-primary button-hero load-customize hide-if-no-customize">Customize your Banners (and Sales Page)</a>
+			</div>
+		</td>
 	</tr>';
 	echo '
 		<tr>
