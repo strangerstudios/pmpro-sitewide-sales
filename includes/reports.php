@@ -100,7 +100,7 @@ function pmpro_sws_get_report_for_code( $code_id = null ) {
 		if ( $code_id === $order->code_id ) {
 			$orders_with_code++;
 			$revenue_with_code += intval( $order->total );
-		} else {
+		} elseif ( 0 < $order->total ) {
 			$orders_without_code++;
 			$revenue_without_code += intval( $order->total );
 		}
