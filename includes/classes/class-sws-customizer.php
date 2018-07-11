@@ -14,6 +14,10 @@ class PMPro_SWS_Customizer {
 		// add_action( 'customize_controls_init', array( __CLASS__, 'set_customizer_preview_url' ) );
 	}
 
+	public static function get_sws_settings() {
+		$sws_settings = pmprosws_get_options();
+		return $sws_settings;
+	}
 	/**
 	 * Customizer manager demo
 	 *
@@ -41,6 +45,28 @@ class PMPro_SWS_Customizer {
 	public static function pmpro_sws_dashboard_menu() {
 		add_dashboard_page( __( 'SWS Dashboard', 'pmpro-sitewide-sale' ), __( 'SWS Dashboard', 'pmpro-sitewide-sale' ), 'manage_options', 'pmpro-sws-dashboard.php', array( __CLASS__, 'pmpro_sws_dashboard_page' ) );
 	}
+
+	/**
+	 * [pmpro_sws_dashboard_page description]
+	 *
+	 * @return [type] [description]
+	 */
+	public static function pmpro_sws_dashboard_page() {
+		echo '<div class="wrap">';
+		echo '<h2>' . __FUNCTION__ . '</h2>';
+		$user_id = 1;
+		$sws_options = self::get_sws_settings();
+		$theme_mods = get_theme_mods();
+		echo '<a href="' . admin_url( 'admin.php?page=pmpro-sws' ) . '"><input type="button" class="button button-primary button-hero" value="Return to SWS Settings" /></a>';
+		echo '<pre>pmprosws_get_options ';
+		print_r( $sws_options );
+		echo '</pre>';
+		echo '<pre>get_theme_mods ';
+		print_r( $theme_mods );
+		echo '</pre>';
+		echo '</div>';
+	}
+
 	public static function customizer_enqueue_inline() {
 		wp_enqueue_style( 'customizer-inline', plugins_url( 'css/customizer-section.css', dirname( dirname( __FILE__ ) ) ), array( 'frontend' ) );
 		$bg_color = get_option( 'sws_background_color' );
@@ -56,23 +82,6 @@ class PMPro_SWS_Customizer {
                 }
                 ";
 		wp_add_inline_style( 'customizer-inline', $custom_css );
-	}
-
-	/**
-	 * [pmpro_sws_dashboard_page description]
-	 *
-	 * @return [type] [description]
-	 */
-	public static function pmpro_sws_dashboard_page() {
-		echo '<div class="wrap">';
-		echo '<h2>' . __FUNCTION__ . '</h2>';
-		$user_id = 1;
-		$options = pmprosws_get_options();
-		echo '<a href="' . admin_url( 'admin.php?page=pmpro-sws' ) . '"><input type="button" class="button button-primary button-hero" value="Return to SWS Settings" /></a>';
-		echo '<pre> get_pmpro_member_array ';
-		print_r( $options );
-		echo '</pre>';
-		echo '</div>';
 	}
 
 	/**
@@ -102,6 +111,8 @@ class PMPro_SWS_Customizer {
 	 * @return [type]             [description]
 	 */
 	private static function pmpro_section( $pmpro_manager ) {
+		$sws_options = self::get_sws_settings();
+
 		$pmpro_manager->add_section(
 			'pmpro_section',
 			array(
@@ -111,7 +122,34 @@ class PMPro_SWS_Customizer {
 				'description'  => 'This is a description of this text setting in the PMPro Customizer Controls section',
 			)
 		);
+		// Add setting
+		$pmpro_manager->add_setting(
+			'sws_banner_title', array(
+				'default'           => __( $sws_options['banner_title'], 'pmpro-sitewide-sale' ),
+				'sanitize_callback' => 'sanitize_text',
+			)
+		);
+		// $pmpro_manager->add_setting(
+		// 'footer_text_block', array(
+		// 'default'           => __( 'default text', 'pmpro-sitewide-sale' ),
+		// 'sanitize_callback' => 'sanitize_text',
+		// )
+		// );
+		// Add control
+		$pmpro_manager->add_control(
+			new WP_Customize_Control(
+				$pmpro_manager,
+				'sws_banner_title',
+				array(
+					'label'    => __( 'SWS Banner Title', 'pmpro-sitewide-sale' ),
+					'section'  => 'pmpro_section',
+					'settings' => 'sws_banner_title',
+					'type'     => 'text',
+				)
+			)
+		);
 
+		   // 'settings' => $sws_options['landing_page_post_id'],
 		/**
 		 * Radio control
 		 */
@@ -185,4 +223,12 @@ class PMPro_SWS_Customizer {
 	private static function sanitize_text( $text ) {
 			return sanitize_text_field( $text );
 	}
+
+	public static function set_customizer_preview_url() {
+		global $wp_customize;
+		if ( ! isset( $_GET['url'] ) ) {
+			$wp_customize->set_preview_url( get_permalink( get_page_by_title( 'Customizer Dev Page' ) ) );
+		}
+	}
+
 }
