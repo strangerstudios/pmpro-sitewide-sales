@@ -9,11 +9,28 @@ class PMPro_SWS_Customizer {
 	public static function init() {
 		add_action( 'customize_register', array( __CLASS__, 'engage_the_customizer' ) );
 		add_action( 'admin_menu', array( __CLASS__, 'pmpro_sws_dashboard_menu' ) );
+		add_action( 'wp_head', array( __CLASS__, 'pmpro_show_info' ) );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'customizer_enqueue_inline' ) );
 		// add_action( 'admin_enqueue_scripts', array( __CLASS__, 'customizer_enqueue' ) );
-		// add_action( 'customize_controls_init', array( __CLASS__, 'set_customizer_preview_url' ) );
+		add_action( 'customize_controls_init', array( __CLASS__, 'set_customizer_preview_url' ) );
 	}
 
+	public static function pmpro_show_info() {
+		$sws_settings = pmprosws_get_options();
+		?>
+			<style type="text/css">
+				#lpv-header {
+					background: rgba(250,128,114,.8);
+					text-align: center;
+				}
+			</style>
+			<div id="lpv-header" style="z-index:333;">
+				<div id="header-text"></div>
+				<?php echo get_permalink( $sws_settings['landing_page_post_id'] ); ?>
+			</div>
+		<?php
+		return $sws_settings;
+	}
 	public static function get_sws_settings() {
 		$sws_settings = pmprosws_get_options();
 		return $sws_settings;
@@ -82,6 +99,15 @@ class PMPro_SWS_Customizer {
                 }
                 ";
 		wp_add_inline_style( 'customizer-inline', $custom_css );
+	}
+
+
+	public static function set_customizer_preview_url() {
+		global $wp_customize;
+		$sws_options = self::get_sws_settings();
+		if ( ! isset( $_GET['url'] ) ) {
+			$wp_customize->set_preview_url( get_permalink( $sws_options['landing_page_post_id'] ) );
+		}
 	}
 
 	/**
@@ -223,12 +249,4 @@ class PMPro_SWS_Customizer {
 	private static function sanitize_text( $text ) {
 			return sanitize_text_field( $text );
 	}
-
-	public static function set_customizer_preview_url() {
-		global $wp_customize;
-		if ( ! isset( $_GET['url'] ) ) {
-			$wp_customize->set_preview_url( get_permalink( get_page_by_title( 'Customizer Dev Page' ) ) );
-		}
-	}
-
 }
