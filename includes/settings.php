@@ -70,7 +70,7 @@ function pmpro_sws_admin_init() {
 	// TODO: split all of the banner settings out into their own fields.
 
 	add_settings_section( 'pmpro-sws-section4', __( 'Step 4: Monitor Your Sale', 'pmpro_sitewide_sale' ), 'pmpro_sws_section_step4', 'pmpro-sws' );
-	
+
 }
 
 /**
@@ -201,7 +201,7 @@ function pmpro_sws_banners_callback() {
 		<th scope="row" valign="top"><label>' . __( 'Button Text', 'pmpro-sitewide-sale' ) . '</label></th>
 		<td><input class="pmpro_sws_option" type="text" name="pmpro_sitewide_sale[link_text]" value="' . esc_html( $options['link_text'] ) . '"/></td>
 	</tr>';
-	
+
 	echo '
 	<tr>
 		<th scope="row" valign="top"><label>' . esc_html( 'Custom Banner CSS', 'pmpro-sitewide-sale' ) . '</label></th>
@@ -317,8 +317,8 @@ function pmpro_sws_discount_codes_save( $saveid ) {
 	if ( ! empty( $_REQUEST['sitewide_sale'] ) ) {
 		$sale_page = $options['landing_page_post_id'];
 		if ( false !== $sale_page && '-1' !== $sale_page ) {
-			echo '<div id="message" class="updated fade"><p>View sale page <a href=' .
-			esc_url( get_permalink( $options['landing_page_post_id'] ) ) . '>here</a>.</p></div>';
+			echo '<div id="message" class="updated fade"><p>' . esc_html( 'View sale page', 'pmpro-sitewide-sale' ) . '<a href=' .
+			esc_url( get_permalink( $options['landing_page_post_id'] ) ) . '>' . esc_html( 'here', 'pmpro-sitewide-sale' ) . '</a>.</p></div>';
 		}
 		$options['discount_code_id'] = $saveid;
 	} elseif ( $options['discount_code_id'] === $saveid . '' ) {
