@@ -1,6 +1,6 @@
 <?php
 
-// namespace PMPro_SWS_UI\inc\classes;
+// namespace PMPro_Sitewide_Sale\includes\classes;
 defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 
 class PMPro_SWS_Customizer {

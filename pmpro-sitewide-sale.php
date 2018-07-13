@@ -23,8 +23,16 @@ require_once PMPROSWS_DIR . '/includes/checkout.php';
 require_once PMPROSWS_DIR . '/includes/banners.php';
 require_once PMPROSWS_DIR . '/includes/reports.php';
 require_once PMPROSWS_DIR . '/includes/templates.php';
+
+require_once PMPROSWS_DIR . '/includes/classes/class-post-type-factory.php';
 require_once PMPROSWS_DIR . '/includes/classes/class-sws-customizer.php';
+require_once PMPROSWS_DIR . '/includes/classes/class-sws-meta-boxes.php';
+require_once PMPROSWS_DIR . '/includes/classes/class-custom-post-types.php';
+
 PMPro_SWS_Customizer::init();
+Custom_Post_Types::init();
+
+
 /**
  * Enqueues selectWoo
  */
