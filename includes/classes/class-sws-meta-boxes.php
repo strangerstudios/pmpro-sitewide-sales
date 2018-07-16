@@ -118,6 +118,25 @@ class SWS_Meta_Boxes {
 		if ( empty( $current_discount ) ) {
 			$current_discount = false;
 		}
+		$custom_dates = get_post_meta( $post->ID, 'custom_dates', true );
+		if ( empty( $custom_dates ) ) {
+			$custom_dates = false;
+		}
+		$hidden_modifier  = '';
+		$checked_modifier = ' checked ';
+		if ( ! $custom_dates ) {
+			$hidden_modifier  = ' hidden';
+			$checked_modifier = '';
+		}
+
+		$start_date = esc_html( get_post_meta( $post->ID, 'start_date', true ) );
+		if ( empty( $start_date ) ) {
+			$start_date = date( 'Y-m-d' );
+		}
+		$end_date = esc_html( get_post_meta( $post->ID, 'end_date', true ) );
+		if ( empty( $end_date ) ) {
+			$end_date = date( 'Y-m-d' );
+		}
 	?>
 	<select class="discount_code_select pmpro_sws_option" id="pmpro_sws_discount_code_select" name="pmpro_sws_discount_code_id">
 	<option value=-1></option>
@@ -130,11 +149,24 @@ class SWS_Meta_Boxes {
 		echo '<option value = ' . esc_html( $code->id ) . esc_html( $selected_modifier ) . '>' . esc_html( $code->code, 'pmpro-sitewide-sale' ) . '</option>';
 	}
 	echo '</select> ' . esc_html( 'or', 'pmpro_sitewide_sale' ) . ' <a href="' . esc_html( get_admin_url() ) .
-	'admin.php?page=pmpro-discountcodes&edit=-1&set_sitewide_sale=true">' . esc_html( 'create a new discount code, doesn\'t update', 'pmpro_sitewide_sale' ) . '</a>';
+	'admin.php?page=pmpro-discountcodes&edit=-1&set_sitewide_sale=true">' . esc_html( 'create a new discount code, doesn\'t update', 'pmpro_sitewide_sale' ) . '</a><br/><br/>';
+	echo '<label for="pmpro_sws_custom_sale_dates">Custom Sale Start/End Dates</label>
+	<input type="checkbox" id="pmpro_sws_custom_sale_dates" name="pmpro_sws_custom_sale_dates" ' . $checked_modifier . '\><br/>';
+	echo '<div id="pmpro_sws_custom_date_select"' . $hidden_modifier . '>
+	<label for="pmpro_sws_start_date">Sale Start Date</label>
+	<input type="date" name="pmpro_sws_start_date" value="' . $start_date . '" /> </br>
+	<label for="pmpro_sws_end_date">Sale End Date</label>
+	<input type="date" name="pmpro_sws_end_date" value="' . $end_date . '" /></div>'
 		?>
 	<script>
 		jQuery( document ).ready(function() {
 			jQuery("#pmpro_sws_discount_code_select").selectWoo();
+			$('#pmpro_sws_custom_sale_dates').change(function(){
+				if(this.checked)
+					$('#pmpro_sws_custom_date_select').show();
+				else
+					$('#pmpro_sws_custom_date_select').hide();
+				});
 		});
 	</script>
 	<?php
@@ -292,10 +324,27 @@ class SWS_Meta_Boxes {
 			return;
 		}
 
+		global $wpdb;
+
 		if ( isset( $_POST['pmpro_sws_discount_code_id'] ) ) {
 			update_post_meta( $post_id, 'discount_code_id', trim( $_POST['pmpro_sws_discount_code_id'] ) );
 		} else {
 			update_post_meta( $post_id, 'discount_code_id', false );
+		}
+
+		if ( isset( $_POST['pmpro_sws_custom_sale_dates'] ) ) {
+			if ( isset( $_POST['pmpro_sws_start_date'] ) && isset( $_POST['pmpro_sws_end_date'] ) ) {
+				update_post_meta( $post_id, 'start_date', trim( $_POST['pmpro_sws_start_date'] ) );
+				update_post_meta( $post_id, 'end_date', trim( $_POST['pmpro_sws_end_date'] ) );
+			}
+			update_post_meta( $post_id, 'custom_dates', true );
+		} elseif( isset( $_POST['pmpro_sws_discount_code_id'] ) ) {
+			$discount_code_dates = $wpdb->get_results( $wpdb->prepare( "SELECT starts, expires FROM $wpdb->pmpro_discount_codes where id = %d", intval( $_POST['pmpro_sws_discount_code_id'] ) ) );
+			if ( ! empty( $dates ) && ! empty( $dates[0] ) && ! empty( $dates[0]->starts ) && ! empty ( $dates[0]->expires ) ) {
+				update_post_meta( $post_id, 'start_date', $dates[0]->starts );
+				update_post_meta( $post_id, 'end_date', $dates[0]->expires );
+			}
+			update_post_meta( $post_id, 'custom_dates', false );
 		}
 
 		if ( isset( $_POST['pmpro_sws_landing_page_post_id'] ) ) {

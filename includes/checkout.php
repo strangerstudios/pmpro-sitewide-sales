@@ -19,7 +19,10 @@ function pmpro_sws_check_cookie() {
 	$options              = pmprosws_get_options();
 	$active_sitewide_sale = $options['active_sitewide_sale_id'];
 	$current_discount     = get_post_meta( $active_sitewide_sale, 'discount_code_id', true );
-	if ( empty( $current_discount ) ) {
+	if ( empty( $current_discount ) ||
+		date( 'Y-m-d' ) < get_post_meta( $active_sitewide_sale, 'start_date', true ) ||
+		date( 'Y-m-d' ) > get_post_meta( $active_sitewide_sale, 'end_date', true )
+	) {
 		return;
 	}
 	$cookie_name = 'pmpro_sitewide_sale_' . $current_discount . '_tracking';

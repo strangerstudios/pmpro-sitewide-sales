@@ -26,7 +26,9 @@ function pmpro_sws_init_banners() {
 				! in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) ) &&
 				! is_page( intval( get_post_meta( $active_sitewide_sale, 'landing_page_post_id', true ) ) ) &&
 				! ( get_post_meta( $active_sitewide_sale, 'hide_on_checkout', true ) && is_page( $pmpro_pages['checkout'] ) ) &&
-				! in_array( pmpro_getMembershipLevelForUser()->ID, get_post_meta( $active_sitewide_sale, 'hide_for_levels', true ), true )
+				! in_array( pmpro_getMembershipLevelForUser()->ID, get_post_meta( $active_sitewide_sale, 'hide_for_levels', true ), true ) &&
+				date( 'Y-m-d' ) > get_post_meta( $active_sitewide_sale, 'start_date', true ) &&
+				date( 'Y-m-d' ) < get_post_meta( $active_sitewide_sale, 'end_date', true )
 			) {
 
 		// Display the appropriate banner
