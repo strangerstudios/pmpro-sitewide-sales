@@ -64,8 +64,8 @@ class SWS_Meta_Boxes {
 			__( 'Sitewide Sale', 'pmpro_sitewide_sale' ),
 			array( $this, 'pmpro_sws_cpt_display_set_as_sitewide_sale' ),
 			array( 'sws_banner', 'sws_landing_page' ),
-			'normal',
-			'side'
+			'side',
+			'high'
 		);
 
 		// Removing Step 1
@@ -176,14 +176,6 @@ class SWS_Meta_Boxes {
 		if ( empty( $use_banner ) ) {
 			$use_banner = 'no';
 		}
-		$banner_title = esc_html( get_post_meta( $post->ID, 'banner_title', true ) );
-		if ( empty( $banner_title ) ) {
-			$banner_title = '';
-		}
-		$banner_description = esc_html( get_post_meta( $post->ID, 'banner_description', true ) );
-		if ( empty( $banner_description ) ) {
-			$banner_description = '';
-		}
 		$link_text = esc_html( get_post_meta( $post->ID, 'link_text', true ) );
 		if ( empty( $link_text ) ) {
 			$link_text = '';
@@ -213,16 +205,6 @@ class SWS_Meta_Boxes {
 		</tr></table>
 		<table class="form-table" id="pmpro_sws_banner_options">
 	<?php
-	echo '
-	<tr>
-		<th scope="row" valign="top"><label>' . __( 'Banner Title', 'pmpro-sitewide-sale' ) . '</label></th>
-		<td><input class="pmpro_sws_option" type="text" name="pmpro_sws_banner_title" value="' . esc_html( $banner_title ) . '"/></td>
-	</tr>';
-	echo '
-	<tr>
-		<th scope="row" valign="top"><label>' . __( 'Banner Description', 'pmpro-sitewide-sale' ) . '</label></th>
-		<td><textarea rows="5" cols="20" class="pmpro_sws_option" name="pmpro_sws_banner_description">' . esc_textarea( $banner_description ) . '</textarea></td>
-	</tr>';
 	echo '
 	<tr>
 		<th scope="row" valign="top"><label>' . __( 'Button Text', 'pmpro-sitewide-sale' ) . '</label></th>
@@ -266,8 +248,47 @@ class SWS_Meta_Boxes {
 	<?php
 	}
 
-	public function pmpro_sws_save_cpt( $post_id, $post ) {
-		if ( 'pmpro_sitewide_sale' !== $post->post_type ) {
+	/**
+	 * Handles saving the meta box.
+	 *
+	 * @param int     $post_id Post ID.
+	 * @param WP_Post $post    Post object.
+	 * @return null
+	 */
+	public function save_sws_metaboxes( $post_id, $post ) {
+
+		// Add nonce for security and authentication.
+		$nonce_name   = isset( $_POST['custom_nonce'] ) ? $_POST['custom_nonce'] : '';
+		$nonce_action = 'custom_nonce_action';
+
+		// Check if nonce is set.
+		if ( ! isset( $nonce_name ) ) {
+			return;
+		}
+
+		// Check if nonce is valid.
+		/*
+		if ( ! wp_verify_nonce( $nonce_name, $nonce_action ) ) {
+			return;
+		}
+		*/
+
+		// Check if user has permissions to save data.
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return;
+		}
+
+		// Check if not an autosave.
+		if ( wp_is_post_autosave( $post_id ) ) {
+			return;
+		}
+
+		// Check if not a revision.
+		if ( wp_is_post_revision( $post_id ) ) {
+			return;
+		}
+
+		if ( 'sws_banner' !== $post->post_type && 'sws_landing_page' !== $post->post_type ) {
 			return;
 		}
 
@@ -288,18 +309,6 @@ class SWS_Meta_Boxes {
 			update_post_meta( $post_id, 'use_banner', trim( $_POST['pmpro_sws_use_banner'] ) );
 		} else {
 			update_post_meta( $post_id, 'use_banner', 'no' );
-		}
-
-		if ( isset( $_POST['pmpro_sws_banner_title'] ) ) {
-			update_post_meta( $post_id, 'banner_title', trim( $_POST['pmpro_sws_banner_title'] ) );
-		} else {
-			update_post_meta( $post_id, 'banner_title', '' );
-		}
-
-		if ( isset( $_POST['pmpro_sws_banner_description'] ) ) {
-			update_post_meta( $post_id, 'banner_description', trim( $_POST['pmpro_sws_banner_description'] ) );
-		} else {
-			update_post_meta( $post_id, 'banner_description', '' );
 		}
 
 		if ( isset( $_POST['pmpro_sws_link_text'] ) ) {
@@ -333,44 +342,6 @@ class SWS_Meta_Boxes {
 			$options['active_sitewide_sale_id'] = false;
 		}
 		pmprosws_save_options( $options );
-	}
-
-	/**
-	 * Handles saving the meta box.
-	 *
-	 * @param int     $post_id Post ID.
-	 * @param WP_Post $post    Post object.
-	 * @return null
-	 */
-	public function save_sws_metaboxes( $post_id, $post ) {
-		// Add nonce for security and authentication.
-		$nonce_name   = isset( $_POST['custom_nonce'] ) ? $_POST['custom_nonce'] : '';
-		$nonce_action = 'custom_nonce_action';
-
-		// Check if nonce is set.
-		if ( ! isset( $nonce_name ) ) {
-			return;
-		}
-
-		// Check if nonce is valid.
-		if ( ! wp_verify_nonce( $nonce_name, $nonce_action ) ) {
-			return;
-		}
-
-		// Check if user has permissions to save data.
-		if ( ! current_user_can( 'edit_post', $post_id ) ) {
-			return;
-		}
-
-		// Check if not an autosave.
-		if ( wp_is_post_autosave( $post_id ) ) {
-			return;
-		}
-
-		// Check if not a revision.
-		if ( wp_is_post_revision( $post_id ) ) {
-			return;
-		}
 	}
 }
 
