@@ -29,7 +29,7 @@ class SWS_Meta_Boxes {
 		add_meta_box(
 			'pmpro_sws_cpt_step_1',
 			__( 'Step 1: Choose Discount Code to Associate With Sale', 'pmpro_sitewide_sale' ),
-			array( $this, 'pmpro_sws_cpt_display_step_1' ),
+			array( $this, 'display_step_1' ),
 			array( 'sws_banner', 'sws_landing_page' ),
 			'above_editor',
 			'high'
@@ -37,7 +37,7 @@ class SWS_Meta_Boxes {
 		add_meta_box(
 			'pmpro_sws_cpt_step_2',
 			__( 'Step 2: Create Landing Page', 'pmpro_sitewide_sale' ),
-			array( $this, 'pmpro_sws_cpt_display_step_2' ),
+			array( $this, 'display_step_2' ),
 			array( 'sws_banner', 'sws_landing_page' ),
 			'above_editor',
 			'high'
@@ -62,7 +62,7 @@ class SWS_Meta_Boxes {
 		add_meta_box(
 			'pmpro_sws_cpt_set_as_sitewide_sale',
 			__( 'Sitewide Sale', 'pmpro_sitewide_sale' ),
-			array( $this, 'pmpro_sws_cpt_display_set_as_sitewide_sale' ),
+			array( $this, 'display_set_as_sitewide_sale' ),
 			array( 'sws_banner', 'sws_landing_page' ),
 			'side',
 			'high'
@@ -72,7 +72,7 @@ class SWS_Meta_Boxes {
 		add_meta_box(
 			'pmpro_sws_cpt_step_3',
 			__( 'Step 3: Steup Banners', 'pmpro_sitewide_sale' ),
-			array( $this, 'pmpro_sws_cpt_display_step_3' ),
+			array( $this, 'display_step_3' ),
 			array( 'sws_banner', 'sws_landing_page' ),
 			'normal',
 			'high'
@@ -80,7 +80,7 @@ class SWS_Meta_Boxes {
 		add_meta_box(
 			'pmpro_sws_cpt_step_4',
 			__( 'Step 4: Steup Banners', 'pmpro_sitewide_sale' ),
-			array( $this, 'pmpro_sws_cpt_display_step_4' ),
+			array( $this, 'display_step_4' ),
 			array( 'sws_banner', 'sws_landing_page' ),
 			'normal',
 			'high'
@@ -95,7 +95,7 @@ class SWS_Meta_Boxes {
 		wp_nonce_field( 'custom_nonce_action', 'custom_nonce' );
 	}
 
-	public function pmpro_sws_cpt_display_set_as_sitewide_sale( $post ) {
+	public function display_set_as_sitewide_sale( $post ) {
 		$init_checked = false;
 		if ( isset( $_REQUEST['set_sitewide_sale'] ) && 'true' === $_REQUEST['set_sitewide_sale'] ) {
 			$init_checked = true;
@@ -111,7 +111,7 @@ class SWS_Meta_Boxes {
 	</tr></table>';
 	}
 
-	public function pmpro_sws_cpt_display_step_1( $post ) {
+	public function display_step_1( $post ) {
 		global $wpdb;
 		$codes            = $wpdb->get_results( "SELECT * FROM $wpdb->pmpro_discount_codes", OBJECT );
 		$current_discount = esc_html( get_post_meta( $post->ID, 'discount_code_id', true ) );
@@ -140,7 +140,7 @@ class SWS_Meta_Boxes {
 	<?php
 	}
 
-	public function pmpro_sws_cpt_display_step_2( $post ) {
+	public function display_step_2( $post ) {
 		global $wpdb;
 		$pages        = get_pages();
 		$current_page = esc_html( get_post_meta( $post->ID, 'landing_page_post_id', true ) );
@@ -170,7 +170,7 @@ class SWS_Meta_Boxes {
 		<?php
 	}
 
-	public function pmpro_sws_cpt_display_step_3( $post ) {
+	public function display_step_3( $post ) {
 		// This should be optimized to use a single get_post_meta call.
 		$use_banner = esc_html( get_post_meta( $post->ID, 'use_banner', true ) );
 		if ( empty( $use_banner ) ) {
@@ -242,7 +242,7 @@ class SWS_Meta_Boxes {
 		<?php
 	}
 
-	public function pmpro_sws_cpt_display_step_4( $post ) {
+	public function display_step_4( $post ) {
 		?>
 		<a href="<?php echo admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports' ); ?>" target="_blank"><?php _e( 'Click here to view Sitewide Sale reports, need direct link.', 'pmpro-sitewide-sale' ); ?></a>
 	<?php
