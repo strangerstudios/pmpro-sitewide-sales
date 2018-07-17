@@ -5,22 +5,21 @@ defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 class Custom_Post_Types extends Post_Type_Factory {
 
 	public static function init() {
-		add_action( 'init', array( __CLASS__, 'register_sitewide_sale_banners' ) );
-		add_action( 'init', array( __CLASS__, 'register_sitewide_sale_landing_pages' ) );
+		add_action( 'init', array( __CLASS__, 'register_sitewide_sale_cpt' ) );
 	}
 
-	public static function register_sitewide_sale_banners() {
+	public static function register_sitewide_sale_cpt() {
 		$labels = Post_Type_Factory::get_label_defaults();
-		$labels['name']                  = _x( 'SWS Banners', 'Post Type General Name', 'pmpro-sitewide-sale' );
-		$labels['singular_name']         = _x( 'SWS Banner', 'Post Type Singular Name', 'pmpro-sitewide-sale' );
-		$labels['all_items']             = __( 'All SWS Banners', 'pmpro-sitewide-sale' );
-		$labels['menu_name']             = __( 'SWS Banners', 'pmpro-sitewide-sale' );
-		$labels['name_admin_bar']        = __( 'SWS Banners', 'pmpro-sitewide-sale' );
-		$labels['add_new_item']        = __( 'Add New SWS Banner', 'pmpro-sitewide-sale' );
+		$labels['name']                  = _x( 'Sitewide Sales', 'Post Type General Name', 'pmpro-sitewide-sale' );
+		$labels['singular_name']         = _x( 'Sitewide Sale', 'Post Type Singular Name', 'pmpro-sitewide-sale' );
+		$labels['all_items']             = __( 'All Sitewide Sales', 'pmpro-sitewide-sale' );
+		$labels['menu_name']             = __( 'Sitewide Sales', 'pmpro-sitewide-sale' );
+		$labels['name_admin_bar']        = __( 'Sitewide Sales', 'pmpro-sitewide-sale' );
+		$labels['add_new_item']        = __( 'Add New Sitewide Sale', 'pmpro-sitewide-sale' );
 
 		$args = Post_Type_Factory::get_args_defaults();
-		$args['label']               = __( 'SWS Banners', 'pmpro-sitewide-sale' );
-		$args['description']         = __( 'SWS Banners', 'pmpro-sitewide-sale' );
+		$args['label']               = __( 'Sitewide Sales', 'pmpro-sitewide-sale' );
+		$args['description']         = __( 'Sitewide Sales', 'pmpro-sitewide-sale' );
 		$args['labels']              = $labels;
 		$args['menu_icon']           = 'dashicons-id';
 		$args['has_archive']         = true;
@@ -32,11 +31,11 @@ class Custom_Post_Types extends Post_Type_Factory {
 
 		$args['rewrite']             = array(
 			'with_front' => true,
-			'slug' => 'sws-banner',
+			'slug' => 'sws-sitewide-sale',
 		);
-		$args['rest_base']           = __( 'sws_banner', 'pmpro-sitewide-sale' );
+		$args['rest_base']           = __( 'sws_sitewide_sale', 'pmpro-sitewide-sale' );
 
-		register_post_type( 'sws_banner', $args );
+		register_post_type( 'sws_sitewide_sale', $args );
 	}
 
 
@@ -52,34 +51,5 @@ class Custom_Post_Types extends Post_Type_Factory {
 		$tax_args['hierarchical']         = __( true, 'pmpro-sitewide-sale' );
 
 		register_taxonomy( 'sidecat', array( 'sitewide_sale_banner' ), $tax_args );
-	}
-
-	public static function register_sitewide_sale_landing_pages() {
-		$labels = Post_Type_Factory::get_label_defaults();
-		$labels['name']                  = _x( 'SWS Landing Pages', 'Post Type General Name', 'pmpro-sitewide-sale' );
-		$labels['singular_name']         = _x( 'SWS Landing Page', 'Post Type Singular Name', 'pmpro-sitewide-sale' );
-		$labels['all_items']             = __( 'All SWS Landing Pages', 'pmpro-sitewide-sale' );
-		$labels['menu_name']             = __( 'SWS Landing Pages', 'pmpro-sitewide-sale' );
-		$labels['name_admin_bar']        = __( 'SWS Landing Pages', 'pmpro-sitewide-sale' );
-		$labels['add_new_item']        = __( 'Add New SWS Landing Page', 'pmpro-sitewide-sale' );
-
-		$args = Post_Type_Factory::get_args_defaults();
-		$args['label']               = __( 'SWS Landing Pages', 'pmpro-sitewide-sale' );
-		$args['description']         = __( 'SWS Landing Pages', 'pmpro-sitewide-sale' );
-		$args['labels']              = $labels;
-		$args['menu_icon']           = 'dashicons-id';
-		$args['has_archive']         = true;
-		$args['taxonomies']          = array( 'sidecat' );
-		$args['supports']            = array(
-			'title',
-			'editor',
-		);
-		$args['rewrite']             = array(
-			'with_front' => true,
-			'slug' => 'sws-landing-page',
-		);
-		$args['rest_base']           = __( 'sws_landing_page', 'pmpro-sitewide-sale' );
-
-		register_post_type( 'sws_landing_page', $args );
 	}
 }

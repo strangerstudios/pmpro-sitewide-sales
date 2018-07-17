@@ -29,16 +29,16 @@ class SWS_Meta_Boxes {
 		add_meta_box(
 			'pmpro_sws_cpt_step_1',
 			__( 'Step 1: Choose Discount Code to Associate With Sale', 'pmpro_sitewide_sale' ),
-			array( $this, 'pmpro_sws_cpt_display_step_1' ),
-			array( 'sws_banner', 'sws_landing_page' ),
+			array( $this, 'display_step_1' ),
+			array( 'sws_sitewide_sale' ),
 			'above_editor',
 			'high'
 		);
 		add_meta_box(
 			'pmpro_sws_cpt_step_2',
 			__( 'Step 2: Create Landing Page', 'pmpro_sitewide_sale' ),
-			array( $this, 'pmpro_sws_cpt_display_step_2' ),
-			array( 'sws_banner', 'sws_landing_page' ),
+			array( $this, 'display_step_2' ),
+			array( 'sws_sitewide_sale' ),
 			'above_editor',
 			'high'
 		);
@@ -51,8 +51,7 @@ class SWS_Meta_Boxes {
 		do_meta_boxes( get_current_screen(), 'above_editor', $post );
 
 		// Remove the initial "advanced" meta boxes:
-		unset( $wp_meta_boxes['sws_banner']['above_editor'] );
-		unset( $wp_meta_boxes['sws_landing_page']['above_editor'] );
+		unset( $wp_meta_boxes['sws_sitewide_sale']['above_editor'] );
 	}
 
 	/**
@@ -62,26 +61,26 @@ class SWS_Meta_Boxes {
 		add_meta_box(
 			'pmpro_sws_cpt_set_as_sitewide_sale',
 			__( 'Sitewide Sale', 'pmpro_sitewide_sale' ),
-			array( $this, 'pmpro_sws_cpt_display_set_as_sitewide_sale' ),
-			array( 'sws_banner', 'sws_landing_page' ),
-			'normal',
-			'side'
+			array( $this, 'display_set_as_sitewide_sale' ),
+			array( 'sws_sitewide_sale' ),
+			'side',
+			'high'
 		);
 
 		// Removing Step 1
 		add_meta_box(
 			'pmpro_sws_cpt_step_3',
 			__( 'Step 3: Steup Banners', 'pmpro_sitewide_sale' ),
-			array( $this, 'pmpro_sws_cpt_display_step_3' ),
-			array( 'sws_banner', 'sws_landing_page' ),
+			array( $this, 'display_step_3' ),
+			array( 'sws_sitewide_sale' ),
 			'normal',
 			'high'
 		);
 		add_meta_box(
 			'pmpro_sws_cpt_step_4',
 			__( 'Step 4: Steup Banners', 'pmpro_sitewide_sale' ),
-			array( $this, 'pmpro_sws_cpt_display_step_4' ),
-			array( 'sws_banner', 'sws_landing_page' ),
+			array( $this, 'display_step_4' ),
+			array( 'sws_sitewide_sale' ),
 			'normal',
 			'high'
 		);
@@ -95,7 +94,7 @@ class SWS_Meta_Boxes {
 		wp_nonce_field( 'custom_nonce_action', 'custom_nonce' );
 	}
 
-	public function pmpro_sws_cpt_display_set_as_sitewide_sale( $post ) {
+	public function display_set_as_sitewide_sale( $post ) {
 		$init_checked = false;
 		if ( isset( $_REQUEST['set_sitewide_sale'] ) && 'true' === $_REQUEST['set_sitewide_sale'] ) {
 			$init_checked = true;
@@ -111,12 +110,31 @@ class SWS_Meta_Boxes {
 	</tr></table>';
 	}
 
-	public function pmpro_sws_cpt_display_step_1( $post ) {
+	public function display_step_1( $post ) {
 		global $wpdb;
 		$codes            = $wpdb->get_results( "SELECT * FROM $wpdb->pmpro_discount_codes", OBJECT );
 		$current_discount = esc_html( get_post_meta( $post->ID, 'discount_code_id', true ) );
 		if ( empty( $current_discount ) ) {
 			$current_discount = false;
+		}
+		$custom_dates = get_post_meta( $post->ID, 'custom_dates', true );
+		if ( empty( $custom_dates ) ) {
+			$custom_dates = false;
+		}
+		$hidden_modifier  = '';
+		$checked_modifier = ' checked ';
+		if ( ! $custom_dates ) {
+			$hidden_modifier  = ' hidden';
+			$checked_modifier = '';
+		}
+
+		$start_date = esc_html( get_post_meta( $post->ID, 'start_date', true ) );
+		if ( empty( $start_date ) ) {
+			$start_date = date( 'Y-m-d' );
+		}
+		$end_date = esc_html( get_post_meta( $post->ID, 'end_date', true ) );
+		if ( empty( $end_date ) ) {
+			$end_date = date( 'Y-m-d' );
 		}
 	?>
 	<select class="discount_code_select pmpro_sws_option" id="pmpro_sws_discount_code_select" name="pmpro_sws_discount_code_id">
@@ -130,17 +148,30 @@ class SWS_Meta_Boxes {
 		echo '<option value = ' . esc_html( $code->id ) . esc_html( $selected_modifier ) . '>' . esc_html( $code->code, 'pmpro-sitewide-sale' ) . '</option>';
 	}
 	echo '</select> ' . esc_html( 'or', 'pmpro_sitewide_sale' ) . ' <a href="' . esc_html( get_admin_url() ) .
-	'admin.php?page=pmpro-discountcodes&edit=-1&set_sitewide_sale=true">' . esc_html( 'create a new discount code, doesn\'t update', 'pmpro_sitewide_sale' ) . '</a>';
+	'admin.php?page=pmpro-discountcodes&edit=-1&set_sitewide_sale=true">' . esc_html( 'create a new discount code, doesn\'t update', 'pmpro_sitewide_sale' ) . '</a><br/><br/>';
+	echo '<label for="pmpro_sws_custom_sale_dates">Custom Sale Start/End Dates</label>
+	<input type="checkbox" id="pmpro_sws_custom_sale_dates" name="pmpro_sws_custom_sale_dates" ' . $checked_modifier . '\><br/>';
+	echo '<div id="pmpro_sws_custom_date_select"' . $hidden_modifier . '>
+	<label for="pmpro_sws_start_date">Sale Start Date</label>
+	<input type="date" name="pmpro_sws_start_date" value="' . $start_date . '" /> </br>
+	<label for="pmpro_sws_end_date">Sale End Date</label>
+	<input type="date" name="pmpro_sws_end_date" value="' . $end_date . '" /></div>'
 		?>
 	<script>
 		jQuery( document ).ready(function() {
 			jQuery("#pmpro_sws_discount_code_select").selectWoo();
+			$('#pmpro_sws_custom_sale_dates').change(function(){
+				if(this.checked)
+					$('#pmpro_sws_custom_date_select').show();
+				else
+					$('#pmpro_sws_custom_date_select').hide();
+				});
 		});
 	</script>
 	<?php
 	}
 
-	public function pmpro_sws_cpt_display_step_2( $post ) {
+	public function display_step_2( $post ) {
 		global $wpdb;
 		$pages        = get_pages();
 		$current_page = esc_html( get_post_meta( $post->ID, 'landing_page_post_id', true ) );
@@ -170,19 +201,11 @@ class SWS_Meta_Boxes {
 		<?php
 	}
 
-	public function pmpro_sws_cpt_display_step_3( $post ) {
+	public function display_step_3( $post ) {
 		// This should be optimized to use a single get_post_meta call.
 		$use_banner = esc_html( get_post_meta( $post->ID, 'use_banner', true ) );
 		if ( empty( $use_banner ) ) {
 			$use_banner = 'no';
-		}
-		$banner_title = esc_html( get_post_meta( $post->ID, 'banner_title', true ) );
-		if ( empty( $banner_title ) ) {
-			$banner_title = '';
-		}
-		$banner_description = esc_html( get_post_meta( $post->ID, 'banner_description', true ) );
-		if ( empty( $banner_description ) ) {
-			$banner_description = '';
 		}
 		$link_text = esc_html( get_post_meta( $post->ID, 'link_text', true ) );
 		if ( empty( $link_text ) ) {
@@ -213,16 +236,6 @@ class SWS_Meta_Boxes {
 		</tr></table>
 		<table class="form-table" id="pmpro_sws_banner_options">
 	<?php
-	echo '
-	<tr>
-		<th scope="row" valign="top"><label>' . __( 'Banner Title', 'pmpro-sitewide-sale' ) . '</label></th>
-		<td><input class="pmpro_sws_option" type="text" name="pmpro_sws_banner_title" value="' . esc_html( $banner_title ) . '"/></td>
-	</tr>';
-	echo '
-	<tr>
-		<th scope="row" valign="top"><label>' . __( 'Banner Description', 'pmpro-sitewide-sale' ) . '</label></th>
-		<td><textarea rows="5" cols="20" class="pmpro_sws_option" name="pmpro_sws_banner_description">' . esc_textarea( $banner_description ) . '</textarea></td>
-	</tr>';
 	echo '
 	<tr>
 		<th scope="row" valign="top"><label>' . __( 'Button Text', 'pmpro-sitewide-sale' ) . '</label></th>
@@ -260,21 +273,77 @@ class SWS_Meta_Boxes {
 		<?php
 	}
 
-	public function pmpro_sws_cpt_display_step_4( $post ) {
+	public function display_step_4( $post ) {
 		?>
 		<a href="<?php echo admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports' ); ?>" target="_blank"><?php _e( 'Click here to view Sitewide Sale reports, need direct link.', 'pmpro-sitewide-sale' ); ?></a>
 	<?php
 	}
 
-	public function pmpro_sws_save_cpt( $post_id, $post ) {
-		if ( 'pmpro_sitewide_sale' !== $post->post_type ) {
+	/**
+	 * Handles saving the meta box.
+	 *
+	 * @param int     $post_id Post ID.
+	 * @param WP_Post $post    Post object.
+	 * @return null
+	 */
+	public function save_sws_metaboxes( $post_id, $post ) {
+
+		// Add nonce for security and authentication.
+		$nonce_name   = isset( $_POST['custom_nonce'] ) ? $_POST['custom_nonce'] : '';
+		$nonce_action = 'custom_nonce_action';
+
+		// Check if nonce is set.
+		if ( ! isset( $nonce_name ) ) {
 			return;
 		}
+
+		// Check if nonce is valid.
+		/*
+		if ( ! wp_verify_nonce( $nonce_name, $nonce_action ) ) {
+			return;
+		}
+		*/
+
+		// Check if user has permissions to save data.
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return;
+		}
+
+		// Check if not an autosave.
+		if ( wp_is_post_autosave( $post_id ) ) {
+			return;
+		}
+
+		// Check if not a revision.
+		if ( wp_is_post_revision( $post_id ) ) {
+			return;
+		}
+
+		if ( 'sws_sitewide_sale' !== $post->post_type ) {
+			return;
+		}
+
+		global $wpdb;
 
 		if ( isset( $_POST['pmpro_sws_discount_code_id'] ) ) {
 			update_post_meta( $post_id, 'discount_code_id', trim( $_POST['pmpro_sws_discount_code_id'] ) );
 		} else {
 			update_post_meta( $post_id, 'discount_code_id', false );
+		}
+
+		if ( isset( $_POST['pmpro_sws_custom_sale_dates'] ) ) {
+			if ( isset( $_POST['pmpro_sws_start_date'] ) && isset( $_POST['pmpro_sws_end_date'] ) ) {
+				update_post_meta( $post_id, 'start_date', trim( $_POST['pmpro_sws_start_date'] ) );
+				update_post_meta( $post_id, 'end_date', trim( $_POST['pmpro_sws_end_date'] ) );
+			}
+			update_post_meta( $post_id, 'custom_dates', true );
+		} elseif( isset( $_POST['pmpro_sws_discount_code_id'] ) ) {
+			$discount_code_dates = $wpdb->get_results( $wpdb->prepare( "SELECT starts, expires FROM $wpdb->pmpro_discount_codes where id = %d", intval( $_POST['pmpro_sws_discount_code_id'] ) ) );
+			if ( ! empty( $discount_code_dates ) && ! empty( $discount_code_dates[0] ) && ! empty( $discount_code_dates[0]->starts ) && ! empty( $discount_code_dates[0]->expires ) ) {
+				update_post_meta( $post_id, 'start_date', $discount_code_dates[0]->starts );
+				update_post_meta( $post_id, 'end_date', $discount_code_dates[0]->expires );
+			}
+			update_post_meta( $post_id, 'custom_dates', false );
 		}
 
 		if ( isset( $_POST['pmpro_sws_landing_page_post_id'] ) ) {
@@ -288,18 +357,6 @@ class SWS_Meta_Boxes {
 			update_post_meta( $post_id, 'use_banner', trim( $_POST['pmpro_sws_use_banner'] ) );
 		} else {
 			update_post_meta( $post_id, 'use_banner', 'no' );
-		}
-
-		if ( isset( $_POST['pmpro_sws_banner_title'] ) ) {
-			update_post_meta( $post_id, 'banner_title', trim( $_POST['pmpro_sws_banner_title'] ) );
-		} else {
-			update_post_meta( $post_id, 'banner_title', '' );
-		}
-
-		if ( isset( $_POST['pmpro_sws_banner_description'] ) ) {
-			update_post_meta( $post_id, 'banner_description', trim( $_POST['pmpro_sws_banner_description'] ) );
-		} else {
-			update_post_meta( $post_id, 'banner_description', '' );
 		}
 
 		if ( isset( $_POST['pmpro_sws_link_text'] ) ) {
@@ -333,44 +390,6 @@ class SWS_Meta_Boxes {
 			$options['active_sitewide_sale_id'] = false;
 		}
 		pmprosws_save_options( $options );
-	}
-
-	/**
-	 * Handles saving the meta box.
-	 *
-	 * @param int     $post_id Post ID.
-	 * @param WP_Post $post    Post object.
-	 * @return null
-	 */
-	public function save_sws_metaboxes( $post_id, $post ) {
-		// Add nonce for security and authentication.
-		$nonce_name   = isset( $_POST['custom_nonce'] ) ? $_POST['custom_nonce'] : '';
-		$nonce_action = 'custom_nonce_action';
-
-		// Check if nonce is set.
-		if ( ! isset( $nonce_name ) ) {
-			return;
-		}
-
-		// Check if nonce is valid.
-		if ( ! wp_verify_nonce( $nonce_name, $nonce_action ) ) {
-			return;
-		}
-
-		// Check if user has permissions to save data.
-		if ( ! current_user_can( 'edit_post', $post_id ) ) {
-			return;
-		}
-
-		// Check if not an autosave.
-		if ( wp_is_post_autosave( $post_id ) ) {
-			return;
-		}
-
-		// Check if not a revision.
-		if ( wp_is_post_revision( $post_id ) ) {
-			return;
-		}
 	}
 }
 
