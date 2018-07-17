@@ -332,8 +332,8 @@ function pmpro_sws_discount_codes_save( $saveid ) {
 	if ( ! empty( $_REQUEST['sitewide_sale'] ) ) {
 		$sale_page = $options['landing_page_post_id'];
 		if ( false !== $sale_page && '-1' !== $sale_page ) {
-			echo '<div id="message" class="updated fade"><p>View sale page <a href=' .
-			esc_url( get_permalink( $options['landing_page_post_id'] ) ) . '>here</a>.</p></div>';
+			echo '<div id="message" class="updated fade"><p>' . esc_html( 'View sale page', 'pmpro-sitewide-sale' ) . '<a href=' .
+			esc_url( get_permalink( $options['landing_page_post_id'] ) ) . '>' . esc_html( 'here', 'pmpro-sitewide-sale' ) . '</a>.</p></div>';
 		}
 		$options['discount_code_id'] = $saveid;
 	} elseif ( $options['discount_code_id'] === $saveid . '' ) {

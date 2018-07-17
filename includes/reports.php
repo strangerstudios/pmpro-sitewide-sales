@@ -30,7 +30,7 @@ function pmpro_report_pmpro_sws_reports_page() {
 	$options          = pmprosws_get_options();
 	$codes            = $wpdb->get_results( "SELECT * FROM $wpdb->pmpro_discount_codes", OBJECT );
 	$current_discount = $options['discount_code_id'];
-	echo '<table><tr><td><h3>Choose Code to View Reports For: </h3></td><td><select id="pmpro_sws_discount_code_select">';
+	echo '<table><tr><td><h3>' . esc_html( 'Choose Code to View Reports For', 'pmpro-sitewide-sale' ) . ': </h3></td><td><select id="pmpro_sws_discount_code_select">';
 	foreach ( $codes as $code ) {
 		$selected_modifier = '';
 		if ( $code->id === $current_discount ) {
@@ -72,7 +72,7 @@ function pmpro_sws_get_report_for_code( $code_id = null ) {
 		$code_id = $options['discount_code_id'];
 	}
 	if ( false === $code_id ) {
-		return 'No Discount Code Set.';
+		return __('No Discount Code Set.', 'pmpro-sitewide-sale');
 	}
 	$code_id = $code_id . '';
 	$code_name = $wpdb->get_results( $wpdb->prepare( "SELECT code FROM $wpdb->pmpro_discount_codes WHERE id=%s", $code_id ) )[0]->code;
