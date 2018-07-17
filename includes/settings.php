@@ -80,7 +80,7 @@ function pmpro_sws_select_sitewide_sale_callback() {
 	$options              = pmprosws_get_options();
 	$active_sitewide_sale = $options['active_sitewide_sale_id'];
 	$sitewide_sales       = get_posts([
-		'post_type' => 'sws_banner',
+		'post_type' => 'sws_sitewide_sale',
 	]);
 	?>
 	<select class="pmpro_sws_sitewide_sale_select pmpro_sws_option" id="pmpro_sws_sitewide_sale_select" name="pmpro_sitewide_sale[active_sitewide_sale_id]">
@@ -93,7 +93,7 @@ function pmpro_sws_select_sitewide_sale_callback() {
 		}
 		echo '<option value=' . esc_html( $sitewide_sale->ID ) . esc_html( $selected_modifier ) . '>' . esc_html( $sitewide_sale->post_title ) . '</option>';
 	}
-	echo '</select> ' . esc_html( 'or', 'pmpro_sitewide_sale' ) . ' <a href="' . esc_html( get_admin_url() ) . 'post-new.php?post_type=sws_banner&set_sitewide_sale=true">
+	echo '</select> ' . esc_html( 'or', 'pmpro_sitewide_sale' ) . ' <a href="' . esc_html( get_admin_url() ) . 'post-new.php?post_type=sws_sitewide_sale&set_sitewide_sale=true">
 			 ' . esc_html( 'create a new Sitewide Sale', 'pmpro_sitewide_sale' ) . '</a>.';
 	?>
 	<script>

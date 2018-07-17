@@ -30,7 +30,7 @@ class SWS_Meta_Boxes {
 			'pmpro_sws_cpt_step_1',
 			__( 'Step 1: Choose Discount Code to Associate With Sale', 'pmpro_sitewide_sale' ),
 			array( $this, 'display_step_1' ),
-			array( 'sws_banner', 'sws_landing_page' ),
+			array( 'sws_sitewide_sale' ),
 			'above_editor',
 			'high'
 		);
@@ -38,7 +38,7 @@ class SWS_Meta_Boxes {
 			'pmpro_sws_cpt_step_2',
 			__( 'Step 2: Create Landing Page', 'pmpro_sitewide_sale' ),
 			array( $this, 'display_step_2' ),
-			array( 'sws_banner', 'sws_landing_page' ),
+			array( 'sws_sitewide_sale' ),
 			'above_editor',
 			'high'
 		);
@@ -51,8 +51,7 @@ class SWS_Meta_Boxes {
 		do_meta_boxes( get_current_screen(), 'above_editor', $post );
 
 		// Remove the initial "advanced" meta boxes:
-		unset( $wp_meta_boxes['sws_banner']['above_editor'] );
-		unset( $wp_meta_boxes['sws_landing_page']['above_editor'] );
+		unset( $wp_meta_boxes['sws_sitewide_sale']['above_editor'] );
 	}
 
 	/**
@@ -63,7 +62,7 @@ class SWS_Meta_Boxes {
 			'pmpro_sws_cpt_set_as_sitewide_sale',
 			__( 'Sitewide Sale', 'pmpro_sitewide_sale' ),
 			array( $this, 'display_set_as_sitewide_sale' ),
-			array( 'sws_banner', 'sws_landing_page' ),
+			array( 'sws_sitewide_sale' ),
 			'side',
 			'high'
 		);
@@ -73,7 +72,7 @@ class SWS_Meta_Boxes {
 			'pmpro_sws_cpt_step_3',
 			__( 'Step 3: Steup Banners', 'pmpro_sitewide_sale' ),
 			array( $this, 'display_step_3' ),
-			array( 'sws_banner', 'sws_landing_page' ),
+			array( 'sws_sitewide_sale' ),
 			'normal',
 			'high'
 		);
@@ -81,7 +80,7 @@ class SWS_Meta_Boxes {
 			'pmpro_sws_cpt_step_4',
 			__( 'Step 4: Steup Banners', 'pmpro_sitewide_sale' ),
 			array( $this, 'display_step_4' ),
-			array( 'sws_banner', 'sws_landing_page' ),
+			array( 'sws_sitewide_sale' ),
 			'normal',
 			'high'
 		);
@@ -320,7 +319,7 @@ class SWS_Meta_Boxes {
 			return;
 		}
 
-		if ( 'sws_banner' !== $post->post_type && 'sws_landing_page' !== $post->post_type ) {
+		if ( 'sws_sitewide_sale' !== $post->post_type ) {
 			return;
 		}
 
