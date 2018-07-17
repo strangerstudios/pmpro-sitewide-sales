@@ -91,7 +91,7 @@ function pmpro_sws_get_report_for_code( $code_id = null ) {
 
 	// Reports regarding total sales.
 	$discount_code_dates  = $wpdb->get_results( $wpdb->prepare( "SELECT starts, expires FROM $wpdb->pmpro_discount_codes where id = %d", intval($code_id) ) )[0];
-	$orders_during_sale   = $wpdb->get_results( $wpdb->prepare( "SELECT orders.total, codes.code_id FROM $wpdb->pmpro_membership_orders orders LEFT JOIN wp_pmpro_discount_codes_uses codes ON orders.id = codes.order_id WHERE orders.timestamp >= %s AND orders.timestamp <= %s", $discount_code_dates->starts, date("Y-m-d", strtotime( '+1 day', strtotime( $discount_code_dates->expires ) ) ) ) );
+	$orders_during_sale   = $wpdb->get_results( $wpdb->prepare( "SELECT orders.total, codes.code_id FROM $wpdb->pmpro_membership_orders orders LEFT JOIN wp_pmpro_discount_codes_uses codes ON orders.id = codes.order_id WHERE orders.timestamp >= %s AND orders.timestamp <= %s AND orders.total > 0", $discount_code_dates->starts, date("Y-m-d", strtotime( '+1 day', strtotime( $discount_code_dates->expires ) ) ) ) );
 	$orders_with_code     = 0;
 	$revenue_with_code    = 0;
 	$orders_without_code  = 0;
