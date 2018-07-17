@@ -339,9 +339,9 @@ class SWS_Meta_Boxes {
 			update_post_meta( $post_id, 'custom_dates', true );
 		} elseif( isset( $_POST['pmpro_sws_discount_code_id'] ) ) {
 			$discount_code_dates = $wpdb->get_results( $wpdb->prepare( "SELECT starts, expires FROM $wpdb->pmpro_discount_codes where id = %d", intval( $_POST['pmpro_sws_discount_code_id'] ) ) );
-			if ( ! empty( $dates ) && ! empty( $dates[0] ) && ! empty( $dates[0]->starts ) && ! empty ( $dates[0]->expires ) ) {
-				update_post_meta( $post_id, 'start_date', $dates[0]->starts );
-				update_post_meta( $post_id, 'end_date', $dates[0]->expires );
+			if ( ! empty( $discount_code_dates ) && ! empty( $discount_code_dates[0] ) && ! empty( $discount_code_dates[0]->starts ) && ! empty( $discount_code_dates[0]->expires ) ) {
+				update_post_meta( $post_id, 'start_date', $discount_code_dates[0]->starts );
+				update_post_meta( $post_id, 'end_date', $discount_code_dates[0]->expires );
 			}
 			update_post_meta( $post_id, 'custom_dates', false );
 		}
