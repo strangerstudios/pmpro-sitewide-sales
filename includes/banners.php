@@ -12,12 +12,11 @@ add_action( 'wp', 'pmpro_sws_init_banners' );
 function pmpro_sws_init_banners() {
 	global $pmpro_pages;
 	$options = pmprosws_get_options();
-	
+
 	if ( false !== $options['discount_code_id'] &&
 				false !== $options['landing_page_post_id'] &&
 				'no' !== $options['use_banner'] &&
-				! is_page('login') &&
-				! in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) ) &&
+				! pmpro_sws_is_login_page() &&
 				! is_page( intval( $options['landing_page_post_id'] ) ) &&
 				! ( $options['hide_on_checkout'] && is_page( $pmpro_pages['checkout'] ) ) &&
 				! in_array( pmpro_getMembershipLevelForUser()->ID, $options['hide_for_levels'], true )
@@ -30,4 +29,17 @@ function pmpro_sws_init_banners() {
 			// Maybe call a function here...
 		}
 	}
+}
+
+/**
+ * Returns if the user is on the login page (currently works for TML)
+ * Can probably switch to is_login_page from PMPro core
+ */
+function pmpro_sws_is_login_page() {
+	global $post;
+	$slug = get_site_option( 'tml_login_slug' );
+	if ( false === $slug ) {
+		$slug = 'login';
+	}
+	return ( $slug === $post->post_name || is_page( 'login' ) || in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) ) );
 }
