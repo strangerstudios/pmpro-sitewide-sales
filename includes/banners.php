@@ -11,7 +11,8 @@ add_action( 'wp', 'pmpro_sws_init_banners' );
  */
 function pmpro_sws_init_banners() {
 	global $pmpro_pages;
-	$options = pmprosws_get_options();
+	$options          = pmprosws_get_options();
+	$membership_level = pmpro_getMembershipLevelForUser();
 
 	if ( false !== $options['discount_code_id'] &&
 				false !== $options['landing_page_post_id'] &&
@@ -19,7 +20,7 @@ function pmpro_sws_init_banners() {
 				! pmpro_sws_is_login_page() &&
 				! is_page( intval( $options['landing_page_post_id'] ) ) &&
 				! ( $options['hide_on_checkout'] && is_page( $pmpro_pages['checkout'] ) ) &&
-				! in_array( pmpro_getMembershipLevelForUser()->ID, $options['hide_for_levels'], true )
+				! ( false !== $membership_level && in_array( $membership_level->ID, $options['hide_for_levels'], true ) )
 			) {
 
 		// Display the appropriate banner
