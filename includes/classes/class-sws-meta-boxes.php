@@ -9,8 +9,9 @@ class SWS_Meta_Boxes {
 	 */
 	public function __construct() {
 		if ( is_admin() ) {
-			add_action( 'load-post.php',     array( $this, 'init_metabox' ) );
+			add_action( 'load-post.php', array( $this, 'init_metabox' ) );
 			add_action( 'load-post-new.php', array( $this, 'init_metabox' ) );
+			add_filter( 'mce_buttons', array( $this, 'remove_editor_buttons' ) );
 		}
 
 	}
@@ -84,6 +85,42 @@ class SWS_Meta_Boxes {
 			'normal',
 			'high'
 		);
+	}
+
+
+	function remove_editor_buttons( $buttons ) {
+		$remove_buttons = array(
+        'bold',
+        'italic',
+        'strikethrough',
+        'bullist',
+        'numlist',
+        'blockquote',
+        'hr', // horizontal line
+        'alignleft',
+        'aligncenter',
+        'alignright',
+        'link',
+        'unlink',
+        'wp_more', // read more link
+        'spellchecker',
+        'dfw', // distraction free writing mode
+        'wp_adv', // kitchen sink toggle (if removed, kitchen sink will always display)
+    );
+    foreach ( $buttons as $button_key => $button_value ) {
+        if ( in_array( $button_value, $remove_buttons ) ) {
+            unset( $buttons[ $button_key ] );
+        }
+    }
+		?>
+	<script>
+		jQuery( document ).ready(function() {
+			jQuery('.wp-editor-tabs').remove();
+			jQuery('#insert-media-button').remove();
+		});
+	</script>
+	<?php
+		return $buttons;
 	}
 
 	/**
