@@ -13,7 +13,6 @@ function pmpro_sws_init_banners() {
 	global $pmpro_pages;
 	$options          = pmprosws_get_options();
 	$membership_level = pmpro_getMembershipLevelForUser();
-	var_dump($membership_level);
 
 	if ( false !== $options['discount_code_id'] &&
 				false !== $options['landing_page_post_id'] &&
