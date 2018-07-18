@@ -12,7 +12,7 @@ function pmpro_sws_show_bottom_banner() {
 	<div id="pmpro_sws_banner_bottom" class="pmpro_sws_banner">
 		<div class="pmpro_sws_banner-inner">
 			<div class="pmpro_sws_banner-inner-left">
-				<h3><?php _e( get_the_title( $active_sitewide_sale ) ); ?></h3>
+				<h3><?php _e( get_post_meta( $active_sitewide_sale, 'banner_title', true ) ); ?></h3>
 				<?php echo apply_filters( 'the_content', get_post_field('post_content', $active_sitewide_sale) ); ?>
 			</div>
 			<div class="pmpro_sws_banner-inner-right">
