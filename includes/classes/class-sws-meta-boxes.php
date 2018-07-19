@@ -12,6 +12,8 @@ class SWS_Meta_Boxes {
 			add_action( 'load-post.php', array( $this, 'init_metabox' ) );
 			add_action( 'load-post-new.php', array( $this, 'init_metabox' ) );
 			add_filter( 'mce_buttons', array( $this, 'remove_editor_buttons' ) );
+
+			add_action( 'pmpro_save_discount_code', array( $this, 'discount_code_on_save' ) );
 		}
 
 	}
@@ -191,6 +193,7 @@ class SWS_Meta_Boxes {
 			$banner_title = '';
 		}
 	?>
+	<input type='submit' name='pmpro_sws_create_discount' value='create a new discount code'>
 	<select class="discount_code_select pmpro_sws_option" id="pmpro_sws_discount_code_select" name="pmpro_sws_discount_code_id">
 	<option value=-1></option>
 	<?php
@@ -467,6 +470,19 @@ class SWS_Meta_Boxes {
 			$options['active_sitewide_sale_id'] = false;
 		}
 		pmprosws_save_options( $options );
+
+		if ( isset( $_POST['pmpro_sws_create_discount'] ) ) {
+			// Remove check that warns user they are going to leave the page
+			header( 'Location: ' . esc_html( get_admin_url() ) . 'admin.php?page=pmpro-discountcodes&edit=-1&pmpro_sws_callback=' . $post_id );
+			exit();
+		}
+	}
+
+	function discount_code_on_save( $saveid ) {
+		if ( isset( $_REQUEST['pmpro_sws_callback'] ) ) {
+			update_post_meta( $_REQUEST['pmpro_sws_callback'], 'discount_code_id', $saveid );
+			echo '<a href="' . esc_html( get_admin_url() ) . 'post.php?post=' . $_REQUEST['pmpro_sws_callback'] . '&action=edit">Click here to go back to editing Sitewide Sale</a>';
+		}
 	}
 }
 
