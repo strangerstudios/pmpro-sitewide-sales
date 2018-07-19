@@ -41,6 +41,9 @@ function pmpro_sws_admin_scripts() {
 	wp_enqueue_script( 'selectWoo' );
 	wp_register_style( 'selectWooCSS', plugins_url( 'css/selectWoo' . $suffix . '.css', __FILE__ ) );
 	wp_enqueue_style( 'selectWooCSS' );
+
+	wp_register_script( 'pmpro-sws-option', plugins_url( 'js/pmpro-sws-option.js', __FILE__ ), array( 'jquery' ), '1.0.4' );
+	wp_enqueue_script( 'pmpro-sws-option' );
 }
 add_action( 'admin_enqueue_scripts', 'pmpro_sws_admin_scripts' );
 
