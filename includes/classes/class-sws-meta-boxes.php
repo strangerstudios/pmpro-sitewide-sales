@@ -9,8 +9,9 @@ class SWS_Meta_Boxes {
 	 */
 	public function __construct() {
 		if ( is_admin() ) {
-			add_action( 'load-post.php',     array( $this, 'init_metabox' ) );
+			add_action( 'load-post.php', array( $this, 'init_metabox' ) );
 			add_action( 'load-post-new.php', array( $this, 'init_metabox' ) );
+			add_filter( 'mce_buttons', array( $this, 'remove_editor_buttons' ) );
 		}
 
 	}
@@ -86,6 +87,42 @@ class SWS_Meta_Boxes {
 		);
 	}
 
+
+	function remove_editor_buttons( $buttons ) {
+		$remove_buttons = array(
+        'bold',
+        'italic',
+        'strikethrough',
+        'bullist',
+        'numlist',
+        'blockquote',
+        'hr', // horizontal line
+        'alignleft',
+        'aligncenter',
+        'alignright',
+        'link',
+        'unlink',
+        'wp_more', // read more link
+        'spellchecker',
+        'dfw', // distraction free writing mode
+        'wp_adv', // kitchen sink toggle (if removed, kitchen sink will always display)
+    );
+    foreach ( $buttons as $button_key => $button_value ) {
+        if ( in_array( $button_value, $remove_buttons ) ) {
+            unset( $buttons[ $button_key ] );
+        }
+    }
+		?>
+	<script>
+		jQuery( document ).ready(function() {
+			jQuery('.wp-editor-tabs').remove();
+			jQuery('#insert-media-button').remove();
+		});
+	</script>
+	<?php
+		return $buttons;
+	}
+
 	/**
 	 * Renders the meta box.
 	 */
@@ -117,15 +154,16 @@ class SWS_Meta_Boxes {
 		if ( empty( $current_discount ) ) {
 			$current_discount = false;
 		}
+
 		$custom_dates = get_post_meta( $post->ID, 'custom_dates', true );
 		if ( empty( $custom_dates ) ) {
 			$custom_dates = false;
 		}
-		$hidden_modifier  = '';
-		$checked_modifier = ' checked ';
+		$hidden_modifier_date  = '';
+		$checked_modifier_date = ' checked ';
 		if ( ! $custom_dates ) {
-			$hidden_modifier  = ' hidden';
-			$checked_modifier = '';
+			$hidden_modifier_date  = ' hidden';
+			$checked_modifier_date = '';
 		}
 
 		$start_date = esc_html( get_post_meta( $post->ID, 'start_date', true ) );
@@ -135,6 +173,22 @@ class SWS_Meta_Boxes {
 		$end_date = esc_html( get_post_meta( $post->ID, 'end_date', true ) );
 		if ( empty( $end_date ) ) {
 			$end_date = date( 'Y-m-d' );
+		}
+
+		$custom_banner_title = get_post_meta( $post->ID, 'custom_banner_title', true );
+		if ( empty( $custom_banner_title ) ) {
+			$custom_banner_title = false;
+		}
+		$hidden_modifier_title  = '';
+		$checked_modifier_title = ' checked ';
+		if ( ! $custom_banner_title ) {
+			$hidden_modifier_title  = ' hidden';
+			$checked_modifier_title = '';
+		}
+
+		$banner_title = esc_html( get_post_meta( $post->ID, 'banner_title', true ) );
+		if ( empty( $banner_title ) ) {
+			$banner_title = '';
 		}
 	?>
 	<select class="discount_code_select pmpro_sws_option" id="pmpro_sws_discount_code_select" name="pmpro_sws_discount_code_id">
@@ -150,12 +204,17 @@ class SWS_Meta_Boxes {
 	echo '</select> ' . esc_html( 'or', 'pmpro_sitewide_sale' ) . ' <a href="' . esc_html( get_admin_url() ) .
 	'admin.php?page=pmpro-discountcodes&edit=-1&set_sitewide_sale=true">' . esc_html( 'create a new discount code, doesn\'t update', 'pmpro_sitewide_sale' ) . '</a><br/><br/>';
 	echo '<label for="pmpro_sws_custom_sale_dates">Custom Sale Start/End Dates</label>
-	<input type="checkbox" id="pmpro_sws_custom_sale_dates" name="pmpro_sws_custom_sale_dates" ' . $checked_modifier . '\><br/>';
-	echo '<div id="pmpro_sws_custom_date_select"' . $hidden_modifier . '>
+	<input type="checkbox" id="pmpro_sws_custom_sale_dates" name="pmpro_sws_custom_sale_dates" ' . $checked_modifier_date . '\><br/>';
+	echo '<div id="pmpro_sws_custom_date_select"' . $hidden_modifier_date . '>
 	<label for="pmpro_sws_start_date">Sale Start Date</label>
 	<input type="date" name="pmpro_sws_start_date" value="' . $start_date . '" /> </br>
 	<label for="pmpro_sws_end_date">Sale End Date</label>
-	<input type="date" name="pmpro_sws_end_date" value="' . $end_date . '" /></div>'
+	<input type="date" name="pmpro_sws_end_date" value="' . $end_date . '" /></div><br/>';
+	echo '<label for="pmpro_sws_custom_sale_title">Custom Banner Title</label>
+	<input type="checkbox" id="pmpro_sws_custom_banner_title" name="pmpro_sws_custom_banner_title" ' . $checked_modifier_title . '\><br/>';
+	echo '<div id="pmpro_sws_custom_title_select"' . $hidden_modifier_title . '>
+	<label for="pmpro_sws_banner_title">Banner Title</label>
+	<input type="textbox" name="pmpro_sws_banner_title" value="' . $banner_title . '" /></div>';
 		?>
 	<script>
 		jQuery( document ).ready(function() {
@@ -165,6 +224,12 @@ class SWS_Meta_Boxes {
 					$('#pmpro_sws_custom_date_select').show();
 				else
 					$('#pmpro_sws_custom_date_select').hide();
+				});
+			$('#pmpro_sws_custom_banner_title').change(function(){
+				if(this.checked)
+					$('#pmpro_sws_custom_title_select').show();
+				else
+					$('#pmpro_sws_custom_title_select').hide();
 				});
 		});
 	</script>
@@ -344,6 +409,18 @@ class SWS_Meta_Boxes {
 				update_post_meta( $post_id, 'end_date', $discount_code_dates[0]->expires );
 			}
 			update_post_meta( $post_id, 'custom_dates', false );
+		}
+
+		if ( isset( $_POST['pmpro_sws_custom_banner_title'] ) ) {
+			if ( isset( $_POST['pmpro_sws_banner_title'] ) ) {
+				update_post_meta( $post_id, 'banner_title', trim( $_POST['pmpro_sws_banner_title'] ) );
+			}
+			update_post_meta( $post_id, 'custom_banner_title', true );
+		} else {
+			if ( isset( $_POST['post_title'] ) ) {
+				update_post_meta( $post_id, 'banner_title', trim( $_POST['post_title'] ) );
+			}
+			update_post_meta( $post_id, 'custom_banner_title', false );
 		}
 
 		if ( isset( $_POST['pmpro_sws_landing_page_post_id'] ) ) {

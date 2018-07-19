@@ -24,7 +24,6 @@ require_once PMPROSWS_DIR . '/includes/banners.php';
 require_once PMPROSWS_DIR . '/includes/reports.php';
 require_once PMPROSWS_DIR . '/includes/templates.php';
 
-require_once PMPROSWS_DIR . '/includes/classes/class-post-type-factory.php';
 require_once PMPROSWS_DIR . '/includes/classes/class-sws-customizer.php';
 require_once PMPROSWS_DIR . '/includes/classes/class-sws-meta-boxes.php';
 require_once PMPROSWS_DIR . '/includes/classes/class-custom-post-types.php';
@@ -53,4 +52,3 @@ function pmpro_sws_frontend_scripts() {
 	wp_enqueue_style( 'frontend' );
 }
 add_action( 'wp_enqueue_scripts', 'pmpro_sws_frontend_scripts' );
-
