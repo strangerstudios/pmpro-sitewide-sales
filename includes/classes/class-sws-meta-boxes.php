@@ -226,25 +226,6 @@ class SWS_Meta_Boxes {
 	echo '<div id="pmpro_sws_custom_title_select"' . $hidden_modifier_title . '>
 	<label for="pmpro_sws_banner_title">Banner Title</label>
 	<input type="textbox" name="pmpro_sws_banner_title" value="' . $banner_title . '" /></div>';
-		?>
-	<script>
-		jQuery( document ).ready(function() {
-			jQuery("#pmpro_sws_discount_code_select").selectWoo();
-			$('#pmpro_sws_custom_sale_dates').change(function(){
-				if(this.checked)
-					$('#pmpro_sws_custom_date_select').show();
-				else
-					$('#pmpro_sws_custom_date_select').hide();
-				});
-			$('#pmpro_sws_custom_banner_title').change(function(){
-				if(this.checked)
-					$('#pmpro_sws_custom_title_select').show();
-				else
-					$('#pmpro_sws_custom_title_select').hide();
-				});
-		});
-	</script>
-	<?php
 	}
 
 	public function display_step_2( $post ) {
@@ -267,13 +248,6 @@ class SWS_Meta_Boxes {
 			echo '<option value=' . esc_html( $page->ID ) . esc_html( $selected_modifier ) . '>' . esc_html( $page->post_title ) . '</option>';
 		}
 		echo '</select> ' . esc_html( 'or', 'pmpro_sitewide_sale' ) . ' <input type="submit" name="pmpro_sws_create_landing_page" value="' . esc_html( 'create a new landing page', 'pmpro-sitewide-sale' ) . '">';
-		?>
-		<script>
-		jQuery( document ).ready(function() {
-			jQuery("#pmpro_sws_landing_page_select").selectWoo();
-		});
-		</script>
-		<?php
 	}
 
 	public function display_step_3_1() {
@@ -348,14 +322,6 @@ class SWS_Meta_Boxes {
 			<th scope="row" valign="top"><label>' . esc_html( 'Hide Banner at Checkout', 'pmpro-sitewide-sale' ) . '</label></th>
 			<td><input class="pmpro_sws_option" type="checkbox" name="pmpro_sws_hide_on_checkout" ' . esc_html( $checked_modifier ) . '/></td>
 		</tr></table>';
-		?>
-		<script>
-			jQuery( document ).ready(function() {
-				jQuery("#pmpro_sws_use_banner_select").selectWoo();
-				jQuery("#pmpro_sws_hide_levels_select").selectWoo();
-			});
-		</script>
-		<?php
 	}
 
 	public function display_step_4( $post ) {
