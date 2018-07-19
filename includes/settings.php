@@ -44,7 +44,7 @@ function pmprosla_sws_options_page() {
 			jQuery( document ).ready(function() {
 				jQuery(".pmpro_sws_option").change(function() {
 					window.onbeforeunload = function() {
-			    	return true;
+					return true;
 					};
 				});
 				jQuery("#pmpro_sws_options").submit(function() {
@@ -78,10 +78,14 @@ function pmpro_sws_section_select_sitewide_sale_callback() {
 function pmpro_sws_select_sitewide_sale_callback() {
 	global $wpdb;
 	$options              = pmprosws_get_options();
-	$active_sitewide_sale = $options['active_sitewide_sale_id'];
-	$sitewide_sales       = get_posts([
-		'post_type' => 'sws_sitewide_sale',
-	]);
+	if ( ! empty( $options['active_sitewide_sale_id'] ) ) {
+		$active_sitewide_sale = $options['active_sitewide_sale_id'];
+	}
+	$sitewide_sales       = get_posts(
+		[
+			'post_type' => 'sws_sitewide_sale',
+		]
+	);
 	?>
 	<select class="pmpro_sws_sitewide_sale_select pmpro_sws_option" id="pmpro_sws_sitewide_sale_select" name="pmpro_sitewide_sale[active_sitewide_sale_id]">
 	<option value=-1></option>

@@ -1,5 +1,5 @@
 === Paid Memberships Pro - Sitewide Sale Add On ===
-Contributors: strangerstudios, dlparker1005
+Contributors: strangerstudios, dlparker1005, pbrocks
 Tags: paid memberships pro, pmpro, memberships, ecommerce
 Requires at least:
 Tested up to: 4.9.6
