@@ -3,7 +3,7 @@
  * Plugin Name: Paid Memberships Pro - Sitewide Sale Add On
  * Plugin URI: https://www.paidmembershipspro.com/add-ons/sitewide-sale/
  * Description: Run a sitewide sale (Black Friday, Cyber Monday, etc.) with Paid Memberships Pro
- * Author: strangerstudios, dlparker1005
+ * Author: strangerstudios, dlparker1005, pbrocks
  * Author URI: https://www.paidmembershipspro.com
  * Version: .1
  * Plugin URI:
@@ -23,6 +23,14 @@ require_once PMPROSWS_DIR . '/includes/checkout.php';
 require_once PMPROSWS_DIR . '/includes/banners.php';
 require_once PMPROSWS_DIR . '/includes/reports.php';
 require_once PMPROSWS_DIR . '/includes/templates.php';
+
+require_once PMPROSWS_DIR . '/includes/classes/class-sws-customizer.php';
+require_once PMPROSWS_DIR . '/includes/classes/class-sws-meta-boxes.php';
+require_once PMPROSWS_DIR . '/includes/classes/class-custom-post-types.php';
+
+PMPro_SWS_Customizer::init();
+Custom_Post_Types::init();
+
 
 /**
  * Enqueues selectWoo
@@ -44,4 +52,3 @@ function pmpro_sws_frontend_scripts() {
 	wp_enqueue_style( 'frontend' );
 }
 add_action( 'wp_enqueue_scripts', 'pmpro_sws_frontend_scripts' );
-

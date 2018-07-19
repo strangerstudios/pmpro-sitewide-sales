@@ -16,16 +16,21 @@ function pmpro_sws_check_cookie() {
 	if ( ! is_page( $pmpro_pages['checkout'] ) || empty( $_REQUEST['level'] ) || ! empty( $_REQUEST['discount_code'] ) ) {
 		return;
 	}
-	$options = pmprosws_get_options();
-	if ( empty( $options['discount_code_id'] ) ) {
+	$options              = pmprosws_get_options();
+	$active_sitewide_sale = $options['active_sitewide_sale_id'];
+	$current_discount     = get_post_meta( $active_sitewide_sale, 'discount_code_id', true );
+	if ( empty( $current_discount ) ||
+		date( 'Y-m-d' ) < get_post_meta( $active_sitewide_sale, 'start_date', true ) ||
+		date( 'Y-m-d' ) > get_post_meta( $active_sitewide_sale, 'end_date', true )
+	) {
 		return;
 	}
-	$cookie_name = 'pmpro_sitewide_sale_' . $options['discount_code_id'] . '_tracking';
+	$cookie_name = 'pmpro_sitewide_sale_' . $current_discount . '_tracking';
 	if ( ! isset( $_COOKIE[ $cookie_name ] ) || false == strpos( $_COOKIE[ $cookie_name ], ';1;' ) ) {
 			return;
 	}
 	$checkout_level = $_REQUEST['level'];
-	$discount       = $options['discount_code_id'];
+	$discount       = $current_discount;
 	$code_levels    = $wpdb->get_results( "SELECT * FROM $wpdb->pmpro_discount_codes_levels WHERE code_id = $discount", OBJECT );
 	foreach ( $code_levels as $code ) {
 		if ( $code->level_id . '' === $checkout_level ) {
