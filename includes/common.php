@@ -15,15 +15,7 @@ function pmprosws_get_options() {
 	// Set the defaults.
 	if ( empty( $options ) ) {
 		$options = array(
-			'discount_code_id'     => false,
-			'landing_page_post_id' => false,
-			'use_banner'           => 'no',
-			'banner_title'         => '',
-			'banner_description'   => '',
-			'link_text'            => '',
-			'css_option'           => '',
-			'hide_for_levels'      => [],
-			'hide_on_checkout'     => false,
+			'active_sitewide_sale_id' => false,
 		);
 	}
 	return $options;
