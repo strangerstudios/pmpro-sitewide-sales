@@ -5,6 +5,18 @@
  * @package pmpro-sitewide-sale/includes
  */
 
+/**
+ * Adds meta boxes to edit page
+ **/
+function pmpro_sws_page_meta_wrapper() {
+	add_meta_box( 'pmpro_sws_page_meta', __( 'Set Sitewide Sale', 'pmpro-sitewide-sale' ), 'pmpro_sws_page_meta', 'page', 'side' );
+}
+if ( is_admin() ) {
+	add_action( 'admin_menu', 'pmpro_sws_page_meta_wrapper' );
+	add_action( 'save_post', 'pmpro_sws_page_save' );
+	add_filter( 'default_content', 'pmpro_sws_page_defaults', 10, 2 );
+}
+
 add_action( 'admin_menu', 'pmpro_sws_menu' );
 /**
  * Add settings menu
@@ -69,8 +81,8 @@ function pmpro_sws_admin_init() {
 	add_settings_field( 'pmpro-sws-banners', __( 'Banners', 'pmpro_sitewide_sale' ), 'pmpro_sws_banners_callback', 'pmpro-sws', 'pmpro-sws-section3' );
 	// TODO: split all of the banner settings out into their own fields.
 	add_settings_section( 'pmpro-sws-section4', __( 'Step 4: Monitor Your Sale', 'pmpro_sitewide_sale' ), 'pmpro_sws_section_step4', 'pmpro-sws' );
-
 }
+
 function load_custom_wp_admin_scripts1( $hook ) {
 	wp_register_script( 'sws-options', plugins_url( 'js/pmpro-sws-option.js', dirname( __FILE__ ) ), array( 'jquery' ), '1.1' );
 	if ( $hook === 'memberships_page_pmpro-sws' ) {
@@ -162,15 +174,20 @@ function pmpro_sws_sale_page_callback() {
 		}
 		echo '<option value=' . esc_html( $page->ID ) . esc_html( $selected_modifier ) . '>' . esc_html( $page->post_title ) . '</option>';
 	}
-	echo '</select> ' . esc_html( 'or', 'pmpro_sitewide_sale' ) . ' <a href="' . esc_html( get_admin_url() ) . 'post-new.php?post_type=page&set_sitewide_sale=true&sws_default=true">
-			 ' . esc_html( 'create a new page', 'pmpro_sitewide_sale' ) . '</a>.';
-	?>
-	<script>
-		jQuery( document ).ready(function() {
-			// jQuery("#pmpro_sws_landing_page_select").selectWoo();
-		});
-	</script>
-	<?php
+	echo '</select><span id="pmpro_sws_after_choose_page">';
+	if ( $current_page <= 0 ) {
+		echo esc_html( 'or', 'pmpro_sitewide_sale' ) . ' <a href="' . esc_html( get_admin_url() ) . 'post-new.php?post_type=page&set_sitewide_sale=true">
+	 		 ' . esc_html( 'create a new page', 'pmpro_sitewide_sale' ) . '</a>.';
+	} else {
+		?>
+		<a target="_blank" href="post.php?post=<?php echo $current_page; ?>&action=edit"
+				class="button button-secondary pmpro_page_edit"><?php _e( 'edit page', 'paid-memberships-pro' ); ?></a>
+		&nbsp;
+		<a target="_blank" href="<?php echo get_permalink( $current_page ); ?>"
+				class="button button-secondary pmpro_page_view"><?php _e( 'view page', 'paid-memberships-pro' ); ?></a>
+		<?php
+	}
+		echo '</span>'
 }
 
 /**
@@ -228,14 +245,6 @@ function pmpro_sws_banners_callback() {
 			<th scope="row" valign="top"><label>' . esc_html( 'Hide Banner at Checkout', 'pmpro-sitewide-sale' ) . '</label></th>
 			<td><input class="pmpro_sws_option" type="checkbox" name="pmpro_sitewide_sale[hide_on_checkout]" ' . esc_html( $checked_modifier ) . '/></td>
 		</tr></table>';
-		?>
-		<script>
-			jQuery( document ).ready(function() {
-				// jQuery("#pmpro_sws_use_banner_select").selectWoo();
-				// jQuery("#pmpro_sws_hide_levels_select").selectWoo();
-			});
-		</script>
-		<?php
 }
 
 /**
@@ -322,8 +331,8 @@ function pmpro_sws_discount_codes_save( $saveid ) {
 	if ( ! empty( $_REQUEST['sitewide_sale'] ) ) {
 		$sale_page = $options['landing_page_post_id'];
 		if ( false !== $sale_page && '-1' !== $sale_page ) {
-			echo '<div id="message" class="updated fade"><p>View sale page <a href=' .
-			esc_url( get_permalink( $options['landing_page_post_id'] ) ) . '>here</a>.</p></div>';
+			echo '<div id="message" class="updated fade"><p>' . esc_html( 'View sale page', 'pmpro-sitewide-sale' ) . '<a href=' .
+			esc_url( get_permalink( $options['landing_page_post_id'] ) ) . '>' . esc_html( 'here', 'pmpro-sitewide-sale' ) . '</a>.</p></div>';
 		}
 		$options['discount_code_id'] = $saveid;
 	} elseif ( $options['discount_code_id'] === $saveid . '' ) {
@@ -379,16 +388,4 @@ function pmpro_sws_page_save( $post_id ) {
 		$options['landing_page_post_id'] = false;
 	}
 	pmprosws_save_options( $options );
-}
-
-/**
- * Adds meta boxes to edit page
- **/
-function pmpro_sws_page_meta_wrapper() {
-	add_meta_box( 'pmpro_sws_page_meta', __( 'Set Sitewide Sale', 'pmpro-sitewide-sale' ), 'pmpro_sws_page_meta', 'page', 'side' );
-}
-if ( is_admin() ) {
-	add_action( 'admin_menu', 'pmpro_sws_page_meta_wrapper' );
-	add_action( 'save_post', 'pmpro_sws_page_save' );
-	add_filter( 'default_content', 'pmpro_sws_page_defaults', 10, 2 );
 }

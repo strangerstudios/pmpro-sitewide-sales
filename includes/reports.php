@@ -30,7 +30,7 @@ function pmpro_report_pmpro_sws_reports_page() {
 	$options          = pmprosws_get_options();
 	$codes            = $wpdb->get_results( "SELECT * FROM $wpdb->pmpro_discount_codes", OBJECT );
 	$current_discount = $options['discount_code_id'];
-	echo '<table><tr><td><h3>Choose Code to View Reports For: </h3></td><td><select id="pmpro_sws_discount_code_select">';
+	echo '<table><tr><td><h3>' . esc_html( 'Choose Code to View Reports For', 'pmpro-sitewide-sale' ) . ': </h3></td><td><select id="pmpro_sws_discount_code_select">';
 	foreach ( $codes as $code ) {
 		$selected_modifier = '';
 		if ( $code->id === $current_discount ) {
@@ -72,7 +72,7 @@ function pmpro_sws_get_report_for_code( $code_id = null ) {
 		$code_id = $options['discount_code_id'];
 	}
 	if ( false === $code_id ) {
-		return 'No Discount Code Set.';
+		return __('No Discount Code Set.', 'pmpro-sitewide-sale');
 	}
 	$code_id = $code_id . '';
 	$code_name = $wpdb->get_results( $wpdb->prepare( "SELECT code FROM $wpdb->pmpro_discount_codes WHERE id=%s", $code_id ) )[0]->code;
@@ -112,19 +112,19 @@ function pmpro_sws_get_report_for_code( $code_id = null ) {
 	$banner_impressions                = $reports['banner_impressions'];
 	$landing_page_visits               = $reports['landing_page_visits'];
 	$landing_page_after_banner         = $reports['landing_page_after_banner'];
-	$landing_page_after_banner_percent = ( $landing_page_after_banner / $banner_impressions ) * 100;
+	$landing_page_after_banner_percent = pmpro_sws_safe_divide( $landing_page_after_banner, $banner_impressions ) * 100;
 	if ( is_nan( $landing_page_after_banner_percent ) ) {
 		$landing_page_after_banner_percent = 0;
 	}
 	$landing_page_not_after_banner         = $landing_page_visits - $landing_page_after_banner;
-	$landing_page_not_after_banner_percent = ( $landing_page_not_after_banner / $landing_page_visits ) * 100;
+	$landing_page_not_after_banner_percent = pmpro_sws_safe_divide( $landing_page_not_after_banner, $landing_page_visits ) * 100;
 	if ( is_nan( $landing_page_not_after_banner_percent ) ) {
 		$landing_page_not_after_banner_percent = 0;
 	}
 	$checkout_conversions_with_code    = $reports['checkout_conversions_with_code'];
 	$checkout_conversions_without_code = $reports['checkout_conversions_without_code'];
 	$checkout_conversions              = $checkout_conversions_with_code + $checkout_conversions_without_code;
-	$checkout_conversions_percent      = ( $checkout_conversions / $landing_page_visits ) * 100;
+	$checkout_conversions_percent      = pmpro_sws_safe_divide( $checkout_conversions, $landing_page_visits ) * 100;
 	if ( is_nan( $checkout_conversions_percent ) ) {
 		$checkout_conversions_percent = 0;
 	}
@@ -180,6 +180,16 @@ function pmpro_sws_get_report_for_code( $code_id = null ) {
 			</tbody>
 		</table>
 	</span>';
+}
+
+function pmpro_sws_safe_divide( $num, $denom ) {
+	if ( $denom <= 0 ) {
+		if ( $num <= 0 ) {
+			return 0;
+		}
+		return 1; // 100%
+	}
+	return $num / $denom;
 }
 
 /**

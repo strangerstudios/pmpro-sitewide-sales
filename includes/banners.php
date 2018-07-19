@@ -31,3 +31,16 @@ function pmpro_sws_init_banners() {
 		}
 	}
 }
+
+/**
+ * Returns if the user is on the login page (currently works for TML)
+ * Can probably switch to is_login_page from PMPro core
+ */
+function pmpro_sws_is_login_page() {
+	global $post;
+	$slug = get_site_option( 'tml_login_slug' );
+	if ( false === $slug ) {
+		$slug = 'login';
+	}
+	return ( $slug === $post->post_name || is_page( 'login' ) || in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) ) );
+}
