@@ -46,6 +46,14 @@ class SWS_Meta_Boxes {
 			'above_editor',
 			'high'
 		);
+		add_meta_box(
+			'pmpro_sws_cpt_step_3_2',
+			__( 'Step 3.2: Create Landing Page', 'pmpro_sitewide_sale' ),
+			array( $this, 'display_step_3_2' ),
+			array( 'sws_sitewide_sale' ),
+			'above_editor',
+			'high'
+		);
 	}
 	public function move_metaboxes_above_editor() {
 		// Get the globals:
@@ -73,9 +81,9 @@ class SWS_Meta_Boxes {
 
 		// Removing Step 1
 		add_meta_box(
-			'pmpro_sws_cpt_step_3',
-			__( 'Step 3: Steup Banners', 'pmpro_sitewide_sale' ),
-			array( $this, 'display_step_3' ),
+			'pmpro_sws_cpt_step_3_7',
+			__( 'Step 3.7: Steup Banners', 'pmpro_sitewide_sale' ),
+			array( $this, 'display_step_3_7' ),
 			array( 'sws_sitewide_sale' ),
 			'normal',
 			'high'
@@ -93,28 +101,28 @@ class SWS_Meta_Boxes {
 
 	function remove_editor_buttons( $buttons ) {
 		$remove_buttons = array(
-        'bold',
-        'italic',
-        'strikethrough',
-        'bullist',
-        'numlist',
-        'blockquote',
-        'hr', // horizontal line
-        'alignleft',
-        'aligncenter',
-        'alignright',
-        'link',
-        'unlink',
-        'wp_more', // read more link
-        'spellchecker',
-        'dfw', // distraction free writing mode
-        'wp_adv', // kitchen sink toggle (if removed, kitchen sink will always display)
-    );
-    foreach ( $buttons as $button_key => $button_value ) {
-        if ( in_array( $button_value, $remove_buttons ) ) {
-            unset( $buttons[ $button_key ] );
-        }
-    }
+			'bold',
+			'italic',
+			'strikethrough',
+			'bullist',
+			'numlist',
+			'blockquote',
+			'hr', // horizontal line
+			'alignleft',
+			'aligncenter',
+			'alignright',
+			'link',
+			'unlink',
+			'wp_more', // read more link
+			'spellchecker',
+			'dfw', // distraction free writing mode
+			'wp_adv', // kitchen sink toggle (if removed, kitchen sink will always display)
+		);
+		foreach ( $buttons as $button_key => $button_value ) {
+			if ( in_array( $button_value, $remove_buttons ) ) {
+				unset( $buttons[ $button_key ] );
+			}
+		}
 		?>
 	<script>
 		jQuery( document ).ready(function() {
@@ -268,7 +276,17 @@ class SWS_Meta_Boxes {
 		<?php
 	}
 
-	public function display_step_3( $post ) {
+	public function display_step_3_1() {
+		$return = '<h2>' . __FUNCTION__ . '</h2>';
+		return $return;
+	}
+
+	public function display_step_3_2( $post ) {
+		$value = apply_filters( 'example_filter', 'Default value for example_filter' );
+		echo $value;
+	}
+
+	public function display_step_3_7( $post ) {
 		// This should be optimized to use a single get_post_meta call.
 		$use_banner = esc_html( get_post_meta( $post->ID, 'use_banner', true ) );
 		if ( empty( $use_banner ) ) {
@@ -404,7 +422,7 @@ class SWS_Meta_Boxes {
 				update_post_meta( $post_id, 'end_date', trim( $_POST['pmpro_sws_end_date'] ) );
 			}
 			update_post_meta( $post_id, 'custom_dates', true );
-		} elseif( isset( $_POST['pmpro_sws_discount_code_id'] ) ) {
+		} elseif ( isset( $_POST['pmpro_sws_discount_code_id'] ) ) {
 			$discount_code_dates = $wpdb->get_results( $wpdb->prepare( "SELECT starts, expires FROM $wpdb->pmpro_discount_codes where id = %d", intval( $_POST['pmpro_sws_discount_code_id'] ) ) );
 			if ( ! empty( $discount_code_dates ) && ! empty( $discount_code_dates[0] ) && ! empty( $discount_code_dates[0]->starts ) && ! empty( $discount_code_dates[0]->expires ) ) {
 				update_post_meta( $post_id, 'start_date', $discount_code_dates[0]->starts );
@@ -491,7 +509,7 @@ class SWS_Meta_Boxes {
 	function landing_page_on_save( $saveid ) {
 		if ( isset( $_REQUEST['pmpro_sws_callback'] ) ) {
 			update_post_meta( $_REQUEST['pmpro_sws_callback'], 'landing_page_post_id', $saveid );
-			//echo '<a href="' . esc_html( get_admin_url() ) . 'post.php?post=' . $_REQUEST['pmpro_sws_callback'] . '&action=edit">Click here to go back to editing Sitewide Sale</a>';
+			// echo '<a href="' . esc_html( get_admin_url() ) . 'post.php?post=' . $_REQUEST['pmpro_sws_callback'] . '&action=edit">Click here to go back to editing Sitewide Sale</a>';
 		}
 	}
 }
