@@ -1,11 +1,11 @@
 <?php
-/*
-Plugin Name: Page Template Plugin : 'Good To Be Bad'
-Plugin URI: http://www.wpexplorer.com/wordpress-page-templates-plugin/
-Version: 1.1.0
-Author: WPExplorer
-Author URI: http://www.wpexplorer.com/
-*/
+/**
+ * Plugin Nam  Page Template Plugin : 'Good To Be Bad'
+ * Plugin URI: http://www.wpexplorer.com/wordpress-page-templates-plugin/
+ * Version: 1.1.0
+ * Author: WPExplorer
+ * Author URI: http://www.wpexplorer.com/
+ */
 
 class PageTemplater {
 
@@ -79,7 +79,6 @@ class PageTemplater {
 
 	/**
 	 * Adds our template to the page dropdown for v4.7+
-	 *
 	 */
 	public function add_new_template( $posts_templates ) {
 		$posts_templates = array_merge( $posts_templates, $this->templates );
@@ -131,9 +130,11 @@ class PageTemplater {
 		}
 
 		// Return default template if we don't have a custom one defined.
-		if ( ! isset( $this->templates[ get_post_meta(
-			$post->ID, '_wp_page_template', true
-		) ] ) ) {
+		if ( ! isset(
+			$this->templates[ get_post_meta(
+				$post->ID, '_wp_page_template', true
+			) ]
+		) ) {
 			return $template;
 		}
 
