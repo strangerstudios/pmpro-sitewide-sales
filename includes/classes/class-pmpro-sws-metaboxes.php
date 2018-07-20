@@ -1,8 +1,11 @@
 <?php
+// namespace PMPro_Sitewide_Sale\includes\classes;
+defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
+
 /**
  * Register a meta box using a class.
  */
-class SWS_Meta_Boxes {
+class PMPro_SWS_MetaBoxes {
 
 	/**
 	 * Constructor.
@@ -213,7 +216,7 @@ class SWS_Meta_Boxes {
 		echo '<option value = ' . esc_html( $code->id ) . esc_html( $selected_modifier ) . '>' . esc_html( $code->code, 'pmpro-sitewide-sale' ) . '</option>';
 	}
 	echo '</select> ' . esc_html( 'or', 'pmpro_sitewide_sale' ) .
-	' <input type="submit" name="pmpro_sws_create_discount" value="' . esc_html( 'create a new discount code', 'pmpro-sitewide-sale' ) . '"><br/><br/>';
+	' <input type="submit" class="button button-primary" name="pmpro_sws_create_discount" value="' . esc_html( 'create a new discount code', 'pmpro-sitewide-sale' ) . '"><br/><br/>';
 	echo '<label for="pmpro_sws_custom_sale_dates">Custom Sale Start/End Dates</label>
 	<input type="checkbox" id="pmpro_sws_custom_sale_dates" name="pmpro_sws_custom_sale_dates" ' . $checked_modifier_date . '\><br/>';
 	echo '<div id="pmpro_sws_custom_date_select"' . $hidden_modifier_date . '>
@@ -247,7 +250,7 @@ class SWS_Meta_Boxes {
 			}
 			echo '<option value=' . esc_html( $page->ID ) . esc_html( $selected_modifier ) . '>' . esc_html( $page->post_title ) . '</option>';
 		}
-		echo '</select> ' . esc_html( 'or', 'pmpro_sitewide_sale' ) . ' <input type="submit" name="pmpro_sws_create_landing_page" value="' . esc_html( 'create a new landing page', 'pmpro-sitewide-sale' ) . '">';
+		echo '</select> ' . esc_html( 'or', 'pmpro_sitewide_sale' ) . ' <input type="submit" class="button button-primary" name="pmpro_sws_create_landing_page" value="' . esc_html( 'create a new landing page', 'pmpro-sitewide-sale' ) . '">';
 	}
 
 	public function display_step_3_1() {
@@ -480,4 +483,4 @@ class SWS_Meta_Boxes {
 	}
 }
 
-new SWS_Meta_Boxes();
+new PMPro_SWS_MetaBoxes();

@@ -2,14 +2,14 @@
 // namespace PMPro_Sitewide_Sale\includes\classes;
 defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 
-class Custom_Post_Types {
+class PMPro_SWS_Post_Types {
 
 	public static function init() {
 		add_action( 'init', array( __CLASS__, 'register_sitewide_sale_cpt' ) );
 	}
 
 	public static function register_sitewide_sale_cpt() {
-		$labels = Custom_Post_Types::get_label_defaults();
+		$labels = self::get_label_defaults();
 		$labels['name']                  = _x( 'Sitewide Sales', 'Post Type General Name', 'pmpro-sitewide-sale' );
 		$labels['singular_name']         = _x( 'Sitewide Sale', 'Post Type Singular Name', 'pmpro-sitewide-sale' );
 		$labels['all_items']             = __( 'All Sitewide Sales', 'pmpro-sitewide-sale' );
@@ -17,7 +17,7 @@ class Custom_Post_Types {
 		$labels['name_admin_bar']        = __( 'Sitewide Sales', 'pmpro-sitewide-sale' );
 		$labels['add_new_item']        = __( 'Add New Sitewide Sale', 'pmpro-sitewide-sale' );
 
-		$args = Custom_Post_Types::get_args_defaults();
+		$args = self::get_args_defaults();
 		$args['label']               = __( 'Sitewide Sales', 'pmpro-sitewide-sale' );
 		$args['description']         = __( 'Sitewide Sales', 'pmpro-sitewide-sale' );
 		$args['labels']              = $labels;
@@ -40,12 +40,12 @@ class Custom_Post_Types {
 
 
 	public static function register_sidecat_taxonomy() {
-		$tax_labels = Custom_Post_Types::get_tax_label_defaults();
+		$tax_labels = self::get_tax_label_defaults();
 		$tax_labels['name']                  = _x( 'SideCats', 'Taxonomy General Name', 'pmpro-sitewide-sale' );
 		$tax_labels['singular_name']         = _x( 'SideCat', 'Taxonomy Singular Name', 'pmpro-sitewide-sale' );
 		$tax_labels['menu_name']         = _x( 'SideCat', 'Taxonomy Singular Name', 'pmpro-sitewide-sale' );
 
-		$tax_args = Custom_Post_Types::get_tax_args_defaults();
+		$tax_args = self::get_tax_args_defaults();
 		$tax_args['label']               = __( 'SideCat', 'pmpro-sitewide-sale' );
 		$tax_args['labels']              = $tax_labels;
 		$tax_args['hierarchical']         = __( true, 'pmpro-sitewide-sale' );
