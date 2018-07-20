@@ -19,6 +19,8 @@ function pmpro_sws_init_banners() {
 		return;
 	}
 
+	$membership_level = pmpro_getMembershipLevelForUser();
+
 	if ( false !== get_post_meta( $active_sitewide_sale, 'discount_code_id', true ) &&
 				false !== get_post_meta( $active_sitewide_sale, 'landing_page_post_id', true ) &&
 				'no' !== get_post_meta( $active_sitewide_sale, 'use_banner', true ) &&
@@ -26,7 +28,7 @@ function pmpro_sws_init_banners() {
 				! in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) ) &&
 				! is_page( intval( get_post_meta( $active_sitewide_sale, 'landing_page_post_id', true ) ) ) &&
 				! ( get_post_meta( $active_sitewide_sale, 'hide_on_checkout', true ) && is_page( $pmpro_pages['checkout'] ) ) &&
-				! in_array( pmpro_getMembershipLevelForUser()->ID, get_post_meta( $active_sitewide_sale, 'hide_for_levels', true ), true ) &&
+				( false === $membership_level || ! in_array( $membership_level->ID, get_post_meta( $active_sitewide_sale, 'hide_for_levels', true ), true ) ) &&
 				date( 'Y-m-d' ) > get_post_meta( $active_sitewide_sale, 'start_date', true ) &&
 				date( 'Y-m-d' ) < get_post_meta( $active_sitewide_sale, 'end_date', true )
 			) {

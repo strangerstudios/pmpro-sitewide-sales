@@ -13,7 +13,7 @@ add_action( 'posts_selection', 'pmpro_sws_check_cookie' );
 function pmpro_sws_check_cookie() {
 	global $wpdb, $post, $pmpro_pages;
 
-	if ( ! is_page( $pmpro_pages['checkout'] ) || empty( $_REQUEST['level'] ) || ! empty( $_REQUEST['discount_code'] ) ) {
+	if ( empty( $_REQUEST['level'] ) || ! empty( $_REQUEST['discount_code'] ) ) {
 		return;
 	}
 	$options              = pmprosws_get_options();

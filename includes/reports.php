@@ -27,17 +27,21 @@ function pmpro_report_pmpro_sws_reports_widget() {
  */
 function pmpro_report_pmpro_sws_reports_page() {
 	global $wpdb;
-	$options          = pmprosws_get_options();
-	$codes            = $wpdb->get_results( "SELECT * FROM $wpdb->pmpro_discount_codes", OBJECT );
-	$current_discount = $options['discount_code_id'];
-	echo '<table><tr><td><h3>' . esc_html( 'Choose Code to View Reports For', 'pmpro-sitewide-sale' ) . ': </h3></td><td><select id="pmpro_sws_discount_code_select">';
+	$options              = pmprosws_get_options();
+	$sitewide_sales = get_posts([
+		'post_type' => 'sws_sitewide_sale',
+		'post_status' => 'publish',
+		'numberposts' => -1
+	]);
+	$active_sitewide_sale = $options['active_sitewide_sale_id'];
+	echo '<table><tr><td><h3>' . esc_html( 'Choose Sitewide Sale to View Reports For', 'pmpro-sitewide-sale' ) . ': </h3></td><td><select id="pmpro_sws_sitewide_sale_select">';
 
-	foreach ( $codes as $code ) {
+	foreach ( $sitewide_sales as $sitewide_sale ) {
 		$selected_modifier = '';
-		if ( $code->id === $current_discount ) {
+		if ( $sitewide_sale->ID . '' === $active_sitewide_sale . '' ) {
 			$selected_modifier = ' selected="selected"';
 		}
-		echo '<option value = ' . esc_html( $code->id ) . esc_html( $selected_modifier ) . '>' . esc_html( $code->code, 'pmpro-sitewide-sale' ) . '</option>';
+		echo '<option value = ' . esc_html( $sitewide_sale->ID ) . esc_html( $selected_modifier ) . '>' . esc_html( get_the_title( $sitewide_sale->ID ), 'pmpro-sitewide-sale' ) . '</option>';
 	}
 	echo '</select></td></tr></table>';
 	echo '<div id="pmpro_sws_reports_container">';
@@ -46,11 +50,11 @@ function pmpro_report_pmpro_sws_reports_page() {
 	?>
 	<script>
 		jQuery( document ).ready(function() {
-			jQuery("#pmpro_sws_discount_code_select").selectWoo();
-			jQuery("#pmpro_sws_discount_code_select").change(function() {
+			jQuery("#pmpro_sws_sitewide_sale_select").selectWoo();
+			jQuery("#pmpro_sws_sitewide_sale_select").change(function() {
 				var data = {
 					'action': 'pmpro_sws_ajax_reporting',
-					'code_id': jQuery("#pmpro_sws_discount_code_select").val()
+					'sitewide_sale_id': jQuery("#pmpro_sws_sitewide_sale_select").val()
 				};
 				jQuery.post('<?php echo esc_html( admin_url( 'admin-ajax.php' ) ); ?>', data, function(response) {
 					jQuery("#pmpro_sws_reports_container").html(response.slice(0, -1));
@@ -62,24 +66,24 @@ function pmpro_report_pmpro_sws_reports_page() {
 }
 
 function pmpro_sws_ajax_reporting() {
-	echo pmpro_sws_get_report_for_code( $_POST['code_id'] );
+	echo pmpro_sws_get_report_for_code( $_POST['sitewide_sale_id'] );
 }
 add_action( 'wp_ajax_pmpro_sws_ajax_reporting', 'pmpro_sws_ajax_reporting' );
 
-function pmpro_sws_get_report_for_code( $code_id = null ) {
+function pmpro_sws_get_report_for_code( $sitewide_sale_id = null ) {
 	global $wpdb;
 	$options              = pmprosws_get_options();
 	$active_sitewide_sale = $options['active_sitewide_sale_id'];
-	if ( null === $code_id ) {
-		$code_id = get_post_meta( $active_sitewide_sale, 'discount_code_id', true );
+	if ( null === $sitewide_sale_id ) {
+		$sitewide_sale_id = $active_sitewide_sale;
 	}
-	if ( false === $code_id ) {
-		return __( 'No Discount Code Set.', 'pmpro-sitewide-sale' );
+	if ( false === $sitewide_sale_id ) {
+		return __( 'No Sitewide Sale Set.', 'pmpro-sitewide-sale' );
 	}
-	$code_id = $code_id . '';
+	$code_id = get_post_meta($active_sitewide_sale, 'discount_code_id', true) . '';
 	$code_name = $wpdb->get_results( $wpdb->prepare( "SELECT code FROM $wpdb->pmpro_discount_codes WHERE id=%s", $code_id ) )[0]->code;
 	// check if discount_code_id is set.
-	$reports = get_option( 'pmpro_sitewide_sale_' . $code_id . '_tracking' );
+	$reports = get_option( 'pmpro_sitewide_sale_' . $sitewide_sale_id . '_tracking' );
 	if ( false === $reports ) {
 		$reports = array(
 			'banner_impressions'                => 0,
@@ -88,11 +92,10 @@ function pmpro_sws_get_report_for_code( $code_id = null ) {
 			'checkout_conversions_with_code'    => 0,
 			'checkout_conversions_without_code' => 0,
 		);
-		update_option( 'pmpro_sitewide_sale_' . $code_id . '_tracking', $reports, 'no' );
+		update_option( 'pmpro_sitewide_sale_' . $sitewide_sale_id . '_tracking', $reports, 'no' );
 	}
 
 	// Reports regarding total sales.
-	$discount_code_dates  = $wpdb->get_results( $wpdb->prepare( "SELECT starts, expires FROM $wpdb->pmpro_discount_codes where id = %d", intval( $code_id ) ) )[0];
 	$orders_during_sale   = $wpdb->get_results( $wpdb->prepare( "SELECT orders.total, codes.code_id FROM $wpdb->pmpro_membership_orders orders LEFT JOIN wp_pmpro_discount_codes_uses codes ON orders.id = codes.order_id WHERE orders.timestamp >= %s AND orders.timestamp <= %s", get_post_meta( $active_sitewide_sale, 'start_date', true ), date( 'Y-m-d', strtotime( '+1 day', strtotime( get_post_meta( $active_sitewide_sale, 'end_date', true ) ) ) ) ) );
 	$orders_with_code     = 0;
 	$revenue_with_code    = 0;
@@ -135,8 +138,8 @@ function pmpro_sws_get_report_for_code( $code_id = null ) {
 		<table class="widefat fixed striped">
 			<thead>
 				<tr>
-					<td>' . esc_html( 'Code', 'pmpro_sitewide_sale' ) . '</td>
-					<td>' . esc_html( $code_name ) . '</td>
+					<td>' . esc_html( 'Sitewide Sale', 'pmpro_sitewide_sale' ) . '</td>
+					<td>' . esc_html( get_the_title( $sitewide_sale_id ) ) . '</td>
 				</tr>
 			</thead>
 			<tbody>
@@ -219,7 +222,7 @@ function pmpro_sws_tracking_js() {
 		'confirmation_page' => is_page( $pmpro_pages['confirmation'] ),
 		'checkout_page'     => is_page( $pmpro_pages['checkout'] ),
 		'used_sale_code'    => $used_discount_code,
-		'discount_code_id'  => get_post_meta( $active_sitewide_sale, 'discount_code_id', true ),
+		'sitewide_sale_id'  => $active_sitewide_sale,
 		'ajax_url'          => admin_url( 'admin-ajax.php' ),
 	);
 
@@ -233,9 +236,9 @@ add_action( 'wp_enqueue_scripts', 'pmpro_sws_tracking_js' );
 
 function pmpro_sws_ajax_tracking() {
 	global $wpdb;
-	$code_id = $_POST['code_id'];
+	$sitewide_sale_id = $_POST['sitewide_sale_id'];
 	$element = $_POST['element'];
-	$reports = get_option( 'pmpro_sitewide_sale_' . $code_id . '_tracking' );
+	$reports = get_option( 'pmpro_sitewide_sale_' . $sitewide_sale_id . '_tracking' );
 	if ( false === $reports ) {
 		$reports = array(
 			'banner_impressions'                => 0,
@@ -247,7 +250,7 @@ function pmpro_sws_ajax_tracking() {
 	}
 	if ( array_key_exists( $element, $reports ) ) {
 		$reports[ $element ] += 1;
-		update_option( 'pmpro_sitewide_sale_' . $code_id . '_tracking', $reports, 'no' );
+		update_option( 'pmpro_sitewide_sale_' . $sitewide_sale_id . '_tracking', $reports, 'no' );
 	} else {
 		return -1;
 	}
