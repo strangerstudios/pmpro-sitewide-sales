@@ -14,12 +14,11 @@ class PMPro_SWS_MetaBoxes {
 		if ( is_admin() ) {
 			add_action( 'load-post.php', array( $this, 'init_metabox' ) );
 			add_action( 'load-post-new.php', array( $this, 'init_metabox' ) );
-			add_filter( 'mce_buttons', array( $this, 'remove_editor_buttons' ) );
+			add_filter( 'mce_buttons2', array( $this, 'remove_editor_buttons' ) );
 
 			add_action( 'pmpro_save_discount_code', array( $this, 'discount_code_on_save' ) );
 			add_action( 'save_post', array( $this, 'landing_page_on_save' ), 10, 3 );
 		}
-
 	}
 
 	/**
@@ -35,7 +34,7 @@ class PMPro_SWS_MetaBoxes {
 	public function metaboxes_above_editor( $post_type ) {
 		add_meta_box(
 			'pmpro_sws_cpt_step_1',
-			__( 'Step 1: Choose Discount Code to Associate With Sale', 'pmpro_sitewide_sale' ),
+			__( 'Step 1: Settings to Associate With Sale', 'pmpro_sitewide_sale' ),
 			array( $this, 'display_step_1' ),
 			array( 'sws_sitewide_sale' ),
 			'above_editor',
@@ -43,7 +42,7 @@ class PMPro_SWS_MetaBoxes {
 		);
 		add_meta_box(
 			'pmpro_sws_cpt_step_2',
-			__( 'Step 2: Create Landing Page', 'pmpro_sitewide_sale' ),
+			__( 'Step 2: Action after Click', 'pmpro_sitewide_sale' ),
 			array( $this, 'display_step_2' ),
 			array( 'sws_sitewide_sale' ),
 			'above_editor',
@@ -51,7 +50,7 @@ class PMPro_SWS_MetaBoxes {
 		);
 		add_meta_box(
 			'pmpro_sws_cpt_step_3_2',
-			__( 'Step 3.2: Create Landing Page', 'pmpro_sitewide_sale' ),
+			__( 'Step 3.2: Customize your Message', 'pmpro_sitewide_sale' ),
 			array( $this, 'display_step_3_2' ),
 			array( 'sws_sitewide_sale' ),
 			'above_editor',
@@ -205,7 +204,7 @@ class PMPro_SWS_MetaBoxes {
 			$banner_title = '';
 		}
 	?>
-	<select class="discount_code_select pmpro_sws_option" id="pmpro_sws_discount_code_select" name="pmpro_sws_discount_code_id">
+	<label for="pmpro_sws_discount_code_id"><b>Choose Discount Code</b> </label><select class="discount_code_select pmpro_sws_option" id="pmpro_sws_discount_code_select" name="pmpro_sws_discount_code_id">
 	<option value=-1></option>
 	<?php
 	foreach ( $codes as $code ) {
@@ -217,14 +216,14 @@ class PMPro_SWS_MetaBoxes {
 	}
 	echo '</select> ' . esc_html( 'or', 'pmpro_sitewide_sale' ) .
 	' <input type="submit" class="button button-primary" name="pmpro_sws_create_discount" value="' . esc_html( 'create a new discount code', 'pmpro-sitewide-sale' ) . '"><br/><br/>';
-	echo '<label for="pmpro_sws_custom_sale_dates">Custom Sale Start/End Dates</label>
+	echo '<label for="pmpro_sws_custom_sale_dates"><b>Custom Sale Start/End Dates</b></label>
 	<input type="checkbox" id="pmpro_sws_custom_sale_dates" name="pmpro_sws_custom_sale_dates" ' . $checked_modifier_date . '\><br/>';
 	echo '<div id="pmpro_sws_custom_date_select"' . $hidden_modifier_date . '>
 	<label for="pmpro_sws_start_date">Sale Start Date</label>
 	<input type="date" name="pmpro_sws_start_date" value="' . $start_date . '" /> </br>
 	<label for="pmpro_sws_end_date">Sale End Date</label>
 	<input type="date" name="pmpro_sws_end_date" value="' . $end_date . '" /></div><br/>';
-	echo '<label for="pmpro_sws_custom_sale_title">Custom Banner Title</label>
+	echo '<label for="pmpro_sws_custom_sale_title"><b>Custom Banner Title</b></label>
 	<input type="checkbox" id="pmpro_sws_custom_banner_title" name="pmpro_sws_custom_banner_title" ' . $checked_modifier_title . '\><br/>';
 	echo '<div id="pmpro_sws_custom_title_select"' . $hidden_modifier_title . '>
 	<label for="pmpro_sws_banner_title">Banner Title</label>
@@ -240,7 +239,7 @@ class PMPro_SWS_MetaBoxes {
 		}
 
 		?>
-		<select class="landing_page_select pmpro_sws_option" id="pmpro_sws_landing_page_select" name="pmpro_sws_landing_page_post_id">
+		<label for="pmpro_sws_landing_page_post_id"><b>Create Landing Page</b></label> <select class="landing_page_select pmpro_sws_option" id="pmpro_sws_landing_page_select" name="pmpro_sws_landing_page_post_id">
 		<option value=-1></option>
 		<?php
 		foreach ( $pages as $page ) {
