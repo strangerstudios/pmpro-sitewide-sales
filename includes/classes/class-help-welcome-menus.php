@@ -1,4 +1,7 @@
 <?php
+// namespace PMPro_Sitewide_Sale;
+defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
+
 /**
  * text-domain:
  * register_activation_hook( __FILE__, 'pmprobp_install' );
