@@ -16,4 +16,4 @@ function pmpro_sws_show_top_banner() {
 	</div> <!-- end pmpro_sws_banner -->
 	<?php
 }
-add_action( 'wp_footer', 'pmpro_sws_show_top_banner' );
+add_action( 'wp_head', 'pmpro_sws_show_top_banner' );

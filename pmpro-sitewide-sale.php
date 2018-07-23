@@ -5,7 +5,7 @@
  * Description: Run a sitewide sale (Black Friday, Cyber Monday, etc.) with Paid Memberships Pro
  * Author: strangerstudios, dlparker1005, pbrocks
  * Author URI: https://www.paidmembershipspro.com
- * Version: .1.3
+ * Version: .1.3.1
  * Plugin URI:
  * License: GNU GPLv2+
  * Text Domain: pmpro-sitewide-sale
@@ -24,12 +24,10 @@ require_once PMPROSWS_DIR . '/includes/banners.php';
 require_once PMPROSWS_DIR . '/includes/reports.php';
 require_once PMPROSWS_DIR . '/includes/templates.php';
 
-require_once PMPROSWS_DIR . '/includes/classes/class-pmpro-sws-customizer.php';
 require_once PMPROSWS_DIR . '/includes/classes/class-pmpro-sws-dev-info.php';
 require_once PMPROSWS_DIR . '/includes/classes/class-pmpro-sws-metaboxes.php';
 require_once PMPROSWS_DIR . '/includes/classes/class-pmpro-sws-post-types.php';
 
-PMPro_SWS_Customizer::init();
 PMPro_SWS_Post_Types::init();
 PMPro_SWS_Dev_Info::init();
 
