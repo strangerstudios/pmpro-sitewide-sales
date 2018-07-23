@@ -47,22 +47,6 @@ function pmpro_report_pmpro_sws_reports_page() {
 	echo '<div id="pmpro_sws_reports_container">';
 	echo pmpro_sws_get_report_for_code();
 	echo '</div>';
-	?>
-	<script>
-		jQuery( document ).ready(function() {
-			jQuery("#pmpro_sws_sitewide_sale_select").selectWoo();
-			jQuery("#pmpro_sws_sitewide_sale_select").change(function() {
-				var data = {
-					'action': 'pmpro_sws_ajax_reporting',
-					'sitewide_sale_id': jQuery("#pmpro_sws_sitewide_sale_select").val()
-				};
-				jQuery.post('<?php echo esc_html( admin_url( 'admin-ajax.php' ) ); ?>', data, function(response) {
-					jQuery("#pmpro_sws_reports_container").html(response.slice(0, -1));
-				});
-			});
-		});
-	</script>
-	<?php
 }
 
 function pmpro_sws_ajax_reporting() {
@@ -113,6 +97,10 @@ function pmpro_sws_get_report_for_code( $sitewide_sale_id = null ) {
 	$total_revenue = $revenue_with_code + $revenue_without_code;
 	$total_sales   = $orders_with_code + $orders_without_code;
 
+	//
+	//KEEP ABOVE HERE
+	//
+
 	// Reports regarding advertising/conversions.
 	$banner_impressions                = $reports['banner_impressions'];
 	$landing_page_visits               = $reports['landing_page_visits'];
@@ -133,7 +121,60 @@ function pmpro_sws_get_report_for_code( $sitewide_sale_id = null ) {
 	if ( is_nan( $checkout_conversions_percent ) ) {
 		$checkout_conversions_percent = 0;
 	}
-	return '
+	$reports_to_output = array(
+		'Total Sales' => array(
+			'value'  => '$' . number_format_i18n( $total_revenue ) . ' (' . number_format_i18n( $total_sales ) . ')',
+			'child' => false,
+		),
+		'With the Discount Code' => array(
+			'value'  => '$' . number_format_i18n( $revenue_with_code ) . ' (' . number_format_i18n( $orders_with_code ) . ')',
+			'child' => true,
+		),
+		'Other Revenue' => array(
+			'value'  => '$' . number_format_i18n( $revenue_without_code ) . ' (' . number_format_i18n( $orders_without_code ) . ')',
+			'child' => true,
+		),
+		'Banner Impressions' => array(
+			'value'  => number_format_i18n( $banner_impressions ),
+			'child' => false,
+		),
+		'Sitewide Sale Landing Page Visits' => array(
+			'value'  => number_format_i18n( $landing_page_visits ),
+			'child' => false,
+		),
+		'People Going to Sitewide Sale Page after Seeing Banner' => array(
+			'value'  => number_format_i18n( $landing_page_after_banner ) . ' (' . number_format_i18n( $landing_page_after_banner_percent ) . '% of Banner Impressions)',
+			'child' => true,
+		),
+		'People Going Directly to Sitewide Sale Page without Seeing Banner' => array(
+			'value'  => number_format_i18n( $landing_page_not_after_banner ) . ' (' . number_format_i18n( $landing_page_not_after_banner_percent ) . '% of Sitewide Sale Page Visits)',
+			'child' => true,
+		),
+		'Sales After Visiting Sitewide Sale Page' => array(
+			'value'  => number_format_i18n( $checkout_conversions ) . ' (' . number_format_i18n( $checkout_conversions_percent ) . '% of Sitewide Sale Page Visits)',
+			'child' => false,
+		),
+		'Using the Discount Code ' . $code_name => array(
+			'value'  => number_format_i18n( $checkout_conversions_with_code ),
+			'child' => true,
+		),
+		'Other Sales' => array(
+			'value'  => number_format_i18n( $checkout_conversions_without_code ),
+			'child' => true,
+		),
+	);
+
+	/**
+	 * Modify rows for Sitewide Sale reports.
+	 *
+	 * @since 0.0.1
+	 *
+	 * @param array $reports_to_output contains reports that will be converted to rows.
+	 * @param string  $sitewide_sale_id id of sitewide sale to get reports for.
+	 */
+	$reports_to_output = apply_filters( 'pmpro_sws_reports', $reports_to_output, $sitewide_sale_id );
+
+	$to_return = '
 	<span id="pmpro_sws_reports">
 		<table class="widefat fixed striped">
 			<thead>
@@ -142,49 +183,34 @@ function pmpro_sws_get_report_for_code( $sitewide_sale_id = null ) {
 					<td>' . esc_html( get_the_title( $sitewide_sale_id ) ) . '</td>
 				</tr>
 			</thead>
-			<tbody>
-					<th scope="row"><strong>' . esc_html( 'Total Sales', 'pmpro_sitewide_sale' ) . '</strong></th>
-					<th><strong>' . '$' . number_format_i18n( $total_revenue ) . ' (' . number_format_i18n( $total_sales ) . ')</strong></th>
-				</tr>
-				<tr>
-					<td scope="row">' . esc_html( '- With the Discount Code "', 'pmpro_sitewide_sale' ) . $code_name . '"</td>
-					<td>' . '$' . number_format_i18n( $revenue_with_code ) . ' (' . number_format_i18n( $orders_with_code ) . ')</td>
-				</tr>
-				<tr>
-					<td scope="row">' . esc_html( '- Other Revenue', 'pmpro_sitewide_sale' ) . '</td>
-					<td>' . '$' . number_format_i18n( $revenue_without_code ) . ' (' . number_format_i18n( $orders_without_code ) . ')</td>
-				</tr>
-				<tr>
-					<th scope="row"><strong>' . esc_html( 'Banner Impressions', 'pmpro_sitewide_sale' ) . '</strong></th>
-					<th><strong>' . number_format_i18n( $banner_impressions ) . '</strong></th>
-				</tr>
-				<tr>
-					<th scope="row"><strong>' . esc_html( 'Sitewide Sale Page Visits', 'pmpro_sitewide_sale' ) . '</strong></th>
-					<th><strong>' . number_format_i18n( $landing_page_visits ) . '</strong></th>
-				</tr>
-				<tr>
-					<td scope="row">' . esc_html( '- People Going to Sitewide Sale Page after Seeing Banner', 'pmpro_sitewide_sale' ) . '</td>
-					<td>' . number_format_i18n( $landing_page_after_banner ) . ' (' . number_format_i18n( $landing_page_after_banner_percent ) . '% of Banner Impressions)</td>
-				</tr>
-				<tr>
-					<td scope="row">' . esc_html( '- People Going Directly to Sitewide Sale Page without Seeing Banner', 'pmpro_sitewide_sale' ) . '</td>
-					<td>' . number_format_i18n( $landing_page_not_after_banner ) . ' (' . number_format_i18n( $landing_page_not_after_banner_percent ) . '% of Sitewide Sale Page Visits)</td>
-				</tr>
-				<tr>
-					<th scope="row"><strong>' . esc_html( 'Sales After Visiting Sitewide Sale Page', 'pmpro_sitewide_sale' ) . '</strong></th>
-					<th><strong>' . number_format_i18n( $checkout_conversions ) . ' (' . number_format_i18n( $checkout_conversions_percent ) . '% of Sitewide Sale Page Visits)</strong></th>
-				</tr>
-				<tr>
-					<td scope="row">' . esc_html( '- Using the Discount Code "', 'pmpro_sitewide_sale' ) . $code_name . '"</td>
-					<td>' . number_format_i18n( $checkout_conversions_with_code ) . '</th>
-				</tr>
-				<tr>
-					<td scope="row">' . esc_html( '- Other Sales', 'pmpro_sitewide_sale' ) . '</td>
-					<td>' . number_format_i18n( $checkout_conversions_without_code ) . '</td>
-				</tr>
+			<tbody>';
+
+	foreach ( $reports_to_output as $name => $value ) {
+		if ( ! is_array( $value ) || ! is_string( $name ) || ! isset( $value['value'] ) ) {
+			continue;
+		}
+		if ( ! empty( $value['child'] && true === $value['child'] ) ) {
+			$to_return .= '
+			<tr>
+				<td scope="row"> - ' . esc_html( $name, 'pmpro_sitewide_sale' ) . '</td>
+				<td>' . esc_html( $value['value'], 'pmpro_sitewide_sale' ) . '</td>
+			</tr>
+			';
+		} else {
+			$to_return .= '
+			<tr>
+				<td scope="row"><strong>' . esc_html( $name, 'pmpro_sitewide_sale' ) . '</strong></td>
+				<td><strong>' . esc_html( $value['value'], 'pmpro_sitewide_sale' ) . '</strong></td>
+			</tr>
+			';
+		}
+	}
+
+	$to_return .= '
 			</tbody>
 		</table>
 	</span>';
+	return $to_return;
 }
 
 function pmpro_sws_safe_divide( $num, $denom ) {
@@ -198,6 +224,17 @@ function pmpro_sws_safe_divide( $num, $denom ) {
 }
 
 /**
+ * Enqueues js for switching sale that is being reported
+ */
+function pmpro_sws_reports_js() {
+	if ( isset( $_REQUEST['page'] ) && 'pmpro-reports' === $_REQUEST['page'] ) {
+		wp_register_script( 'pmpro_sws_reports', plugins_url( 'js/pmpro-sws-reports.js', PMPROSWS_BASENAME ), array( 'jquery' ), '1.0.4' );
+		wp_enqueue_script( 'pmpro_sws_reports' );
+	}
+}
+add_action( 'admin_enqueue_scripts', 'pmpro_sws_reports_js' );
+
+/**
  * Setup JS vars and enqueue our JS
  */
 function pmpro_sws_tracking_js() {
@@ -205,7 +242,7 @@ function pmpro_sws_tracking_js() {
 
 	$options              = pmprosws_get_options();
 	$active_sitewide_sale = $options['active_sitewide_sale_id'];
-	wp_register_script( 'pmpro_sws', plugins_url( 'js/pmpro-sitewide-sale.js', PMPROSWS_BASENAME ), array( 'jquery', 'utils' ) );
+	wp_register_script( 'pmpro_sws_tracking', plugins_url( 'js/pmpro-sws-tracking.js', PMPROSWS_BASENAME ), array( 'jquery', 'utils' ) );
 
 	$used_discount_code = 0;
 	if ( is_page( $pmpro_pages['confirmation'] ) ) {
@@ -226,9 +263,9 @@ function pmpro_sws_tracking_js() {
 		'ajax_url'          => admin_url( 'admin-ajax.php' ),
 	);
 
-	wp_localize_script( 'pmpro_sws', 'pmpro_sws', $pmpro_sws_data );
+	wp_localize_script( 'pmpro_sws_tracking', 'pmpro_sws', $pmpro_sws_data );
 
-	wp_enqueue_script( 'pmpro_sws' );
+	wp_enqueue_script( 'pmpro_sws_tracking' );
 
 }
 add_action( 'wp_enqueue_scripts', 'pmpro_sws_tracking_js' );

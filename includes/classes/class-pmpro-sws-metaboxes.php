@@ -12,12 +12,24 @@ class PMPro_SWS_MetaBoxes {
 	 */
 	public function __construct() {
 		if ( is_admin() ) {
+			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 			add_action( 'load-post.php', array( $this, 'init_metabox' ) );
 			add_action( 'load-post-new.php', array( $this, 'init_metabox' ) );
 			add_filter( 'mce_buttons2', array( $this, 'remove_editor_buttons' ) );
 
 			add_action( 'pmpro_save_discount_code', array( $this, 'discount_code_on_save' ) );
 			add_action( 'save_post', array( $this, 'landing_page_on_save' ), 10, 3 );
+		}
+	}
+
+	/**
+	 * Enqueues js/pmpro-sws-cpt-meta.js
+	 */
+	public function enqueue_scripts() {
+		global $typenow;
+		if ( 'sws_sitewide_sale' === $typenow ) {
+			wp_register_script( 'pmpro_sws_cpt_meta', plugins_url( 'js/pmpro-sws-cpt-meta.js', PMPROSWS_BASENAME ), array( 'jquery' ), '1.0.4' );
+			wp_enqueue_script( 'pmpro_sws_cpt_meta' );
 		}
 	}
 
@@ -125,14 +137,6 @@ class PMPro_SWS_MetaBoxes {
 				unset( $buttons[ $button_key ] );
 			}
 		}
-		?>
-	<script>
-		jQuery( document ).ready(function() {
-			jQuery('.wp-editor-tabs').remove();
-			jQuery('#insert-media-button').remove();
-		});
-	</script>
-	<?php
 		return $buttons;
 	}
 
