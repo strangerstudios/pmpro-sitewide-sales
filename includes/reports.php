@@ -47,22 +47,6 @@ function pmpro_report_pmpro_sws_reports_page() {
 	echo '<div id="pmpro_sws_reports_container">';
 	echo pmpro_sws_get_report_for_code();
 	echo '</div>';
-	?>
-	<script>
-		jQuery( document ).ready(function() {
-			jQuery("#pmpro_sws_sitewide_sale_select").selectWoo();
-			jQuery("#pmpro_sws_sitewide_sale_select").change(function() {
-				var data = {
-					'action': 'pmpro_sws_ajax_reporting',
-					'sitewide_sale_id': jQuery("#pmpro_sws_sitewide_sale_select").val()
-				};
-				jQuery.post('<?php echo esc_html( admin_url( 'admin-ajax.php' ) ); ?>', data, function(response) {
-					jQuery("#pmpro_sws_reports_container").html(response.slice(0, -1));
-				});
-			});
-		});
-	</script>
-	<?php
 }
 
 function pmpro_sws_ajax_reporting() {
@@ -198,6 +182,17 @@ function pmpro_sws_safe_divide( $num, $denom ) {
 }
 
 /**
+ * Enqueues js for switching sale that is being reported
+ */
+function pmpro_sws_reports_js() {
+	if ( isset( $_REQUEST['page'] ) && 'pmpro-reports' === $_REQUEST['page'] ) {
+		wp_register_script( 'pmpro_sws_reports', plugins_url( 'js/pmpro-sws-reports.js', PMPROSWS_BASENAME ), array( 'jquery' ), '1.0.4' );
+		wp_enqueue_script( 'pmpro_sws_reports' );
+	}
+}
+add_action( 'admin_enqueue_scripts', 'pmpro_sws_reports_js' );
+
+/**
  * Setup JS vars and enqueue our JS
  */
 function pmpro_sws_tracking_js() {
@@ -205,7 +200,7 @@ function pmpro_sws_tracking_js() {
 
 	$options              = pmprosws_get_options();
 	$active_sitewide_sale = $options['active_sitewide_sale_id'];
-	wp_register_script( 'pmpro_sws', plugins_url( 'js/pmpro-sitewide-sale.js', PMPROSWS_BASENAME ), array( 'jquery', 'utils' ) );
+	wp_register_script( 'pmpro_sws_tracking', plugins_url( 'js/pmpro-sws-tracking.js', PMPROSWS_BASENAME ), array( 'jquery', 'utils' ) );
 
 	$used_discount_code = 0;
 	if ( is_page( $pmpro_pages['confirmation'] ) ) {
@@ -226,9 +221,9 @@ function pmpro_sws_tracking_js() {
 		'ajax_url'          => admin_url( 'admin-ajax.php' ),
 	);
 
-	wp_localize_script( 'pmpro_sws', 'pmpro_sws', $pmpro_sws_data );
+	wp_localize_script( 'pmpro_sws_tracking', 'pmpro_sws', $pmpro_sws_data );
 
-	wp_enqueue_script( 'pmpro_sws' );
+	wp_enqueue_script( 'pmpro_sws_tracking' );
 
 }
 add_action( 'wp_enqueue_scripts', 'pmpro_sws_tracking_js' );

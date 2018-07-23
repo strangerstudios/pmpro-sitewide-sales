@@ -4,6 +4,9 @@ jQuery( document ).ready(function($) {
 	$("#pmpro_sws_use_banner_select").selectWoo();
 	$("#pmpro_sws_hide_levels_select").selectWoo();
 
+	jQuery('.wp-editor-tabs').remove();
+	jQuery('#insert-media-button').remove();
+
 	$(".pmpro_sws_option").change(function() {
 		window.onbeforeunload = function() {
     	return true;
