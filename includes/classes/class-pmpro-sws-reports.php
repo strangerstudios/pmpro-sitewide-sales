@@ -151,7 +151,9 @@ class PMPro_SWS_Reports {
 				<thead>
 					<tr>
 						<td>' . esc_html( 'Sitewide Sale', 'pmpro_sitewide_sale' ) . '</td>
-						<td>' . esc_html( get_the_title( $sitewide_sale_id ) ) . '</td>
+						<td>' . esc_html( get_the_title( $sitewide_sale_id ) ) .
+						' (' . date_i18n( get_option( 'date_format' ), ( new DateTime( get_post_meta( $active_sitewide_sale, 'start_date', true ) ) )->format( 'U' ) ) .
+						' - ' . date_i18n( get_option( 'date_format' ), ( new DateTime( get_post_meta( $active_sitewide_sale, 'end_date', true ) ) )->format( 'U' ) ) . ')</td>
 					</tr>
 				</thead>
 				<tbody>';
