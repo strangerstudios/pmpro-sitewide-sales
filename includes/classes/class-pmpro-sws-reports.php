@@ -51,26 +51,33 @@ class PMPro_SWS_Reports {
 		}
 
 		// Reports regarding total sales.
-		$orders_during_sale   = $wpdb->get_results( $wpdb->prepare( "SELECT orders.total, codes.code_id FROM $wpdb->pmpro_membership_orders orders LEFT JOIN wp_pmpro_discount_codes_uses codes ON orders.id = codes.order_id WHERE orders.timestamp >= %s AND orders.timestamp <= %s", get_post_meta( $active_sitewide_sale, 'start_date', true ), date( 'Y-m-d', strtotime( '+1 day', strtotime( get_post_meta( $active_sitewide_sale, 'end_date', true ) ) ) ) ) );
+		$orders_during_sale   = $wpdb->get_results( $wpdb->prepare( "SELECT orders.total, orders.subscription_transaction_id, orders.timestamp, codes.code_id FROM $wpdb->pmpro_membership_orders orders LEFT JOIN wp_pmpro_discount_codes_uses codes ON orders.id = codes.order_id WHERE orders.timestamp >= %s AND orders.timestamp <= %s", get_post_meta( $active_sitewide_sale, 'start_date', true ), date( 'Y-m-d', strtotime( '+1 day', strtotime( get_post_meta( $active_sitewide_sale, 'end_date', true ) ) ) ) ) );
 		$orders_with_code     = 0;
 		$revenue_with_code    = 0;
 		$orders_without_code  = 0;
 		$revenue_without_code = 0;
+		$recurring_orders     = 0;
+		$recurring_revenue    = 0;
 		foreach ( $orders_during_sale as $order ) {
 			if ( $code_id === $order->code_id ) {
 				$orders_with_code++;
 				$revenue_with_code += intval( $order->total );
-			} else {
+			} elseif ( empty( $order->subscription_transaction_id ) || empty( $order->timestamp ) ) {
 				$orders_without_code++;
 				$revenue_without_code += intval( $order->total );
+			} else {
+				$orders_with_same_id = $wpdb->get_results( $wpdb->prepare( "SELECT id FROM $wpdb->pmpro_membership_orders WHERE orders.timestamp < %s LIMIT 1", $order->timestamp ) );
+				if ( empty( $orders_with_same_id ) ) {
+					$orders_without_code++;
+					$revenue_without_code += intval( $order->total );
+				} else {
+					$recurring_orders++;
+					$recurring_revenue += intval( $order->total );
+				}
 			}
 		}
-		$total_revenue = $revenue_with_code + $revenue_without_code;
-		$total_sales   = $orders_with_code + $orders_without_code;
-
-		//
-		//KEEP ABOVE HERE
-		//
+		$total_revenue = $revenue_with_code + $revenue_without_code + $recurring_revenue;
+		$total_sales   = $orders_with_code + $orders_without_code + $recurring_orders;
 
 		// Reports regarding advertising/conversions.
 		$banner_impressions                = $reports['banner_impressions'];
@@ -92,6 +99,7 @@ class PMPro_SWS_Reports {
 		if ( is_nan( $checkout_conversions_percent ) ) {
 			$checkout_conversions_percent = 0;
 		}
+
 		$reports_to_output = array(
 			'Total Sales' => array(
 				'value'  => '$' . number_format_i18n( $total_revenue ) . ' (' . number_format_i18n( $total_sales ) . ')',
@@ -99,6 +107,10 @@ class PMPro_SWS_Reports {
 			),
 			'With the Discount Code' => array(
 				'value'  => '$' . number_format_i18n( $revenue_with_code ) . ' (' . number_format_i18n( $orders_with_code ) . ')',
+				'child' => true,
+			),
+			'Recurring Revenue' => array(
+				'value'  => '$' . number_format_i18n( $recurring_revenue ) . ' (' . number_format_i18n( $recurring_orders ) . ')',
 				'child' => true,
 			),
 			'Other Revenue' => array(
