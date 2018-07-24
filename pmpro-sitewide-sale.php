@@ -20,16 +20,18 @@ require_once PMPROSWS_DIR . '/includes/common.php';
 require_once PMPROSWS_DIR . '/includes/admin.php';
 require_once PMPROSWS_DIR . '/includes/settings.php';
 require_once PMPROSWS_DIR . '/includes/checkout.php';
-require_once PMPROSWS_DIR . '/includes/banners.php';
-require_once PMPROSWS_DIR . '/includes/reports.php';
 require_once PMPROSWS_DIR . '/includes/templates.php';
 
 require_once PMPROSWS_DIR . '/includes/classes/class-pmpro-sws-dev-info.php';
 require_once PMPROSWS_DIR . '/includes/classes/class-pmpro-sws-metaboxes.php';
 require_once PMPROSWS_DIR . '/includes/classes/class-pmpro-sws-post-types.php';
+require_once PMPROSWS_DIR . '/includes/classes/class-pmpro-sws-reports.php';
+require_once PMPROSWS_DIR . '/includes/classes/class-pmpro-sws-banners.php';
 
 PMPro_SWS_Post_Types::init();
 PMPro_SWS_Dev_Info::init();
+PMPro_SWS_Reports::init();
+PMPro_SWS_Banners::init();
 
 
 /**
