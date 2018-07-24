@@ -7,10 +7,11 @@ class PMPro_SWS_Reports {
 
 	public static function init() {
 		global $pmpro_reports;
+
+		// Functions called by adding this report are below the class.
 		$pmpro_reports['pmpro_sws_reports'] = __( 'PMPro Sitewide Sale', 'pmpro_sitewide_sale' );
 
 		if ( is_admin() ) {
-			add_action( 'load-post.php', array( __CLASS__, 'init_metabox' ) );
 			add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_reports_js' ) );
 			add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_tracking_js' ) );
 		}
@@ -34,7 +35,7 @@ class PMPro_SWS_Reports {
 		if ( false === $sitewide_sale_id ) {
 			return __( 'No Sitewide Sale Set.', 'pmpro-sitewide-sale' );
 		}
-		$code_id = get_post_meta($active_sitewide_sale, 'discount_code_id', true) . '';
+		$code_id   = get_post_meta( $active_sitewide_sale, 'discount_code_id', true ) . '';
 		$code_name = $wpdb->get_results( $wpdb->prepare( "SELECT code FROM $wpdb->pmpro_discount_codes WHERE id=%s", $code_id ) )[0]->code;
 		// check if discount_code_id is set.
 		$reports = get_option( 'pmpro_sitewide_sale_' . $sitewide_sale_id . '_tracking' );
