@@ -51,8 +51,9 @@ class PMPro_SWS_Reports {
 		}
 
 		// Reports regarding total sales.
-		$orders_during_sale   = $wpdb->get_results( $wpdb->prepare( "SELECT orders.total, orders.subscription_transaction_id, orders.timestamp, codes.code_id FROM $wpdb->pmpro_membership_orders orders LEFT JOIN wp_pmpro_discount_codes_uses codes ON orders.id = codes.order_id WHERE orders.timestamp >= %s AND orders.timestamp <= %s", get_post_meta( $active_sitewide_sale, 'start_date', true ), date( 'Y-m-d', strtotime( '+1 day', strtotime( get_post_meta( $active_sitewide_sale, 'end_date', true ) ) ) ) ) );
+		$orders_during_sale   = $wpdb->get_results( $wpdb->prepare( "SELECT orders.total, orders.subscription_transaction_id, orders.timestamp, orders.user_id, codes.code_id FROM $wpdb->pmpro_membership_orders orders LEFT JOIN wp_pmpro_discount_codes_uses codes ON orders.id = codes.order_id WHERE orders.timestamp >= %s AND orders.timestamp <= %s", get_post_meta( $active_sitewide_sale, 'start_date', true ), date( 'Y-m-d', strtotime( '+1 day', strtotime( get_post_meta( $active_sitewide_sale, 'end_date', true ) ) ) ) ) );
 		$orders_with_code     = 0;
+		$new_orders_with_code = 0;
 		$revenue_with_code    = 0;
 		$orders_without_code  = 0;
 		$revenue_without_code = 0;
@@ -62,11 +63,15 @@ class PMPro_SWS_Reports {
 			if ( $code_id === $order->code_id ) {
 				$orders_with_code++;
 				$revenue_with_code += intval( $order->total );
+				$previous_orders    = $wpdb->get_results( $wpdb->prepare( "SELECT id FROM $wpdb->pmpro_membership_orders WHERE timestamp < %s AND user_id == %s LIMIT 1", $order->timestamp, $order->user_id ) );
+				if ( empty( $previous_orders ) ) {
+					$new_orders_with_code++;
+				}
 			} elseif ( empty( $order->subscription_transaction_id ) || empty( $order->timestamp ) ) {
 				$orders_without_code++;
 				$revenue_without_code += intval( $order->total );
 			} else {
-				$orders_with_same_id = $wpdb->get_results( $wpdb->prepare( "SELECT id FROM $wpdb->pmpro_membership_orders WHERE orders.timestamp < %s LIMIT 1", $order->timestamp ) );
+				$orders_with_same_id = $wpdb->get_results( $wpdb->prepare( "SELECT id FROM $wpdb->pmpro_membership_orders WHERE timestamp < %s AND subscription_transaction_id == %s LIMIT 1", $order->timestamp, $order->subscription_transaction_id ) );
 				if ( empty( $orders_with_same_id ) ) {
 					$orders_without_code++;
 					$revenue_without_code += intval( $order->total );
@@ -105,8 +110,8 @@ class PMPro_SWS_Reports {
 				'value'  => '$' . number_format_i18n( $total_revenue ) . ' (' . number_format_i18n( $total_sales ) . ')',
 				'child' => false,
 			),
-			'With the Discount Code' => array(
-				'value'  => '$' . number_format_i18n( $revenue_with_code ) . ' (' . number_format_i18n( $orders_with_code ) . ')',
+			'With the Discount Code ' . $code_name => array(
+				'value'  => '$' . number_format_i18n( $revenue_with_code ) . ' (' . number_format_i18n( $orders_with_code ) . ' Total, ' . number_format_i18n( $new_orders_with_code ) . ' New)',
 				'child' => true,
 			),
 			'Recurring Revenue' => array(
