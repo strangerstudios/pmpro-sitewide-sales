@@ -10,21 +10,21 @@ class PMPro_SWS_Settings {
 	 * @package pmpro-sitewide-sale/includes
 	 */
 	public static function init() {
-		add_action( 'admin_menu', array( __CLASS__, 'pmpro_sws_menu' ) );
-		add_action( 'admin_init', array( __CLASS__, 'pmpro_sws_admin_init' ) );
+		add_action( 'admin_menu', array( __CLASS__, 'menu' ) );
+		add_action( 'admin_init', array( __CLASS__, 'admin_init' ) );
 	}
 
 	/**
 	 * Add settings menu
 	 **/
-	public static function pmpro_sws_menu() {
+	public static function menu() {
 		add_submenu_page(
 			'pmpro-membershiplevels',
 			__( 'Sitewide Sale', 'pmpro-sitewide-sale' ),
 			__( 'Sitewide Sale', 'pmpro-sitewide-sale' ),
 			'manage_options',
 			'pmpro-sws',
-			'pmprosla_sws_options_page'
+			'PMPro_SWS_Settings::options_page'
 		);
 	}
 
@@ -32,7 +32,7 @@ class PMPro_SWS_Settings {
 	 * Save submitted fields
 	 * Combine elements of settings page
 	 **/
-	public static function pmprosla_sws_options_page() {
+	public static function options_page() {
 	?>
 	<div class="wrap">
 		<?php require_once PMPRO_DIR . '/adminpages/admin_header.php'; ?>
@@ -41,7 +41,7 @@ class PMPro_SWS_Settings {
 			<?php settings_fields( 'pmpro-sws-group' ); ?>
 			<?php do_settings_sections( 'pmpro-sws' ); ?>
 			<?php submit_button(); ?>
-			<?php require_once PMPROSWS_DIR . '/includes/reports.php'; ?>
+			<?php require_once PMPROSWS_DIR . '/includes/classes/class-pmpro-sws-reports.php'; ?>
 		</form>
 		<?php require_once PMPRO_DIR . '/adminpages/admin_footer.php'; ?>
 	</div>
@@ -51,13 +51,13 @@ class PMPro_SWS_Settings {
 	/**
 	 * Init settings page
 	 **/
-	public static function pmpro_sws_admin_init() {
-		register_setting( 'pmpro-sws-group', 'pmpro_sitewide_sale', 'pmpro_sws_validate' );
-		add_settings_section( 'pmpro-sws-section-select_sitewide_sale', __( 'Choose Active Sitewide Sale', 'pmpro_sitewide_sale' ), array( __CLASS__, 'pmpro_sws_section_select_sitewide_sale_callback' ), 'pmpro-sws' );
-		add_settings_field( 'pmpro-sws-sitewide-sale', __( 'Sitewide Sale', 'pmpro_sitewide_sale' ), array( __CLASS__, 'pmpro_sws_select_sitewide_sale_callback', 'pmpro-sws' ), 'pmpro-sws-section-select_sitewide_sale' );
+	public static function admin_init() {
+		register_setting( 'pmpro-sws-group', 'pmpro_sitewide_sale', array( __CLASS__, 'validate' ) );
+		add_settings_section( 'pmpro-sws-section-select_sitewide_sale', __( 'Choose Active Sitewide Sale', 'pmpro_sitewide_sale' ), array( __CLASS__, 'section_select_sitewide_sale_callback' ), 'pmpro-sws' );
+		add_settings_field( 'pmpro-sws-sitewide-sale', __( 'Sitewide Sale', 'pmpro_sitewide_sale' ), array( __CLASS__, 'select_sitewide_sale_callback' ), 'pmpro-sws', 'pmpro-sws-section-select_sitewide_sale' );
 	}
 
-	public static function pmpro_sws_section_select_sitewide_sale_callback() {
+	public static function section_select_sitewide_sale_callback() {
 	?>
 	<?php
 	}
@@ -65,7 +65,7 @@ class PMPro_SWS_Settings {
 	/**
 	 * Creates field to select an active sale
 	 */
-	public static function pmpro_sws_select_sitewide_sale_callback() {
+	public static function select_sitewide_sale_callback() {
 		global $wpdb;
 		$options              = pmprosws_get_options();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
@@ -95,7 +95,7 @@ class PMPro_SWS_Settings {
 	 *
 	 * @param  array $input info to be validated.
 	 */
-	public static function pmpro_sws_validate( $input ) {
+	public static function validate( $input ) {
 		$options = pmprosws_get_options();
 
 		if ( ! empty( $input['active_sitewide_sale_id'] ) && '-1' !== $input['active_sitewide_sale_id'] ) {
