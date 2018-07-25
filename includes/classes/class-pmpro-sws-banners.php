@@ -57,7 +57,7 @@ class PMPro_SWS_Banners {
 		if ( false === $slug ) {
 			$slug = 'login';
 		}
-		return ( $slug === $post->post_name || is_page( 'login' ) || in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) ) );
+		return ( ( ! empty( $post->post_name ) && $slug === $post->post_name ) || is_page( 'login' ) || in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) ) );
 	}
 
 	/**

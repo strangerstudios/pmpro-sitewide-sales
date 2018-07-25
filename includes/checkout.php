@@ -6,7 +6,7 @@
  * @package pmpro-sitewide-sale/includes
  */
 
-add_action( 'posts_selection', 'pmpro_sws_check_cookie' );
+add_action( 'template_redirect', 'pmpro_sws_check_cookie' );
 /**
  * Automatically applies discount code if user has the cookie set from sale page
  */
@@ -25,7 +25,7 @@ function pmpro_sws_check_cookie() {
 	) {
 		return;
 	}
-	$cookie_name = 'pmpro_sitewide_sale_' . $current_discount . '_tracking';
+	$cookie_name = 'pmpro_sitewide_sale_' . $active_sitewide_sale . '_tracking';
 	if ( ! isset( $_COOKIE[ $cookie_name ] ) || false == strpos( $_COOKIE[ $cookie_name ], ';1;' ) ) {
 			return;
 	}
@@ -34,9 +34,9 @@ function pmpro_sws_check_cookie() {
 	$code_levels    = $wpdb->get_results( "SELECT * FROM $wpdb->pmpro_discount_codes_levels WHERE code_id = $discount", OBJECT );
 	foreach ( $code_levels as $code ) {
 		if ( $code->level_id . '' === $checkout_level ) {
-			$codes                     = $wpdb->get_results( "SELECT * FROM $wpdb->pmpro_discount_codes WHERE id = $discount", OBJECT );
-			$_REQUEST['discount_code'] = $codes[0]->code;
-			return;
+			$codes = $wpdb->get_results( "SELECT * FROM $wpdb->pmpro_discount_codes WHERE id = $discount", OBJECT );
+			wp_redirect( $_SERVER['REQUEST_URI'] . '&discount_code=' . $codes[0]->code );
+			exit();
 		}
 	}
 }

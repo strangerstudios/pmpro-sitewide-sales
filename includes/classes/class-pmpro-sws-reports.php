@@ -13,8 +13,8 @@ class PMPro_SWS_Reports {
 
 		if ( is_admin() ) {
 			add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_reports_js' ) );
-			add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_tracking_js' ) );
 		}
+		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_tracking_js' ) );
 		add_action( 'wp_ajax_pmpro_sws_ajax_reporting', array( __CLASS__, 'ajax_reporting' ) );
 		add_action( 'wp_ajax_pmpro_sws_ajax_tracking', array( __CLASS__, 'ajax_tracking' ) );
 		add_action( 'wp_ajax_nopriv_pmpro_sws_ajax_tracking', array( __CLASS__, 'ajax_tracking' ) );
@@ -210,7 +210,6 @@ class PMPro_SWS_Reports {
 	 */
 	public static function enqueue_tracking_js() {
 		global $pmpro_pages;
-
 		$options              = pmprosws_get_options();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
 		wp_register_script( 'pmpro_sws_tracking', plugins_url( 'js/pmpro-sws-tracking.js', PMPROSWS_BASENAME ), array( 'jquery', 'utils' ) );
