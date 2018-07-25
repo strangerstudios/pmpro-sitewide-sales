@@ -8,12 +8,18 @@ class PMPro_SWS_Post_Types {
 		add_action( 'init', array( __CLASS__, 'register_sitewide_sale_cpt' ) );
 	}
 
+	public static function renaming_cpt_menu_function() {
+		$renaming_menu = apply_filters( 'renaming_cpt_menu_filter', 'PMPro CPTs' );
+		return $renaming_menu;
+	}
+
 	public static function register_sitewide_sale_cpt() {
 		$labels = self::get_label_defaults();
+		$menu_name = self::renaming_cpt_menu_function();
 		$labels['name']                  = _x( 'Sitewide Sales', 'Post Type General Name', 'pmpro-sitewide-sale' );
 		$labels['singular_name']         = _x( 'Sitewide Sale', 'Post Type Singular Name', 'pmpro-sitewide-sale' );
 		$labels['all_items']             = __( 'All Sitewide Sales', 'pmpro-sitewide-sale' );
-		$labels['menu_name']             = __( 'Sitewide Sales', 'pmpro-sitewide-sale' );
+		$labels['menu_name']             = __( $menu_name, 'pmpro-sitewide-sale' );
 		$labels['name_admin_bar']        = __( 'Sitewide Sales', 'pmpro-sitewide-sale' );
 		$labels['add_new_item']        = __( 'Add New Sitewide Sale', 'pmpro-sitewide-sale' );
 
@@ -93,7 +99,7 @@ class PMPro_SWS_Post_Types {
 			'public'                => true,
 			'show_ui'               => true,
 			'show_in_menu'          => true,
-			'menu_position'         => 25,
+			'menu_position'         => 205,
 			'menu_icon'             => 'dashicons-admin-page',
 			'show_in_admin_bar'     => true,
 			'show_in_nav_menus'     => true,

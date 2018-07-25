@@ -69,9 +69,8 @@ class PMPro_SWS_Reports {
 		$total_sales   = $orders_with_code + $orders_without_code;
 
 		//
-		//KEEP ABOVE HERE
+		// KEEP ABOVE HERE
 		//
-
 		// Reports regarding advertising/conversions.
 		$banner_impressions                = $reports['banner_impressions'];
 		$landing_page_visits               = $reports['landing_page_visits'];
@@ -280,11 +279,13 @@ function pmpro_report_pmpro_sws_reports_widget() {
 function pmpro_report_pmpro_sws_reports_page() {
 	global $wpdb;
 	$options              = pmprosws_get_options();
-	$sitewide_sales = get_posts([
-		'post_type' => 'sws_sitewide_sale',
-		'post_status' => 'publish',
-		'numberposts' => -1
-	]);
+	$sitewide_sales = get_posts(
+		[
+			'post_type' => 'sws_sitewide_sale',
+			'post_status' => 'publish',
+			'numberposts' => -1,
+		]
+	);
 	$active_sitewide_sale = $options['active_sitewide_sale_id'];
 	echo '<table><tr><td><h3>' . esc_html( 'Choose Sitewide Sale to View Reports For', 'pmpro-sitewide-sale' ) . ': </h3></td><td><select id="pmpro_sws_sitewide_sale_select">';
 
