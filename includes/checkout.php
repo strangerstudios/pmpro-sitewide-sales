@@ -6,7 +6,7 @@
  * @package pmpro-sitewide-sale/includes
  */
 
-add_action( 'template_redirect', 'pmpro_sws_check_cookie' );
+add_action( 'init', 'pmpro_sws_check_cookie' );
 /**
  * Automatically applies discount code if user has the cookie set from sale page
  */
