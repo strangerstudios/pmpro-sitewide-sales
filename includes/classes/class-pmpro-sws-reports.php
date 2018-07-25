@@ -51,7 +51,7 @@ class PMPro_SWS_Reports {
 		}
 
 		// Reports regarding total sales.
-		$orders_during_sale   = $wpdb->get_results( $wpdb->prepare( "SELECT orders.total, orders.subscription_transaction_id, orders.timestamp, orders.user_id, codes.code_id FROM $wpdb->pmpro_membership_orders orders LEFT JOIN wp_pmpro_discount_codes_uses codes ON orders.id = codes.order_id WHERE orders.timestamp >= %s AND orders.timestamp <= %s", get_post_meta( $active_sitewide_sale, 'start_date', true ), date( 'Y-m-d', strtotime( '+1 day', strtotime( get_post_meta( $active_sitewide_sale, 'end_date', true ) ) ) ) ) );
+		$orders_during_sale   = $wpdb->get_results( $wpdb->prepare( "SELECT orders.total, orders.subscription_transaction_id, orders.timestamp, orders.user_id, orders.id, codes.code_id FROM $wpdb->pmpro_membership_orders orders LEFT JOIN wp_pmpro_discount_codes_uses codes ON orders.id = codes.order_id WHERE orders.timestamp >= %s AND orders.timestamp <= %s AND orders.total > 0", get_post_meta( $active_sitewide_sale, 'start_date', true ), date( 'Y-m-d', strtotime( '+1 day', strtotime( get_post_meta( $active_sitewide_sale, 'end_date', true ) ) ) ) ) );
 		$orders_with_code     = 0;
 		$new_orders_with_code = 0;
 		$revenue_with_code    = 0;
@@ -63,7 +63,7 @@ class PMPro_SWS_Reports {
 			if ( $code_id === $order->code_id ) {
 				$orders_with_code++;
 				$revenue_with_code += intval( $order->total );
-				$previous_orders    = $wpdb->get_results( $wpdb->prepare( "SELECT id FROM $wpdb->pmpro_membership_orders WHERE timestamp < %s AND user_id == %s LIMIT 1", $order->timestamp, $order->user_id ) );
+				$previous_orders = $wpdb->get_results( $wpdb->prepare( "SELECT id FROM $wpdb->pmpro_membership_orders WHERE timestamp < %s AND user_id = %d LIMIT 1", $order->timestamp, $order->user_id ) );
 				if ( empty( $previous_orders ) ) {
 					$new_orders_with_code++;
 				}
@@ -71,7 +71,7 @@ class PMPro_SWS_Reports {
 				$orders_without_code++;
 				$revenue_without_code += intval( $order->total );
 			} else {
-				$orders_with_same_id = $wpdb->get_results( $wpdb->prepare( "SELECT id FROM $wpdb->pmpro_membership_orders WHERE timestamp < %s AND subscription_transaction_id == %s LIMIT 1", $order->timestamp, $order->subscription_transaction_id ) );
+				$orders_with_same_id = $wpdb->get_results( $wpdb->prepare( "SELECT id FROM $wpdb->pmpro_membership_orders WHERE timestamp < %s AND subscription_transaction_id = %s LIMIT 1", $order->timestamp, $order->subscription_transaction_id ) );
 				if ( empty( $orders_with_same_id ) ) {
 					$orders_without_code++;
 					$revenue_without_code += intval( $order->total );
