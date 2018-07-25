@@ -294,9 +294,14 @@ class PMPro_SWS_MetaBoxes {
 			<th scope="row" valign="top"><label><?php esc_html_e( 'Use the built-in banner?', 'pmpro-sitewide-sale' ); ?></label></th>
 			<td><select class="use_banner_select pmpro_sws_option" id="pmpro_sws_use_banner_select" name="pmpro_sws_use_banner">
 				<option value="no" <?php selected( $use_banner, 'no' ); ?>><?php esc_html_e( 'No', 'pmpro-sitewide-sale' ); ?></option>
-				<option value="top" <?php selected( $use_banner, 'top' ); ?>><?php esc_html_e( 'Yes. Top of Site.', 'pmpro-sitewide-sale' ); ?></option>
-				<option value="bottom" <?php selected( $use_banner, 'bottom' ); ?>><?php esc_html_e( 'Yes. Bottom of Site.', 'pmpro-sitewide-sale' ); ?></option>
-				<option value="bottom-right" <?php selected( $use_banner, 'bottom-right' ); ?>><?php esc_html_e( 'Yes. Bottom Right of Site.', 'pmpro-sitewide-sale' ); ?></option>
+				<?php
+				$registered_banners = PMPro_SWS_Banners::get_registered_banners();
+				foreach ( $registered_banners as $banner => $data ) {
+					if ( is_string( $banner ) && is_array( $data ) && ! empty( $data['option_title'] ) && is_string( $data['option_title'] ) ) {
+						echo '<option value="' . $banner . '"' . selected( $use_banner, $banner ) . '>' . esc_html( $data['option_title'] ) . '</option>';
+					}
+				}
+				?>
 			</select></td>
 		</tr></table>
 		<table class="form-table" id="pmpro_sws_banner_options">
@@ -310,7 +315,25 @@ class PMPro_SWS_MetaBoxes {
 	echo '
 	<tr>
 		<th scope="row" valign="top"><label>' . esc_html( 'Custom Banner CSS', 'pmpro-sitewide-sale' ) . '</label></th>
-		<td><textarea class="pmpro_sws_option" name="pmpro_sws_css_option">' . esc_html( $css_option ) . '</textarea></td>
+		<td><textarea class="pmpro_sws_option" name="pmpro_sws_css_option">' . esc_html( $css_option ) . '</textarea>
+			<div id=pmpro_sws_banner_css_selectors>';
+
+	if ( isset( $registered_banners[ $use_banner ] ) && ! empty( $registered_banners[ $use_banner ]['css_selectors'] ) ) {
+		$css_selectors = $registered_banners[ $use_banner ]['css_selectors'];
+		if ( is_string( $css_selectors ) ) {
+			echo $css_selectors;
+		} elseif ( is_array( $css_selectors ) ) {
+			foreach ( $css_selectors as $css_selector ) {
+				if ( is_string( $css_selector ) ) {
+					echo $css_selector . '<br/>';
+				}
+			}
+		}
+	}
+
+	echo '
+			</div>
+		</td>
 	</tr>';
 	echo '
 		<tr>
