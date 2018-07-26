@@ -91,39 +91,39 @@ var requirejs, require, define;
             // because node allows either .js or non .js to map
             // to same file.
             if (config.nodeIdCompat && jsSuffixRegExp.test(name[lastIndex])) {
-                name[lastIndex] = name[lastIndex].replace(jsSuffixRegExp, '');
+   name[lastIndex] = name[lastIndex].replace(jsSuffixRegExp, '');
             }
 
             // Starts with a '.' so need the baseName
             if (name[0].charAt(0) === '.' && baseParts) {
-                //Convert baseName to array, and lop off the last part,
-                //so that . matches that 'directory' and not name of the baseName's
-                //module. For instance, baseName of 'one/two/three', maps to
-                //'one/two/three.js', but we want the directory, 'one/two' for
-                //this normalization.
-                normalizedBaseParts = baseParts.slice(0, baseParts.length - 1);
-                name = normalizedBaseParts.concat(name);
+   //Convert baseName to array, and lop off the last part,
+   //so that . matches that 'directory' and not name of the baseName's
+   //module. For instance, baseName of 'one/two/three', maps to
+   //'one/two/three.js', but we want the directory, 'one/two' for
+   //this normalization.
+   normalizedBaseParts = baseParts.slice(0, baseParts.length - 1);
+   name = normalizedBaseParts.concat(name);
             }
 
             //start trimDots
             for (i = 0; i < name.length; i++) {
-                part = name[i];
-                if (part === '.') {
-                    name.splice(i, 1);
-                    i -= 1;
-                } else if (part === '..') {
-                    // If at the start, or previous value is still ..,
-                    // keep them so that when converted to a path it may
-                    // still work when converted to a path, even though
-                    // as an ID it is less than ideal. In larger point
-                    // releases, may be better to just kick out an error.
-                    if (i === 0 || (i === 1 && name[2] === '..') || name[i - 1] === '..') {
-                        continue;
-                    } else if (i > 0) {
-                        name.splice(i - 1, 2);
-                        i -= 2;
-                    }
-                }
+   part = name[i];
+   if (part === '.') {
+       name.splice(i, 1);
+       i -= 1;
+   } else if (part === '..') {
+       // If at the start, or previous value is still ..,
+       // keep them so that when converted to a path it may
+       // still work when converted to a path, even though
+       // as an ID it is less than ideal. In larger point
+       // releases, may be better to just kick out an error.
+       if (i === 0 || (i === 1 && name[2] === '..') || name[i - 1] === '..') {
+           continue;
+       } else if (i > 0) {
+           name.splice(i - 1, 2);
+           i -= 2;
+       }
+   }
             }
             //end trimDots
 
@@ -135,49 +135,49 @@ var requirejs, require, define;
             nameParts = name.split('/');
 
             for (i = nameParts.length; i > 0; i -= 1) {
-                nameSegment = nameParts.slice(0, i).join("/");
+   nameSegment = nameParts.slice(0, i).join("/");
 
-                if (baseParts) {
-                    //Find the longest baseName segment match in the config.
-                    //So, do joins on the biggest to smallest lengths of baseParts.
-                    for (j = baseParts.length; j > 0; j -= 1) {
-                        mapValue = map[baseParts.slice(0, j).join('/')];
+   if (baseParts) {
+       //Find the longest baseName segment match in the config.
+       //So, do joins on the biggest to smallest lengths of baseParts.
+       for (j = baseParts.length; j > 0; j -= 1) {
+           mapValue = map[baseParts.slice(0, j).join('/')];
 
-                        //baseName segment has  config, find if it has one for
-                        //this name.
-                        if (mapValue) {
-                            mapValue = mapValue[nameSegment];
-                            if (mapValue) {
-                                //Match, update name to the new value.
-                                foundMap = mapValue;
-                                foundI = i;
-                                break;
-                            }
-                        }
-                    }
-                }
+           //baseName segment has  config, find if it has one for
+           //this name.
+           if (mapValue) {
+  mapValue = mapValue[nameSegment];
+  if (mapValue) {
+      //Match, update name to the new value.
+      foundMap = mapValue;
+      foundI = i;
+      break;
+  }
+           }
+       }
+   }
 
-                if (foundMap) {
-                    break;
-                }
+   if (foundMap) {
+       break;
+   }
 
-                //Check for a star map match, but just hold on to it,
-                //if there is a shorter segment match later in a matching
-                //config, then favor over this star map.
-                if (!foundStarMap && starMap && starMap[nameSegment]) {
-                    foundStarMap = starMap[nameSegment];
-                    starI = i;
-                }
+   //Check for a star map match, but just hold on to it,
+   //if there is a shorter segment match later in a matching
+   //config, then favor over this star map.
+   if (!foundStarMap && starMap && starMap[nameSegment]) {
+       foundStarMap = starMap[nameSegment];
+       starI = i;
+   }
             }
 
             if (!foundMap && foundStarMap) {
-                foundMap = foundStarMap;
-                foundI = starI;
+   foundMap = foundStarMap;
+   foundI = starI;
             }
 
             if (foundMap) {
-                nameParts.splice(0, foundI, foundMap);
-                name = nameParts.join('/');
+   nameParts.splice(0, foundI, foundMap);
+   name = nameParts.join('/');
             }
         }
 
@@ -195,7 +195,7 @@ var requirejs, require, define;
             //one arg, it is the array form without a callback. Insert
             //a null so that the following concat is correct.
             if (typeof args[0] !== 'string' && args.length === 1) {
-                args.push(null);
+   args.push(null);
             }
             return req.apply(undef, args.concat([relName, forceSync]));
         };
@@ -267,9 +267,9 @@ var requirejs, require, define;
         //Normalize according
         if (prefix) {
             if (plugin && plugin.normalize) {
-                name = plugin.normalize(name, makeNormalize(relResourceName));
+   name = plugin.normalize(name, makeNormalize(relResourceName));
             } else {
-                name = normalize(name, relResourceName);
+   name = normalize(name, relResourceName);
             }
         } else {
             name = normalize(name, relResourceName);
@@ -277,7 +277,7 @@ var requirejs, require, define;
             prefix = parts[0];
             name = parts[1];
             if (prefix) {
-                plugin = callDep(prefix);
+   plugin = callDep(prefix);
             }
         }
 
@@ -303,17 +303,17 @@ var requirejs, require, define;
         exports: function (name) {
             var e = defined[name];
             if (typeof e !== 'undefined') {
-                return e;
+   return e;
             } else {
-                return (defined[name] = {});
+   return (defined[name] = {});
             }
         },
         module: function (name) {
             return {
-                id: name,
-                uri: '',
-                exports: defined[name],
-                config: makeConfig(name)
+   id: name,
+   uri: '',
+   exports: defined[name],
+   config: makeConfig(name)
             };
         }
     };
@@ -335,44 +335,44 @@ var requirejs, require, define;
             //Default to [require, exports, module] if no deps
             deps = !deps.length && callback.length ? ['require', 'exports', 'module'] : deps;
             for (i = 0; i < deps.length; i += 1) {
-                map = makeMap(deps[i], relParts);
-                depName = map.f;
+   map = makeMap(deps[i], relParts);
+   depName = map.f;
 
-                //Fast path CommonJS standard dependencies.
-                if (depName === "require") {
-                    args[i] = handlers.require(name);
-                } else if (depName === "exports") {
-                    //CommonJS module spec 1.1
-                    args[i] = handlers.exports(name);
-                    usingExports = true;
-                } else if (depName === "module") {
-                    //CommonJS module spec 1.1
-                    cjsModule = args[i] = handlers.module(name);
-                } else if (hasProp(defined, depName) ||
-                           hasProp(waiting, depName) ||
-                           hasProp(defining, depName)) {
-                    args[i] = callDep(depName);
-                } else if (map.p) {
-                    map.p.load(map.n, makeRequire(relName, true), makeLoad(depName), {});
-                    args[i] = defined[depName];
-                } else {
-                    throw new Error(name + ' missing ' + depName);
-                }
+   //Fast path CommonJS standard dependencies.
+   if (depName === "require") {
+       args[i] = handlers.require(name);
+   } else if (depName === "exports") {
+       //CommonJS module spec 1.1
+       args[i] = handlers.exports(name);
+       usingExports = true;
+   } else if (depName === "module") {
+       //CommonJS module spec 1.1
+       cjsModule = args[i] = handlers.module(name);
+   } else if (hasProp(defined, depName) ||
+              hasProp(waiting, depName) ||
+              hasProp(defining, depName)) {
+       args[i] = callDep(depName);
+   } else if (map.p) {
+       map.p.load(map.n, makeRequire(relName, true), makeLoad(depName), {});
+       args[i] = defined[depName];
+   } else {
+       throw new Error(name + ' missing ' + depName);
+   }
             }
 
             ret = callback ? callback.apply(defined[name], args) : undefined;
 
             if (name) {
-                //If setting exports via "module" is in play,
-                //favor that over return value and exports. After that,
-                //favor a non-undefined return value over exports use.
-                if (cjsModule && cjsModule.exports !== undef &&
-                        cjsModule.exports !== defined[name]) {
-                    defined[name] = cjsModule.exports;
-                } else if (ret !== undef || !usingExports) {
-                    //Use the return value from the function.
-                    defined[name] = ret;
-                }
+   //If setting exports via "module" is in play,
+   //favor that over return value and exports. After that,
+   //favor a non-undefined return value over exports use.
+   if (cjsModule && cjsModule.exports !== undef &&
+           cjsModule.exports !== defined[name]) {
+       defined[name] = cjsModule.exports;
+   } else if (ret !== undef || !usingExports) {
+       //Use the return value from the function.
+       defined[name] = ret;
+   }
             }
         } else if (name) {
             //May just be an object definition for the module. Only
@@ -384,8 +384,8 @@ var requirejs, require, define;
     requirejs = require = req = function (deps, callback, relName, forceSync, alt) {
         if (typeof deps === "string") {
             if (handlers[deps]) {
-                //callback in this case is really relName
-                return handlers[deps](callback);
+   //callback in this case is really relName
+   return handlers[deps](callback);
             }
             //Just return the module wanted. In this scenario, the
             //deps arg is the module name, and second arg (if passed)
@@ -396,20 +396,20 @@ var requirejs, require, define;
             //deps is a config object, not an array.
             config = deps;
             if (config.deps) {
-                req(config.deps, config.callback);
+   req(config.deps, config.callback);
             }
             if (!callback) {
-                return;
+   return;
             }
 
             if (callback.splice) {
-                //callback is an array, which means it is a dependency list.
-                //Adjust args if there are dependencies
-                deps = callback;
-                callback = relName;
-                relName = null;
+   //callback is an array, which means it is a dependency list.
+   //Adjust args if there are dependencies
+   deps = callback;
+   callback = relName;
+   relName = null;
             } else {
-                deps = undef;
+   deps = undef;
             }
         }
 
@@ -434,7 +434,7 @@ var requirejs, require, define;
             //that works in almond on the global level, but not guaranteed and
             //unlikely to work in other AMD implementations.
             setTimeout(function () {
-                main(undef, deps, callback, relName);
+   main(undef, deps, callback, relName);
             }, 4);
         }
 
@@ -1788,7 +1788,7 @@ S2.define('select2/selection/placeholder',[
 
     $placeholder.html(this.display(placeholder));
     $placeholder.addClass('select2-selection__placeholder')
-                .removeClass('select2-selection__choice');
+   .removeClass('select2-selection__choice');
 
     return $placeholder;
   };
@@ -2090,7 +2090,7 @@ S2.define('select2/selection/search',[
     decorated.call(this, data);
 
     this.$selection.find('.select2-selection__rendered')
-                   .append(this.$searchContainer);
+      .append(this.$searchContainer);
 
     this.resizeSearch();
     if (searchHadFocus) {
@@ -3559,8 +3559,8 @@ S2.define('select2/data/ajax',[
           // Check to make sure that the response included a `results` key.
           if (!results || !results.results || !$.isArray(results.results)) {
             console.error(
-              'Select2: The AJAX results did not return an array in the ' +
-              '`results` key of the response.'
+ 'Select2: The AJAX results did not return an array in the ' +
+ '`results` key of the response.'
             );
           }
         }
@@ -3925,7 +3925,7 @@ S2.define('select2/data/maximumSelectionLength',[
           self.trigger('results:message', {
             message: 'maximumSelected',
             args: {
-              maximum: self.maximumSelectionLength
+ maximum: self.maximumSelectionLength
             }
           });
           return;
@@ -4886,10 +4886,10 @@ S2.define('select2/defaults',[
             // because of a configuration problem, other times this can be
             // because of how Select2 helps load all possible translation files.
             if (options.debug && window.console && console.warn) {
-              console.warn(
-                'Select2: The language file for "' + name + '" could not be ' +
-                'automatically loaded. A fallback will be used instead.'
-              );
+ console.warn(
+   'Select2: The language file for "' + name + '" could not be ' +
+   'automatically loaded. A fallback will be used instead.'
+ );
             }
 
             continue;
@@ -5503,7 +5503,7 @@ S2.define('select2/core',[
           // Focus back to active selection when finished typing.
           // Small delay so typed character can be read by screen reader.
           setTimeout(function(){
-              self.focusOnActiveElement();
+ self.focusOnActiveElement();
           }, 1000);
         }
       } else if (self.hasFocus()) {
@@ -6300,7 +6300,7 @@ S2.define('select2/selection/stopPropagation',[
 
     var toFix  = ['wheel', 'mousewheel', 'DOMMouseScroll', 'MozMousePixelScroll'],
         toBind = ( 'onwheel' in document || document.documentMode >= 9 ) ?
-                    ['wheel'] : ['mousewheel', 'DomMouseScroll', 'MozMousePixelScroll'],
+       ['wheel'] : ['mousewheel', 'DomMouseScroll', 'MozMousePixelScroll'],
         slice  = Array.prototype.slice,
         nullLowestDeltaTimeout, lowestDelta;
 
@@ -6315,11 +6315,11 @@ S2.define('select2/selection/stopPropagation',[
 
         setup: function() {
             if ( this.addEventListener ) {
-                for ( var i = toBind.length; i; ) {
-                    this.addEventListener( toBind[--i], handler, false );
-                }
+   for ( var i = toBind.length; i; ) {
+       this.addEventListener( toBind[--i], handler, false );
+   }
             } else {
-                this.onmousewheel = handler;
+   this.onmousewheel = handler;
             }
             // Store the line height and page height for this particular element
             $.data(this, 'mousewheel-line-height', special.getLineHeight(this));
@@ -6328,11 +6328,11 @@ S2.define('select2/selection/stopPropagation',[
 
         teardown: function() {
             if ( this.removeEventListener ) {
-                for ( var i = toBind.length; i; ) {
-                    this.removeEventListener( toBind[--i], handler, false );
-                }
+   for ( var i = toBind.length; i; ) {
+       this.removeEventListener( toBind[--i], handler, false );
+   }
             } else {
-                this.onmousewheel = null;
+   this.onmousewheel = null;
             }
             // Clean up the data we added to the element
             $.removeData(this, 'mousewheel-line-height');
@@ -6341,9 +6341,9 @@ S2.define('select2/selection/stopPropagation',[
 
         getLineHeight: function(elem) {
             var $elem = $(elem),
-                $parent = $elem['offsetParent' in $.fn ? 'offsetParent' : 'parent']();
+   $parent = $elem['offsetParent' in $.fn ? 'offsetParent' : 'parent']();
             if (!$parent.length) {
-                $parent = $('body');
+   $parent = $('body');
             }
             return parseInt($parent.css('fontSize'), 10) || parseInt($elem.css('fontSize'), 10) || 16;
         },
@@ -6434,7 +6434,7 @@ S2.define('select2/selection/stopPropagation',[
 
             // Adjust older deltas if necessary
             if ( shouldAdjustOldDeltas(orgEvent, absDelta) ) {
-                lowestDelta /= 40;
+   lowestDelta /= 40;
             }
         }
 
@@ -6530,8 +6530,8 @@ S2.define('jquery.select2',[
 
           if (instance == null && window.console && console.error) {
             console.error(
-              'The select2(\'' + options + '\') method was called on an ' +
-              'element that is not using Select2.'
+ 'The select2(\'' + options + '\') method was called on an ' +
+ 'element that is not using Select2.'
             );
           }
 

@@ -161,7 +161,9 @@ class PMPro_SWS_MetaBoxes {
 		echo '<table class="form-table"><tr>
 	<th scope="row" valign="top"><label>' . esc_html( 'Set as Current Sitewide Sale', 'pmpro-sitewide-sale' ) . ':</label></th>
 	<td><input name="pmpro_sws_set_as_sitewide_sale" type="checkbox" ' . ( $init_checked ? 'checked' : '' ) . ' /></td>
-	</tr></table>';
+	</tr>
+	<tr><th>Show Dev Info</th><td><button class="button button-primary dev-trigger">Button</button></td></tr>
+	</table>';
 	}
 
 	public function display_step_1( $post ) {
@@ -481,7 +483,7 @@ class PMPro_SWS_MetaBoxes {
 		} elseif ( $options['active_sitewide_sale_id'] === $post_id . '' ) {
 			$options['active_sitewide_sale_id'] = false;
 		}
-		pmprosws_save_options( $options );
+		PMPro_SWS_Settings::pmprosws_save_options( $options );
 
 		if ( isset( $_POST['pmpro_sws_create_discount'] ) ) {
 			wp_redirect( esc_html( get_admin_url() ) . 'admin.php?page=pmpro-discountcodes&edit=-1&pmpro_sws_callback=' . $post_id );

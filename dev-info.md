@@ -2,13 +2,23 @@
 
 Place to write up next steps or what's left to do
 
-- Give CSS Selectors for chosen banner (David has a branch with this)
-- How many people who used the summer code were already members? (David has a branch with this)
 - Landing page CPT, or settings/meta for landing page
+- Dropdown on Reports needs afixin
 - Implementing discount code stats in core and using that graph
 - Adding links to confirmation pages and emails
 - Finalize settings/cpt page layouts
+- Remove Dev Info (class and button)
 
+## Discussion
+If we have the page for Sitewide sale under Memberships specifying the Active sale, what is the checkbox for on each sale cpt?
+Not sure that the checkbox is saving at the moment.
+Down to one php file, checkout.php, that is not a class.
+
+=== v1.3.2 ===
+- Give CSS Selectors for chosen banner (David has a branch with this)
+- How many people who used the summer code were already members? (David has a branch with this)
+- Settings clean up
+- pmpro-sws-reports.php vs pmpro-sws-reports.js
 
 === v1.3.1 ===
 jQuery moved to files and enqueued.
@@ -34,3 +44,5 @@ adding in classes
 
 Set as Current Sitewide Sale:
 [] Notice: Undefined index: active_sitewide_sale_id in /app/public/wp-content/plugins/pmpro-sitewide-sale/includes/classes/class-sws-meta-boxes.php on line 143
+
+Error from php in js ![Error](https://monosnap.com/image/jWumN2JwT3Y3VIZEPcU8QZBwpsoXId.png)

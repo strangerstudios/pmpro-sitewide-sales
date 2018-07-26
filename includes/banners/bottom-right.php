@@ -6,7 +6,7 @@
  */
 
 function pmpro_sws_show_bottom_right_banner() {
-	$options              = PMPro_SWS_Settings::pmprosws_get_options();
+	$options = PMPro_SWS_Settings::pmprosws_get_options();
 	$active_sitewide_sale = $options['active_sitewide_sale_id'];
 	?>
 	<div id="pmpro_sws_banner_bottom_right" class="pmpro_sws_banner">

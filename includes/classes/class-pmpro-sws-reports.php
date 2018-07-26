@@ -10,24 +10,27 @@ class PMPro_SWS_Reports {
 
 		// Functions called by adding this report are below the class.
 		$pmpro_reports['pmpro_sws_reports'] = __( 'PMPro Sitewide Sale', 'pmpro_sitewide_sale' );
-
-		if ( is_admin() ) {
-			add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_reports_js' ) );
-		}
+		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_reports_js' ) );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_tracking_js' ) );
-		add_action( 'wp_ajax_pmpro_sws_ajax_reporting', array( __CLASS__, 'ajax_reporting' ) );
+		add_action( 'wp_ajax_pmpro_sws_ajax_reporting', array( __CLASS__, 'ajax_reporting1' ) );
 		add_action( 'wp_ajax_pmpro_sws_ajax_tracking', array( __CLASS__, 'ajax_tracking' ) );
 		add_action( 'wp_ajax_nopriv_pmpro_sws_ajax_tracking', array( __CLASS__, 'ajax_tracking' ) );
+	}
+
+	public static function ajax_reporting1() {
+		 $variable = $_POST;
+		 echo json_encode( $variable );
+		 exit();
+
 	}
 
 	public static function ajax_reporting() {
 		echo pmpro_sws_get_report_for_code( $_POST['sitewide_sale_id'] );
 	}
 
-
 	public static function get_report_for_code( $sitewide_sale_id = null ) {
 		global $wpdb;
-		$options              = PMPro_SWS_Settings::pmprosws_get_options();
+		$options = PMPro_SWS_Settings::pmprosws_get_options();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
 		if ( null === $sitewide_sale_id ) {
 			$sitewide_sale_id = $active_sitewide_sale;
@@ -41,8 +44,8 @@ class PMPro_SWS_Reports {
 		$reports = get_option( 'pmpro_sitewide_sale_' . $sitewide_sale_id . '_tracking' );
 		if ( false === $reports ) {
 			$reports = array(
-				'banner_impressions'                => 0,
-				'landing_page_visits'               => 0,
+				'banner_impressions'   => 0,
+				'landing_page_visits'  => 0,
 				'landing_page_after_banner'         => 0,
 				'checkout_conversions_with_code'    => 0,
 				'checkout_conversions_without_code' => 0,
@@ -72,8 +75,8 @@ class PMPro_SWS_Reports {
 		// KEEP ABOVE HERE
 		//
 		// Reports regarding advertising/conversions.
-		$banner_impressions                = $reports['banner_impressions'];
-		$landing_page_visits               = $reports['landing_page_visits'];
+		$banner_impressions   = $reports['banner_impressions'];
+		$landing_page_visits  = $reports['landing_page_visits'];
 		$landing_page_after_banner         = $reports['landing_page_after_banner'];
 		$landing_page_after_banner_percent = self::safe_divide( $landing_page_after_banner, $banner_impressions ) * 100;
 		if ( is_nan( $landing_page_after_banner_percent ) ) {
@@ -86,7 +89,7 @@ class PMPro_SWS_Reports {
 		}
 		$checkout_conversions_with_code    = $reports['checkout_conversions_with_code'];
 		$checkout_conversions_without_code = $reports['checkout_conversions_without_code'];
-		$checkout_conversions              = $checkout_conversions_with_code + $checkout_conversions_without_code;
+		$checkout_conversions = $checkout_conversions_with_code + $checkout_conversions_without_code;
 		$checkout_conversions_percent      = self::safe_divide( $checkout_conversions, $landing_page_visits ) * 100;
 		if ( is_nan( $checkout_conversions_percent ) ) {
 			$checkout_conversions_percent = 0;
@@ -211,7 +214,7 @@ class PMPro_SWS_Reports {
 	public static function enqueue_tracking_js() {
 		global $pmpro_pages;
 
-		$options              = PMPro_SWS_Settings::pmprosws_get_options();
+		$options = PMPro_SWS_Settings::pmprosws_get_options();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
 		wp_register_script( 'pmpro_sws_tracking', plugins_url( 'js/pmpro-sws-tracking.js', PMPROSWS_BASENAME ), array( 'jquery', 'utils' ) );
 
@@ -248,8 +251,8 @@ class PMPro_SWS_Reports {
 		$reports = get_option( 'pmpro_sitewide_sale_' . $sitewide_sale_id . '_tracking' );
 		if ( false === $reports ) {
 			$reports = array(
-				'banner_impressions'                => 0,
-				'landing_page_visits'               => 0,
+				'banner_impressions'   => 0,
+				'landing_page_visits'  => 0,
 				'landing_page_after_banner'         => 0,
 				'checkout_conversions_with_code'    => 0,
 				'checkout_conversions_without_code' => 0,
@@ -278,7 +281,7 @@ function pmpro_report_pmpro_sws_reports_widget() {
  */
 function pmpro_report_pmpro_sws_reports_page() {
 	global $wpdb;
-	$options              = pmprosws_get_options();
+	$options = PMPro_SWS_Settings::pmprosws_get_options();
 	$sitewide_sales = get_posts(
 		[
 			'post_type' => 'sws_sitewide_sale',
@@ -300,4 +303,5 @@ function pmpro_report_pmpro_sws_reports_page() {
 	echo '<div id="pmpro_sws_reports_container">';
 	echo PMPro_SWS_Reports::get_report_for_code();
 	echo '</div>';
+	echo '<div id="reports-landing">reports-landing</div>';
 }
