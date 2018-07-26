@@ -211,15 +211,20 @@ class PMPro_SWS_MetaBoxes {
 	<label for="pmpro_sws_discount_code_id"><b>Choose Discount Code</b> </label><select class="discount_code_select pmpro_sws_option" id="pmpro_sws_discount_code_select" name="pmpro_sws_discount_code_id">
 	<option value=-1></option>
 	<?php
+	$code_found = false;
 	foreach ( $codes as $code ) {
 		$selected_modifier = '';
 		if ( $code->id === $current_discount ) {
 			$selected_modifier = ' selected="selected"';
+			$code_found        = true;
 		}
 		echo '<option value = ' . esc_html( $code->id ) . esc_html( $selected_modifier ) . '>' . esc_html( $code->code, 'pmpro-sitewide-sale' ) . '</option>';
 	}
-	echo '</select> ' . esc_html( 'or', 'pmpro_sitewide_sale' ) .
-	' <input type="submit" class="button button-primary" name="pmpro_sws_create_discount" value="' . esc_html( 'create a new discount code', 'pmpro-sitewide-sale' ) . '"><br/><br/>';
+	echo '</select><span id="pmpro_sws_after_discount_code_select">';
+	if(  $code_found ) {
+		echo esc_html( ' or ', 'pmpro_sitewide_sale' ) . ' <input type="submit" class="button button-primary" name="pmpro_sws_edit_discount" value="' . esc_html( 'edit current discount code', 'pmpro-sitewide-sale' ) . '">';
+	}
+	echo '</span>' . esc_html( ' or ', 'pmpro_sitewide_sale' ) . ' <input type="submit" class="button button-primary" name="pmpro_sws_create_discount" value="' . esc_html( 'create a new discount code', 'pmpro-sitewide-sale' ) . '"><br/><br/>';
 	echo '<label for="pmpro_sws_custom_sale_dates"><b>Custom Sale Start/End Dates</b></label>
 	<input type="checkbox" id="pmpro_sws_custom_sale_dates" name="pmpro_sws_custom_sale_dates" ' . $checked_modifier_date . '\><br/>';
 	echo '<div id="pmpro_sws_custom_date_select"' . $hidden_modifier_date . '>
@@ -246,14 +251,20 @@ class PMPro_SWS_MetaBoxes {
 		<label for="pmpro_sws_landing_page_post_id"><b>Create Landing Page</b></label> <select class="landing_page_select pmpro_sws_option" id="pmpro_sws_landing_page_select" name="pmpro_sws_landing_page_post_id">
 		<option value=-1></option>
 		<?php
+		$page_found = false;
 		foreach ( $pages as $page ) {
 			$selected_modifier = '';
 			if ( $page->ID . '' === $current_page ) {
 				$selected_modifier = ' selected="selected"';
+				$page_found        = true;
 			}
 			echo '<option value=' . esc_html( $page->ID ) . esc_html( $selected_modifier ) . '>' . esc_html( $page->post_title ) . '</option>';
 		}
-		echo '</select> ' . esc_html( 'or', 'pmpro_sitewide_sale' ) . ' <input type="submit" class="button button-primary" name="pmpro_sws_create_landing_page" value="' . esc_html( 'create a new landing page', 'pmpro-sitewide-sale' ) . '">';
+		echo '</select><span id="pmpro_sws_after_landing_page_select">';
+		if (  $page_found ) {
+			echo esc_html( ' or ', 'pmpro_sitewide_sale' ) . ' <input type="submit" class="button button-primary" name="pmpro_sws_edit_landing_page" value="' . esc_html( 'edit current landing page', 'pmpro-sitewide-sale' ) . '">';
+		}
+		echo '</span>' . esc_html( ' or ', 'pmpro_sitewide_sale' ) . ' <input type="submit" class="button button-primary" name="pmpro_sws_create_landing_page" value="' . esc_html( 'create a new landing page', 'pmpro-sitewide-sale' ) . '"><br/><br/>';
 	}
 
 	public function display_step_3_1() {
@@ -488,8 +499,17 @@ class PMPro_SWS_MetaBoxes {
 			exit();
 		}
 
+		if ( isset( $_POST['pmpro_sws_edit_discount'] ) ) {
+			wp_redirect( esc_html( get_admin_url() ) . 'admin.php?page=pmpro-discountcodes&edit=' . get_post_meta( $post_id, 'discount_code_id', true ) . '&pmpro_sws_callback=' . $post_id );
+			exit();
+		}
+
 		if ( isset( $_POST['pmpro_sws_create_landing_page'] ) ) {
 			wp_redirect( esc_html( get_admin_url() ) . 'post-new.php?post_type=page&pmpro_sws_callback=' . $post_id );
+			exit();
+		}
+		if ( isset( $_POST['pmpro_sws_edit_landing_page'] ) ) {
+			wp_redirect( esc_html( get_admin_url() ) . 'post.php?post=' . get_post_meta( $post_id, 'landing_page_post_id', true ) . '&action=edit&pmpro_sws_callback=' . $post_id );
 			exit();
 		}
 	}
@@ -504,7 +524,6 @@ class PMPro_SWS_MetaBoxes {
 	function landing_page_on_save( $saveid ) {
 		if ( isset( $_REQUEST['pmpro_sws_callback'] ) ) {
 			update_post_meta( $_REQUEST['pmpro_sws_callback'], 'landing_page_post_id', $saveid );
-			// echo '<a href="' . esc_html( get_admin_url() ) . 'post.php?post=' . $_REQUEST['pmpro_sws_callback'] . '&action=edit">Click here to go back to editing Sitewide Sale</a>';
 		}
 	}
 }

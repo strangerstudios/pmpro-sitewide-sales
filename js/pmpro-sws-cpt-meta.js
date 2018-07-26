@@ -7,14 +7,14 @@ jQuery( document ).ready(function($) {
 	jQuery('.wp-editor-tabs').remove();
 	jQuery('#insert-media-button').remove();
 
-	$(".pmpro_sws_option").change(function() {
-		window.onbeforeunload = function() {
-    	return true;
-		};
+	$('#pmpro_sws_discount_code_select').change(function(){
+		$('#pmpro_sws_after_discount_code_select').hide();
 	});
-	$("#pmpro_sws_options").submit(function() {
-		window.onbeforeunload = null;
+
+	$('#pmpro_sws_landing_page_select').change(function(){
+		$('#pmpro_sws_after_landing_page_select').hide();
 	});
+
 	$('#pmpro_sws_custom_sale_dates').change(function(){
 		if(this.checked)
 			$('#pmpro_sws_custom_date_select').show();
