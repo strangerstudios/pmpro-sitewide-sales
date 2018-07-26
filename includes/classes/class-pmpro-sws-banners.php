@@ -13,6 +13,53 @@ class PMPro_SWS_Banners {
 	}
 
 	/**
+	 * Gets info about available banners including name and available
+	 * css selectors.
+	 *
+	 * @return array banner_name => array( option_title=>string, css_selctors=>array(strings) )
+	 */
+	public static function get_registered_banners() {
+
+		$registered_banners = array(
+			'top' => array(
+				'option_title'  => __('Yes, Top of Site', 'pmpro_sitewide_sale'),
+				'css_selectors' => array(
+					'#pmpro_sws_banner_top',
+					'.pmpro_btn',
+				),
+			),
+			'bottom' => array(
+				'option_title'  => __('Yes, Bottom of Site', 'pmpro_sitewide_sale'),
+				'css_selectors' => array(
+					'#pmpro_sws_banner_bottom',
+					'.pmpro_sws_banner-inner',
+					'.pmpro_sws_banner-inner-left',
+					'.pmpro_sws_banner-inner-right',
+					'.pmpro_btn',
+				),
+			),
+			'bottom_right' => array(
+				'option_title'  => __('Yes, Bottom Right of Site', 'pmpro_sitewide_sale'),
+				'css_selectors' => array(
+					'#pmpro_sws_banner_bottom_right',
+					'.pmpro_btn',
+				),
+			),
+		);
+
+		/**
+		 * Modify Registerted Banners
+		 *
+		 * @since 0.0.1
+		 *
+		 * @param array $registered_banners contains all currently registered banners.
+		 */
+		$registered_banners = apply_filters( 'pmpro_sws_registered_banners', $registered_banners );
+
+		return $registered_banners;
+	}
+
+	/**
 	 * Logic for when to show banners/which banner to show
 	 */
 	public static function choose_banner() {
