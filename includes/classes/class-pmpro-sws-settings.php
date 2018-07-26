@@ -67,7 +67,7 @@ class PMPro_SWS_Settings {
 	 */
 	public static function pmpro_sws_select_sitewide_sale_callback() {
 		global $wpdb;
-		$options              = pmprosws_get_options();
+		$options              = self::pmprosws_get_options();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
 		$sitewide_sales       = get_posts(
 			[
@@ -91,12 +91,38 @@ class PMPro_SWS_Settings {
 
 
 	/**
+	 * Get the Sitewide Sale Options
+	 *
+	 * @return array [description]
+	 */
+	public static function pmprosws_get_options() {
+		$options = get_option( 'pmpro_sitewide_sale' );
+
+		// Set the defaults.
+		if ( empty( $options ) ) {
+			$options = array(
+				'active_sitewide_sale_id' => false,
+			);
+		}
+		return $options;
+	}
+
+	/**
+	 * [pmprosws_save_options description]
+	 *
+	 * @param array $options contains information about sale to be saved.
+	 */
+	public static function pmprosws_save_options( $options ) {
+		return update_option( 'pmpro_sitewide_sale', $options, 'no' );
+	}
+
+	/**
 	 * Validates sitewide sale options
 	 *
 	 * @param  array $input info to be validated.
 	 */
 	public static function pmpro_sws_validate( $input ) {
-		$options = pmprosws_get_options();
+		$options = self::pmprosws_get_options();
 
 		if ( ! empty( $input['active_sitewide_sale_id'] ) && '-1' !== $input['active_sitewide_sale_id'] ) {
 			$options['active_sitewide_sale_id'] = trim( $input['active_sitewide_sale_id'] );

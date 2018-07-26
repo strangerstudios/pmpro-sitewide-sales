@@ -18,7 +18,7 @@ class PMPro_SWS_Banners {
 	public static function choose_banner() {
 		// Can be optimized to use a single get_post_meta call.
 		global $pmpro_pages;
-		$options              = pmprosws_get_options();
+		$options              = PMPro_SWS_Settings::pmprosws_get_options();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
 		if ( false === $active_sitewide_sale || 'sws_sitewide_sale' !== get_post_type( $active_sitewide_sale ) ) {
 			// $active_sitewide_sale not set or is a different post type.
@@ -64,7 +64,7 @@ class PMPro_SWS_Banners {
 	 * Applies user's custom css to banner
 	 */
 	public static function apply_custom_css() {
-		$options              = pmprosws_get_options();
+		$options              = PMPro_SWS_Settings::pmprosws_get_options();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
 		if ( false === $active_sitewide_sale || 'sws_sitewide_sale' !== get_post_type( $active_sitewide_sale ) ) {
 			// $active_sitewide_sale not set or is a different post type.

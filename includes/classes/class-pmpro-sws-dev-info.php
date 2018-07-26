@@ -51,7 +51,7 @@ class PMPro_SWS_Dev_Info {
 	}
 
 	public static function display_dev_info_0() {
-		$sws_settings = pmprosws_get_options();
+		$sws_settings = PMPro_SWS_Settings::pmprosws_get_options();
 		echo '<h4>' . __CLASS__ . '</h4>';
 		echo PMPROSWS_DIR . '<br>';
 		$info = file_get_contents( PMPROSWS_DIR . '/dev-info.md' );
@@ -59,7 +59,7 @@ class PMPro_SWS_Dev_Info {
 		echo '</pre>';
 	}
 	public static function display_dev_info_1() {
-		$sws_settings = pmprosws_get_options();
+		$sws_settings = PMPro_SWS_Settings::pmprosws_get_options();
 		echo '<pre>';
 		echo '<h4>' . __CLASS__ . '</h4>';
 		print_r( $sws_settings );

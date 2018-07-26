@@ -153,7 +153,7 @@ class PMPro_SWS_MetaBoxes {
 		if ( isset( $_REQUEST['set_sitewide_sale'] ) && 'true' === $_REQUEST['set_sitewide_sale'] ) {
 			$init_checked = true;
 		} else {
-			$options = pmprosws_get_options();
+			$options = PMPro_SWS_Settings::pmprosws_get_options();
 			if ( $post->ID . '' === $options['active_sitewide_sale_id'] ) {
 				$init_checked = true;
 			}
@@ -452,7 +452,7 @@ class PMPro_SWS_MetaBoxes {
 			update_post_meta( $post_id, 'hide_on_checkout', false );
 		}
 
-		$options = pmprosws_get_options();
+		$options = PMPro_SWS_Settings::pmprosws_get_options();
 		if ( isset( $_POST['pmpro_sws_set_as_sitewide_sale'] ) ) {
 			$options['active_sitewide_sale_id'] = $post_id;
 		} elseif ( $options['active_sitewide_sale_id'] === $post_id . '' ) {

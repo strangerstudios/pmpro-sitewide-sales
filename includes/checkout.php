@@ -16,7 +16,7 @@ function pmpro_sws_check_cookie() {
 	if ( empty( $_REQUEST['level'] ) || ! empty( $_REQUEST['discount_code'] ) ) {
 		return;
 	}
-	$options              = pmprosws_get_options();
+	$options              = PMPro_SWS_Settings::pmprosws_get_options();
 	$active_sitewide_sale = $options['active_sitewide_sale_id'];
 	$current_discount     = get_post_meta( $active_sitewide_sale, 'discount_code_id', true );
 	if ( empty( $current_discount ) ||

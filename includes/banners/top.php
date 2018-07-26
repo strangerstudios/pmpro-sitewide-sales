@@ -6,7 +6,7 @@
  */
 
 function pmpro_sws_show_top_banner() {
-	$options              = pmprosws_get_options();
+	$options              = PMPro_SWS_Settings::pmprosws_get_options();
 	$active_sitewide_sale = $options['active_sitewide_sale_id'];
 	/* Maybe use JavaScript here to detect the height of the bar and adjust margin-top of html elemenet. */
 	?>
