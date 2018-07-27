@@ -7,7 +7,6 @@ class PMPro_SWS_Dev_Info {
 
 	public static function init() {
 		add_action( 'load-post.php', array( __CLASS__, 'init_metabox' ) );
-		add_action( 'save_post', 'pmpro_sws_save_cpt', 10, 2 );
 		add_action( 'admin_head', array( __CLASS__, 'dev_script_styles' ) );
 	}
 

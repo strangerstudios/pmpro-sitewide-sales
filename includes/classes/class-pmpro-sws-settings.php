@@ -121,9 +121,8 @@ class PMPro_SWS_Settings {
 	 *
 	 * @param  array $input info to be validated.
 	 */
-	public static function pmpro_sws_validate( $input ) {
+	public static function validate( $input ) {
 		$options = self::pmprosws_get_options();
-
 		if ( ! empty( $input['active_sitewide_sale_id'] ) && '-1' !== $input['active_sitewide_sale_id'] ) {
 			$options['active_sitewide_sale_id'] = trim( $input['active_sitewide_sale_id'] );
 		} else {
