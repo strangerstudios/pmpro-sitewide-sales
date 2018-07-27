@@ -49,15 +49,13 @@ class PMPro_SWS_Post_Types {
 	}
 
 	public static function enqueue_scripts() {
-		if ( is_admin() ) {
-			wp_register_script( 'pmpro_sws_set_active_sitewide_sale', plugins_url( 'js/pmpro-sws-set-active-sitewide-sale.js', PMPROSWS_BASENAME ), array( 'jquery' ), '1.0.4' );
-			wp_enqueue_script( 'pmpro_sws_set_active_sitewide_sale' );
-		}
+		wp_register_script( 'pmpro_sws_set_active_sitewide_sale', plugins_url( 'js/pmpro-sws-set-active-sitewide-sale.js', PMPROSWS_BASENAME ), array( 'jquery' ), '1.0.4' );
+		wp_enqueue_script( 'pmpro_sws_set_active_sitewide_sale' );
 	}
 
 	public static function set_sitewide_sale_columns( $columns ) {
-		$columns['is_active']  = '';
-		$columns['set_active'] = '';
+		$columns['is_active']  = __( 'Selected', 'pmpro_sitewide_sale' );
+		$columns['set_active'] = __( 'Select Active Sale', 'pmpro_sitewide_sale' );
 
 		return $columns;
 	}
@@ -77,7 +75,7 @@ class PMPro_SWS_Post_Types {
 				if ( $post_id . '' === $options['active_sitewide_sale_id'] ) {
 					echo '<button class="button button-primary pmpro_sws_column_set_active" id="pmpro_sws_column_set_active_' . $post_id . '">Remove Active</button>';
 				} else {
-					echo '<button class="button button-primary pmpro_sws_column_set_active" id="pmpro_sws_column_set_active_' . $post_id . '">Set Active</button>';
+					echo '<button class="button button-secondary pmpro_sws_column_set_active" id="pmpro_sws_column_set_active_' . $post_id . '">Set Active</button>';
 				}
 				break;
 		}

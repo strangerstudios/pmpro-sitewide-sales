@@ -6,10 +6,8 @@ defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 class PMPro_SWS_Banners {
 
 	public static function init() {
-		if ( ! is_admin() ) {
-			add_action( 'wp', array( __CLASS__, 'choose_banner' ) );
-			add_action( 'wp_head', array( __CLASS__, 'apply_custom_css' ), 5 );
-		}
+		add_action( 'wp', array( __CLASS__, 'choose_banner' ) );
+		add_action( 'wp_head', array( __CLASS__, 'apply_custom_css' ), 5 );
 	}
 
 	/**

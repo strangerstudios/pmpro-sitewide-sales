@@ -11,15 +11,13 @@ class PMPro_SWS_MetaBoxes {
 	 * Constructor.
 	 */
 	public function __construct() {
-		if ( is_admin() ) {
-			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-			add_action( 'load-post.php', array( $this, 'init_metabox' ) );
-			add_action( 'load-post-new.php', array( $this, 'init_metabox' ) );
-			add_filter( 'mce_buttons2', array( $this, 'remove_editor_buttons' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		add_action( 'load-post.php', array( $this, 'init_metabox' ) );
+		add_action( 'load-post-new.php', array( $this, 'init_metabox' ) );
+		add_filter( 'mce_buttons2', array( $this, 'remove_editor_buttons' ) );
 
-			add_action( 'pmpro_save_discount_code', array( $this, 'discount_code_on_save' ) );
-			add_action( 'save_post', array( $this, 'landing_page_on_save' ), 10, 3 );
-		}
+		add_action( 'pmpro_save_discount_code', array( $this, 'discount_code_on_save' ) );
+		add_action( 'save_post', array( $this, 'landing_page_on_save' ), 10, 3 );
 	}
 
 	/**
@@ -223,7 +221,7 @@ class PMPro_SWS_MetaBoxes {
 		echo '<option value = ' . esc_html( $code->id ) . esc_html( $selected_modifier ) . '>' . esc_html( $code->code ) . '</option>';
 	}
 	echo '</select><span id="pmpro_sws_after_discount_code_select">';
-	if(  $code_found ) {
+	if ( $code_found ) {
 		echo esc_html__( ' or ', 'pmpro_sitewide_sale' ) . ' <input type="submit" class="button button-primary" name="pmpro_sws_edit_discount" value="' . esc_html__( 'edit current discount code', 'pmpro-sitewide-sale' ) . '">';
 	}
 	echo '</span>' . esc_html__( ' or ', 'pmpro_sitewide_sale' ) . ' <input type="submit" class="button button-primary" name="pmpro_sws_create_discount" value="' . esc_html__( 'create a new discount code', 'pmpro-sitewide-sale' ) . '"><br/><br/>';
@@ -263,7 +261,7 @@ class PMPro_SWS_MetaBoxes {
 			echo '<option value=' . esc_html( $page->ID ) . esc_html( $selected_modifier ) . '>' . esc_html( $page->post_title ) . '</option>';
 		}
 		echo '</select><span id="pmpro_sws_after_landing_page_select">';
-		if (  $page_found ) {
+		if ( $page_found ) {
 			echo esc_html__( ' or ', 'pmpro_sitewide_sale' ) . ' <input type="submit" class="button button-primary" name="pmpro_sws_edit_landing_page" value="' . esc_html__( 'edit current landing page', 'pmpro-sitewide-sale' ) . '">';
 		}
 		echo '</span>' . esc_html__( ' or ', 'pmpro_sitewide_sale' ) . ' <input type="submit" class="button button-primary" name="pmpro_sws_create_landing_page" value="' . esc_html__( 'create a new landing page', 'pmpro-sitewide-sale' ) . '"><br/><br/>';

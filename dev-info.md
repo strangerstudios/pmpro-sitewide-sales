@@ -2,8 +2,7 @@
 
 Place to write up next steps or what's left to do
 
-- Landing page CPT, or settings/meta for landing page
-- Dropdown on Reports needs afixin
+
 - Implementing discount code stats in core and using that graph
 - Adding links to confirmation pages and emails
 - Finalize settings/cpt page layouts
@@ -13,6 +12,11 @@ Place to write up next steps or what's left to do
 If we have the page for Sitewide sale under Memberships specifying the Active sale, what is the checkbox for on each sale cpt?
 Not sure that the checkbox is saving at the moment.
 Down to one php file, checkout.php, that is not a class.
+
+=== v1.3.3 ===
+- Landing page CPT, or settings/meta for landing page
+- Dropdown on Reports needs afixin
+Column Title = Screen Options ![Labeling columns gives checkbox for Screen Options](https://monosnap.com/image/QXU4oOs8icHUjR8pFqpTGRurwtULhj.png)
 
 === v1.3.2 ===
 - Give CSS Selectors for chosen banner (David has a branch with this)
