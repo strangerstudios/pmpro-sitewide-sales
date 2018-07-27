@@ -12,20 +12,13 @@ class PMPro_SWS_Reports {
 		$pmpro_reports['pmpro_sws_reports'] = __( 'PMPro Sitewide Sale', 'pmpro_sitewide_sale' );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_reports_js' ) );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_tracking_js' ) );
-		add_action( 'wp_ajax_pmpro_sws_ajax_reporting', array( __CLASS__, 'ajax_reporting1' ) );
+		add_action( 'wp_ajax_pmpro_sws_ajax_reporting', array( __CLASS__, 'ajax_reporting' ) );
 		add_action( 'wp_ajax_pmpro_sws_ajax_tracking', array( __CLASS__, 'ajax_tracking' ) );
 		add_action( 'wp_ajax_nopriv_pmpro_sws_ajax_tracking', array( __CLASS__, 'ajax_tracking' ) );
 	}
 
-	public static function ajax_reporting1() {
-		 $variable = $_POST;
-		 echo json_encode( $variable );
-		 exit();
-
-	}
-
 	public static function ajax_reporting() {
-		echo pmpro_sws_get_report_for_code( $_POST['sitewide_sale_id'] );
+		echo self::get_report_for_code( $_POST['sitewide_sale_id'] );
 	}
 
 	public static function get_report_for_code( $sitewide_sale_id = null ) {
@@ -321,5 +314,4 @@ function pmpro_report_pmpro_sws_reports_page() {
 	echo '<div id="pmpro_sws_reports_container">';
 	echo PMPro_SWS_Reports::get_report_for_code();
 	echo '</div>';
-	echo '<div id="reports-landing">reports-landing</div>';
 }
