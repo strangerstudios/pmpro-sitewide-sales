@@ -1,0 +1,10 @@
+textarea {
+	line-height: 1.4;
+	resize: vertical;
+	width: 88%;
+	padding: 1rem;
+	min-height: 10rem;
+}
+#pmpro_sws_options > table:nth-child(6) > tbody > tr > td > span {
+	width: 88%;
+}

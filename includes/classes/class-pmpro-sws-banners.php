@@ -22,14 +22,14 @@ class PMPro_SWS_Banners {
 
 		$registered_banners = array(
 			'top' => array(
-				'option_title'  => __('Yes, Top of Site', 'pmpro_sitewide_sale'),
+				'option_title'  => __( 'Yes, Top of Site', 'pmpro_sitewide_sale' ),
 				'css_selectors' => array(
 					'#pmpro_sws_banner_top',
 					'.pmpro_btn',
 				),
 			),
 			'bottom' => array(
-				'option_title'  => __('Yes, Bottom of Site', 'pmpro_sitewide_sale'),
+				'option_title'  => __( 'Yes, Bottom of Site', 'pmpro_sitewide_sale' ),
 				'css_selectors' => array(
 					'#pmpro_sws_banner_bottom',
 					'.pmpro_sws_banner-inner',
@@ -39,7 +39,7 @@ class PMPro_SWS_Banners {
 				),
 			),
 			'bottom_right' => array(
-				'option_title'  => __('Yes, Bottom Right of Site', 'pmpro_sitewide_sale'),
+				'option_title'  => __( 'Yes, Bottom Right of Site', 'pmpro_sitewide_sale' ),
 				'css_selectors' => array(
 					'#pmpro_sws_banner_bottom_right',
 					'.pmpro_btn',
@@ -65,7 +65,7 @@ class PMPro_SWS_Banners {
 	public static function choose_banner() {
 		// Can be optimized to use a single get_post_meta call.
 		global $pmpro_pages;
-		$options              = PMPro_SWS_Settings::pmprosws_get_options();
+		$options = PMPro_SWS_Settings::pmprosws_get_options();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
 		if ( false === $active_sitewide_sale || 'sws_sitewide_sale' !== get_post_type( $active_sitewide_sale ) ) {
 			// $active_sitewide_sale not set or is a different post type.
@@ -77,7 +77,7 @@ class PMPro_SWS_Banners {
 		if ( false !== get_post_meta( $active_sitewide_sale, 'discount_code_id', true ) &&
 					false !== get_post_meta( $active_sitewide_sale, 'landing_page_post_id', true ) &&
 					'no' !== get_post_meta( $active_sitewide_sale, 'use_banner', true ) &&
-					! self::is_login_page() &&
+					! PMPro_SWS_Setup::is_login_page() &&
 					! is_page( intval( get_post_meta( $active_sitewide_sale, 'landing_page_post_id', true ) ) ) &&
 					! ( get_post_meta( $active_sitewide_sale, 'hide_on_checkout', true ) && is_page( $pmpro_pages['checkout'] ) ) &&
 					( false === $membership_level || ! in_array( $membership_level->ID, get_post_meta( $active_sitewide_sale, 'hide_for_levels', true ), true ) ) &&
@@ -95,23 +95,10 @@ class PMPro_SWS_Banners {
 	}
 
 	/**
-	 * Returns if the user is on the login page (currently works for TML)
-	 * Can probably switch to is_login_page from PMPro core
-	 */
-	public static function is_login_page() {
-		global $post;
-		$slug = get_site_option( 'tml_login_slug' );
-		if ( false === $slug ) {
-			$slug = 'login';
-		}
-		return ( ( ! empty( $post->post_name ) && $slug === $post->post_name ) || is_page( 'login' ) || in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) ) );
-	}
-
-	/**
 	 * Applies user's custom css to banner
 	 */
 	public static function apply_custom_css() {
-		$options              = PMPro_SWS_Settings::pmprosws_get_options();
+		$options = PMPro_SWS_Settings::pmprosws_get_options();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
 		if ( false === $active_sitewide_sale || 'sws_sitewide_sale' !== get_post_type( $active_sitewide_sale ) ) {
 			// $active_sitewide_sale not set or is a different post type.

@@ -67,7 +67,7 @@ class PMPro_SWS_Settings {
 	 */
 	public static function select_sitewide_sale_callback() {
 		global $wpdb;
-		$options              = self::pmprosws_get_options();
+		$options = self::pmprosws_get_options();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
 		$sitewide_sales       = get_posts(
 			[
@@ -113,7 +113,7 @@ class PMPro_SWS_Settings {
 	 * @param array $options contains information about sale to be saved.
 	 */
 	public static function pmprosws_save_options( $options ) {
-		return update_option( 'pmpro_sitewide_sale', $options, 'no' );
+		update_option( 'pmpro_sitewide_sale', $options, 'no' );
 	}
 
 	/**

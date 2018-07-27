@@ -6,11 +6,9 @@ defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 class PMPro_SWS_Dev_Info {
 
 	public static function init() {
-		// add_action( 'wp_head', array( __CLASS__, 'pmpro_show_info' ) );
-		if ( is_admin() ) {
-			add_action( 'load-post.php', array( __CLASS__, 'init_metabox' ) );
-		}
-		// add_action( 'save_post', 'pmpro_sws_save_cpt', 10, 2 );
+		add_action( 'load-post.php', array( __CLASS__, 'init_metabox' ) );
+		add_action( 'save_post', 'pmpro_sws_save_cpt', 10, 2 );
+		add_action( 'admin_head', array( __CLASS__, 'dev_script_styles' ) );
 	}
 
 	/**
@@ -64,5 +62,25 @@ class PMPro_SWS_Dev_Info {
 		echo '<h4>' . __CLASS__ . '</h4>';
 		print_r( $sws_settings );
 		echo '</pre>';
+	}
+
+	public static function dev_script_styles() {
+		$screen = get_current_screen();
+		?>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		jQuery(document).ready(function($){
+			$('#pmpro_sws_dev_info_0').hide();
+			$('#pmpro_sws_dev_info_1').hide();
+
+			$('.dev-trigger').bind('click',function(e){
+				e.preventDefault();
+				$('#pmpro_sws_dev_info_0').toggle();
+				$('#pmpro_sws_dev_info_1').toggle();
+			});
+		});
+	</script>
+	<?php
+		echo '<h4 style="position:absolute; left:33%;top:1.3rem;color;rgba(250,128,114,.7);">Current Screen is <span style="color:rgba(250,128,114,1);">' . $screen->id . '</span></h4>';
 	}
 }
