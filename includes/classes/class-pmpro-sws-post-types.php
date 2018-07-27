@@ -6,6 +6,10 @@ class PMPro_SWS_Post_Types {
 
 	public static function init() {
 		add_action( 'init', array( __CLASS__, 'register_sitewide_sale_cpt' ) );
+		add_filter( 'manage_sws_sitewide_sale_posts_columns', array( __CLASS__, 'set_sitewide_sale_columns' ) );
+		add_action( 'manage_sws_sitewide_sale_posts_custom_column', array( __CLASS__, 'fill_sitewide_sale_columns' ), 10, 2 );
+		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
+		add_action( 'wp_ajax_pmpro_sws_set_active_sitewide_sale', array( __CLASS__, 'set_active_sitewide_sale' ) );
 	}
 
 	public static function renaming_cpt_menu_function() {
@@ -42,6 +46,54 @@ class PMPro_SWS_Post_Types {
 		$args['rest_base']           = __( 'sws_sitewide_sale', 'pmpro-sitewide-sale' );
 
 		register_post_type( 'sws_sitewide_sale', $args );
+	}
+
+	public static function enqueue_scripts() {
+		if ( is_admin() ) {
+			wp_register_script( 'pmpro_sws_set_active_sitewide_sale', plugins_url( 'js/pmpro-sws-set-active-sitewide-sale.js', PMPROSWS_BASENAME ), array( 'jquery' ), '1.0.4' );
+			wp_enqueue_script( 'pmpro_sws_set_active_sitewide_sale' );
+		}
+	}
+
+	public static function set_sitewide_sale_columns( $columns ) {
+		$columns['is_active']  = '';
+		$columns['set_active'] = '';
+
+		return $columns;
+	}
+
+	public static function fill_sitewide_sale_columns( $column, $post_id ) {
+		switch ( $column ) {
+			case 'is_active':
+				$options = PMPro_SWS_Settings::pmprosws_get_options();
+				if ( $post_id . '' === $options['active_sitewide_sale_id'] ) {
+					echo '<span class="pmpro_sws_column_active" id="pmpro_sws_column_active_' . $post_id . '">Active Sitewide Sale</span>';
+				} else {
+					echo '<span class="pmpro_sws_column_active" id="pmpro_sws_column_active_' . $post_id . '"></span>';
+				}
+				break;
+			case 'set_active':
+				$options = PMPro_SWS_Settings::pmprosws_get_options();
+				if ( $post_id . '' === $options['active_sitewide_sale_id'] ) {
+					echo '<button class="button button-primary pmpro_sws_column_set_active" id="pmpro_sws_column_set_active_' . $post_id . '">Remove Active</button>';
+				} else {
+					echo '<button class="button button-primary pmpro_sws_column_set_active" id="pmpro_sws_column_set_active_' . $post_id . '">Set Active</button>';
+				}
+				break;
+		}
+	}
+
+	public static function set_active_sitewide_sale() {
+		$sitewide_sale_id = $_POST['sitewide_sale_id'];
+		$options          = PMPro_SWS_Settings::pmprosws_get_options();
+
+		if ( $sitewide_sale_id === $options['active_sitewide_sale_id'] ) {
+			$options['active_sitewide_sale_id'] = false;
+		} else {
+			$options['active_sitewide_sale_id'] = $sitewide_sale_id;
+		}
+
+		PMPro_SWS_Settings::pmprosws_save_options( $options );
 	}
 
 
