@@ -163,7 +163,7 @@ class PMPro_SWS_Reports {
 			<table class="widefat fixed striped">
 				<thead>
 					<tr>
-						<td>' . esc_html( 'Sitewide Sale', 'pmpro_sitewide_sale' ) . '</td>
+						<td>' . esc_html__( 'Sitewide Sale', 'pmpro_sitewide_sale' ) . '</td>
 						<td>' . esc_html( get_the_title( $sitewide_sale_id ) ) .
 						' (' . date_i18n( get_option( 'date_format' ), ( new DateTime( get_post_meta( $active_sitewide_sale, 'start_date', true ) ) )->format( 'U' ) ) .
 						' - ' . date_i18n( get_option( 'date_format' ), ( new DateTime( get_post_meta( $active_sitewide_sale, 'end_date', true ) ) )->format( 'U' ) ) . ')</td>
@@ -178,15 +178,15 @@ class PMPro_SWS_Reports {
 			if ( ! empty( $value['child'] && true === $value['child'] ) ) {
 				$to_return .= '
 				<tr>
-					<td scope="row"> - ' . esc_html( $name, 'pmpro_sitewide_sale' ) . '</td>
-					<td>' . esc_html( $value['value'], 'pmpro_sitewide_sale' ) . '</td>
+					<td scope="row"> - ' . esc_html__( $name, 'pmpro_sitewide_sale' ) . '</td>
+					<td>' . esc_html__( $value['value'], 'pmpro_sitewide_sale' ) . '</td>
 				</tr>
 				';
 			} else {
 				$to_return .= '
 				<tr>
-					<td scope="row"><strong>' . esc_html( $name, 'pmpro_sitewide_sale' ) . '</strong></td>
-					<td><strong>' . esc_html( $value['value'], 'pmpro_sitewide_sale' ) . '</strong></td>
+					<td scope="row"><strong>' . esc_html__( $name, 'pmpro_sitewide_sale' ) . '</strong></td>
+					<td><strong>' . esc_html__( $value['value'], 'pmpro_sitewide_sale' ) . '</strong></td>
 				</tr>
 				';
 			}
@@ -301,14 +301,14 @@ function pmpro_report_pmpro_sws_reports_page() {
 		]
 	);
 	$active_sitewide_sale = $options['active_sitewide_sale_id'];
-	echo '<table><tr><td><h3>' . esc_html( 'Choose Sitewide Sale to View Reports For', 'pmpro-sitewide-sale' ) . ': </h3></td><td><select id="pmpro_sws_sitewide_sale_select">';
+	echo '<table><tr><td><h3>' . esc_html__( 'Choose Sitewide Sale to View Reports For', 'pmpro-sitewide-sale' ) . ': </h3></td><td><select id="pmpro_sws_sitewide_sale_select">';
 
 	foreach ( $sitewide_sales as $sitewide_sale ) {
 		$selected_modifier = '';
 		if ( $sitewide_sale->ID . '' === $active_sitewide_sale . '' ) {
 			$selected_modifier = ' selected="selected"';
 		}
-		echo '<option value = ' . esc_html( $sitewide_sale->ID ) . esc_html( $selected_modifier ) . '>' . esc_html( get_the_title( $sitewide_sale->ID ), 'pmpro-sitewide-sale' ) . '</option>';
+		echo '<option value = ' . esc_html( $sitewide_sale->ID ) . esc_html( $selected_modifier ) . '>' . esc_html( get_the_title( $sitewide_sale->ID ) ) . '</option>';
 	}
 	echo '</select></td></tr></table>';
 	echo '<div id="pmpro_sws_reports_container">';
