@@ -12,20 +12,13 @@ class PMPro_SWS_Reports {
 		$pmpro_reports['pmpro_sws_reports'] = __( 'PMPro Sitewide Sale', 'pmpro_sitewide_sale' );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_reports_js' ) );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_tracking_js' ) );
-		add_action( 'wp_ajax_pmpro_sws_ajax_reporting', array( __CLASS__, 'ajax_reporting1' ) );
+		add_action( 'wp_ajax_pmpro_sws_ajax_reporting', array( __CLASS__, 'ajax_reporting' ) );
 		add_action( 'wp_ajax_pmpro_sws_ajax_tracking', array( __CLASS__, 'ajax_tracking' ) );
 		add_action( 'wp_ajax_nopriv_pmpro_sws_ajax_tracking', array( __CLASS__, 'ajax_tracking' ) );
 	}
 
-	public static function ajax_reporting1() {
-		 $variable = $_POST;
-		 echo json_encode( $variable );
-		 exit();
-
-	}
-
 	public static function ajax_reporting() {
-		echo pmpro_sws_get_report_for_code( $_POST['sitewide_sale_id'] );
+		echo self::get_report_for_code( $_POST['sitewide_sale_id'] );
 	}
 
 	public static function get_report_for_code( $sitewide_sale_id = null ) {
@@ -54,26 +47,39 @@ class PMPro_SWS_Reports {
 		}
 
 		// Reports regarding total sales.
-		$orders_during_sale   = $wpdb->get_results( $wpdb->prepare( "SELECT orders.total, codes.code_id FROM $wpdb->pmpro_membership_orders orders LEFT JOIN wp_pmpro_discount_codes_uses codes ON orders.id = codes.order_id WHERE orders.timestamp >= %s AND orders.timestamp <= %s", get_post_meta( $active_sitewide_sale, 'start_date', true ), date( 'Y-m-d', strtotime( '+1 day', strtotime( get_post_meta( $active_sitewide_sale, 'end_date', true ) ) ) ) ) );
+		$orders_during_sale   = $wpdb->get_results( $wpdb->prepare( "SELECT orders.total, orders.subscription_transaction_id, orders.timestamp, orders.user_id, orders.id, codes.code_id FROM $wpdb->pmpro_membership_orders orders LEFT JOIN wp_pmpro_discount_codes_uses codes ON orders.id = codes.order_id WHERE orders.timestamp >= %s AND orders.timestamp <= %s AND orders.total > 0", get_post_meta( $active_sitewide_sale, 'start_date', true ), date( 'Y-m-d', strtotime( '+1 day', strtotime( get_post_meta( $active_sitewide_sale, 'end_date', true ) ) ) ) ) );
 		$orders_with_code     = 0;
+		$new_orders_with_code = 0;
 		$revenue_with_code    = 0;
 		$orders_without_code  = 0;
 		$revenue_without_code = 0;
+		$recurring_orders     = 0;
+		$recurring_revenue    = 0;
 		foreach ( $orders_during_sale as $order ) {
 			if ( $code_id === $order->code_id ) {
 				$orders_with_code++;
 				$revenue_with_code += intval( $order->total );
-			} else {
+				$previous_orders = $wpdb->get_results( $wpdb->prepare( "SELECT id FROM $wpdb->pmpro_membership_orders WHERE timestamp < %s AND user_id = %d LIMIT 1", $order->timestamp, $order->user_id ) );
+				if ( empty( $previous_orders ) ) {
+					$new_orders_with_code++;
+				}
+			} elseif ( empty( $order->subscription_transaction_id ) || empty( $order->timestamp ) ) {
 				$orders_without_code++;
 				$revenue_without_code += intval( $order->total );
+			} else {
+				$orders_with_same_id = $wpdb->get_results( $wpdb->prepare( "SELECT id FROM $wpdb->pmpro_membership_orders WHERE timestamp < %s AND subscription_transaction_id = %s LIMIT 1", $order->timestamp, $order->subscription_transaction_id ) );
+				if ( empty( $orders_with_same_id ) ) {
+					$orders_without_code++;
+					$revenue_without_code += intval( $order->total );
+				} else {
+					$recurring_orders++;
+					$recurring_revenue += intval( $order->total );
+				}
 			}
 		}
-		$total_revenue = $revenue_with_code + $revenue_without_code;
-		$total_sales   = $orders_with_code + $orders_without_code;
+		$total_revenue = $revenue_with_code + $revenue_without_code + $recurring_revenue;
+		$total_sales   = $orders_with_code + $orders_without_code + $recurring_orders;
 
-		//
-		// KEEP ABOVE HERE
-		//
 		// Reports regarding advertising/conversions.
 		$banner_impressions   = $reports['banner_impressions'];
 		$landing_page_visits  = $reports['landing_page_visits'];
@@ -94,13 +100,18 @@ class PMPro_SWS_Reports {
 		if ( is_nan( $checkout_conversions_percent ) ) {
 			$checkout_conversions_percent = 0;
 		}
+
 		$reports_to_output = array(
 			'Total Sales' => array(
 				'value'  => '$' . number_format_i18n( $total_revenue ) . ' (' . number_format_i18n( $total_sales ) . ')',
 				'child' => false,
 			),
-			'With the Discount Code' => array(
-				'value'  => '$' . number_format_i18n( $revenue_with_code ) . ' (' . number_format_i18n( $orders_with_code ) . ')',
+			'With the Discount Code ' . $code_name => array(
+				'value'  => '$' . number_format_i18n( $revenue_with_code ) . ' (' . number_format_i18n( $orders_with_code ) . ' Total, ' . number_format_i18n( $new_orders_with_code ) . ' New)',
+				'child' => true,
+			),
+			'Recurring Revenue' => array(
+				'value'  => '$' . number_format_i18n( $recurring_revenue ) . ' (' . number_format_i18n( $recurring_orders ) . ')',
 				'child' => true,
 			),
 			'Other Revenue' => array(
@@ -303,5 +314,4 @@ function pmpro_report_pmpro_sws_reports_page() {
 	echo '<div id="pmpro_sws_reports_container">';
 	echo PMPro_SWS_Reports::get_report_for_code();
 	echo '</div>';
-	echo '<div id="reports-landing">reports-landing</div>';
 }
