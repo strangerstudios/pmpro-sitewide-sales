@@ -159,7 +159,7 @@ class PMPro_SWS_MetaBoxes {
 			}
 		}
 		echo '<table class="form-table"><tr>
-	<th scope="row" valign="top"><label>' . esc_html( 'Set as Current Sitewide Sale', 'pmpro-sitewide-sale' ) . ':</label></th>
+	<th scope="row" valign="top"><label>' . esc_html__( 'Set as Current Sitewide Sale', 'pmpro-sitewide-sale' ) . ':</label></th>
 	<td><input name="pmpro_sws_set_as_sitewide_sale" type="checkbox" ' . ( $init_checked ? 'checked' : '' ) . ' /></td>
 	</tr>
 	<tr><th>Show Dev Info</th><td><button class="button button-primary dev-trigger">Button</button></td></tr>
@@ -220,13 +220,13 @@ class PMPro_SWS_MetaBoxes {
 			$selected_modifier = ' selected="selected"';
 			$code_found        = true;
 		}
-		echo '<option value = ' . esc_html( $code->id ) . esc_html( $selected_modifier ) . '>' . esc_html( $code->code, 'pmpro-sitewide-sale' ) . '</option>';
+		echo '<option value = ' . esc_html( $code->id ) . esc_html( $selected_modifier ) . '>' . esc_html( $code->code ) . '</option>';
 	}
 	echo '</select><span id="pmpro_sws_after_discount_code_select">';
 	if(  $code_found ) {
-		echo esc_html( ' or ', 'pmpro_sitewide_sale' ) . ' <input type="submit" class="button button-primary" name="pmpro_sws_edit_discount" value="' . esc_html( 'edit current discount code', 'pmpro-sitewide-sale' ) . '">';
+		echo esc_html__( ' or ', 'pmpro_sitewide_sale' ) . ' <input type="submit" class="button button-primary" name="pmpro_sws_edit_discount" value="' . esc_html__( 'edit current discount code', 'pmpro-sitewide-sale' ) . '">';
 	}
-	echo '</span>' . esc_html( ' or ', 'pmpro_sitewide_sale' ) . ' <input type="submit" class="button button-primary" name="pmpro_sws_create_discount" value="' . esc_html( 'create a new discount code', 'pmpro-sitewide-sale' ) . '"><br/><br/>';
+	echo '</span>' . esc_html__( ' or ', 'pmpro_sitewide_sale' ) . ' <input type="submit" class="button button-primary" name="pmpro_sws_create_discount" value="' . esc_html__( 'create a new discount code', 'pmpro-sitewide-sale' ) . '"><br/><br/>';
 	echo '<label for="pmpro_sws_custom_sale_dates"><b>Custom Sale Start/End Dates</b></label>
 	<input type="checkbox" id="pmpro_sws_custom_sale_dates" name="pmpro_sws_custom_sale_dates" ' . $checked_modifier_date . '\><br/>';
 	echo '<div id="pmpro_sws_custom_date_select"' . $hidden_modifier_date . '>
@@ -264,9 +264,9 @@ class PMPro_SWS_MetaBoxes {
 		}
 		echo '</select><span id="pmpro_sws_after_landing_page_select">';
 		if (  $page_found ) {
-			echo esc_html( ' or ', 'pmpro_sitewide_sale' ) . ' <input type="submit" class="button button-primary" name="pmpro_sws_edit_landing_page" value="' . esc_html( 'edit current landing page', 'pmpro-sitewide-sale' ) . '">';
+			echo esc_html__( ' or ', 'pmpro_sitewide_sale' ) . ' <input type="submit" class="button button-primary" name="pmpro_sws_edit_landing_page" value="' . esc_html__( 'edit current landing page', 'pmpro-sitewide-sale' ) . '">';
 		}
-		echo '</span>' . esc_html( ' or ', 'pmpro_sitewide_sale' ) . ' <input type="submit" class="button button-primary" name="pmpro_sws_create_landing_page" value="' . esc_html( 'create a new landing page', 'pmpro-sitewide-sale' ) . '"><br/><br/>';
+		echo '</span>' . esc_html__( ' or ', 'pmpro_sitewide_sale' ) . ' <input type="submit" class="button button-primary" name="pmpro_sws_create_landing_page" value="' . esc_html__( 'create a new landing page', 'pmpro-sitewide-sale' ) . '"><br/><br/>';
 	}
 
 	public function display_step_3_1() {
@@ -327,7 +327,7 @@ class PMPro_SWS_MetaBoxes {
 
 	echo '
 	<tr>
-		<th scope="row" valign="top"><label>' . esc_html( 'Custom Banner CSS', 'pmpro-sitewide-sale' ) . '</label></th>
+		<th scope="row" valign="top"><label>' . esc_html__( 'Custom Banner CSS', 'pmpro-sitewide-sale' ) . '</label></th>
 		<td><textarea class="pmpro_sws_option" name="pmpro_sws_css_option">' . esc_html( $css_option ) . '</textarea>
 			<div id=pmpro_sws_banner_css_selectors>';
 
@@ -350,7 +350,7 @@ class PMPro_SWS_MetaBoxes {
 	</tr>';
 	echo '
 		<tr>
-			<th scope="row" valign="top"><label>' . esc_html( 'Hide Banner by Membership Level', 'pmpro-sitewide-sale' ) . '</label></th>
+			<th scope="row" valign="top"><label>' . esc_html__( 'Hide Banner by Membership Level', 'pmpro-sitewide-sale' ) . '</label></th>
 			<td><select class="pmpro_sws_option" id="pmpro_sws_hide_levels_select" name="pmpro_sws_hide_for_levels[]" style="width:12em" multiple/>';
 	$all_levels    = pmpro_getAllLevels( true, true );
 	$hidden_levels = $hide_for_levels;
@@ -361,7 +361,7 @@ class PMPro_SWS_MetaBoxes {
 	$checked_modifier = $hide_on_checkout ? ' checked' : '';
 	echo '</td></tr>
 		<tr>
-			<th scope="row" valign="top"><label>' . esc_html( 'Hide Banner at Checkout', 'pmpro-sitewide-sale' ) . '</label></th>
+			<th scope="row" valign="top"><label>' . esc_html__( 'Hide Banner at Checkout', 'pmpro-sitewide-sale' ) . '</label></th>
 			<td><input class="pmpro_sws_option" type="checkbox" name="pmpro_sws_hide_on_checkout" ' . esc_html( $checked_modifier ) . '/></td>
 		</tr></table>';
 	}
