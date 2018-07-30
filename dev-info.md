@@ -4,6 +4,7 @@ Place to write up next steps or what's left to do
 
 ## Discussion
 - Move banners to methods in a class
+- Autoloader
 - Bottom-right banner doesn't save
 - Dismiss banner Xs in upper right?
 - Remove Dev Info (class and button)
