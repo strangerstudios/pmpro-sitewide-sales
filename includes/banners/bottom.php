@@ -11,6 +11,7 @@ function pmpro_sws_show_bottom_banner() {
 	?>
 	<div id="pmpro_sws_banner_bottom" class="pmpro_sws_banner">
 		<div class="pmpro_sws_banner-inner">
+		<a href="javascript:void(0);" onclick="document.getElementById('pmpro_sws_banner_bottom_right').style.display = 'none';" class="dismiss">x</a>
 			<div class="pmpro_sws_banner-inner-left">
 				<h3><?php _e( get_post_meta( $active_sitewide_sale, 'banner_title', true ) ); ?></h3>
 				<?php echo apply_filters( 'the_content', get_post_field( 'post_content', $active_sitewide_sale ) ); ?>

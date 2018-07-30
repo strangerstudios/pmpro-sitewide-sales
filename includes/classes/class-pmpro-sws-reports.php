@@ -6,10 +6,7 @@ defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 class PMPro_SWS_Reports {
 
 	public static function init() {
-		global $pmpro_reports;
-
-		// Functions called by adding this report are below the class.
-		$pmpro_reports['pmpro_sws_reports'] = __( 'PMPro Sitewide Sale', 'pmpro_sitewide_sale' );
+		add_action( 'init', array( __CLASS__, 'assign_pmpro_sws_reports' ) );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_reports_js' ) );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_tracking_js' ) );
 		add_action( 'wp_ajax_pmpro_sws_ajax_reporting', array( __CLASS__, 'ajax_reporting' ) );
@@ -17,8 +14,17 @@ class PMPro_SWS_Reports {
 		add_action( 'wp_ajax_nopriv_pmpro_sws_ajax_tracking', array( __CLASS__, 'ajax_tracking' ) );
 	}
 
+	public static function assign_pmpro_sws_reports() {
+		global $pmpro_reports;
+		// Functions called by adding this report are below the class.
+		$pmpro_reports['pmpro_sws_reports'] = __( 'PMPro Sitewide Sale', 'pmpro_sitewide_sale' );
+		return $pmpro_reports;
+	}
+
 	public static function ajax_reporting() {
-		echo self::get_report_for_code( $_POST['sitewide_sale_id'] );
+		$ajax_dropdown = self::get_report_for_code( $_POST['sitewide_sale_id'] );
+		echo $ajax_dropdown;
+		exit;
 	}
 
 	public static function get_report_for_code( $sitewide_sale_id = null ) {

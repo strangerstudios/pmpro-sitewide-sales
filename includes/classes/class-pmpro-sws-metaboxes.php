@@ -14,8 +14,7 @@ class PMPro_SWS_MetaBoxes {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_action( 'load-post.php', array( $this, 'init_metabox' ) );
 		add_action( 'load-post-new.php', array( $this, 'init_metabox' ) );
-		add_filter( 'mce_buttons2', array( $this, 'remove_editor_buttons' ) );
-
+		// add_filter( 'mce_buttons2', array( $this, 'remove_editor_buttons' ) );
 		add_action( 'pmpro_save_discount_code', array( $this, 'discount_code_on_save' ) );
 		add_action( 'save_post', array( $this, 'landing_page_on_save' ), 10, 3 );
 	}
@@ -25,10 +24,13 @@ class PMPro_SWS_MetaBoxes {
 	 */
 	public function enqueue_scripts() {
 		global $typenow;
-		if ( 'sws_sitewide_sale' === $typenow ) {
+		// if ( 'sws_sitewide_sale' === $typenow ) {
 			wp_register_script( 'pmpro_sws_cpt_meta', plugins_url( 'js/pmpro-sws-cpt-meta.js', PMPROSWS_BASENAME ), array( 'jquery' ), '1.0.4' );
 			wp_enqueue_script( 'pmpro_sws_cpt_meta' );
-		}
+
+			wp_register_style( 'admin-dash', plugins_url( 'css/sws-admin.css', dirname( dirname( __FILE__ ) ) ), '1.0.4' );
+			wp_enqueue_style( 'admin-dash' );
+		// }
 	}
 
 	/**
@@ -59,9 +61,9 @@ class PMPro_SWS_MetaBoxes {
 			'high'
 		);
 		add_meta_box(
-			'pmpro_sws_cpt_step_3_2',
-			__( 'Step 3.2: Customize your Message', 'pmpro_sitewide_sale' ),
-			array( $this, 'display_step_3_2' ),
+			'pmpro_sws_cpt_step_3',
+			__( 'Step 3: Customize your Message', 'pmpro_sitewide_sale' ),
+			array( $this, 'display_step_3' ),
 			array( 'sws_sitewide_sale' ),
 			'above_editor',
 			'high'
@@ -93,17 +95,17 @@ class PMPro_SWS_MetaBoxes {
 
 		// Removing Step 1
 		add_meta_box(
-			'pmpro_sws_cpt_step_3_7',
-			__( 'Step 3.7: Steup Banners', 'pmpro_sitewide_sale' ),
-			array( $this, 'display_step_3_7' ),
+			'pmpro_sws_cpt_step_4',
+			__( 'Step 4: Steup Banners', 'pmpro_sitewide_sale' ),
+			array( $this, 'display_step_4' ),
 			array( 'sws_sitewide_sale' ),
 			'normal',
 			'high'
 		);
 		add_meta_box(
-			'pmpro_sws_cpt_step_4',
-			__( 'Step 4: Steup Banners', 'pmpro_sitewide_sale' ),
-			array( $this, 'display_step_4' ),
+			'pmpro_sws_cpt_step_5',
+			__( 'Step 5: Steup Banners', 'pmpro_sitewide_sale' ),
+			array( $this, 'display_step_5' ),
 			array( 'sws_sitewide_sale' ),
 			'normal',
 			'high'
@@ -119,16 +121,12 @@ class PMPro_SWS_MetaBoxes {
 			'bullist',
 			'numlist',
 			'blockquote',
-			'hr', // horizontal line
-			'alignleft',
-			'aligncenter',
-			'alignright',
+			'hr',
 			'link',
 			'unlink',
-			'wp_more', // read more link
+			'wp_more',
 			'spellchecker',
-			'dfw', // distraction free writing mode
-			'wp_adv', // kitchen sink toggle (if removed, kitchen sink will always display)
+			'dfw',
 		);
 		foreach ( $buttons as $button_key => $button_value ) {
 			if ( in_array( $button_value, $remove_buttons ) ) {
@@ -160,7 +158,7 @@ class PMPro_SWS_MetaBoxes {
 	<th scope="row" valign="top"><label>' . esc_html__( 'Set as Current Sitewide Sale', 'pmpro-sitewide-sale' ) . ':</label></th>
 	<td><input name="pmpro_sws_set_as_sitewide_sale" type="checkbox" ' . ( $init_checked ? 'checked' : '' ) . ' /></td>
 	</tr>
-	<tr><th>Show Dev Info</th><td><button class="button button-primary dev-trigger">Button</button></td></tr>
+	<tr><th>Show Dev Info</th><td><button class="button button-secondary dev-trigger">Button</button></td></tr>
 	</table>';
 	}
 
@@ -267,17 +265,20 @@ class PMPro_SWS_MetaBoxes {
 		echo '</span>' . esc_html__( ' or ', 'pmpro_sitewide_sale' ) . ' <input type="submit" class="button button-primary" name="pmpro_sws_create_landing_page" value="' . esc_html__( 'create a new landing page', 'pmpro-sitewide-sale' ) . '"><br/><br/>';
 	}
 
-	public function display_step_3_1() {
-		$return = '<h2>' . __FUNCTION__ . '</h2>';
+	public function display_step_3_heading() {
+		$return = '<h3>' . __FUNCTION__ . '</h3>';
 		return $return;
 	}
 
-	public function display_step_3_2( $post ) {
-		$value = apply_filters( 'example_filter', 'Default value for example_filter' );
+	public function display_step_3( $post ) {
+		$label = self::display_step_3_heading();
+		$label = ucwords( preg_replace( '/_+/', ' ', $label ) );
+		$value = $label;
+		$value .= apply_filters( 'sws_step_3_description', 'Use this filter: sws_step_3_description to provide some instructions about how to set up a Sitewide Sale.' );
 		echo $value;
 	}
 
-	public function display_step_3_7( $post ) {
+	public function display_step_4( $post ) {
 		// This should be optimized to use a single get_post_meta call.
 		$use_banner = esc_html( get_post_meta( $post->ID, 'use_banner', true ) );
 		if ( empty( $use_banner ) ) {
@@ -364,9 +365,9 @@ class PMPro_SWS_MetaBoxes {
 		</tr></table>';
 	}
 
-	public function display_step_4( $post ) {
+	public function display_step_5( $post ) {
 		?>
-		<a href="<?php echo admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports' ); ?>" target="_blank"><?php _e( 'Click here to view Sitewide Sale reports, need direct link.', 'pmpro-sitewide-sale' ); ?></a>
+		<a href="<?php echo admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports' ); ?>" target="_blank"><button><?php _e( 'Click here to view Sitewide Sale reports', 'pmpro-sitewide-sale' ); ?></button>, need direct link.</a>
 	<?php
 	}
 
