@@ -86,7 +86,7 @@ class PMPro_SWS_Settings {
 		$sitewide_sale = $sitewide_sale[0];
 
 		$sale_content           = 'sale';
-		$possible_sale_contents = [ 'pre-sale', 'sale', 'post_sale' ];
+		$possible_sale_contents = [ 'pre-sale', 'sale', 'post-sale' ];
 
 		if ( is_array( $atts ) && array_key_exists( 'sale_content', $atts ) && in_array( $atts['sale_content'], $possible_sale_contents, true ) ) {
 			$sale_content = $atts['sale_content'];
