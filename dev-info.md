@@ -4,15 +4,16 @@ Place to write up next steps or what's left to do
 
 ## Discussion
 - Move banners to methods in a class
+- Make meta fields for pre-sale, sale, and post-sale content
 - Autoloader
 - Bottom-right banner doesn't save
+- Adding links to confirmation pages in emails
+- Implementing discount code stats in core and using that graph
 - Dismiss banner Xs in upper right?
 - Remove Dev Info (class and button)
 
 === v1.3.4 ===
-- Implementing discount code stats in core and using that graph
-- Adding links to confirmation pages and emails
-- <s>Finalize settings/cpt page layouts</s> 
+- <s>Finalize settings/cpt page layouts</s>
 <s>If we have the page for Sitewide sale under Memberships specifying the Active sale, what is the checkbox for on each sale cpt?</s>
 <s>Not sure that the checkbox is saving at the moment.</s>
 <s>Down to one php file, checkout.php, that is not a class.</s>
