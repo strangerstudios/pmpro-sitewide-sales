@@ -244,6 +244,20 @@ class PMPro_SWS_MetaBoxes {
 		if ( empty( $current_page ) ) {
 			$current_page = false;
 		}
+		$pre_sale_content = esc_html( get_post_meta( $post->ID, 'pre_sale_content', true ) );
+		if ( empty( $pre_sale_content ) ) {
+			$pre_sale_content = '';
+		}
+
+		$sale_content = esc_html( get_post_meta( $post->ID, 'sale_content', true ) );
+		if ( empty( $sale_content ) ) {
+			$sale_content = '';
+		}
+
+		$post_sale_content = esc_html( get_post_meta( $post->ID, 'post_sale_content', true ) );
+		if ( empty( $post_sale_content ) ) {
+			$post_sale_content = '';
+		}
 
 		?>
 		<label for="pmpro_sws_landing_page_post_id"><b>Create Landing Page</b></label> <select class="landing_page_select pmpro_sws_option" id="pmpro_sws_landing_page_select" name="pmpro_sws_landing_page_post_id">
@@ -263,6 +277,24 @@ class PMPro_SWS_MetaBoxes {
 			echo esc_html__( ' or ', 'pmpro_sitewide_sale' ) . ' <input type="submit" class="button button-primary" name="pmpro_sws_edit_landing_page" value="' . esc_html__( 'edit current landing page', 'pmpro-sitewide-sale' ) . '">';
 		}
 		echo '</span>' . esc_html__( ' or ', 'pmpro_sitewide_sale' ) . ' <input type="submit" class="button button-primary" name="pmpro_sws_create_landing_page" value="' . esc_html__( 'create a new landing page', 'pmpro-sitewide-sale' ) . '"><br/><br/>';
+		?>
+		<table class="form-table">
+			<tr>
+				<th scope="row" valign="top"><label><?php esc_html_e( 'Pre-Sale Content', 'pmpro-sitewide-sale' ); ?></label></th>
+				<td><textarea class="pmpro_sws_option" name="pmpro_sws_pre_sale_content"><?php echo( esc_html( $pre_sale_content ) ); ?></textarea></td>
+			</tr>
+			<tr>
+				<th scope="row" valign="top"><label><?php esc_html_e( 'Sale Content', 'pmpro-sitewide-sale' ); ?></label></th>
+				<td><textarea class="pmpro_sws_option" name="pmpro_sws_sale_content"><?php echo( esc_html( $sale_content ) ); ?></textarea></td>
+			</tr>
+			<tr>
+				<th scope="row" valign="top"><label><?php esc_html_e( 'Post-Sale Content', 'pmpro-sitewide-sale' ); ?></label></th>
+				<td><textarea class="pmpro_sws_option" name="pmpro_sws_post_sale_content"><?php echo( esc_html( $post_sale_content ) ); ?></textarea></td>
+			</tr>
+		</table>
+
+
+		<?php
 	}
 
 	public function display_step_3_heading() {
@@ -454,6 +486,24 @@ class PMPro_SWS_MetaBoxes {
 			update_post_meta( $post_id, 'landing_page_post_id', trim( $_POST['pmpro_sws_landing_page_post_id'] ) );
 		} else {
 			update_post_meta( $post_id, 'landing_page_post_id', false );
+		}
+
+		if ( isset( $_POST['pmpro_sws_pre_sale_content'] ) ) {
+			update_post_meta( $post_id, 'pre_sale_content', trim( $_POST['pmpro_sws_pre_sale_content'] ) );
+		} else {
+			update_post_meta( $post_id, 'pre_sale_content', '' );
+		}
+
+		if ( isset( $_POST['pmpro_sws_sale_content'] ) ) {
+			update_post_meta( $post_id, 'sale_content', trim( $_POST['pmpro_sws_sale_content'] ) );
+		} else {
+			update_post_meta( $post_id, 'sale_content', '' );
+		}
+
+		if ( isset( $_POST['pmpro_sws_post_sale_content'] ) ) {
+			update_post_meta( $post_id, 'post_sale_content', trim( $_POST['pmpro_sws_post_sale_content'] ) );
+		} else {
+			update_post_meta( $post_id, 'post_css_option', '' );
 		}
 
 		$possible_options = [ 'no', 'top', 'bottom', 'bottom-right' ];
