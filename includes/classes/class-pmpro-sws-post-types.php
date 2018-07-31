@@ -69,7 +69,7 @@ class PMPro_Fold_into_Core {
 	 * @return [type] [description]
 	 */
 	public static function enqueue_scripts() {
-		wp_register_script( 'pmpro_sws_set_active_sitewide_sale', plugins_url( 'js/pmpro-sws-set-active-sitewide-sale.js', PMPROSWS_BASENAME ), array( 'jquery' ), '1.0.4' );
+		wp_register_script( 'pmpro_sws_set_active_sitewide_sale', plugins_url( 'includes/js/pmpro-sws-set-active-sitewide-sale.js', PMPROSWS_BASENAME ), array( 'jquery' ), '1.0.4' );
 		wp_enqueue_script( 'pmpro_sws_set_active_sitewide_sale' );
 	}
 

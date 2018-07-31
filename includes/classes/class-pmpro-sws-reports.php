@@ -220,7 +220,7 @@ class PMPro_SWS_Reports {
 	 */
 	public static function enqueue_reports_js() {
 		if ( isset( $_REQUEST['page'] ) && 'pmpro-reports' === $_REQUEST['page'] ) {
-			wp_register_script( 'pmpro_sws_reports', plugins_url( 'js/pmpro-sws-reports.js', PMPROSWS_BASENAME ), array( 'jquery' ), '1.0.4' );
+			wp_register_script( 'pmpro_sws_reports', plugins_url( 'includes/js/pmpro-sws-reports.js', PMPROSWS_BASENAME ), array( 'jquery' ), '1.0.4' );
 			wp_enqueue_script( 'pmpro_sws_reports' );
 		}
 	}
@@ -233,7 +233,7 @@ class PMPro_SWS_Reports {
 
 		$options = PMPro_SWS_Settings::pmprosws_get_options();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
-		wp_register_script( 'pmpro_sws_tracking', plugins_url( 'js/pmpro-sws-tracking.js', PMPROSWS_BASENAME ), array( 'jquery', 'utils' ) );
+		wp_register_script( 'pmpro_sws_tracking', plugins_url( 'includes/js/pmpro-sws-tracking.js', PMPROSWS_BASENAME ), array( 'jquery', 'utils' ) );
 
 		$used_discount_code = 0;
 		if ( is_page( $pmpro_pages['confirmation'] ) ) {

@@ -3,11 +3,14 @@
 Place to write up next steps or what's left to do
 
 ## Discussion
-- Autoloader
 - Bottom-right banner doesn't save
 - Adding links to confirmation pages in emails
 - Implementing discount code stats in core and using that graph
-- Dismiss banner Xs in upper right?
+- Dismiss banner Xs in upper right? doesn't work
+- Landing page title input, if not selected
+
+## Before Release
+- Autoloader
 - Remove Dev Info (class and button)
 
 === v1.3.5 ===
