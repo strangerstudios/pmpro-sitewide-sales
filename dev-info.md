@@ -4,7 +4,6 @@ Place to write up next steps or what's left to do
 
 ## Discussion
 - Autoloader
-- Bottom-right banner doesn't save
 - Adding links to confirmation pages in emails
 - Implementing discount code stats in core and using that graph
 - Dismiss banner Xs in upper right?

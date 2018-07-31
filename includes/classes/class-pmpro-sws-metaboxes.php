@@ -506,8 +506,8 @@ class PMPro_SWS_MetaBoxes {
 			update_post_meta( $post_id, 'post_css_option', '' );
 		}
 
-		$possible_options = [ 'no', 'top', 'bottom', 'bottom-right' ];
-		if ( isset( $_POST['pmpro_sws_use_banner'] ) && in_array( trim( $_POST['pmpro_sws_use_banner'] ), $possible_options, true ) ) {
+		$possible_options = PMPro_SWS_Banners::get_registered_banners();
+		if ( isset( $_POST['pmpro_sws_use_banner'] ) && array_key_exists( trim( $_POST['pmpro_sws_use_banner'] ), $possible_options ) ) {
 			update_post_meta( $post_id, 'use_banner', trim( $_POST['pmpro_sws_use_banner'] ) );
 		} else {
 			update_post_meta( $post_id, 'use_banner', 'no' );
