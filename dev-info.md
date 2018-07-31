@@ -4,6 +4,7 @@ Place to write up next steps or what's left to do
 
 ## Discussion
 - Autoloader
+- Make notices after setting code/page as sitewide sale
 - Adding links to confirmation pages in emails
 - Implementing discount code stats in core and using that graph
 - Dismiss banner Xs in upper right?
