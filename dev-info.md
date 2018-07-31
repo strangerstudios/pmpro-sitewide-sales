@@ -51,9 +51,3 @@ adding in classes
 
 
 ## Errors
-[] Notice: Undefined index: active_sitewide_sale_id in /app/public/wp-content/plugins/pmpro-sitewide-sale/includes/banners.php on line 16
-
-Set as Current Sitewide Sale:
-[] Notice: Undefined index: active_sitewide_sale_id in /app/public/wp-content/plugins/pmpro-sitewide-sale/includes/classes/class-sws-meta-boxes.php on line 143
-
-Error from php in js ![Error](https://monosnap.com/image/jWumN2JwT3Y3VIZEPcU8QZBwpsoXId.png)

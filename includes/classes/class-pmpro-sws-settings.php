@@ -30,6 +30,19 @@ class PMPro_SWS_Settings {
 		$options = get_option( 'pmpro_sitewide_sale' );
 
 		// Set the defaults.
+		if ( empty( $options ) || ! array_key_exists( 'active_sitewide_sale_id', $options ) ) {
+			$options = self::pmprosws_reset_options();
+		}
+		return $options;
+	}
+
+/**
+ * Sets SWS settings to default
+ */
+	public static function pmprosws_reset_options() {
+		$options = get_option( 'pmpro_sitewide_sale' );
+
+		// Set the defaults.
 		if ( empty( $options ) ) {
 			$options = array(
 				'active_sitewide_sale_id' => false,
