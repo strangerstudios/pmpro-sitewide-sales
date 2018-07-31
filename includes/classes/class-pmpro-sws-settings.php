@@ -79,6 +79,9 @@ class PMPro_SWS_Settings {
 	 * Displays pre-sale content, sale content, or post-sale content
 	 * depending on page and date
 	 *
+	 * Attribute sitewide_sale_id sets Sitewide Sale to get meta from.
+	 * Attribute sale_content sets time period to display.
+	 *
 	 * @param array $atts attributes passed with shortcode.
 	 */
 	public static function shortcode( $atts ) {
