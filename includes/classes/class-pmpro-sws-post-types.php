@@ -80,6 +80,8 @@ class PMPro_Fold_into_Core {
 	 */
 	public static function set_sitewide_sale_columns( $columns ) {
 		$columns['is_active']  = __( 'Selected', 'pmpro_sitewide_sale' );
+		$columns['discount_code'] = __( 'Discount Code', 'pmpro_sitewide_sale' );
+		$columns['landing_page'] = __( 'Landing Page', 'pmpro_sitewide_sale' );
 		$columns['set_active'] = __( 'Select Active Sale', 'pmpro_sitewide_sale' );
 
 		return $columns;
@@ -100,6 +102,25 @@ class PMPro_Fold_into_Core {
 					echo '<span class="pmpro_sws_column_active" id="pmpro_sws_column_active_' . $post_id . '">Active Sitewide Sale</span>';
 				} else {
 					echo '<span class="pmpro_sws_column_active" id="pmpro_sws_column_active_' . $post_id . '"></span>';
+				}
+				break;
+			case 'discount_code':
+				$discount_code = get_post_meta( $post_id, 'discount_code_id', true );
+				if ( false !== $discount_code ) {
+					global $wpdb;
+					$code_name = $wpdb->get_results( $wpdb->prepare( "SELECT code FROM $wpdb->pmpro_discount_codes WHERE id=%s", $discount_code ) );
+					if ( 0 < count( $code_name ) && ! empty( $code_name[0]->code ) ) {
+						echo esc_html( $code_name[0]->code );
+					}
+				}
+				break;
+			case 'landing_page':
+				$landing_page = get_post_meta( $post_id, 'landing_page_post_id', true );
+				if ( false !== $landing_page ) {
+					$title = get_the_title( $landing_page );
+					if ( ! empty( $title ) ) {
+						echo esc_html( $title );
+					}
 				}
 				break;
 			case 'set_active':

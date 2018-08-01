@@ -12,6 +12,7 @@ Place to write up next steps or what's left to do
 === v1.3.5 ===
 - Move banners to methods in a class
 - Make meta fields for pre-sale, sale, and post-sale content
+- Make notices after setting code/page as sitewide sale
 
 === v1.3.4 ===
 - <s>Finalize settings/cpt page layouts</s>
