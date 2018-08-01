@@ -3,7 +3,6 @@
 Place to write up next steps or what's left to do
 
 ## Discussion
-- Bottom-right banner doesn't save
 - Adding links to confirmation pages in emails
 - Implementing discount code stats in core and using that graph
 - Dismiss banner Xs in upper right? doesn't work
@@ -15,6 +14,7 @@ Place to write up next steps or what's left to do
 
 === v1.3.5 ===
 - Move banners to methods in a class
+- Bottom-right banner doesn't save
 - Make meta fields for pre-sale, sale, and post-sale content
 - Make notices after setting code/page as sitewide sale
 
