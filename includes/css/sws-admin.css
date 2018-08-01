@@ -8,3 +8,9 @@
 #pmpro_sws_options > table:nth-child(6) > tbody > tr > td > span {
 	width: 88%;
 }
+
+#pmpro_sws_banner_css_selectors {
+	background: aliceblue;
+	padding: 1rem;
+	width: 77%;
+}

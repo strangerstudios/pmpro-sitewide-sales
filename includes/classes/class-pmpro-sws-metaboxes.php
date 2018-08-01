@@ -27,10 +27,10 @@ class PMPro_SWS_MetaBoxes {
 	public function enqueue_scripts() {
 		global $typenow;
 		// if ( 'sws_sitewide_sale' === $typenow ) {
-			wp_register_script( 'pmpro_sws_cpt_meta', plugins_url( 'js/pmpro-sws-cpt-meta.js', PMPROSWS_BASENAME ), array( 'jquery' ), '1.0.4' );
+			wp_register_script( 'pmpro_sws_cpt_meta', plugins_url( 'includes/js/pmpro-sws-cpt-meta.js', PMPROSWS_BASENAME ), array( 'jquery' ), '1.0.4' );
 			wp_enqueue_script( 'pmpro_sws_cpt_meta' );
 
-			wp_register_style( 'admin-dash', plugins_url( 'css/sws-admin.css', dirname( dirname( __FILE__ ) ) ), '1.0.4' );
+			wp_register_style( 'admin-dash', plugins_url( 'includes/css/sws-admin.css', dirname( dirname( __FILE__ ) ) ), '1.0.4' );
 			wp_enqueue_style( 'admin-dash' );
 		// }
 	}
@@ -51,7 +51,7 @@ class PMPro_SWS_MetaBoxes {
 			__( 'Step 1: Settings to Associate With Sale', 'pmpro_sitewide_sale' ),
 			array( $this, 'display_step_1' ),
 			array( 'sws_sitewide_sale' ),
-			'above_editor',
+			( defined( 'GUTENBERG_VERSION' ) ? 'normal' : 'above_editor' ),
 			'high'
 		);
 		add_meta_box(
@@ -59,7 +59,7 @@ class PMPro_SWS_MetaBoxes {
 			__( 'Step 2: Action after Click', 'pmpro_sitewide_sale' ),
 			array( $this, 'display_step_2' ),
 			array( 'sws_sitewide_sale' ),
-			'above_editor',
+			( defined( 'GUTENBERG_VERSION' ) ? 'normal' : 'above_editor' ),
 			'high'
 		);
 		add_meta_box(
@@ -67,7 +67,7 @@ class PMPro_SWS_MetaBoxes {
 			__( 'Step 3: Customize your Message', 'pmpro_sitewide_sale' ),
 			array( $this, 'display_step_3' ),
 			array( 'sws_sitewide_sale' ),
-			'above_editor',
+			( defined( 'GUTENBERG_VERSION' ) ? 'normal' : 'above_editor' ),
 			'high'
 		);
 	}
@@ -98,7 +98,7 @@ class PMPro_SWS_MetaBoxes {
 		// Removing Step 1
 		add_meta_box(
 			'pmpro_sws_cpt_step_4',
-			__( 'Step 4: Steup Banners', 'pmpro_sitewide_sale' ),
+			__( 'Step 4: Setup Banners', 'pmpro_sitewide_sale' ),
 			array( $this, 'display_step_4' ),
 			array( 'sws_sitewide_sale' ),
 			'normal',
@@ -106,7 +106,7 @@ class PMPro_SWS_MetaBoxes {
 		);
 		add_meta_box(
 			'pmpro_sws_cpt_step_5',
-			__( 'Step 5: Steup Banners', 'pmpro_sitewide_sale' ),
+			__( 'Step 5: Track Sale Progress with Reports', 'pmpro_sitewide_sale' ),
 			array( $this, 'display_step_5' ),
 			array( 'sws_sitewide_sale' ),
 			'normal',
@@ -361,8 +361,8 @@ class PMPro_SWS_MetaBoxes {
 	echo '
 	<tr>
 		<th scope="row" valign="top"><label>' . esc_html__( 'Custom Banner CSS', 'pmpro-sitewide-sale' ) . '</label></th>
-		<td><textarea class="pmpro_sws_option" name="pmpro_sws_css_option">' . esc_html( $css_option ) . '</textarea>
-			<div id=pmpro_sws_banner_css_selectors>';
+		<td><textarea class="pmpro_sws_option" name="pmpro_sws_css_option">' . esc_html( $css_option ) . '</textarea><p class="description">Use these selectors to alter the appearance of your banners.</p>
+			<div id="pmpro_sws_banner_css_selectors">';
 
 	if ( isset( $registered_banners[ $use_banner ] ) && ! empty( $registered_banners[ $use_banner ]['css_selectors'] ) ) {
 		$css_selectors = $registered_banners[ $use_banner ]['css_selectors'];
@@ -401,7 +401,7 @@ class PMPro_SWS_MetaBoxes {
 
 	public function display_step_5( $post ) {
 		?>
-		<a href="<?php echo admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports' ); ?>" target="_blank"><button><?php _e( 'Click here to view Sitewide Sale reports', 'pmpro-sitewide-sale' ); ?></button>, need direct link.</a>
+		<a href="<?php echo admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports' ); ?>" target="_blank"><button class="button button-secondary"> <?php _e( 'Click here to view Sitewide Sale reports', 'pmpro-sitewide-sale' ); ?></button>, need direct link.</a>
 	<?php
 	}
 
