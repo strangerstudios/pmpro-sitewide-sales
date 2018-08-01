@@ -192,21 +192,6 @@ class PMPro_SWS_MetaBoxes {
 			$end_date = date( 'Y-m-d' );
 		}
 
-		$custom_banner_title = get_post_meta( $post->ID, 'custom_banner_title', true );
-		if ( empty( $custom_banner_title ) ) {
-			$custom_banner_title = false;
-		}
-		$hidden_modifier_title  = '';
-		$checked_modifier_title = ' checked ';
-		if ( ! $custom_banner_title ) {
-			$hidden_modifier_title  = ' hidden';
-			$checked_modifier_title = '';
-		}
-
-		$banner_title = esc_html( get_post_meta( $post->ID, 'banner_title', true ) );
-		if ( empty( $banner_title ) ) {
-			$banner_title = '';
-		}
 	?>
 	<label for="pmpro_sws_discount_code_id"><b>Choose Discount Code</b> </label><select class="discount_code_select pmpro_sws_option" id="pmpro_sws_discount_code_select" name="pmpro_sws_discount_code_id">
 	<option value=-1></option>
@@ -232,11 +217,6 @@ class PMPro_SWS_MetaBoxes {
 	<input type="date" name="pmpro_sws_start_date" value="' . $start_date . '" /> </br>
 	<label for="pmpro_sws_end_date">Sale End Date</label>
 	<input type="date" name="pmpro_sws_end_date" value="' . $end_date . '" /></div><br/>';
-	echo '<label for="pmpro_sws_custom_sale_title"><b>Custom Banner Title</b></label>
-	<input type="checkbox" id="pmpro_sws_custom_banner_title" name="pmpro_sws_custom_banner_title" ' . $checked_modifier_title . '\><br/>';
-	echo '<div id="pmpro_sws_custom_title_select"' . $hidden_modifier_title . '>
-	<label for="pmpro_sws_banner_title">Banner Title</label>
-	<input type="textbox" name="pmpro_sws_banner_title" value="' . $banner_title . '" /></div>';
 	}
 
 	public function display_step_2( $post ) {
@@ -318,6 +298,20 @@ class PMPro_SWS_MetaBoxes {
 		if ( empty( $use_banner ) ) {
 			$use_banner = 'no';
 		}
+		$custom_banner_title = get_post_meta( $post->ID, 'custom_banner_title', true );
+		if ( empty( $custom_banner_title ) ) {
+			$custom_banner_title = false;
+		}
+		$hidden_modifier_title  = '';
+		$checked_modifier_title = ' checked ';
+		if ( ! $custom_banner_title ) {
+			$hidden_modifier_title  = ' hidden';
+			$checked_modifier_title = '';
+		}
+		$banner_title = esc_html( get_post_meta( $post->ID, 'banner_title', true ) );
+		if ( empty( $banner_title ) ) {
+			$banner_title = '';
+		}
 		$link_text = esc_html( get_post_meta( $post->ID, 'link_text', true ) );
 		if ( empty( $link_text ) ) {
 			$link_text = '';
@@ -352,6 +346,16 @@ class PMPro_SWS_MetaBoxes {
 		</tr></table>
 		<table class="form-table" id="pmpro_sws_banner_options">
 	<?php
+	echo '
+	<tr>
+		<th><label for="pmpro_sws_custom_sale_title"><b>Custom Banner Title</b></label></th>
+		<td><input type="checkbox" id="pmpro_sws_custom_banner_title" name="pmpro_sws_custom_banner_title" ' . $checked_modifier_title . '\></td>
+	</tr>';
+	echo '
+	<tr id="pmpro_sws_custom_title_select"' . $hidden_modifier_title . '>
+		<th><label for="pmpro_sws_banner_title">Banner Title</label></th>
+		<td><input type="textbox" name="pmpro_sws_banner_title" value="' . $banner_title . '" /></td>
+	</tr>';
 	echo '
 	<tr>
 		<th scope="row" valign="top"><label>' . __( 'Button Text', 'pmpro-sitewide-sale' ) . '</label></th>
