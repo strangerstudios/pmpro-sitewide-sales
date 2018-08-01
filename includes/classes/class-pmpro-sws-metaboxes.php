@@ -17,6 +17,8 @@ class PMPro_SWS_MetaBoxes {
 		// add_filter( 'mce_buttons2', array( $this, 'remove_editor_buttons' ) );
 		add_action( 'pmpro_save_discount_code', array( $this, 'discount_code_on_save' ) );
 		add_action( 'save_post', array( $this, 'landing_page_on_save' ), 10, 3 );
+		add_action( 'admin_notices', array( $this, 'return_from_editing_discount_code' ) );
+		add_filter( 'redirect_post_location', array( $this, 'redirect_after_page_save' ), 10, 2 );
 	}
 
 	/**
@@ -506,8 +508,8 @@ class PMPro_SWS_MetaBoxes {
 			update_post_meta( $post_id, 'post_css_option', '' );
 		}
 
-		$possible_options = [ 'no', 'top', 'bottom', 'bottom-right' ];
-		if ( isset( $_POST['pmpro_sws_use_banner'] ) && in_array( trim( $_POST['pmpro_sws_use_banner'] ), $possible_options, true ) ) {
+		$possible_options = PMPro_SWS_Banners::get_registered_banners();
+		if ( isset( $_POST['pmpro_sws_use_banner'] ) && array_key_exists( trim( $_POST['pmpro_sws_use_banner'] ), $possible_options ) ) {
 			update_post_meta( $post_id, 'use_banner', trim( $_POST['pmpro_sws_use_banner'] ) );
 		} else {
 			update_post_meta( $post_id, 'use_banner', 'no' );
@@ -565,17 +567,64 @@ class PMPro_SWS_MetaBoxes {
 		}
 	}
 
-	function discount_code_on_save( $saveid ) {
+	/**
+	 * Updates Sitewide Sale's discount code id on save
+	 *
+	 * @param int $saveid discount code being saved.
+	 */
+	public function discount_code_on_save( $saveid ) {
 		if ( isset( $_REQUEST['pmpro_sws_callback'] ) ) {
 			update_post_meta( $_REQUEST['pmpro_sws_callback'], 'discount_code_id', $saveid );
-			echo '<a href="' . esc_html( get_admin_url() ) . 'post.php?post=' . $_REQUEST['pmpro_sws_callback'] . '&action=edit">Click here to go back to editing Sitewide Sale</a>';
 		}
 	}
 
-	function landing_page_on_save( $saveid ) {
+	/**
+	 * Displays a link back to Sitewide Sale when discount code is edited/saved
+	 */
+	public function return_from_editing_discount_code() {
+		if ( isset( $_REQUEST['pmpro_sws_callback'] ) && 'memberships_page_pmpro-discountcodes' === get_current_screen()->base ) {
+			?>
+			<div class="notice notice-success">
+				<p><?php esc_html_e( 'Click ', 'pmpro_sitewide_sale' ); ?>
+					<a href="<?php echo esc_html( get_admin_url() ) . 'post.php?post=' . $_REQUEST['pmpro_sws_callback'] . '&action=edit'; ?>">
+						<?php esc_html_e( 'here', 'pmpro_sitewide_sale' ); ?>
+					</a>
+					<?php esc_html_e( ' to go back to editing Sitewide Sale', 'pmpro_sitewide_sale' ); ?>
+				</p>
+			</div>
+			<?php
+		}
+	}
+
+	/**
+	 * Updates Sitewide Sale's landing page id on save
+	 *
+	 * @param int $saveid landing page being saved.
+	 */
+	public function landing_page_on_save( $saveid ) {
 		if ( isset( $_REQUEST['pmpro_sws_callback'] ) ) {
 			update_post_meta( $_REQUEST['pmpro_sws_callback'], 'landing_page_post_id', $saveid );
 		}
+	}
+
+	/**
+	 * Redirects to Sitewide Sale after landing page is saved
+	 *
+	 * @param  string $location Previous redirect location.
+	 * @param  int    $post_id  id of page that was edited.
+	 * @return string           New redirect location
+	 */
+	public function redirect_after_page_save( $location, $post_id ) {
+		$post_type = get_post_type( $post_id );
+		// Grab referrer url to see if it was sent there from editing a sitewide sale.
+		$url = $_REQUEST['_wp_http_referer'];
+		if ( 'page' === $post_type && ! empty( strpos( $url, 'pmpro_sws_callback=' ) ) ) {
+			// Get id of sitewide sale to redirect to.
+			$sitewide_sale_id = explode('pmpro_sws_callback=', $url)[1];
+			$sitewide_sale_id = explode('$', $sitewide_sale_id)[0];
+			$location = esc_html( get_admin_url() ) . 'post.php?post=' . $sitewide_sale_id . '&action=edit';
+		}
+		return $location;
 	}
 }
 

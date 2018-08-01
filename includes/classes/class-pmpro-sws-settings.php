@@ -30,6 +30,19 @@ class PMPro_SWS_Settings {
 		$options = get_option( 'pmpro_sitewide_sale' );
 
 		// Set the defaults.
+		if ( empty( $options ) || ! array_key_exists( 'active_sitewide_sale_id', $options ) ) {
+			$options = self::pmprosws_reset_options();
+		}
+		return $options;
+	}
+
+/**
+ * Sets SWS settings to default
+ */
+	public static function pmprosws_reset_options() {
+		$options = get_option( 'pmpro_sitewide_sale' );
+
+		// Set the defaults.
 		if ( empty( $options ) ) {
 			$options = array(
 				'active_sitewide_sale_id' => false,
@@ -66,30 +79,44 @@ class PMPro_SWS_Settings {
 	 * Displays pre-sale content, sale content, or post-sale content
 	 * depending on page and date
 	 *
+	 * Attribute sitewide_sale_id sets Sitewide Sale to get meta from.
+	 * Attribute sale_content sets time period to display.
+	 *
 	 * @param array $atts attributes passed with shortcode.
 	 */
 	public static function shortcode( $atts ) {
-		$post_id = get_the_ID();
-		$sitewide_sale = get_posts(
-			array(
-				'post_type'      => 'sws_sitewide_sale',
-				'meta_key'       => 'landing_page_post_id',
-				'meta_value'     => '' . $post_id,
-				'posts_per_page' => 1,
-			)
-		);
+		$sitewide_sale = null;
+		if ( is_array( $atts ) && array_key_exists( 'sitewide_sale_id', $atts ) ) {
+			$sitewide_sale = get_post( $atts['sitewide_sale_id'] );
+			if ( empty( $sitewide_sale ) && 'sws_sitewide_sale' !== $sitewide_sale->post_type ) {
+				return '';
+			}
+		} else {
+			$post_id = get_the_ID();
+			$sitewide_sale = get_posts(
+				array(
+					'post_type'      => 'sws_sitewide_sale',
+					'meta_key'       => 'landing_page_post_id',
+					'meta_value'     => '' . $post_id,
+					'posts_per_page' => 1,
+				)
+			);
 
-		if ( 1 > count( $sitewide_sale ) ) {
-			return '';
+			if ( 1 > count( $sitewide_sale ) ) {
+				return '';
+			}
+			$sitewide_sale = $sitewide_sale[0];
 		}
-
-		$sitewide_sale = $sitewide_sale[0];
 
 		$sale_content           = 'sale';
 		$possible_sale_contents = [ 'pre-sale', 'sale', 'post-sale' ];
 
-		if ( is_array( $atts ) && array_key_exists( 'sale_content', $atts ) && in_array( $atts['sale_content'], $possible_sale_contents, true ) ) {
-			$sale_content = $atts['sale_content'];
+		if ( is_array( $atts ) && array_key_exists( 'sale_content', $atts ) ) {
+			if ( in_array( $atts['sale_content'], $possible_sale_contents, true ) ) {
+				$sale_content = $atts['sale_content'];
+			} else {
+				return '';
+			}
 		} elseif ( date( 'Y-m-d' ) < get_post_meta( $sitewide_sale->ID, 'start_date', true ) ) {
 			$sale_content = 'pre-sale';
 		} elseif ( date( 'Y-m-d' ) > get_post_meta( $sitewide_sale->ID, 'end_date', true ) ) {
