@@ -106,8 +106,16 @@ class PMPro_SWS_MetaBoxes {
 		);
 		add_meta_box(
 			'pmpro_sws_cpt_step_5',
-			__( 'Step 5: Track Sale Progress with Reports', 'pmpro_sitewide_sale' ),
+			__( 'Step 5: After Checkout', 'pmpro_sitewide_sale' ),
 			array( $this, 'display_step_5' ),
+			array( 'sws_sitewide_sale' ),
+			'normal',
+			'high'
+		);
+		add_meta_box(
+			'pmpro_sws_cpt_step_6',
+			__( 'Step 6: Track Sale Progress with Reports', 'pmpro_sitewide_sale' ),
+			array( $this, 'display_step_6' ),
 			array( 'sws_sitewide_sale' ),
 			'normal',
 			'high'
@@ -192,21 +200,6 @@ class PMPro_SWS_MetaBoxes {
 			$end_date = date( 'Y-m-d' );
 		}
 
-		$custom_banner_title = get_post_meta( $post->ID, 'custom_banner_title', true );
-		if ( empty( $custom_banner_title ) ) {
-			$custom_banner_title = false;
-		}
-		$hidden_modifier_title  = '';
-		$checked_modifier_title = ' checked ';
-		if ( ! $custom_banner_title ) {
-			$hidden_modifier_title  = ' hidden';
-			$checked_modifier_title = '';
-		}
-
-		$banner_title = esc_html( get_post_meta( $post->ID, 'banner_title', true ) );
-		if ( empty( $banner_title ) ) {
-			$banner_title = '';
-		}
 	?>
 	<label for="pmpro_sws_discount_code_id"><b>Choose Discount Code</b> </label><select class="discount_code_select pmpro_sws_option" id="pmpro_sws_discount_code_select" name="pmpro_sws_discount_code_id">
 	<option value=-1></option>
@@ -232,11 +225,6 @@ class PMPro_SWS_MetaBoxes {
 	<input type="date" name="pmpro_sws_start_date" value="' . $start_date . '" /> </br>
 	<label for="pmpro_sws_end_date">Sale End Date</label>
 	<input type="date" name="pmpro_sws_end_date" value="' . $end_date . '" /></div><br/>';
-	echo '<label for="pmpro_sws_custom_sale_title"><b>Custom Banner Title</b></label>
-	<input type="checkbox" id="pmpro_sws_custom_banner_title" name="pmpro_sws_custom_banner_title" ' . $checked_modifier_title . '\><br/>';
-	echo '<div id="pmpro_sws_custom_title_select"' . $hidden_modifier_title . '>
-	<label for="pmpro_sws_banner_title">Banner Title</label>
-	<input type="textbox" name="pmpro_sws_banner_title" value="' . $banner_title . '" /></div>';
 	}
 
 	public function display_step_2( $post ) {
@@ -318,6 +306,20 @@ class PMPro_SWS_MetaBoxes {
 		if ( empty( $use_banner ) ) {
 			$use_banner = 'no';
 		}
+		$custom_banner_title = get_post_meta( $post->ID, 'custom_banner_title', true );
+		if ( empty( $custom_banner_title ) ) {
+			$custom_banner_title = false;
+		}
+		$hidden_modifier_title  = '';
+		$checked_modifier_title = ' checked ';
+		if ( ! $custom_banner_title ) {
+			$hidden_modifier_title  = ' hidden';
+			$checked_modifier_title = '';
+		}
+		$banner_title = esc_html( get_post_meta( $post->ID, 'banner_title', true ) );
+		if ( empty( $banner_title ) ) {
+			$banner_title = '';
+		}
 		$link_text = esc_html( get_post_meta( $post->ID, 'link_text', true ) );
 		if ( empty( $link_text ) ) {
 			$link_text = '';
@@ -352,6 +354,16 @@ class PMPro_SWS_MetaBoxes {
 		</tr></table>
 		<table class="form-table" id="pmpro_sws_banner_options">
 	<?php
+	echo '
+	<tr>
+		<th><label for="pmpro_sws_custom_sale_title"><b>Custom Banner Title</b></label></th>
+		<td><input type="checkbox" id="pmpro_sws_custom_banner_title" name="pmpro_sws_custom_banner_title" ' . $checked_modifier_title . '\></td>
+	</tr>';
+	echo '
+	<tr id="pmpro_sws_custom_title_select"' . $hidden_modifier_title . '>
+		<th><label for="pmpro_sws_banner_title">Banner Title</label></th>
+		<td><input type="textbox" name="pmpro_sws_banner_title" value="' . $banner_title . '" /></td>
+	</tr>';
 	echo '
 	<tr>
 		<th scope="row" valign="top"><label>' . __( 'Button Text', 'pmpro-sitewide-sale' ) . '</label></th>
@@ -400,8 +412,54 @@ class PMPro_SWS_MetaBoxes {
 	}
 
 	public function display_step_5( $post ) {
+		$upsell_enabled = get_post_meta( $post->ID, 'upsell_enabled', true );
+		if ( empty( $upsell_enabled ) ) {
+			$upsell_enabled = false;
+		}
+		$hidden_modifier_upsell  = '';
+		$checked_modifier_upsell = ' checked ';
+		if ( ! $upsell_enabled ) {
+			$hidden_modifier_upsell  = ' hidden';
+			$checked_modifier_upsell = '';
+		}
+
+		$upsell_levels = get_post_meta( $post->ID, 'upsell_levels', true );
+		if ( empty( $upsell_levels ) ) {
+			$upsell_levels = [];
+		}
+
+		$upsell_text = esc_html( get_post_meta( $post->ID, 'upsell_text', true ) );
+		if ( empty( $upsell_text ) ) {
+			$upsell_text = '';
+		}
+
+		echo '
+		<table>
+		<tr>
+			<th><label for="pmpro_sws_upsell_enabled">Upsell on Checkout</label></th>
+			<td><input type="checkbox" id="pmpro_sws_upsell_enabled" name="pmpro_sws_upsell_enabled" ' . $checked_modifier_upsell . '\></td>
+		</tr>';
+		echo '
+		<tr class="pmpro_sws_upsell_settings"' . $hidden_modifier_upsell . '>
+			<th><label for="pmpro_sws_upsell_levels">Levels to upsell To</label></th>
+			<td><select class="pmpro_sws_option" id="pmpro_sws_upsell_levels" name="pmpro_sws_upsell_levels[]" style="width:12em" multiple/>';
+		$all_levels    = pmpro_getAllLevels( true, true );
+		$hidden_levels = $upsell_levels;
+		foreach ( $all_levels as $level ) {
+			$selected_modifier = in_array( $level->id, $hidden_levels, true ) ? ' selected' : '';
+			echo '<option value=' . esc_html( $level->id ) . esc_html( $selected_modifier ) . '>' . esc_html( $level->name ) . '</option>';
+		}
+		echo '</select></td>
+		</tr>
+		<tr class="pmpro_sws_upsell_settings"' . $hidden_modifier_upsell . '>
+			<th><label for="pmpro_sws_upsell_text">Upsell Text</label></th>
+			<td><textarea class="pmpro_sws_option" name="pmpro_sws_upsell_text">' . esc_html( $upsell_text ) . '</textarea><p class="description">Use !!sws_landing_page_url!! to get the url of your Sitewside Sale landing page.</p></td>
+		</tr></table>';
+	}
+
+	public function display_step_6( $post ) {
 		?>
-		<a href="<?php echo admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports' ); ?>" target="_blank"><button class="button button-secondary"> <?php _e( 'Click here to view Sitewide Sale reports', 'pmpro-sitewide-sale' ); ?></button>, need direct link.</a>
+		<a href="<?php echo admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports' ); ?>" target="_blank"><button class="button button-secondary"> <?php _e( 'Click here to view Sitewide Sale reports', 'pmpro-sitewide-sale' ); ?></button></a>
 	<?php
 	}
 
@@ -537,6 +595,24 @@ class PMPro_SWS_MetaBoxes {
 			update_post_meta( $post_id, 'hide_on_checkout', true );
 		} else {
 			update_post_meta( $post_id, 'hide_on_checkout', false );
+		}
+
+		if ( isset( $_POST['pmpro_sws_upsell_enabled'] ) ) {
+			update_post_meta( $post_id, 'upsell_enabled', true );
+			if ( isset( $_POST['pmpro_sws_upsell_levels'] ) && is_array( $_POST['pmpro_sws_upsell_levels'] ) ) {
+				update_post_meta( $post_id, 'upsell_levels', $_POST['pmpro_sws_upsell_levels'] );
+			} else {
+				update_post_meta( $post_id, 'upsell_levels', [] );
+			}
+			if ( isset( $_POST['pmpro_sws_upsell_text'] ) ) {
+				update_post_meta( $post_id, 'upsell_text', trim( $_POST['pmpro_sws_upsell_text'] ) );
+			} else {
+				update_post_meta( $post_id, 'upsell_text', '' );
+			}
+		} else {
+			update_post_meta( $post_id, 'upsell_enabled', false );
+			update_post_meta( $post_id, 'upsell_levels', [] );
+			update_post_meta( $post_id, 'upsell_text', '' );
 		}
 
 		$options = PMPro_SWS_Settings::pmprosws_get_options();

@@ -3,13 +3,15 @@
 Place to write up next steps or what's left to do
 
 ## Discussion
-- Adding links to confirmation pages in emails
 - Implementing discount code stats in core and using that graph
 - Landing page title input, if not selected
 
 ## Before Release
 - Autoloader
 - Remove Dev Info (class and button)
+
+=== v1.3.6 ===
+- Adding links to landing page in confirmation emails and confirmation page
 
 === v1.3.5 ===
 - Dismiss banner Xs in upper right? doesn't work

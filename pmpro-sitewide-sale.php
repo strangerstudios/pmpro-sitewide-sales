@@ -18,6 +18,7 @@ define( 'PMPROSWS_BASENAME', plugin_basename( __FILE__ ) );
 
 // require_once PMPROSWS_DIR . '/includes/checkout.php';
 require_once PMPROSWS_DIR . '/includes/classes/class-pmpro-sws-banners.php';
+require_once PMPROSWS_DIR . '/includes/classes/class-pmpro-sws-checkout.php';
 require_once PMPROSWS_DIR . '/includes/classes/class-pmpro-sws-dev-info.php';
 require_once PMPROSWS_DIR . '/includes/classes/class-pmpro-sws-metaboxes.php';
 require_once PMPROSWS_DIR . '/includes/classes/class-pmpro-sws-post-types.php';
@@ -27,6 +28,7 @@ require_once PMPROSWS_DIR . '/includes/classes/class-pmpro-sws-setup.php';
 require_once PMPROSWS_DIR . '/includes/classes/class-pmpro-sws-templates.php';
 
 PMPro_SWS_Banners::init();
+PMPro_SWS_Checkout::init();
 PMPro_SWS_Dev_Info::init();
 PMPro_Fold_into_Core::init();
 PMPro_SWS_Reports::init();

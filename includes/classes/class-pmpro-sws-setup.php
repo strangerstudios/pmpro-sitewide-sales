@@ -13,7 +13,6 @@ class PMPro_SWS_Setup {
 	public static function init() {
 		add_filter( 'renaming_cpt_menu_filter', array( __CLASS__, 'pmpro_sws_cpt_name' ) );
 		register_activation_hook( PMPROSWS_BASENAME, array( __CLASS__, 'pmpro_sws_admin_notice_activation_hook' ) );
-		add_action( 'init', array( __CLASS__, 'pmpro_sws_check_cookie' ) );
 		add_filter( 'plugin_row_meta', array( __CLASS__, 'pmpro_sws_plugin_row_meta' ), 10, 2 );
 		add_filter( 'plugin_action_links_' . PMPROSWS_BASENAME, array( __CLASS__, 'pmpro_sws_plugin_action_links' ) );
 		add_action( 'admin_notices', array( __CLASS__, 'pmpro_sws_admin_notice' ) );
@@ -30,41 +29,6 @@ class PMPro_SWS_Setup {
 	public static function pmpro_sws_admin_notice_activation_hook() {
 		// Create transient data.
 		set_transient( 'pmpro-sws-admin-notice', true, 5 );
-	}
-
-
-	/**
-	 * Automatically applies discount code if user has the cookie set from sale page
-	 */
-	public static function pmpro_sws_check_cookie() {
-		global $wpdb, $post, $pmpro_pages;
-
-		if ( empty( $_REQUEST['level'] ) || ! empty( $_REQUEST['discount_code'] ) ) {
-			return;
-		}
-		$options = PMPro_SWS_Settings::pmprosws_get_options();
-		$active_sitewide_sale = $options['active_sitewide_sale_id'];
-		$current_discount     = get_post_meta( $active_sitewide_sale, 'discount_code_id', true );
-		if ( empty( $current_discount ) ||
-		date( 'Y-m-d' ) < get_post_meta( $active_sitewide_sale, 'start_date', true ) ||
-		date( 'Y-m-d' ) > get_post_meta( $active_sitewide_sale, 'end_date', true )
-		) {
-			return;
-		}
-		$cookie_name = 'pmpro_sitewide_sale_' . $active_sitewide_sale . '_tracking';
-		if ( ! isset( $_COOKIE[ $cookie_name ] ) || false == strpos( $_COOKIE[ $cookie_name ], ';1;' ) ) {
-			return;
-		}
-		$checkout_level = $_REQUEST['level'];
-		$discount       = $current_discount;
-		$code_levels    = $wpdb->get_results( "SELECT * FROM $wpdb->pmpro_discount_codes_levels WHERE code_id = $discount", OBJECT );
-		foreach ( $code_levels as $code ) {
-			if ( $code->level_id . '' === $checkout_level ) {
-				$codes = $wpdb->get_results( "SELECT * FROM $wpdb->pmpro_discount_codes WHERE id = $discount", OBJECT );
-				wp_redirect( $_SERVER['REQUEST_URI'] . '&discount_code=' . $codes[0]->code );
-				exit();
-			}
-		}
 	}
 
 	/**

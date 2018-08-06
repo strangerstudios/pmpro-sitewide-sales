@@ -239,9 +239,11 @@ class PMPro_SWS_Reports {
 		if ( is_page( $pmpro_pages['confirmation'] ) ) {
 			$order = new MemberOrder();
 			$order->getLastMemberOrder();
-			$code = $order->getDiscountCode()->id;
-			if ( $code . '' === get_post_meta( $active_sitewide_sale, 'discount_code_id', true ) . '' ) {
-				$used_discount_code = 1;
+			if ( isset( $order->id ) ) {
+				$code = $order->getDiscountCode();
+				if ( isset( $code->id ) && $code->id . '' === get_post_meta( $active_sitewide_sale, 'discount_code_id', true ) . '' ) {
+					$used_discount_code = 1;
+				}
 			}
 		}
 
