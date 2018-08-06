@@ -1,6 +1,7 @@
 <?php
 
-// namespace PMPro_Sitewide_Sale\includes\classes;
+namespace PMPro_Sitewide_Sale\includes\classes;
+
 defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 
 class PMPro_SWS_Settings {
@@ -36,9 +37,9 @@ class PMPro_SWS_Settings {
 		return $options;
 	}
 
-/**
- * Sets SWS settings to default
- */
+	/**
+	 * Sets SWS settings to default
+	 */
 	public static function pmprosws_reset_options() {
 		$options = get_option( 'pmpro_sitewide_sale' );
 

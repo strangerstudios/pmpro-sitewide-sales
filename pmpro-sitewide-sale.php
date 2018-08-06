@@ -12,23 +12,19 @@
  *
  * @package pmpro-sitewide-sale
  */
+namespace PMPro_Sitewide_Sale;
+
+defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 
 define( 'PMPROSWS_DIR', dirname( __FILE__ ) );
 define( 'PMPROSWS_BASENAME', plugin_basename( __FILE__ ) );
 
-require_once PMPROSWS_DIR . '/includes/classes/class-pmpro-sws-banners.php';
-require_once PMPROSWS_DIR . '/includes/classes/class-pmpro-sws-checkout.php';
-require_once PMPROSWS_DIR . '/includes/classes/class-pmpro-sws-metaboxes.php';
-require_once PMPROSWS_DIR . '/includes/classes/class-pmpro-sws-post-types.php';
-require_once PMPROSWS_DIR . '/includes/classes/class-pmpro-sws-reports.php';
-require_once PMPROSWS_DIR . '/includes/classes/class-pmpro-sws-settings.php';
-require_once PMPROSWS_DIR . '/includes/classes/class-pmpro-sws-setup.php';
-require_once PMPROSWS_DIR . '/includes/classes/class-pmpro-sws-templates.php';
+require 'autoload.php';
 
-PMPro_SWS_Banners::init();
-PMPro_SWS_Checkout::init();
-PMPro_SWS_Post_Types::init();
-PMPro_SWS_Reports::init();
-PMPro_SWS_Settings::init();
-PMPro_SWS_Setup::init();
+includes\classes\PMPro_SWS_Banners::init();
+includes\classes\PMPro_SWS_Checkout::init();
+includes\classes\PMPro_SWS_Post_Types::init();
+includes\classes\PMPro_SWS_Reports::init();
+includes\classes\PMPro_SWS_Settings::init();
+includes\classes\PMPro_SWS_Setup::init();
 
