@@ -1,5 +1,5 @@
 function pmpro_sws_get_tracking_cookie() {
-	var cookie_string = wpCookies.get('pmpro_sitewide_sale_' + pmpro_sws.discount_code_id + '_tracking', '/');
+	var cookie_string = wpCookies.get('pmpro_sitewide_sale_' + pmpro_sws.sitewide_sale_id + '_tracking', '/');
 	var cookie_array;
 	if( null == cookie_string ) {
 		cookie_array = {'banner': 0, 'landing_page': 0, 'confirmation_page': 0};
@@ -14,14 +14,14 @@ function pmpro_sws_get_tracking_cookie() {
 
 function pmpro_sws_set_tracking_cookie(cookie_array) {
 	var cookie_string = cookie_array.banner + ';' + cookie_array.landing_page + ';' + cookie_array.confirmation_page;
-	wpCookies.set('pmpro_sitewide_sale_' + pmpro_sws.discount_code_id + '_tracking', cookie_string, 86400*30, '/' );
+	wpCookies.set('pmpro_sitewide_sale_' + pmpro_sws.sitewide_sale_id + '_tracking', cookie_string, 86400*30, '/' );
 }
 
 function pmpro_sws_send_ajax(element) {
 	var data = {
 		'action': 'pmpro_sws_ajax_tracking',
 		'element': element,
-		'code_id': pmpro_sws.discount_code_id
+		'sitewide_sale_id': pmpro_sws.sitewide_sale_id
 	};
 	jQuery.post(pmpro_sws.ajax_url, data);
 }
