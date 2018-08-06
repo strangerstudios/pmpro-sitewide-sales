@@ -110,9 +110,7 @@ class PMPro_SWS_Banners {
 	 */
 	public static function apply_custom_css() {
 		$options = PMPro_SWS_Settings::pmprosws_get_options();
-		$registered_banners = self::get_registered_banners();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
-		$print_reg_nanners = print_r( $active_sitewide_sale );
 		if ( false === $active_sitewide_sale || 'sws_sitewide_sale' !== get_post_type( $active_sitewide_sale ) ) {
 			// $active_sitewide_sale not set or is a different post type.
 			return;
@@ -121,9 +119,6 @@ class PMPro_SWS_Banners {
 		$css = get_post_meta( $active_sitewide_sale, 'css_option', true )
 		?>
 		<style type="text/css">
-			#page::before {
-				content: "Not seeing anything: should be  . $active_sitewide_sale ";
-			}
 			<?php
 			if ( ! empty( $css ) ) {
 				echo $css;
