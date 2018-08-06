@@ -2,7 +2,7 @@
 Contributors: strangerstudios, dlparker1005, pbrocks
 Tags: paid memberships pro, pmpro, memberships, ecommerce
 Requires at least:
-Tested up to: 4.9.6
+Tested up to: 4.9.8
 Stable tag: 1.0.0
 
 Run a Sitewide Sale (Black Friday, Cyber Monday, etc.) with Paid Memberships Pro.
