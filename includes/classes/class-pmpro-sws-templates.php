@@ -1,6 +1,11 @@
 <?php
+
+namespace PMPro_Sitewide_Sale\includes\classes;
+
+defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
+
 /**
- * Plugin Nam  Page Template Plugin : 'Good To Be Bad'
+ * Page Template Plugin : 'Good To Be Bad'
  * Plugin URI: http://www.wpexplorer.com/wordpress-page-templates-plugin/
  * Version: 1.1.0
  * Author: WPExplorer

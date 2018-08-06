@@ -1,6 +1,7 @@
 <?php
 
-// namespace PMPro_Sitewide_Sale\includes\classes;
+namespace PMPro_Sitewide_Sale\includes\classes;
+
 defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 
 class PMPro_SWS_Checkout {
@@ -81,7 +82,7 @@ class PMPro_SWS_Checkout {
 	/**
 	 * Inserts upsale info into confirmation emails on checkout.
 	 *
-	 * @param  string     $confirmation_message  current body of email.
+	 * @param  string $confirmation_message  current body of email.
 	 * @return string                            new confirmation message.
 	 */
 	public static function insert_upsell_into_confirmation_page( $confirmation_message ) {
