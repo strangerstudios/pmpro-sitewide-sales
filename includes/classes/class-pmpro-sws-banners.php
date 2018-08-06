@@ -70,7 +70,7 @@ class PMPro_SWS_Banners {
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
 		if ( false === $active_sitewide_sale || 'sws_sitewide_sale' !== get_post_type( $active_sitewide_sale ) ) {
 			// $active_sitewide_sale not set or is a different post type.
-			return;
+			// return;
 		}
 
 		$membership_level = pmpro_getMembershipLevelForUser();
@@ -82,8 +82,8 @@ class PMPro_SWS_Banners {
 					! is_page( intval( get_post_meta( $active_sitewide_sale, 'landing_page_post_id', true ) ) ) &&
 					! ( get_post_meta( $active_sitewide_sale, 'hide_on_checkout', true ) && is_page( $pmpro_pages['checkout'] ) ) &&
 					( false === $membership_level || ! in_array( $membership_level->ID, get_post_meta( $active_sitewide_sale, 'hide_for_levels', true ), true ) ) &&
-					date( 'Y-m-d' ) > get_post_meta( $active_sitewide_sale, 'start_date', true ) &&
-					date( 'Y-m-d' ) < get_post_meta( $active_sitewide_sale, 'end_date', true )
+					date( 'Y-m-d' ) >= get_post_meta( $active_sitewide_sale, 'start_date', true ) &&
+					date( 'Y-m-d' ) <= get_post_meta( $active_sitewide_sale, 'end_date', true )
 				) {
 
 			// Display the appropriate banner
@@ -110,7 +110,9 @@ class PMPro_SWS_Banners {
 	 */
 	public static function apply_custom_css() {
 		$options = PMPro_SWS_Settings::pmprosws_get_options();
+		$registered_banners = self::get_registered_banners();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
+		$print_reg_nanners = print_r( $active_sitewide_sale );
 		if ( false === $active_sitewide_sale || 'sws_sitewide_sale' !== get_post_type( $active_sitewide_sale ) ) {
 			// $active_sitewide_sale not set or is a different post type.
 			return;
@@ -119,6 +121,9 @@ class PMPro_SWS_Banners {
 		$css = get_post_meta( $active_sitewide_sale, 'css_option', true )
 		?>
 		<style type="text/css">
+			#page::before {
+				content: "Not seeing anything: should be  . $active_sitewide_sale ";
+			}
 			<?php
 			if ( ! empty( $css ) ) {
 				echo $css;
