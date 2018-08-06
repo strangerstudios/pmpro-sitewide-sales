@@ -1,5 +1,7 @@
 <?php
-// namespace PMPro_Sitewide_Sale\includes\classes;
+
+namespace PMPro_Sitewide_Sale\includes\classes;
+
 defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 
 /**
@@ -10,21 +12,22 @@ class PMPro_SWS_MetaBoxes {
 	/**
 	 * Constructor.
 	 */
-	public function __construct() {
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-		add_action( 'load-post.php', array( $this, 'init_metabox' ) );
-		add_action( 'load-post-new.php', array( $this, 'init_metabox' ) );
-		// add_filter( 'mce_buttons2', array( $this, 'remove_editor_buttons' ) );
-		add_action( 'pmpro_save_discount_code', array( $this, 'discount_code_on_save' ) );
-		add_action( 'save_post', array( $this, 'landing_page_on_save' ), 10, 3 );
-		add_action( 'admin_notices', array( $this, 'return_from_editing_discount_code' ) );
-		add_filter( 'redirect_post_location', array( $this, 'redirect_after_page_save' ), 10, 2 );
+	// public function __construct() {
+	public static function init() {
+		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
+		add_action( 'load-post.php', array( __CLASS__, 'init_metabox' ) );
+		add_action( 'load-post-new.php', array( __CLASS__, 'init_metabox' ) );
+		// add_filter( 'mce_buttons2', array( __CLASS__, 'remove_editor_buttons' ) );
+		add_action( 'pmpro_save_discount_code', array( __CLASS__, 'discount_code_on_save' ) );
+		add_action( 'save_post', array( __CLASS__, 'landing_page_on_save' ), 10, 3 );
+		add_action( 'admin_notices', array( __CLASS__, 'return_from_editing_discount_code' ) );
+		add_filter( 'redirect_post_location', array( __CLASS__, 'redirect_after_page_save' ), 10, 2 );
 	}
 
 	/**
 	 * Enqueues js/pmpro-sws-cpt-meta.js
 	 */
-	public function enqueue_scripts() {
+	public static function enqueue_scripts() {
 		global $typenow;
 		// if ( 'sws_sitewide_sale' === $typenow ) {
 			wp_register_script( 'pmpro_sws_cpt_meta', plugins_url( 'includes/js/pmpro-sws-cpt-meta.js', PMPROSWS_BASENAME ), array( 'jquery' ), '1.0.4' );
@@ -38,18 +41,18 @@ class PMPro_SWS_MetaBoxes {
 	/**
 	 * Meta box initialization.
 	 */
-	public function init_metabox() {
-		add_action( 'add_meta_boxes', array( $this, 'add_sws_metaboxes' ) );
-		add_action( 'save_post', array( $this, 'save_sws_metaboxes' ), 10, 2 );
-		add_action( 'add_meta_boxes', array( $this, 'metaboxes_above_editor' ) );
-		add_action( 'edit_form_after_title', array( $this, 'move_metaboxes_above_editor' ) );
+	public static function init_metabox() {
+		add_action( 'add_meta_boxes', array( __CLASS__, 'add_sws_metaboxes' ) );
+		add_action( 'save_post', array( __CLASS__, 'save_sws_metaboxes' ), 10, 2 );
+		add_action( 'add_meta_boxes', array( __CLASS__, 'metaboxes_above_editor' ) );
+		add_action( 'edit_form_after_title', array( __CLASS__, 'move_metaboxes_above_editor' ) );
 		// add_action( 'save_post', 'pmpro_sws_save_cpt', 10, 2 );
 	}
-	public function metaboxes_above_editor( $post_type ) {
+	public static function metaboxes_above_editor( $post_type ) {
 		add_meta_box(
 			'pmpro_sws_cpt_step_1',
 			__( 'Step 1: Settings to Associate With Sale', 'pmpro_sitewide_sale' ),
-			array( $this, 'display_step_1' ),
+			array( __CLASS__, 'display_step_1' ),
 			array( 'sws_sitewide_sale' ),
 			( defined( 'GUTENBERG_VERSION' ) ? 'normal' : 'above_editor' ),
 			'high'
@@ -57,7 +60,7 @@ class PMPro_SWS_MetaBoxes {
 		add_meta_box(
 			'pmpro_sws_cpt_step_2',
 			__( 'Step 2: Action after Click', 'pmpro_sitewide_sale' ),
-			array( $this, 'display_step_2' ),
+			array( __CLASS__, 'display_step_2' ),
 			array( 'sws_sitewide_sale' ),
 			( defined( 'GUTENBERG_VERSION' ) ? 'normal' : 'above_editor' ),
 			'high'
@@ -65,13 +68,13 @@ class PMPro_SWS_MetaBoxes {
 		add_meta_box(
 			'pmpro_sws_cpt_step_3',
 			__( 'Step 3: Customize your Message', 'pmpro_sitewide_sale' ),
-			array( $this, 'display_step_3' ),
+			array( __CLASS__, 'display_step_3' ),
 			array( 'sws_sitewide_sale' ),
 			( defined( 'GUTENBERG_VERSION' ) ? 'normal' : 'above_editor' ),
 			'high'
 		);
 	}
-	public function move_metaboxes_above_editor() {
+	public static function move_metaboxes_above_editor() {
 		// Get the globals:
 		global $post, $wp_meta_boxes;
 
@@ -85,11 +88,11 @@ class PMPro_SWS_MetaBoxes {
 	/**
 	 * Add the metaboxes.
 	 */
-	public function add_sws_metaboxes() {
+	public static function add_sws_metaboxes() {
 		add_meta_box(
 			'pmpro_sws_cpt_set_as_sitewide_sale',
 			__( 'Sitewide Sale', 'pmpro_sitewide_sale' ),
-			array( $this, 'display_set_as_sitewide_sale' ),
+			array( __CLASS__, 'display_set_as_sitewide_sale' ),
 			array( 'sws_sitewide_sale' ),
 			'side',
 			'high'
@@ -99,7 +102,7 @@ class PMPro_SWS_MetaBoxes {
 		add_meta_box(
 			'pmpro_sws_cpt_step_4',
 			__( 'Step 4: Setup Banners', 'pmpro_sitewide_sale' ),
-			array( $this, 'display_step_4' ),
+			array( __CLASS__, 'display_step_4' ),
 			array( 'sws_sitewide_sale' ),
 			'normal',
 			'high'
@@ -107,7 +110,7 @@ class PMPro_SWS_MetaBoxes {
 		add_meta_box(
 			'pmpro_sws_cpt_step_5',
 			__( 'Step 5: After Checkout', 'pmpro_sitewide_sale' ),
-			array( $this, 'display_step_5' ),
+			array( __CLASS__, 'display_step_5' ),
 			array( 'sws_sitewide_sale' ),
 			'normal',
 			'high'
@@ -115,7 +118,7 @@ class PMPro_SWS_MetaBoxes {
 		add_meta_box(
 			'pmpro_sws_cpt_step_6',
 			__( 'Step 6: Track Sale Progress with Reports', 'pmpro_sitewide_sale' ),
-			array( $this, 'display_step_6' ),
+			array( __CLASS__, 'display_step_6' ),
 			array( 'sws_sitewide_sale' ),
 			'normal',
 			'high'
@@ -149,12 +152,12 @@ class PMPro_SWS_MetaBoxes {
 	/**
 	 * Renders the meta box.
 	 */
-	public function render_metabox( $post ) {
+	public static function render_metabox( $post ) {
 		// Add nonce for security and authentication.
 		wp_nonce_field( 'custom_nonce_action', 'custom_nonce' );
 	}
 
-	public function display_set_as_sitewide_sale( $post ) {
+	public static function display_set_as_sitewide_sale( $post ) {
 		$init_checked = false;
 		if ( isset( $_REQUEST['set_sitewide_sale'] ) && 'true' === $_REQUEST['set_sitewide_sale'] ) {
 			$init_checked = true;
@@ -168,11 +171,10 @@ class PMPro_SWS_MetaBoxes {
 	<th scope="row" valign="top"><label>' . esc_html__( 'Set as Current Sitewide Sale', 'pmpro-sitewide-sale' ) . ':</label></th>
 	<td><input name="pmpro_sws_set_as_sitewide_sale" type="checkbox" ' . ( $init_checked ? 'checked' : '' ) . ' /></td>
 	</tr>
-	<tr><th>Show Dev Info</th><td><button class="button button-secondary dev-trigger">Button</button></td></tr>
 	</table>';
 	}
 
-	public function display_step_1( $post ) {
+	public static function display_step_1( $post ) {
 		global $wpdb;
 		$codes            = $wpdb->get_results( "SELECT * FROM $wpdb->pmpro_discount_codes", OBJECT );
 		$current_discount = esc_html( get_post_meta( $post->ID, 'discount_code_id', true ) );
@@ -227,7 +229,7 @@ class PMPro_SWS_MetaBoxes {
 	<input type="date" name="pmpro_sws_end_date" value="' . $end_date . '" /></div><br/>';
 	}
 
-	public function display_step_2( $post ) {
+	public static function display_step_2( $post ) {
 		global $wpdb;
 		$pages        = get_pages();
 		$current_page = esc_html( get_post_meta( $post->ID, 'landing_page_post_id', true ) );
@@ -287,12 +289,12 @@ class PMPro_SWS_MetaBoxes {
 		<?php
 	}
 
-	public function display_step_3_heading() {
+	public static function display_step_3_heading() {
 		$return = '<h3>' . __FUNCTION__ . '</h3>';
 		return $return;
 	}
 
-	public function display_step_3( $post ) {
+	public static function display_step_3( $post ) {
 		$label = self::display_step_3_heading();
 		$label = ucwords( preg_replace( '/_+/', ' ', $label ) );
 		$value = $label;
@@ -300,7 +302,7 @@ class PMPro_SWS_MetaBoxes {
 		echo $value;
 	}
 
-	public function display_step_4( $post ) {
+	public static function display_step_4( $post ) {
 		// This should be optimized to use a single get_post_meta call.
 		$use_banner = esc_html( get_post_meta( $post->ID, 'use_banner', true ) );
 		if ( empty( $use_banner ) ) {
@@ -411,7 +413,7 @@ class PMPro_SWS_MetaBoxes {
 		</tr></table>';
 	}
 
-	public function display_step_5( $post ) {
+	public static function display_step_5( $post ) {
 		$upsell_enabled = get_post_meta( $post->ID, 'upsell_enabled', true );
 		if ( empty( $upsell_enabled ) ) {
 			$upsell_enabled = false;
@@ -457,7 +459,7 @@ class PMPro_SWS_MetaBoxes {
 		</tr></table>';
 	}
 
-	public function display_step_6( $post ) {
+	public static function display_step_6( $post ) {
 		?>
 		<a href="<?php echo admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports' ); ?>" target="_blank"><button class="button button-secondary"> <?php _e( 'Click here to view Sitewide Sale reports', 'pmpro-sitewide-sale' ); ?></button></a>
 	<?php
@@ -470,7 +472,7 @@ class PMPro_SWS_MetaBoxes {
 	 * @param WP_Post $post    Post object.
 	 * @return null
 	 */
-	public function save_sws_metaboxes( $post_id, $post ) {
+	public static function save_sws_metaboxes( $post_id, $post ) {
 
 		// Add nonce for security and authentication.
 		$nonce_name   = isset( $_POST['custom_nonce'] ) ? $_POST['custom_nonce'] : '';
@@ -648,7 +650,7 @@ class PMPro_SWS_MetaBoxes {
 	 *
 	 * @param int $saveid discount code being saved.
 	 */
-	public function discount_code_on_save( $saveid ) {
+	public static function discount_code_on_save( $saveid ) {
 		if ( isset( $_REQUEST['pmpro_sws_callback'] ) ) {
 			update_post_meta( $_REQUEST['pmpro_sws_callback'], 'discount_code_id', $saveid );
 		}
@@ -657,7 +659,7 @@ class PMPro_SWS_MetaBoxes {
 	/**
 	 * Displays a link back to Sitewide Sale when discount code is edited/saved
 	 */
-	public function return_from_editing_discount_code() {
+	public static function return_from_editing_discount_code() {
 		if ( isset( $_REQUEST['pmpro_sws_callback'] ) && 'memberships_page_pmpro-discountcodes' === get_current_screen()->base ) {
 			?>
 			<div class="notice notice-success">
@@ -677,7 +679,7 @@ class PMPro_SWS_MetaBoxes {
 	 *
 	 * @param int $saveid landing page being saved.
 	 */
-	public function landing_page_on_save( $saveid ) {
+	public static function landing_page_on_save( $saveid ) {
 		if ( isset( $_REQUEST['pmpro_sws_callback'] ) ) {
 			update_post_meta( $_REQUEST['pmpro_sws_callback'], 'landing_page_post_id', $saveid );
 		}
@@ -690,14 +692,14 @@ class PMPro_SWS_MetaBoxes {
 	 * @param  int    $post_id  id of page that was edited.
 	 * @return string           New redirect location
 	 */
-	public function redirect_after_page_save( $location, $post_id ) {
+	public static function redirect_after_page_save( $location, $post_id ) {
 		$post_type = get_post_type( $post_id );
 		// Grab referrer url to see if it was sent there from editing a sitewide sale.
 		$url = $_REQUEST['_wp_http_referer'];
 		if ( 'page' === $post_type && ! empty( strpos( $url, 'pmpro_sws_callback=' ) ) ) {
 			// Get id of sitewide sale to redirect to.
-			$sitewide_sale_id = explode('pmpro_sws_callback=', $url)[1];
-			$sitewide_sale_id = explode('$', $sitewide_sale_id)[0];
+			$sitewide_sale_id = explode( 'pmpro_sws_callback=', $url )[1];
+			$sitewide_sale_id = explode( '$', $sitewide_sale_id )[0];
 			$location = esc_html( get_admin_url() ) . 'post.php?post=' . $sitewide_sale_id . '&action=edit';
 		}
 		return $location;
