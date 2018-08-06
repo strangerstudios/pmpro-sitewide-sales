@@ -13,6 +13,8 @@ class PMPro_SWS_Setup {
 	public static function init() {
 		add_filter( 'renaming_cpt_menu_filter', array( __CLASS__, 'pmpro_sws_cpt_name' ) );
 		register_activation_hook( PMPROSWS_BASENAME, array( __CLASS__, 'pmpro_sws_admin_notice_activation_hook' ) );
+		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'pmpro_sws_admin_scripts' ) );
+		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'pmpro_sws_frontend_scripts' ) );
 		add_filter( 'plugin_row_meta', array( __CLASS__, 'pmpro_sws_plugin_row_meta' ), 10, 2 );
 		add_filter( 'plugin_action_links_' . PMPROSWS_BASENAME, array( __CLASS__, 'pmpro_sws_plugin_action_links' ) );
 		add_action( 'admin_notices', array( __CLASS__, 'pmpro_sws_admin_notice' ) );
@@ -21,6 +23,28 @@ class PMPro_SWS_Setup {
 		$label = 'All PMPro CPTs';
 		return $label;
 	}
+
+	/**
+	 * Enqueues selectWoo
+	 */
+	public static function pmpro_sws_admin_scripts() {
+		$screen = get_current_screen();
+
+		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+		wp_register_script( 'selectWoo', plugins_url( 'includes/js/selectWoo.full' . $suffix . '.js', PMPROSWS_BASENAME ), array( 'jquery' ), '1.0.4' );
+		wp_enqueue_script( 'selectWoo' );
+		wp_register_style( 'selectWooCSS', plugins_url( 'includes/css/selectWoo' . $suffix . '.css', PMPROSWS_BASENAME ) );
+		wp_enqueue_style( 'selectWooCSS' );
+	}
+
+	/**
+	 * Enqueues selectWoo
+	 */
+	function pmpro_sws_frontend_scripts() {
+		wp_register_style( 'frontend', plugins_url( 'includes/css/frontend.css', PMPROSWS_BASENAME ), '1.1' );
+		wp_enqueue_style( 'frontend' );
+	}
+
 	/**
 	 * Runs only when the plugin is activated.
 	 *

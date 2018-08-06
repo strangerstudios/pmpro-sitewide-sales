@@ -2,7 +2,7 @@
 // namespace PMPro_Sitewide_Sale\includes\classes;
 defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 
-class PMPro_Fold_into_Core {
+class PMPro_SWS_Post_Types {
 
 	/**
 	 * [categories_to_pages description]
