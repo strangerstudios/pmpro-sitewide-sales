@@ -20,7 +20,7 @@ class PMPro_SWS_MetaBoxes {
 		// add_filter( 'mce_buttons2', array( __CLASS__, 'remove_editor_buttons' ) );
 		add_action( 'pmpro_save_discount_code', array( __CLASS__, 'discount_code_on_save' ) );
 		add_action( 'save_post', array( __CLASS__, 'landing_page_on_save' ), 10, 3 );
-		add_action( 'admin_notices', array( __CLASS__, 'return_from_editing_discount_code' ) );
+		add_action( 'admin_notices', array( __CLASS__, 'return_from_editing_discount_code_box' ) );
 		add_filter( 'redirect_post_location', array( __CLASS__, 'redirect_after_page_save' ), 10, 2 );
 	}
 
@@ -126,7 +126,7 @@ class PMPro_SWS_MetaBoxes {
 	}
 
 
-	function remove_editor_buttons( $buttons ) {
+	public static function remove_editor_buttons( $buttons ) {
 		$remove_buttons = array(
 			'bold',
 			'italic',
@@ -270,6 +270,32 @@ class PMPro_SWS_MetaBoxes {
 		}
 		echo '</span>' . esc_html__( ' or ', 'pmpro_sitewide_sale' ) . ' <input type="submit" class="button button-primary" name="pmpro_sws_create_landing_page" value="' . esc_html__( 'create a new landing page', 'pmpro-sitewide-sale' ) . '"><br/><br/>';
 		?>
+		<hr>
+		<h3>[pmpro_sws] Shortcode</h3>
+		<p>Use the [pmpro_sws] shorcode to automatically update content on your sale's landing page based on whether
+		the sale hasn't started yet, is in progress, or has already ended. The shortocde will automatically detect
+		which sale's landing page the user is on, and display the appropriate text whether the sale is active or not.</p>
+		<table border="1">
+			<tr>
+				<th>Attribute</th>
+				<th>Default</th>
+				<th>Options</th>
+				<th>Example</th>
+			</tr>
+			<tr>
+				<td>sitewide_sale_id</td>
+				<td>Sitewide Sale ID for landing page</td>
+				<td>Integer ID for Sitewide Sale</td>
+				<td>[pmpro_sws sitewide_sale_id=1]</td>
+			</tr>
+			<tr>
+				<td>sale_content</td>
+				<td>Detects whether sale is past, current, or future</td>
+				<td>'pre-sale', 'sale', 'post-sale'</td>
+				<td>[pmpro_sws sale_content='pre-sale']</td>
+			</tr>
+
+		</table>
 		<table class="form-table">
 			<tr>
 				<th scope="row" valign="top"><label><?php esc_html_e( 'Pre-Sale Content', 'pmpro-sitewide-sale' ); ?></label></th>
@@ -653,13 +679,18 @@ class PMPro_SWS_MetaBoxes {
 	public static function discount_code_on_save( $saveid ) {
 		if ( isset( $_REQUEST['pmpro_sws_callback'] ) ) {
 			update_post_meta( $_REQUEST['pmpro_sws_callback'], 'discount_code_id', $saveid );
+			?>
+			<script type="text/javascript">
+				window.location = "<?php echo esc_html( get_admin_url() ) . 'post.php?post=' . $_REQUEST['pmpro_sws_callback'] . '&action=edit'; ?>";
+			</script>
+			<?php
 		}
 	}
 
 	/**
 	 * Displays a link back to Sitewide Sale when discount code is edited/saved
 	 */
-	public static function return_from_editing_discount_code() {
+	public static function return_from_editing_discount_code_box() {
 		if ( isset( $_REQUEST['pmpro_sws_callback'] ) && 'memberships_page_pmpro-discountcodes' === get_current_screen()->base ) {
 			?>
 			<div class="notice notice-success">

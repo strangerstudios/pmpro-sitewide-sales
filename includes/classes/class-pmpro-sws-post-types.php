@@ -100,7 +100,7 @@ class PMPro_SWS_Post_Types {
 		switch ( $column ) {
 			case 'is_active':
 				$options = PMPro_SWS_Settings::pmprosws_get_options();
-				if ( $post_id . '' === $options['active_sitewide_sale_id'] ) {
+				if ( array_key_exists( 'active_sitewide_sale_id', $options ) && $post_id . '' === $options['active_sitewide_sale_id'] ) {
 					echo '<span class="pmpro_sws_column_active" id="pmpro_sws_column_active_' . $post_id . '">Active Sitewide Sale</span>';
 				} else {
 					echo '<span class="pmpro_sws_column_active" id="pmpro_sws_column_active_' . $post_id . '"></span>';
@@ -127,7 +127,7 @@ class PMPro_SWS_Post_Types {
 				break;
 			case 'set_active':
 				$options = PMPro_SWS_Settings::pmprosws_get_options();
-				if ( $post_id . '' === $options['active_sitewide_sale_id'] ) {
+				if ( array_key_exists( 'active_sitewide_sale_id', $options ) && $post_id . '' === $options['active_sitewide_sale_id'] ) {
 					echo '<button class="button button-primary pmpro_sws_column_set_active" id="pmpro_sws_column_set_active_' . $post_id . '">Remove Active</button>';
 				} else {
 					echo '<button class="button button-secondary pmpro_sws_column_set_active" id="pmpro_sws_column_set_active_' . $post_id . '">Set Active</button>';
@@ -143,7 +143,7 @@ class PMPro_SWS_Post_Types {
 		$sitewide_sale_id = $_POST['sitewide_sale_id'];
 		$options          = PMPro_SWS_Settings::pmprosws_get_options();
 
-		if ( $sitewide_sale_id === $options['active_sitewide_sale_id'] ) {
+		if ( array_key_exists( 'active_sitewide_sale_id', $options ) && $sitewide_sale_id === $options['active_sitewide_sale_id'] ) {
 			$options['active_sitewide_sale_id'] = false;
 		} else {
 			$options['active_sitewide_sale_id'] = $sitewide_sale_id;
