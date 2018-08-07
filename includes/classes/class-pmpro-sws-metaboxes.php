@@ -20,7 +20,7 @@ class PMPro_SWS_MetaBoxes {
 		// add_filter( 'mce_buttons2', array( __CLASS__, 'remove_editor_buttons' ) );
 		add_action( 'pmpro_save_discount_code', array( __CLASS__, 'discount_code_on_save' ) );
 		add_action( 'save_post', array( __CLASS__, 'landing_page_on_save' ), 10, 3 );
-		add_action( 'admin_notices', array( __CLASS__, 'return_from_editing_discount_code' ) );
+		add_action( 'admin_notices', array( __CLASS__, 'return_from_editing_discount_code_box' ) );
 		add_filter( 'redirect_post_location', array( __CLASS__, 'redirect_after_page_save' ), 10, 2 );
 	}
 
@@ -653,13 +653,18 @@ class PMPro_SWS_MetaBoxes {
 	public static function discount_code_on_save( $saveid ) {
 		if ( isset( $_REQUEST['pmpro_sws_callback'] ) ) {
 			update_post_meta( $_REQUEST['pmpro_sws_callback'], 'discount_code_id', $saveid );
+			?>
+			<script type="text/javascript">
+				window.location = "<?php echo esc_html( get_admin_url() ) . 'post.php?post=' . $_REQUEST['pmpro_sws_callback'] . '&action=edit'; ?>";
+			</script>
+			<?php
 		}
 	}
 
 	/**
 	 * Displays a link back to Sitewide Sale when discount code is edited/saved
 	 */
-	public static function return_from_editing_discount_code() {
+	public static function return_from_editing_discount_code_box() {
 		if ( isset( $_REQUEST['pmpro_sws_callback'] ) && 'memberships_page_pmpro-discountcodes' === get_current_screen()->base ) {
 			?>
 			<div class="notice notice-success">
