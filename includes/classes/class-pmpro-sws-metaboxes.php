@@ -271,31 +271,41 @@ class PMPro_SWS_MetaBoxes {
 		echo '</span>' . esc_html__( ' or ', 'pmpro_sitewide_sale' ) . ' <input type="submit" class="button button-primary" name="pmpro_sws_create_landing_page" value="' . esc_html__( 'create a new landing page', 'pmpro-sitewide-sale' ) . '"><br/><br/>';
 		?>
 		<hr>
-		<h3>[pmpro_sws] Shortcode</h3>
-		<p>Use the [pmpro_sws] shorcode to automatically update content on your sale's landing page based on whether
-		the sale hasn't started yet, is in progress, or has already ended. The shortocde will automatically detect
-		which sale's landing page the user is on, and display the appropriate text whether the sale is active or not.</p>
+		<h3>[pmpro_sws] <?php esc_html_e( 'Shortcode', 'pmpro-sitewide-sale' ); ?></h3>
+		<p>
+		<?php
+			esc_html_e( 'Use the [pmpro_sws] shorcode to automatically update content on your sale\'s landing page based on whether
+			the sale hasn\'t started yet, is in progress, or has already ended. The shortocde will automatically detect
+			which sale\'s landing page the user is on, and display the appropriate text whether the sale is active or not.', 'pmpro-sitewide-sale' );
+		?>
+	</p>
 		<table border="1">
 			<tr>
-				<th>Attribute</th>
-				<th>Default</th>
-				<th>Options</th>
-				<th>Example</th>
+				<th><?php esc_html_e( 'Attribute', 'pmpro-sitewide-sale' ); ?></th>
+				<th><?php esc_html_e( 'Default', 'pmpro-sitewide-sale' ); ?></th>
+				<th><?php esc_html_e( 'Options', 'pmpro-sitewide-sale' ); ?></th>
+				<th><?php esc_html_e( 'Example', 'pmpro-sitewide-sale' ); ?></th>
 			</tr>
 			<tr>
 				<td>sitewide_sale_id</td>
-				<td>Sitewide Sale ID for landing page</td>
-				<td>Integer ID for Sitewide Sale</td>
+				<td><?php esc_html_e( 'Sitewide Sale ID for landing page', 'pmpro-sitewide-sale' ); ?></td>
+				<td><?php esc_html_e( 'Integer ID for Sitewide Sale', 'pmpro-sitewide-sale' ); ?></td>
 				<td>[pmpro_sws sitewide_sale_id=1]</td>
 			</tr>
 			<tr>
 				<td>sale_content</td>
-				<td>Detects whether sale is past, current, or future</td>
+				<td><?php esc_html_e( 'Detects whether sale is past, current, or future', 'pmpro-sitewide-sale' ); ?></td>
 				<td>'pre-sale', 'sale', 'post-sale'</td>
 				<td>[pmpro_sws sale_content='pre-sale']</td>
 			</tr>
-
 		</table>
+		<p>
+		<?php
+			esc_html_e( 'Previewing the sale content can also be done by administrators by including the \'pmpro_sws_preview_content\'
+			attribute of the page\'s url (ex. https://yourwebsite.com/landing-page?pmpro_sws_preview_content=pre-sale).
+			This overwrites the sale_content attribute in the shortcode.', 'pmpro-sitewide-sale' );
+		?>
+	</p>
 		<table class="form-table">
 			<tr>
 				<th scope="row" valign="top"><label><?php esc_html_e( 'Pre-Sale Content', 'pmpro-sitewide-sale' ); ?></label></th>
