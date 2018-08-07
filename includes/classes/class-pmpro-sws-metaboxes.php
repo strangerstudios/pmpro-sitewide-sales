@@ -126,7 +126,7 @@ class PMPro_SWS_MetaBoxes {
 	}
 
 
-	function remove_editor_buttons( $buttons ) {
+	public static function remove_editor_buttons( $buttons ) {
 		$remove_buttons = array(
 			'bold',
 			'italic',
