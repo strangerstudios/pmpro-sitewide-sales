@@ -270,6 +270,32 @@ class PMPro_SWS_MetaBoxes {
 		}
 		echo '</span>' . esc_html__( ' or ', 'pmpro_sitewide_sale' ) . ' <input type="submit" class="button button-primary" name="pmpro_sws_create_landing_page" value="' . esc_html__( 'create a new landing page', 'pmpro-sitewide-sale' ) . '"><br/><br/>';
 		?>
+		<hr>
+		<h3>[pmpro_sws] Shortcode</h3>
+		<p>Use the [pmpro_sws] shorcode to automatically update content on your sale's landing page based on whether
+		the sale hasn't started yet, is in progress, or has already ended. The shortocde will automatically detect
+		which sale's landing page the user is on, and display the appropriate text whether the sale is active or not.</p>
+		<table border="1">
+			<tr>
+				<th>Attribute</th>
+				<th>Default</th>
+				<th>Options</th>
+				<th>Example</th>
+			</tr>
+			<tr>
+				<td>sitewide_sale_id</td>
+				<td>Sitewide Sale ID for landing page</td>
+				<td>Integer ID for Sitewide Sale</td>
+				<td>[pmpro_sws sitewide_sale_id=1]</td>
+			</tr>
+			<tr>
+				<td>sale_content</td>
+				<td>Detects whether sale is past, current, or future</td>
+				<td>'pre-sale', 'sale', 'post-sale'</td>
+				<td>[pmpro_sws sale_content='pre-sale']</td>
+			</tr>
+
+		</table>
 		<table class="form-table">
 			<tr>
 				<th scope="row" valign="top"><label><?php esc_html_e( 'Pre-Sale Content', 'pmpro-sitewide-sale' ); ?></label></th>
