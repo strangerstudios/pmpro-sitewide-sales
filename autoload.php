@@ -6,10 +6,10 @@ defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 /**
  * This autoloader looks for class declarations as follows:
  *
- * PMPro_Sitewide_Sale\inc\Excerpt_Count
+ * PMPro_Sitewide_Sale\includes\classes\PMPro_SWS_Settings
  * ^          ^   ^
- * ^          ^   class-excerpt-count.php
- * ^          in the /inc/ folder
+ * ^          ^   class-pmpro-sws-settings.php
+ * ^          in the /classes/ folder
  * Project root
  */
 function autoload( $class ) {

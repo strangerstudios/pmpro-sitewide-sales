@@ -12,12 +12,12 @@ class PMPro_SWS_MetaBoxes {
 	/**
 	 * Constructor.
 	 */
-	// public function __construct() {
 	public static function init() {
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
 		add_action( 'load-post.php', array( __CLASS__, 'init_metabox' ) );
 		add_action( 'load-post-new.php', array( __CLASS__, 'init_metabox' ) );
-		// add_filter( 'mce_buttons2', array( __CLASS__, 'remove_editor_buttons' ) );
+		add_filter( 'mce_buttons', array( __CLASS__, 'remove_editor_buttons' ) );
+		add_filter( 'mce_buttons_2', array( __CLASS__, 'remove_editor_buttons2' ) );
 		add_action( 'pmpro_save_discount_code', array( __CLASS__, 'discount_code_on_save' ) );
 		add_action( 'save_post', array( __CLASS__, 'landing_page_on_save' ), 10, 3 );
 		add_action( 'admin_notices', array( __CLASS__, 'return_from_editing_discount_code_box' ) );
@@ -29,13 +29,12 @@ class PMPro_SWS_MetaBoxes {
 	 */
 	public static function enqueue_scripts() {
 		global $typenow;
-		// if ( 'sws_sitewide_sale' === $typenow ) {
+		if ( 'sws_sitewide_sale' === $typenow ) {
 			wp_register_script( 'pmpro_sws_cpt_meta', plugins_url( 'includes/js/pmpro-sws-cpt-meta.js', PMPROSWS_BASENAME ), array( 'jquery' ), '1.0.4' );
 			wp_enqueue_script( 'pmpro_sws_cpt_meta' );
-
 			wp_register_style( 'admin-dash', plugins_url( 'includes/css/sws-admin.css', dirname( dirname( __FILE__ ) ) ), '1.0.4' );
 			wp_enqueue_style( 'admin-dash' );
-		// }
+		}
 	}
 
 	/**
@@ -125,21 +124,57 @@ class PMPro_SWS_MetaBoxes {
 		);
 	}
 
-
 	public static function remove_editor_buttons( $buttons ) {
 		$remove_buttons = array(
-			'bold',
-			'italic',
-			'strikethrough',
-			'bullist',
-			'numlist',
+			// 'bold',
+			// 'italic',
+			// 'strikethrough',
+			// 'bullist',
+			// 'numlist',
 			'blockquote',
-			'hr',
+			// 'alignleft',
+			// 'aligncenter',
+			// 'alignright',
 			'link',
 			'unlink',
+			'wp_page',
 			'wp_more',
 			'spellchecker',
-			'dfw',
+			'fullscreen',
+			'wp_adv',
+		);
+		// , $editor_id );
+		foreach ( $buttons as $button_key => $button_value ) {
+			if ( in_array( $button_value, $remove_buttons ) ) {
+				unset( $buttons[ $button_key ] );
+			}
+		}
+		return $buttons;
+	}
+
+	/**
+	 * $mce_buttons_2 = apply_filters( 'mce_buttons_2', array( 'formatselect', 'underline', 'alignjustify', 'forecolor', 'pastetext', 'removeformat', 'charmap', 'outdent', 'indent', 'undo', 'redo', 'wp_help' ), $editor_id );
+	 *
+	 * @param  [type] $buttons [description]
+	 *
+	 * @return [type]          [description]
+	 */
+	function remove_editor_buttons2( $buttons ) {
+		$remove_buttons = array(
+			'formatselect',
+			'strikethrough',
+			'underline',
+			'alignjustify',
+			'forecolor',
+			'pastetext',
+			'removeformat',
+			'charmap',
+			'outdent',
+			'indent',
+			'undo',
+			'hr',
+			'redo',
+			'wp_help',
 		);
 		foreach ( $buttons as $button_key => $button_value ) {
 			if ( in_array( $button_value, $remove_buttons ) ) {
@@ -275,9 +310,11 @@ class PMPro_SWS_MetaBoxes {
 		<h3>[pmpro_sws] <?php esc_html_e( 'Shortcode', 'pmpro-sitewide-sale' ); ?></h3>
 		<p>
 		<?php
-			esc_html_e( 'Use the [pmpro_sws] shorcode to automatically update content on your sale\'s landing page based on whether
+			esc_html_e(
+				'Use the [pmpro_sws] shorcode to automatically update content on your sale\'s landing page based on whether
 			the sale hasn\'t started yet, is in progress, or has already ended. The shortocde will automatically detect
-			which sale\'s landing page the user is on, and display the appropriate text whether the sale is active or not.', 'pmpro-sitewide-sale' );
+			which sale\'s landing page the user is on, and display the appropriate text whether the sale is active or not.', 'pmpro-sitewide-sale'
+			);
 		?>
 	</p>
 		<table border="1">
@@ -302,9 +339,11 @@ class PMPro_SWS_MetaBoxes {
 		</table>
 		<p>
 		<?php
-			esc_html_e( 'Previewing the sale content can also be done by administrators by including the \'pmpro_sws_preview_content\'
+			esc_html_e(
+				'Previewing the sale content can also be done by administrators by including the \'pmpro_sws_preview_content\'
 			attribute of the page\'s url (ex. https://yourwebsite.com/landing-page?pmpro_sws_preview_content=pre-sale).
-			This overwrites the sale_content attribute in the shortcode.', 'pmpro-sitewide-sale' );
+			This overwrites the sale_content attribute in the shortcode.', 'pmpro-sitewide-sale'
+			);
 		?>
 	</p>
 		<table class="form-table">
@@ -762,5 +801,3 @@ class PMPro_SWS_MetaBoxes {
 		return $location;
 	}
 }
-
-new PMPro_SWS_MetaBoxes();
