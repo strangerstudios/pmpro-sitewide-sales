@@ -20,7 +20,7 @@ class PMPro_SWS_MetaBoxes {
 		add_filter( 'mce_buttons_2', array( __CLASS__, 'remove_editor_buttons2' ) );
 		add_action( 'pmpro_save_discount_code', array( __CLASS__, 'discount_code_on_save' ) );
 		add_action( 'save_post', array( __CLASS__, 'landing_page_on_save' ), 10, 3 );
-		add_action( 'admin_notices', array( __CLASS__, 'return_from_editing_discount_code' ) );
+		add_action( 'admin_notices', array( __CLASS__, 'return_from_editing_discount_code_box' ) );
 		add_filter( 'redirect_post_location', array( __CLASS__, 'redirect_after_page_save' ), 10, 2 );
 	}
 
@@ -124,8 +124,7 @@ class PMPro_SWS_MetaBoxes {
 		);
 	}
 
-	function remove_editor_buttons( $buttons ) {
-		// apply_filters( 'mce_buttons',
+	public static function remove_editor_buttons( $buttons ) {
 		$remove_buttons = array(
 			// 'bold',
 			// 'italic',
@@ -253,9 +252,9 @@ class PMPro_SWS_MetaBoxes {
 	}
 	echo '</select><span id="pmpro_sws_after_discount_code_select">';
 	if ( $code_found ) {
-		echo esc_html__( ' or ', 'pmpro_sitewide_sale' ) . ' <input type="submit" class="button button-primary" name="pmpro_sws_edit_discount" value="' . esc_html__( 'edit current discount code', 'pmpro-sitewide-sale' ) . '">';
+		echo ' <input type="submit" class="button button-secondary" name="pmpro_sws_edit_discount" value="' . esc_html__( 'edit', 'pmpro-sitewide-sale' ) . '">' . esc_html__( ' or ', 'pmpro_sitewide_sale' );
 	}
-	echo '</span>' . esc_html__( ' or ', 'pmpro_sitewide_sale' ) . ' <input type="submit" class="button button-primary" name="pmpro_sws_create_discount" value="' . esc_html__( 'create a new discount code', 'pmpro-sitewide-sale' ) . '"><br/><br/>';
+	echo '</span> <input type="submit" class="button button-primary" name="pmpro_sws_create_discount" value="' . esc_html__( 'create a new discount code', 'pmpro-sitewide-sale' ) . '"><br/><br/>';
 	echo '<label for="pmpro_sws_custom_sale_dates"><b>Custom Sale Start/End Dates</b></label>
 	<input type="checkbox" id="pmpro_sws_custom_sale_dates" name="pmpro_sws_custom_sale_dates" ' . $checked_modifier_date . '\><br/>';
 	echo '<div id="pmpro_sws_custom_date_select"' . $hidden_modifier_date . '>
@@ -300,12 +299,53 @@ class PMPro_SWS_MetaBoxes {
 			}
 			echo '<option value=' . esc_html( $page->ID ) . esc_html( $selected_modifier ) . '>' . esc_html( $page->post_title ) . '</option>';
 		}
-		echo '</select><span id="pmpro_sws_after_landing_page_select">';
+		echo '</select> <span id="pmpro_sws_after_landing_page_select">';
 		if ( $page_found ) {
-			echo esc_html__( ' or ', 'pmpro_sitewide_sale' ) . ' <input type="submit" class="button button-primary" name="pmpro_sws_edit_landing_page" value="' . esc_html__( 'edit current landing page', 'pmpro-sitewide-sale' ) . '">';
+			echo '<input type="submit" class="button button-secondary" name="pmpro_sws_view_landing_page" value="' . esc_html__( 'view', 'pmpro-sitewide-sale' ) . '">';
+			echo '<input type="submit" class="button button-secondary" name="pmpro_sws_edit_landing_page" value="' . esc_html__( 'edit', 'pmpro-sitewide-sale' ) . '">' . esc_html__( ' or ', 'pmpro_sitewide_sale' );
 		}
-		echo '</span>' . esc_html__( ' or ', 'pmpro_sitewide_sale' ) . ' <input type="submit" class="button button-primary" name="pmpro_sws_create_landing_page" value="' . esc_html__( 'create a new landing page', 'pmpro-sitewide-sale' ) . '"><br/><br/>';
+		echo '</span><input type="submit" class="button button-primary" name="pmpro_sws_create_landing_page" value="' . esc_html__( 'create a new landing page', 'pmpro-sitewide-sale' ) . '"><br/><br/>';
 		?>
+		<hr>
+		<h3>[pmpro_sws] <?php esc_html_e( 'Shortcode', 'pmpro-sitewide-sale' ); ?></h3>
+		<p>
+		<?php
+			esc_html_e(
+				'Use the [pmpro_sws] shorcode to automatically update content on your sale\'s landing page based on whether
+			the sale hasn\'t started yet, is in progress, or has already ended. The shortocde will automatically detect
+			which sale\'s landing page the user is on, and display the appropriate text whether the sale is active or not.', 'pmpro-sitewide-sale'
+			);
+		?>
+	</p>
+		<table border="1">
+			<tr>
+				<th><?php esc_html_e( 'Attribute', 'pmpro-sitewide-sale' ); ?></th>
+				<th><?php esc_html_e( 'Default', 'pmpro-sitewide-sale' ); ?></th>
+				<th><?php esc_html_e( 'Options', 'pmpro-sitewide-sale' ); ?></th>
+				<th><?php esc_html_e( 'Example', 'pmpro-sitewide-sale' ); ?></th>
+			</tr>
+			<tr>
+				<td>sitewide_sale_id</td>
+				<td><?php esc_html_e( 'Sitewide Sale ID for landing page', 'pmpro-sitewide-sale' ); ?></td>
+				<td><?php esc_html_e( 'Integer ID for Sitewide Sale', 'pmpro-sitewide-sale' ); ?></td>
+				<td>[pmpro_sws sitewide_sale_id=1]</td>
+			</tr>
+			<tr>
+				<td>sale_content</td>
+				<td><?php esc_html_e( 'Detects whether sale is past, current, or future', 'pmpro-sitewide-sale' ); ?></td>
+				<td>'pre-sale', 'sale', 'post-sale'</td>
+				<td>[pmpro_sws sale_content='pre-sale']</td>
+			</tr>
+		</table>
+		<p>
+		<?php
+			esc_html_e(
+				'Previewing the sale content can also be done by administrators by including the \'pmpro_sws_preview_content\'
+			attribute of the page\'s url (ex. https://yourwebsite.com/landing-page?pmpro_sws_preview_content=pre-sale).
+			This overwrites the sale_content attribute in the shortcode.', 'pmpro-sitewide-sale'
+			);
+		?>
+	</p>
 		<table class="form-table">
 			<tr>
 				<th scope="row" valign="top"><label><?php esc_html_e( 'Pre-Sale Content', 'pmpro-sitewide-sale' ); ?></label></th>
@@ -497,7 +537,7 @@ class PMPro_SWS_MetaBoxes {
 
 	public static function display_step_6( $post ) {
 		?>
-		<a href="<?php echo admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports' ); ?>" target="_blank"><button class="button button-secondary"> <?php _e( 'Click here to view Sitewide Sale reports', 'pmpro-sitewide-sale' ); ?></button></a>
+		<input type="submit" class="button button-primary" name="pmpro_sws_view_reports" value="<?php echo esc_html__( 'Click here to view Sitewide Sale reports', 'pmpro-sitewide-sale' ); ?>">
 	<?php
 	}
 
@@ -665,18 +705,24 @@ class PMPro_SWS_MetaBoxes {
 			wp_redirect( esc_html( get_admin_url() ) . 'admin.php?page=pmpro-discountcodes&edit=-1&pmpro_sws_callback=' . $post_id );
 			exit();
 		}
-
 		if ( isset( $_POST['pmpro_sws_edit_discount'] ) ) {
 			wp_redirect( esc_html( get_admin_url() ) . 'admin.php?page=pmpro-discountcodes&edit=' . get_post_meta( $post_id, 'discount_code_id', true ) . '&pmpro_sws_callback=' . $post_id );
 			exit();
 		}
-
 		if ( isset( $_POST['pmpro_sws_create_landing_page'] ) ) {
 			wp_redirect( esc_html( get_admin_url() ) . 'post-new.php?post_type=page&pmpro_sws_callback=' . $post_id );
 			exit();
 		}
 		if ( isset( $_POST['pmpro_sws_edit_landing_page'] ) ) {
 			wp_redirect( esc_html( get_admin_url() ) . 'post.php?post=' . get_post_meta( $post_id, 'landing_page_post_id', true ) . '&action=edit&pmpro_sws_callback=' . $post_id );
+			exit();
+		}
+		if ( isset( $_POST['pmpro_sws_view_landing_page'] ) ) {
+			wp_redirect( get_permalink( $post_id ) );
+			exit();
+		}
+		if ( isset( $_POST['pmpro_sws_view_reports'] ) ) {
+			wp_redirect( admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports' ) );
 			exit();
 		}
 	}
@@ -689,13 +735,18 @@ class PMPro_SWS_MetaBoxes {
 	public static function discount_code_on_save( $saveid ) {
 		if ( isset( $_REQUEST['pmpro_sws_callback'] ) ) {
 			update_post_meta( $_REQUEST['pmpro_sws_callback'], 'discount_code_id', $saveid );
+			?>
+			<script type="text/javascript">
+				window.location = "<?php echo esc_html( get_admin_url() ) . 'post.php?post=' . $_REQUEST['pmpro_sws_callback'] . '&action=edit'; ?>";
+			</script>
+			<?php
 		}
 	}
 
 	/**
 	 * Displays a link back to Sitewide Sale when discount code is edited/saved
 	 */
-	public static function return_from_editing_discount_code() {
+	public static function return_from_editing_discount_code_box() {
 		if ( isset( $_REQUEST['pmpro_sws_callback'] ) && 'memberships_page_pmpro-discountcodes' === get_current_screen()->base ) {
 			?>
 			<div class="notice notice-success">
@@ -741,5 +792,3 @@ class PMPro_SWS_MetaBoxes {
 		return $location;
 	}
 }
-
-new PMPro_SWS_MetaBoxes();
