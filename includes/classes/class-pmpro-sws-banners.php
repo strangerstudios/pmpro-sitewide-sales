@@ -74,28 +74,39 @@ class PMPro_SWS_Banners {
 		global $pmpro_pages;
 		$options = PMPro_SWS_Settings::pmprosws_get_options();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
-		if ( false === $active_sitewide_sale || 'sws_sitewide_sale' !== get_post_type( $active_sitewide_sale ) ) {
-			// $active_sitewide_sale not set or is a different post type.
-			return;
+		$membership_level     = pmpro_getMembershipLevelForUser();
+		$custom_sitewide_sale = false;
+		if ( current_user_can( 'administrator' ) && isset( $_REQUEST['pmpro_sws_preview_sale_banner'] ) ) {
+			$active_sitewide_sale = $_REQUEST['pmpro_sws_preview_sale_banner'];
+			$custom_sitewide_sale = true;
 		}
 
-		$membership_level = pmpro_getMembershipLevelForUser();
-
-		if ( false !== get_post_meta( $active_sitewide_sale, 'discount_code_id', true ) &&
-					false !== get_post_meta( $active_sitewide_sale, 'landing_page_post_id', true ) &&
-					'no' !== get_post_meta( $active_sitewide_sale, 'use_banner', true ) &&
-					! PMPro_SWS_Setup::is_login_page() &&
-					! is_page( intval( get_post_meta( $active_sitewide_sale, 'landing_page_post_id', true ) ) ) &&
-					! ( get_post_meta( $active_sitewide_sale, 'hide_on_checkout', true ) && is_page( $pmpro_pages['checkout'] ) ) &&
-					( false === $membership_level || ! in_array( $membership_level->ID, get_post_meta( $active_sitewide_sale, 'hide_for_levels', true ), true ) ) &&
-					date( 'Y-m-d' ) >= get_post_meta( $active_sitewide_sale, 'start_date', true ) &&
-					date( 'Y-m-d' ) <= get_post_meta( $active_sitewide_sale, 'end_date', true )
+		if (
+					(
+						$custom_sitewide_sale &&
+						'sws_sitewide_sale' === get_post_type( $active_sitewide_sale )
+					) ||
+					(
+						false !== $active_sitewide_sale &&
+						'sws_sitewide_sale' === get_post_type( $active_sitewide_sale ) &&
+						false !== get_post_meta( $active_sitewide_sale, 'discount_code_id', true ) &&
+						false !== get_post_meta( $active_sitewide_sale, 'landing_page_post_id', true ) &&
+						'no' !== get_post_meta( $active_sitewide_sale, 'use_banner', true ) &&
+						! PMPro_SWS_Setup::is_login_page() &&
+						! is_page( intval( get_post_meta( $active_sitewide_sale, 'landing_page_post_id', true ) ) ) &&
+						! ( get_post_meta( $active_sitewide_sale, 'hide_on_checkout', true ) && is_page( $pmpro_pages['checkout'] ) ) &&
+						( false === $membership_level || ! in_array( $membership_level->ID, get_post_meta( $active_sitewide_sale, 'hide_for_levels', true ), true ) ) &&
+						date( 'Y-m-d' ) >= get_post_meta( $active_sitewide_sale, 'start_date', true ) &&
+						date( 'Y-m-d' ) <= get_post_meta( $active_sitewide_sale, 'end_date', true )
+					)
 				) {
-
 			// Display the appropriate banner
 			// get_post_meta( $active_sitewide_sale, 'use_banner', true ) will be something like top, bottom, etc.
 			$registered_banners = self::get_registered_banners();
 			$banner_to_use = get_post_meta( $active_sitewide_sale, 'use_banner', true );
+			if ( current_user_can( 'administrator' ) && isset( $_REQUEST['pmpro_sws_preview_banner_type'] ) ) {
+				$banner_to_use = $_REQUEST['pmpro_sws_preview_banner_type'];
+			}
 			if ( array_key_exists( $banner_to_use, $registered_banners ) && array_key_exists( 'callback', $registered_banners[ $banner_to_use ] ) ) {
 				$callback_func = $registered_banners[ $banner_to_use ]['callback'];
 				if ( is_array( $callback_func ) ) {
@@ -117,6 +128,9 @@ class PMPro_SWS_Banners {
 	public static function apply_custom_css() {
 		$options = PMPro_SWS_Settings::pmprosws_get_options();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
+		if ( current_user_can( 'administrator' ) && isset( $_REQUEST['pmpro_sws_preview_sale_banner'] ) ) {
+			$active_sitewide_sale = $_REQUEST['pmpro_sws_preview_sale_banner'];
+		}
 		if ( false === $active_sitewide_sale || 'sws_sitewide_sale' !== get_post_type( $active_sitewide_sale ) ) {
 			// $active_sitewide_sale not set or is a different post type.
 			return;
@@ -147,6 +161,9 @@ class PMPro_SWS_Banners {
 	public static function show_top_banner() {
 		$options = PMPro_SWS_Settings::pmprosws_get_options();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
+		if ( current_user_can( 'administrator' ) && isset( $_REQUEST['pmpro_sws_preview_sale_banner'] ) ) {
+			$active_sitewide_sale = $_REQUEST['pmpro_sws_preview_sale_banner'];
+		}
 		/* Maybe use JavaScript here to detect the height of the bar and adjust margin-top of html elemenet. */
 		?>
 		<div id="pmpro_sws_banner_top" class="pmpro_sws_banner">
@@ -169,6 +186,9 @@ class PMPro_SWS_Banners {
 	public static function show_bottom_banner() {
 		$options = PMPro_SWS_Settings::pmprosws_get_options();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
+		if ( current_user_can( 'administrator' ) && isset( $_REQUEST['pmpro_sws_preview_sale_banner'] ) ) {
+			$active_sitewide_sale = $_REQUEST['pmpro_sws_preview_sale_banner'];
+		}
 		?>
 		<div id="pmpro_sws_banner_bottom" class="pmpro_sws_banner">
 			<div class="pmpro_sws_banner-inner">
@@ -198,6 +218,9 @@ class PMPro_SWS_Banners {
 	public static function show_bottom_right_banner() {
 		$options = PMPro_SWS_Settings::pmprosws_get_options();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
+		if ( current_user_can( 'administrator' ) && isset( $_REQUEST['pmpro_sws_preview_sale_banner'] ) ) {
+			$active_sitewide_sale = $_REQUEST['pmpro_sws_preview_sale_banner'];
+		}
 		?>
 		<div id="pmpro_sws_banner_bottom_right" class="pmpro_sws_banner">
 			<a href="javascript:void(0);" onclick="document.getElementById('pmpro_sws_banner_bottom_right').style.display = 'none';" class="dismiss">x</a>
