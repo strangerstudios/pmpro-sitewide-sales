@@ -497,7 +497,7 @@ class PMPro_SWS_MetaBoxes {
 
 	public static function display_step_6( $post ) {
 		?>
-		<a href="<?php echo admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports' ); ?>" target="_blank"><button class="button button-secondary"> <?php _e( 'Click here to view Sitewide Sale reports', 'pmpro-sitewide-sale' ); ?></button></a>
+		<input type="submit" class="button button-primary" name="pmpro_sws_view_reports" value="<?php echo esc_html__( 'Click here to view Sitewide Sale reports', 'pmpro-sitewide-sale' ); ?>">
 	<?php
 	}
 
@@ -665,18 +665,20 @@ class PMPro_SWS_MetaBoxes {
 			wp_redirect( esc_html( get_admin_url() ) . 'admin.php?page=pmpro-discountcodes&edit=-1&pmpro_sws_callback=' . $post_id );
 			exit();
 		}
-
 		if ( isset( $_POST['pmpro_sws_edit_discount'] ) ) {
 			wp_redirect( esc_html( get_admin_url() ) . 'admin.php?page=pmpro-discountcodes&edit=' . get_post_meta( $post_id, 'discount_code_id', true ) . '&pmpro_sws_callback=' . $post_id );
 			exit();
 		}
-
 		if ( isset( $_POST['pmpro_sws_create_landing_page'] ) ) {
 			wp_redirect( esc_html( get_admin_url() ) . 'post-new.php?post_type=page&pmpro_sws_callback=' . $post_id );
 			exit();
 		}
 		if ( isset( $_POST['pmpro_sws_edit_landing_page'] ) ) {
 			wp_redirect( esc_html( get_admin_url() ) . 'post.php?post=' . get_post_meta( $post_id, 'landing_page_post_id', true ) . '&action=edit&pmpro_sws_callback=' . $post_id );
+			exit();
+		}
+		if ( isset( $_POST['pmpro_sws_view_reports'] ) ) {
+			wp_redirect( admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports' ) );
 			exit();
 		}
 	}
