@@ -1,11 +1,16 @@
 <?php
-
 namespace PMPro_Sitewide_Sale\includes\classes;
 
 defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 
+/**
+ * Handles registering banners and displaying banners on frontend.
+ */
 class PMPro_SWS_Banners {
 
+	/**
+	 * Adds actions
+	 */
 	public static function init() {
 		add_action( 'wp', array( __CLASS__, 'choose_banner' ) );
 		add_action( 'wp_head', array( __CLASS__, 'apply_custom_css' ), 5 );
@@ -71,7 +76,7 @@ class PMPro_SWS_Banners {
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
 		if ( false === $active_sitewide_sale || 'sws_sitewide_sale' !== get_post_type( $active_sitewide_sale ) ) {
 			// $active_sitewide_sale not set or is a different post type.
-			// return;
+			return;
 		}
 
 		$membership_level = pmpro_getMembershipLevelForUser();

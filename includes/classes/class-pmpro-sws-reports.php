@@ -6,6 +6,9 @@ defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 
 class PMPro_SWS_Reports {
 
+	/**
+	 * Adds actions for class
+	 */
 	public static function init() {
 		add_action( 'init', array( __CLASS__, 'assign_pmpro_sws_reports' ) );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_reports_js' ) );
@@ -15,6 +18,9 @@ class PMPro_SWS_Reports {
 		add_action( 'wp_ajax_nopriv_pmpro_sws_ajax_tracking', array( __CLASS__, 'ajax_tracking' ) );
 	}
 
+	/**
+	 * Adds SWS Report to PMPro Reports
+	 */
 	public static function assign_pmpro_sws_reports() {
 		global $pmpro_reports;
 		// Functions called by adding this report are below the class.
@@ -22,12 +28,21 @@ class PMPro_SWS_Reports {
 		return $pmpro_reports;
 	}
 
+	/**
+	 * Allows reports for a given sale to be generated in JS
+	 */
 	public static function ajax_reporting() {
 		$ajax_dropdown = self::get_report_for_code( $_POST['sitewide_sale_id'] );
 		echo $ajax_dropdown;
 		exit;
 	}
 
+	/**
+	 * Gets the statistics table for a Sitewide Sale
+	 *
+	 * @param  int $sitewide_sale_id ID of sale to get stats for, null is current active sale
+	 * @return String                HTML table
+	 */
 	public static function get_report_for_code( $sitewide_sale_id = null ) {
 		global $wpdb;
 		$options = PMPro_SWS_Settings::pmprosws_get_options();
@@ -88,25 +103,16 @@ class PMPro_SWS_Reports {
 		$total_sales   = $orders_with_code + $orders_without_code + $recurring_orders;
 
 		// Reports regarding advertising/conversions.
-		$banner_impressions   = $reports['banner_impressions'];
-		$landing_page_visits  = $reports['landing_page_visits'];
-		$landing_page_after_banner         = $reports['landing_page_after_banner'];
-		$landing_page_after_banner_percent = self::safe_divide( $landing_page_after_banner, $banner_impressions ) * 100;
-		if ( is_nan( $landing_page_after_banner_percent ) ) {
-			$landing_page_after_banner_percent = 0;
-		}
+		$banner_impressions                    = $reports['banner_impressions'];
+		$landing_page_visits                   = $reports['landing_page_visits'];
+		$landing_page_after_banner             = $reports['landing_page_after_banner'];
+		$landing_page_after_banner_percent     = self::divide_into_percent( $landing_page_after_banner, $banner_impressions );
 		$landing_page_not_after_banner         = $landing_page_visits - $landing_page_after_banner;
-		$landing_page_not_after_banner_percent = self::safe_divide( $landing_page_not_after_banner, $landing_page_visits ) * 100;
-		if ( is_nan( $landing_page_not_after_banner_percent ) ) {
-			$landing_page_not_after_banner_percent = 0;
-		}
-		$checkout_conversions_with_code    = $reports['checkout_conversions_with_code'];
-		$checkout_conversions_without_code = $reports['checkout_conversions_without_code'];
-		$checkout_conversions = $checkout_conversions_with_code + $checkout_conversions_without_code;
-		$checkout_conversions_percent      = self::safe_divide( $checkout_conversions, $landing_page_visits ) * 100;
-		if ( is_nan( $checkout_conversions_percent ) ) {
-			$checkout_conversions_percent = 0;
-		}
+		$landing_page_not_after_banner_percent = self::divide_into_percent( $landing_page_not_after_banner, $landing_page_visits );
+		$checkout_conversions_with_code        = $reports['checkout_conversions_with_code'];
+		$checkout_conversions_without_code     = $reports['checkout_conversions_without_code'];
+		$checkout_conversions                  = $checkout_conversions_with_code + $checkout_conversions_without_code;
+		$checkout_conversions_percent          = self::divide_into_percent( $checkout_conversions, $landing_page_visits );
 
 		$reports_to_output = array(
 			'Total Sales' => array(
@@ -172,8 +178,8 @@ class PMPro_SWS_Reports {
 					<tr>
 						<td>' . esc_html__( 'Sitewide Sale', 'pmpro_sitewide_sale' ) . '</td>
 						<td>' . esc_html( get_the_title( $sitewide_sale_id ) ) .
-						' (' . date_i18n( get_option( 'date_format' ), ( new DateTime( get_post_meta( $sitewide_sale_id, 'start_date', true ) ) )->format( 'U' ) ) .
-						' - ' . date_i18n( get_option( 'date_format' ), ( new DateTime( get_post_meta( $sitewide_sale_id, 'end_date', true ) ) )->format( 'U' ) ) . ')</td>
+						' (' . date_i18n( get_option( 'date_format' ), ( new \DateTime( get_post_meta( $sitewide_sale_id, 'start_date', true ) ) )->format( 'U' ) ) .
+						' - ' . date_i18n( get_option( 'date_format' ), ( new \DateTime( get_post_meta( $sitewide_sale_id, 'end_date', true ) ) )->format( 'U' ) ) . ')</td>
 					</tr>
 				</thead>
 				<tbody>';
@@ -206,18 +212,25 @@ class PMPro_SWS_Reports {
 		return $to_return;
 	}
 
-	public static function safe_divide( $num, $denom ) {
+	/**
+	 * Used to calculate percentge-based stats about sale
+	 *
+	 * @param  int $num   numerator of division.
+	 * @param  int $denom denominator of division.
+	 * @return int        percentage
+	 */
+	public static function divide_into_percent( $num, $denom ) {
 		if ( $denom <= 0 ) {
 			if ( $num <= 0 ) {
 				return 0;
 			}
-			return 1; // 100%
+			return 100; // 100%
 		}
-		return $num / $denom;
+		return ( $num / $denom ) * 100;
 	}
 
 	/**
-	 * Enqueues js for switching sale that is being reported
+	 * Enqueues js for switching sale being displayed in reports
 	 */
 	public static function enqueue_reports_js() {
 		if ( isset( $_REQUEST['page'] ) && 'pmpro-reports' === $_REQUEST['page'] ) {
@@ -227,7 +240,7 @@ class PMPro_SWS_Reports {
 	}
 
 	/**
-	 * Setup JS vars and enqueue our JS
+	 * Setup JS vars and enqueue our JS for tracking user behavior
 	 */
 	public static function enqueue_tracking_js() {
 		global $pmpro_pages;
@@ -263,7 +276,9 @@ class PMPro_SWS_Reports {
 
 	}
 
-
+	/**
+	 * Ajax call to update SWS statistics
+	 */
 	public static function ajax_tracking() {
 		global $wpdb;
 		$sitewide_sale_id = $_POST['sitewide_sale_id'];
@@ -285,42 +300,4 @@ class PMPro_SWS_Reports {
 			return -1;
 		}
 	}
-}
-
-/**
- * Report Widget, needs to be outside class because
- * function name is 'calculated'in core
- */
-function pmpro_report_pmpro_sws_reports_widget() {
-	echo PMPro_SWS_Reports::get_report_for_code();
-}
-
-/**
- * Report Page, needs to be outside class because
- * function name is 'calculated'in core
- */
-function pmpro_report_pmpro_sws_reports_page() {
-	global $wpdb;
-	$options = PMPro_SWS_Settings::pmprosws_get_options();
-	$sitewide_sales = get_posts(
-		[
-			'post_type' => 'sws_sitewide_sale',
-			'post_status' => 'publish',
-			'numberposts' => -1,
-		]
-	);
-	$active_sitewide_sale = $options['active_sitewide_sale_id'];
-	echo '<table><tr><td><h3>' . esc_html__( 'Choose Sitewide Sale to View Reports For', 'pmpro-sitewide-sale' ) . ': </h3></td><td><select id="pmpro_sws_sitewide_sale_select">';
-
-	foreach ( $sitewide_sales as $sitewide_sale ) {
-		$selected_modifier = '';
-		if ( $sitewide_sale->ID . '' === $active_sitewide_sale . '' ) {
-			$selected_modifier = ' selected="selected"';
-		}
-		echo '<option value = ' . esc_html( $sitewide_sale->ID ) . esc_html( $selected_modifier ) . '>' . esc_html( get_the_title( $sitewide_sale->ID ) ) . '</option>';
-	}
-	echo '</select></td></tr></table>';
-	echo '<div id="pmpro_sws_reports_container">';
-	echo PMPro_SWS_Reports::get_report_for_code();
-	echo '</div>';
 }
