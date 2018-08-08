@@ -521,11 +521,9 @@ class PMPro_SWS_MetaBoxes {
 		}
 
 		// Check if nonce is valid.
-		/*
 		if ( ! wp_verify_nonce( $nonce_name, $nonce_action ) ) {
 			return;
 		}
-		*/
 
 		// Check if user has permissions to save data.
 		if ( ! current_user_can( 'edit_post', $post_id ) ) {
