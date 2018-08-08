@@ -48,6 +48,7 @@ class PMPro_SWS_Post_Types {
 		$args['label']  = __( 'Sitewide Sales', 'pmpro-sitewide-sale' );
 		$args['description']         = __( 'Sitewide Sales', 'pmpro-sitewide-sale' );
 		$args['labels'] = $labels;
+		$args['public']  = false;
 		$args['menu_icon']           = 'dashicons-id';
 		$args['has_archive']         = true;
 		$args['taxonomies']          = array( 'sidecat' );
@@ -121,7 +122,7 @@ class PMPro_SWS_Post_Types {
 				if ( false !== $landing_page ) {
 					$title = get_the_title( $landing_page );
 					if ( ! empty( $title ) ) {
-						echo esc_html( $title );
+						echo '<a href="' . esc_html( get_permalink( $post_id ) ) . '">' . esc_html( $title ) . '</a>';
 					}
 				}
 				break;
