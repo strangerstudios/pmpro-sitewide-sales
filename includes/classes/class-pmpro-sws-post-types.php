@@ -48,6 +48,7 @@ class PMPro_SWS_Post_Types {
 		$args['label']  = __( 'Sitewide Sales', 'pmpro-sitewide-sale' );
 		$args['description']         = __( 'Sitewide Sales', 'pmpro-sitewide-sale' );
 		$args['labels'] = $labels;
+		$args['public']  = false;
 		$args['menu_icon']           = 'dashicons-id';
 		$args['has_archive']         = true;
 		$args['taxonomies']          = array( 'sidecat' );
