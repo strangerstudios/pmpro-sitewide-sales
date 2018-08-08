@@ -448,6 +448,17 @@ class PMPro_SWS_MetaBoxes {
 			<th scope="row" valign="top"><label>' . esc_html__( 'Hide Banner at Checkout', 'pmpro-sitewide-sale' ) . '</label></th>
 			<td><input class="pmpro_sws_option" type="checkbox" name="pmpro_sws_hide_on_checkout" ' . esc_html( $checked_modifier ) . '/></td>
 		</tr></table>';
+	echo '
+	<hr>
+	<h3>' . esc_html__( 'Previewing Banner', 'pmpro-sitewide-sale' ) . '</h3>' .
+	'<p>' . esc_html__( 'To test the banner for this sale without it having to be active, navigate to the webpage
+	you would like to test on and add \'', 'pmpro-sitewide-sale' ) . '?pmpro_sws_preview_sale_banner=' . $post->ID .
+	'\', with the \'?\' being an \'&\' if there are already parameters in the url.' .
+	'</p>' .
+	'<p>' . esc_html__( 'Additionally, you can test what a specific kind of banner will look like by adding \'', 'pmpro-sitewide-sale' ) .
+	'&pmpro_sws_preview_banner_type=\', adding on either top, bottom, or bottom_right.' .
+	'</p>';
+
 	}
 
 	public static function display_step_5( $post ) {
