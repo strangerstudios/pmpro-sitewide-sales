@@ -20,6 +20,7 @@ define( 'PMPROSWS_DIR', dirname( __FILE__ ) );
 define( 'PMPROSWS_BASENAME', plugin_basename( __FILE__ ) );
 
 require 'autoload.php';
+require 'includes/reports-no-namespace.php';
 
 // Handles registering banners and displaying banners on frontend.
 includes\classes\PMPro_SWS_Banners::init();
