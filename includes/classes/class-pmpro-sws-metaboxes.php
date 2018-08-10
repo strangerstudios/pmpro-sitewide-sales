@@ -553,7 +553,10 @@ class PMPro_SWS_MetaBoxes {
 	 * @return null
 	 */
 	public static function save_sws_metaboxes( $post_id, $post ) {
-		wp_nonce_field( 'custom_nonce_action', 'custom_nonce' );
+		if ( 'sws_sitewide_sale' !== $post->post_type ) {
+			return;
+		}
+
 		// Add nonce for security and authentication.
 		$nonce_name   = isset( $_POST['custom_nonce'] ) ? $_POST['custom_nonce'] : '';
 		$nonce_action = 'custom_nonce_action';
@@ -584,10 +587,6 @@ class PMPro_SWS_MetaBoxes {
 
 		// Check if not a revision.
 		if ( wp_is_post_revision( $post_id ) ) {
-			return;
-		}
-
-		if ( 'sws_sitewide_sale' !== $post->post_type ) {
 			return;
 		}
 
