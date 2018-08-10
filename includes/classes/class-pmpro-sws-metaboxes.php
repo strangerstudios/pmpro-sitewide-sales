@@ -45,7 +45,6 @@ class PMPro_SWS_MetaBoxes {
 		add_action( 'save_post', array( __CLASS__, 'save_sws_metaboxes' ), 10, 2 );
 		add_action( 'add_meta_boxes', array( __CLASS__, 'metaboxes_above_editor' ) );
 		add_action( 'edit_form_after_title', array( __CLASS__, 'move_metaboxes_above_editor' ) );
-		// add_action( 'save_post', 'pmpro_sws_save_cpt', 10, 2 );
 	}
 	public static function metaboxes_above_editor( $post_type ) {
 		add_meta_box(
@@ -88,6 +87,7 @@ class PMPro_SWS_MetaBoxes {
 	 * Add the metaboxes.
 	 */
 	public static function add_sws_metaboxes() {
+
 		add_meta_box(
 			'pmpro_sws_cpt_set_as_sitewide_sale',
 			__( 'Sitewide Sale', 'pmpro_sitewide_sale' ),
@@ -184,15 +184,8 @@ class PMPro_SWS_MetaBoxes {
 		return $buttons;
 	}
 
-	/**
-	 * Renders the meta box.
-	 */
-	public static function render_metabox( $post ) {
-		// Add nonce for security and authentication.
-		wp_nonce_field( 'custom_nonce_action', 'custom_nonce' );
-	}
-
 	public static function display_set_as_sitewide_sale( $post ) {
+		wp_nonce_field( 'custom_nonce_action', 'custom_nonce' );
 		$init_checked = false;
 		if ( isset( $_REQUEST['set_sitewide_sale'] ) && 'true' === $_REQUEST['set_sitewide_sale'] ) {
 			$init_checked = true;
@@ -560,6 +553,9 @@ class PMPro_SWS_MetaBoxes {
 	 * @return null
 	 */
 	public static function save_sws_metaboxes( $post_id, $post ) {
+		if ( 'sws_sitewide_sale' !== $post->post_type ) {
+			return;
+		}
 
 		// Add nonce for security and authentication.
 		$nonce_name   = isset( $_POST['custom_nonce'] ) ? $_POST['custom_nonce'] : '';
@@ -572,7 +568,11 @@ class PMPro_SWS_MetaBoxes {
 
 		// Check if nonce is valid.
 		if ( ! wp_verify_nonce( $nonce_name, $nonce_action ) ) {
-			return;
+			echo 'Nonce Name: ';
+			var_dump( $nonce_name );
+			echo '<br/>Nonce Action: ';
+			var_dump( $nonce_action );
+			die( '<br/>Nonce failed' );
 		}
 
 		// Check if user has permissions to save data.
@@ -587,10 +587,6 @@ class PMPro_SWS_MetaBoxes {
 
 		// Check if not a revision.
 		if ( wp_is_post_revision( $post_id ) ) {
-			return;
-		}
-
-		if ( 'sws_sitewide_sale' !== $post->post_type ) {
 			return;
 		}
 
