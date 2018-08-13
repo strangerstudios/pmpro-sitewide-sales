@@ -537,6 +537,25 @@ class PMPro_SWS_MetaBoxes {
 		if ( 'sws_sitewide_sale' !== $post->post_type ) {
 			return;
 		}
+		
+		// Check if user has permissions to save data.
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return;
+		}
+
+		// Check if not an autosave.
+		if ( wp_is_post_autosave( $post_id ) ) {
+			return;
+		}
+
+		// Check if not a revision.
+		if ( wp_is_post_revision( $post_id ) ) {
+			return;
+		}
+
+		if ( 'auto-draft' === $post->post_status || 'trash' === $post->post_status ) {
+			return;
+		}
 
 		// Add nonce for security and authentication.
 		$nonce_name   = isset( $_POST['custom_nonce'] ) ? $_POST['custom_nonce'] : '';
@@ -552,20 +571,6 @@ class PMPro_SWS_MetaBoxes {
 			die( '<br/>Nonce failed' );
 		}
 
-		// Check if user has permissions to save data.
-		if ( ! current_user_can( 'edit_post', $post_id ) ) {
-			return;
-		}
-
-		// Check if not an autosave.
-		if ( wp_is_post_autosave( $post_id ) ) {
-			return;
-		}
-
-		// Check if not a revision.
-		if ( wp_is_post_revision( $post_id ) ) {
-			return;
-		}
 
 		global $wpdb;
 
