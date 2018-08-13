@@ -43,44 +43,6 @@ class PMPro_SWS_MetaBoxes {
 	public static function init_metabox() {
 		add_action( 'add_meta_boxes', array( __CLASS__, 'add_sws_metaboxes' ) );
 		add_action( 'save_post', array( __CLASS__, 'save_sws_metaboxes' ), 10, 2 );
-		add_action( 'add_meta_boxes', array( __CLASS__, 'metaboxes_above_editor' ) );
-		add_action( 'edit_form_after_title', array( __CLASS__, 'move_metaboxes_above_editor' ) );
-	}
-	public static function metaboxes_above_editor( $post_type ) {
-		add_meta_box(
-			'pmpro_sws_cpt_step_1',
-			__( 'Step 1: Settings to Associate With Sale', 'pmpro_sitewide_sale' ),
-			array( __CLASS__, 'display_step_1' ),
-			array( 'sws_sitewide_sale' ),
-			( defined( 'GUTENBERG_VERSION' ) ? 'normal' : 'above_editor' ),
-			'high'
-		);
-		add_meta_box(
-			'pmpro_sws_cpt_step_2',
-			__( 'Step 2: Action after Click', 'pmpro_sitewide_sale' ),
-			array( __CLASS__, 'display_step_2' ),
-			array( 'sws_sitewide_sale' ),
-			( defined( 'GUTENBERG_VERSION' ) ? 'normal' : 'above_editor' ),
-			'high'
-		);
-		add_meta_box(
-			'pmpro_sws_cpt_step_3',
-			__( 'Step 3: Customize your Message', 'pmpro_sitewide_sale' ),
-			array( __CLASS__, 'display_step_3' ),
-			array( 'sws_sitewide_sale' ),
-			( defined( 'GUTENBERG_VERSION' ) ? 'normal' : 'above_editor' ),
-			'high'
-		);
-	}
-	public static function move_metaboxes_above_editor() {
-		// Get the globals:
-		global $post, $wp_meta_boxes;
-
-		// Output the "advanced" meta boxes:
-		do_meta_boxes( get_current_screen(), 'above_editor', $post );
-
-		// Remove the initial "advanced" meta boxes:
-		unset( $wp_meta_boxes['sws_sitewide_sale']['above_editor'] );
 	}
 
 	/**
@@ -97,7 +59,30 @@ class PMPro_SWS_MetaBoxes {
 			'high'
 		);
 
-		// Removing Step 1
+		add_meta_box(
+			'pmpro_sws_cpt_step_1',
+			__( 'Step 1: Settings to Associate With Sale', 'pmpro_sitewide_sale' ),
+			array( __CLASS__, 'display_step_1' ),
+			array( 'sws_sitewide_sale' ),
+			'normal',
+			'high'
+		);
+		add_meta_box(
+			'pmpro_sws_cpt_step_2',
+			__( 'Step 2: Action after Click', 'pmpro_sitewide_sale' ),
+			array( __CLASS__, 'display_step_2' ),
+			array( 'sws_sitewide_sale' ),
+			'normal',
+			'high'
+		);
+		add_meta_box(
+			'pmpro_sws_cpt_step_3',
+			__( 'Step 3: Customize your Message', 'pmpro_sitewide_sale' ),
+			array( __CLASS__, 'display_step_3' ),
+			array( 'sws_sitewide_sale' ),
+			'normal',
+			'high'
+		);
 		add_meta_box(
 			'pmpro_sws_cpt_step_4',
 			__( 'Step 4: Setup Banners', 'pmpro_sitewide_sale' ),
@@ -377,6 +362,9 @@ class PMPro_SWS_MetaBoxes {
 		if ( empty( $use_banner ) ) {
 			$use_banner = 'no';
 		}
+
+		$banner_text = $post->post_content;
+
 		$custom_banner_title = get_post_meta( $post->ID, 'custom_banner_title', true );
 		if ( empty( $custom_banner_title ) ) {
 			$custom_banner_title = false;
@@ -425,6 +413,11 @@ class PMPro_SWS_MetaBoxes {
 		</tr></table>
 		<table class="form-table" id="pmpro_sws_banner_options">
 	<?php
+	echo '
+	<tr>
+		<th><label for="pmpro_sws_banner_text"><b>Banner Text</b></label></th>
+		<td><textarea class="pmpro_sws_option" id="pmpro_sws_banner_text" name="pmpro_sws_banner_text">' . esc_html( $banner_text ) . '</textarea></td>
+	</tr>';
 	echo '
 	<tr>
 		<th><label for="pmpro_sws_custom_sale_title"><b>Custom Banner Title</b></label></th>
@@ -568,10 +561,6 @@ class PMPro_SWS_MetaBoxes {
 
 		// Check if nonce is valid.
 		if ( ! wp_verify_nonce( $nonce_name, $nonce_action ) ) {
-			echo 'Nonce Name: ';
-			var_dump( $nonce_name );
-			echo '<br/>Nonce Action: ';
-			var_dump( $nonce_action );
 			die( '<br/>Nonce failed' );
 		}
 
@@ -654,6 +643,18 @@ class PMPro_SWS_MetaBoxes {
 			update_post_meta( $post_id, 'use_banner', trim( $_POST['pmpro_sws_use_banner'] ) );
 		} else {
 			update_post_meta( $post_id, 'use_banner', 'no' );
+		}
+
+		if ( isset( $_POST['pmpro_sws_banner_text'] ) ) {
+			$post->post_content = trim( $_POST['pmpro_sws_banner_text'] );
+			remove_action( 'save_post', array( __CLASS__, 'save_sws_metaboxes' ) );
+			wp_update_post( $post, true );
+			add_action( 'save_post', array( __CLASS__, 'save_sws_metaboxes' ), 10, 2 );
+		} else {
+			$post->post_content = '';
+			remove_action( 'save_post', array( __CLASS__, 'save_sws_metaboxes' ) );
+			wp_update_post( $post, true );
+			add_action( 'save_post', array( __CLASS__, 'save_sws_metaboxes' ), 10, 2 );
 		}
 
 		if ( isset( $_POST['pmpro_sws_link_text'] ) ) {

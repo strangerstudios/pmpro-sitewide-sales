@@ -57,7 +57,6 @@ class PMPro_SWS_Post_Types {
 		$args['taxonomies']          = array( 'sidecat' );
 		$args['supports']            = array(
 			'title',
-			'editor',
 		);
 
 		$args['rewrite']             = array(
