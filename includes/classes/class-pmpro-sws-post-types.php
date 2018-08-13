@@ -12,6 +12,8 @@ class PMPro_SWS_Post_Types {
 	 * @return [type] [description]
 	 */
 	public static function init() {
+		add_action( 'admin_bar_menu', array( __CLASS__, 'add_cpt_to_admin_bar' ), 1001 );
+		add_action( 'admin_menu', array( __CLASS__, 'add_cpt_to_menu' ) );
 		add_action( 'init', array( __CLASS__, 'register_sitewide_sale_cpt' ) );
 		add_filter( 'manage_sws_sitewide_sale_posts_columns', array( __CLASS__, 'set_sitewide_sale_columns' ) );
 		add_action( 'manage_sws_sitewide_sale_posts_custom_column', array( __CLASS__, 'fill_sitewide_sale_columns' ), 10, 2 );
@@ -62,8 +64,47 @@ class PMPro_SWS_Post_Types {
 			'slug' => 'sws-sitewide-sale',
 		);
 		$args['rest_base']           = __( 'sws_sitewide_sale', 'pmpro-sitewide-sale' );
+		$args['show_in_menu']        = false;
 
 		register_post_type( 'sws_sitewide_sale', $args );
+	}
+
+	/**
+	 * Adds Sitewide Sale to admin bar
+	 */
+	public static function add_cpt_to_admin_bar() {
+		global $wp_admin_bar;
+
+		//view menu at all?
+		if ( ! current_user_can( 'pmpro_memberships_menu' ) || ! is_admin_bar_showing() ) {
+			return;
+		}
+
+		//array of all caps in the menu
+		$pmpro_caps = pmpro_getPMProCaps();
+
+		//the top level menu links to the first page they have access to
+		foreach ( $pmpro_caps as $cap ) {
+			if ( current_user_can( $cap ) ) {
+				$top_menu_page = str_replace( '_', '-', $cap );
+				break;
+			}
+		}
+		if ( current_user_can( 'manage_options' ) ) {
+			$wp_admin_bar->add_menu( array(
+				'id'     => 'pmpro-sitewide-sale',
+				'parent' => 'paid-memberships-pro',
+				'title'  => __( 'Sitewide Sales', 'paid-memberships-pro' ),
+				'href'   => get_admin_url( null, '/edit.php?post_type=sws_sitewide_sale' ),
+			) );
+		}
+	}
+
+	/**
+	 * Adds Sitewide Sale to admin menu
+	 */
+	public static function add_cpt_to_menu() {
+		add_submenu_page( 'pmpro-membershiplevels', __('Sitewide Sales', 'paid-memberships-pro' ), __('Sitewide Sales', 'paid-memberships-pro' ), 'manage_options', 'edit.php?post_type=sws_sitewide_sale' );
 	}
 
 	/**
