@@ -195,51 +195,24 @@ class PMPro_SWS_MetaBoxes {
 			$current_discount = false;
 		}
 
-		$custom_dates = get_post_meta( $post->ID, 'custom_dates', true );
-		if ( empty( $custom_dates ) ) {
-			$custom_dates = false;
+		?>
+		<label for="pmpro_sws_discount_code_id"><b>Choose Discount Code</b> </label><select class="discount_code_select pmpro_sws_option" id="pmpro_sws_discount_code_select" name="pmpro_sws_discount_code_id">
+		<option value=-1></option>
+		<?php
+		$code_found = false;
+		foreach ( $codes as $code ) {
+			$selected_modifier = '';
+			if ( $code->id === $current_discount ) {
+				$selected_modifier = ' selected="selected"';
+				$code_found        = true;
+			}
+			echo '<option value = ' . esc_html( $code->id ) . esc_html( $selected_modifier ) . '>' . esc_html( $code->code ) . '</option>';
 		}
-		$hidden_modifier_date  = '';
-		$checked_modifier_date = ' checked ';
-		if ( ! $custom_dates ) {
-			$hidden_modifier_date  = ' hidden';
-			$checked_modifier_date = '';
+		echo '</select><span id="pmpro_sws_after_discount_code_select">';
+		if ( $code_found ) {
+			echo ' <input type="submit" class="button button-secondary" name="pmpro_sws_edit_discount" value="' . esc_html__( 'edit', 'pmpro-sitewide-sale' ) . '">' . esc_html__( ' or ', 'pmpro_sitewide_sale' );
 		}
-
-		$start_date = esc_html( get_post_meta( $post->ID, 'start_date', true ) );
-		if ( empty( $start_date ) ) {
-			$start_date = date( 'Y-m-d' );
-		}
-		$end_date = esc_html( get_post_meta( $post->ID, 'end_date', true ) );
-		if ( empty( $end_date ) ) {
-			$end_date = date( 'Y-m-d' );
-		}
-
-	?>
-	<label for="pmpro_sws_discount_code_id"><b>Choose Discount Code</b> </label><select class="discount_code_select pmpro_sws_option" id="pmpro_sws_discount_code_select" name="pmpro_sws_discount_code_id">
-	<option value=-1></option>
-	<?php
-	$code_found = false;
-	foreach ( $codes as $code ) {
-		$selected_modifier = '';
-		if ( $code->id === $current_discount ) {
-			$selected_modifier = ' selected="selected"';
-			$code_found        = true;
-		}
-		echo '<option value = ' . esc_html( $code->id ) . esc_html( $selected_modifier ) . '>' . esc_html( $code->code ) . '</option>';
-	}
-	echo '</select><span id="pmpro_sws_after_discount_code_select">';
-	if ( $code_found ) {
-		echo ' <input type="submit" class="button button-secondary" name="pmpro_sws_edit_discount" value="' . esc_html__( 'edit', 'pmpro-sitewide-sale' ) . '">' . esc_html__( ' or ', 'pmpro_sitewide_sale' );
-	}
-	echo '</span> <input type="submit" class="button button-primary" name="pmpro_sws_create_discount" value="' . esc_html__( 'create a new discount code', 'pmpro-sitewide-sale' ) . '"><br/><br/>';
-	echo '<label for="pmpro_sws_custom_sale_dates"><b>Custom Sale Start/End Dates</b></label>
-	<input type="checkbox" id="pmpro_sws_custom_sale_dates" name="pmpro_sws_custom_sale_dates" ' . $checked_modifier_date . '\><br/>';
-	echo '<div id="pmpro_sws_custom_date_select"' . $hidden_modifier_date . '>
-	<label for="pmpro_sws_start_date">Sale Start Date</label>
-	<input type="date" name="pmpro_sws_start_date" value="' . $start_date . '" /> </br>
-	<label for="pmpro_sws_end_date">Sale End Date</label>
-	<input type="date" name="pmpro_sws_end_date" value="' . $end_date . '" /></div><br/>';
+		echo '</span> <input type="submit" class="button button-primary" name="pmpro_sws_create_discount" value="' . esc_html__( 'create a new discount code', 'pmpro-sitewide-sale' ) . '"><br/><br/>';
 	}
 
 	public static function display_step_2( $post ) {
@@ -249,6 +222,17 @@ class PMPro_SWS_MetaBoxes {
 		if ( empty( $current_page ) ) {
 			$current_page = false;
 		}
+
+		$start_date = esc_html( get_post_meta( $post->ID, 'start_date', true ) );
+		if ( empty( $start_date ) ) {
+			$start_date = date( 'Y-m-d' );
+		}
+
+		$end_date = esc_html( get_post_meta( $post->ID, 'end_date', true ) );
+		if ( empty( $end_date ) ) {
+			$end_date = date( 'Y-m-d' );
+		}
+
 		$pre_sale_content = esc_html( get_post_meta( $post->ID, 'pre_sale_content', true ) );
 		if ( empty( $pre_sale_content ) ) {
 			$pre_sale_content = '';
@@ -283,6 +267,11 @@ class PMPro_SWS_MetaBoxes {
 			echo '<input type="submit" class="button button-secondary" name="pmpro_sws_edit_landing_page" value="' . esc_html__( 'edit', 'pmpro-sitewide-sale' ) . '">' . esc_html__( ' or ', 'pmpro_sitewide_sale' );
 		}
 		echo '</span><input type="submit" class="button button-primary" name="pmpro_sws_create_landing_page" value="' . esc_html__( 'create a new landing page', 'pmpro-sitewide-sale' ) . '"><br/><br/>';
+		echo '
+		<label for="pmpro_sws_start_date">Sale Start Date</label>
+		<input type="date" name="pmpro_sws_start_date" value="' . $start_date . '" /> </br>
+		<label for="pmpro_sws_end_date">Sale End Date</label>
+		<input type="date" name="pmpro_sws_end_date" value="' . $end_date . '" /></div><br/>';
 		?>
 		<hr>
 		<h3>[pmpro_sws] <?php esc_html_e( 'Shortcode', 'pmpro-sitewide-sale' ); ?></h3>
@@ -338,7 +327,6 @@ class PMPro_SWS_MetaBoxes {
 				<td><textarea class="pmpro_sws_option" name="pmpro_sws_post_sale_content"><?php echo( esc_html( $post_sale_content ) ); ?></textarea></td>
 			</tr>
 		</table>
-
 
 		<?php
 	}
@@ -549,21 +537,7 @@ class PMPro_SWS_MetaBoxes {
 		if ( 'sws_sitewide_sale' !== $post->post_type ) {
 			return;
 		}
-
-		// Add nonce for security and authentication.
-		$nonce_name   = isset( $_POST['custom_nonce'] ) ? $_POST['custom_nonce'] : '';
-		$nonce_action = 'custom_nonce_action';
-
-		// Check if nonce is set.
-		if ( ! isset( $nonce_name ) ) {
-			return;
-		}
-
-		// Check if nonce is valid.
-		if ( ! wp_verify_nonce( $nonce_name, $nonce_action ) ) {
-			die( '<br/>Nonce failed' );
-		}
-
+		
 		// Check if user has permissions to save data.
 		if ( ! current_user_can( 'edit_post', $post_id ) ) {
 			return;
@@ -579,6 +553,25 @@ class PMPro_SWS_MetaBoxes {
 			return;
 		}
 
+		if ( 'auto-draft' === $post->post_status || 'trash' === $post->post_status ) {
+			return;
+		}
+
+		// Add nonce for security and authentication.
+		$nonce_name   = isset( $_POST['custom_nonce'] ) ? $_POST['custom_nonce'] : '';
+		$nonce_action = 'custom_nonce_action';
+
+		// Check if nonce is set.
+		if ( ! isset( $nonce_name ) ) {
+			return;
+		}
+
+		// Check if nonce is valid.
+		if ( ! wp_verify_nonce( $nonce_name, $nonce_action ) ) {
+			die( '<br/>Nonce failed' );
+		}
+
+
 		global $wpdb;
 
 		if ( isset( $_POST['pmpro_sws_discount_code_id'] ) ) {
@@ -586,7 +579,7 @@ class PMPro_SWS_MetaBoxes {
 		} else {
 			update_post_meta( $post_id, 'discount_code_id', false );
 		}
-
+		/*
 		if ( isset( $_POST['pmpro_sws_custom_sale_dates'] ) ) {
 			if ( isset( $_POST['pmpro_sws_start_date'] ) && isset( $_POST['pmpro_sws_end_date'] ) ) {
 				update_post_meta( $post_id, 'start_date', trim( $_POST['pmpro_sws_start_date'] ) );
@@ -601,7 +594,7 @@ class PMPro_SWS_MetaBoxes {
 			}
 			update_post_meta( $post_id, 'custom_dates', false );
 		}
-
+*/
 		if ( isset( $_POST['pmpro_sws_custom_banner_title'] ) ) {
 			if ( isset( $_POST['pmpro_sws_banner_title'] ) ) {
 				update_post_meta( $post_id, 'banner_title', trim( $_POST['pmpro_sws_banner_title'] ) );
