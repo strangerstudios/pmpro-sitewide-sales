@@ -44,7 +44,8 @@ class PMPro_SWS_Post_Types {
 		$labels['all_items']             = __( 'All Sitewide Sales', 'pmpro-sitewide-sale' );
 		$labels['menu_name']             = __( $menu_name, 'pmpro-sitewide-sale' );
 		$labels['name_admin_bar']        = __( 'Sitewide Sales', 'pmpro-sitewide-sale' );
-		$labels['add_new_item']        = __( 'Add New Sitewide Sale', 'pmpro-sitewide-sale' );
+		$labels['add_new_item']          = __( 'Add New Sitewide Sale', 'pmpro-sitewide-sale' );
+		$labels['search_items']          = __( 'Search Sitewide Sales', 'pmpro-sitewide-sale' );
 
 		$args = self::get_args_defaults();
 		$args['label']  = __( 'Sitewide Sales', 'pmpro-sitewide-sale' );
@@ -63,7 +64,7 @@ class PMPro_SWS_Post_Types {
 			'with_front' => true,
 			'slug' => 'sws-sitewide-sale',
 		);
-		$args['rest_base']           = __( 'sws_sitewide_sale', 'pmpro-sitewide-sale' );
+		$args['rest_base']           = 'sws_sitewide_sale';
 		$args['show_in_menu']        = false;
 
 		register_post_type( 'sws_sitewide_sale', $args );
