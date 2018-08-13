@@ -271,7 +271,8 @@ class PMPro_SWS_MetaBoxes {
 		<label for="pmpro_sws_start_date">Sale Start Date</label>
 		<input type="date" name="pmpro_sws_start_date" value="' . $start_date . '" /> </br>
 		<label for="pmpro_sws_end_date">Sale End Date</label>
-		<input type="date" name="pmpro_sws_end_date" value="' . $end_date . '" /></div><br/>';
+		<input type="date" name="pmpro_sws_end_date" value="' . $end_date . '" /> <br/>
+		';
 		?>
 		<hr>
 		<h3>[pmpro_sws] <?php esc_html_e( 'Shortcode', 'pmpro-sitewide-sale' ); ?></h3>
@@ -537,7 +538,7 @@ class PMPro_SWS_MetaBoxes {
 		if ( 'sws_sitewide_sale' !== $post->post_type ) {
 			return;
 		}
-		
+
 		// Check if user has permissions to save data.
 		if ( ! current_user_can( 'edit_post', $post_id ) ) {
 			return;
