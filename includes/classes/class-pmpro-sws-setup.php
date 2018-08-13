@@ -78,7 +78,7 @@ class PMPro_SWS_Setup {
 		// Check transient, if available display notice.
 		if ( get_transient( 'pmpro-sws-admin-notice' ) ) { ?>
 			<div class="updated notice is-dismissible">
-				<p><?php printf( __( 'Thank you for activating. <a href="%s">Visit the settings page</a> to get started with the Sitewide Sale Add On.', 'pmpro-sitewide-sale' ), get_admin_url( null, 'admin.php?page=pmpro-sws' ) ); ?></p>
+				<p><?php printf( __( 'Thank you for activating. You can create your first Sitewide Sale <a href="%s">here</a>.', 'pmpro-sitewide-sale' ), get_admin_url( null, 'edit.php?post_type=sws_sitewide_sale' ) ); ?></p>
 			</div>
 			<?php
 			// Delete transient, only display this notice once.
