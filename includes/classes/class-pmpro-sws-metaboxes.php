@@ -402,23 +402,13 @@ class PMPro_SWS_MetaBoxes {
 
 		$banner_text = $post->post_content;
 
-		$custom_banner_title = get_post_meta( $post->ID, 'custom_banner_title', true );
-		if ( empty( $custom_banner_title ) ) {
-			$custom_banner_title = false;
-		}
-		$hidden_modifier_title  = '';
-		$checked_modifier_title = ' checked ';
-		if ( ! $custom_banner_title ) {
-			$hidden_modifier_title  = ' hidden';
-			$checked_modifier_title = '';
-		}
 		$banner_title = esc_html( get_post_meta( $post->ID, 'banner_title', true ) );
 		if ( empty( $banner_title ) ) {
 			$banner_title = '';
 		}
 		$link_text = esc_html( get_post_meta( $post->ID, 'link_text', true ) );
 		if ( empty( $link_text ) ) {
-			$link_text = '';
+			$link_text = 'Buy Now';
 		}
 		$css_option = esc_html( get_post_meta( $post->ID, 'css_option', true ) );
 		if ( empty( $css_option ) ) {
@@ -452,18 +442,13 @@ class PMPro_SWS_MetaBoxes {
 	<?php
 	echo '
 	<tr>
-		<th><label for="pmpro_sws_banner_text"><b>Banner Text</b></label></th>
-		<td><textarea class="pmpro_sws_option" id="pmpro_sws_banner_text" name="pmpro_sws_banner_text">' . esc_html( $banner_text ) . '</textarea></td>
+		<th><label for="pmpro_sws_banner_title">Banner Title</label></th>
+		<td><input type="textbox" name="pmpro_sws_banner_title" value="' . esc_html( $banner_title ) . '" /></td>
 	</tr>';
 	echo '
 	<tr>
-		<th><label for="pmpro_sws_custom_sale_title"><b>Custom Banner Title</b></label></th>
-		<td><input type="checkbox" id="pmpro_sws_custom_banner_title" name="pmpro_sws_custom_banner_title" ' . $checked_modifier_title . '\></td>
-	</tr>';
-	echo '
-	<tr id="pmpro_sws_custom_title_select"' . $hidden_modifier_title . '>
-		<th><label for="pmpro_sws_banner_title">Banner Title</label></th>
-		<td><input type="textbox" name="pmpro_sws_banner_title" value="' . $banner_title . '" /></td>
+		<th><label for="pmpro_sws_banner_text"><b>Banner Text</b></label></th>
+		<td><textarea class="pmpro_sws_option" id="pmpro_sws_banner_text" name="pmpro_sws_banner_text">' . esc_html( $banner_text ) . '</textarea></td>
 	</tr>';
 	echo '
 	<tr>
@@ -629,6 +614,12 @@ class PMPro_SWS_MetaBoxes {
 			update_post_meta( $post_id, 'discount_code_id', false );
 		}
 
+		if ( isset( $_POST['pmpro_sws_landing_page_post_id'] ) ) {
+			update_post_meta( $post_id, 'landing_page_post_id', trim( $_POST['pmpro_sws_landing_page_post_id'] ) );
+		} else {
+			update_post_meta( $post_id, 'landing_page_post_id', false );
+		}
+		
 		if ( isset( $_POST['pmpro_sws_start_day'] ) && is_numeric( $_POST['pmpro_sws_start_day'] ) &&
 				isset( $_POST['pmpro_sws_start_month'] ) && is_numeric( $_POST['pmpro_sws_start_month'] ) &&
 				isset( $_POST['pmpro_sws_start_year'] ) && is_numeric( $_POST['pmpro_sws_start_year'] ) &&
@@ -643,24 +634,6 @@ class PMPro_SWS_MetaBoxes {
 		} else {
 			update_post_meta( $post_id, 'start_date', date( 'Y-m-d', strtotime( 'now' ) ) );
 			update_post_meta( $post_id, 'end_date', date( 'Y-m-d', strtotime( '+1 week' ) ) );
-		}
-
-		if ( isset( $_POST['pmpro_sws_custom_banner_title'] ) ) {
-			if ( isset( $_POST['pmpro_sws_banner_title'] ) ) {
-				update_post_meta( $post_id, 'banner_title', trim( $_POST['pmpro_sws_banner_title'] ) );
-			}
-			update_post_meta( $post_id, 'custom_banner_title', true );
-		} else {
-			if ( isset( $_POST['post_title'] ) ) {
-				update_post_meta( $post_id, 'banner_title', trim( $_POST['post_title'] ) );
-			}
-			update_post_meta( $post_id, 'custom_banner_title', false );
-		}
-
-		if ( isset( $_POST['pmpro_sws_landing_page_post_id'] ) ) {
-			update_post_meta( $post_id, 'landing_page_post_id', trim( $_POST['pmpro_sws_landing_page_post_id'] ) );
-		} else {
-			update_post_meta( $post_id, 'landing_page_post_id', false );
 		}
 
 		if ( isset( $_POST['pmpro_sws_pre_sale_content'] ) ) {
@@ -688,6 +661,12 @@ class PMPro_SWS_MetaBoxes {
 			update_post_meta( $post_id, 'use_banner', 'no' );
 		}
 
+		if ( isset( $_POST['pmpro_sws_banner_title'] ) && ! empty( $_POST['pmpro_sws_banner_title'] ) ) {
+			update_post_meta( $post_id, 'banner_title', trim( $_POST['pmpro_sws_banner_title'] ) );
+		} else {
+			update_post_meta( $post_id, 'banner_title', $post->post_title );
+		}
+
 		if ( isset( $_POST['pmpro_sws_banner_text'] ) ) {
 			$post->post_content = trim( $_POST['pmpro_sws_banner_text'] );
 			remove_action( 'save_post', array( __CLASS__, 'save_sws_metaboxes' ) );
@@ -703,7 +682,7 @@ class PMPro_SWS_MetaBoxes {
 		if ( isset( $_POST['pmpro_sws_link_text'] ) ) {
 			update_post_meta( $post_id, 'link_text', trim( $_POST['pmpro_sws_link_text'] ) );
 		} else {
-			update_post_meta( $post_id, 'link_text', '' );
+			update_post_meta( $post_id, 'link_text', 'Buy Now' );
 		}
 
 		if ( isset( $_POST['pmpro_sws_css_option'] ) ) {
