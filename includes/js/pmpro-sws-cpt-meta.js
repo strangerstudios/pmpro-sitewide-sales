@@ -17,18 +17,6 @@ jQuery( document ).ready(function($) {
 		$('#pmpro_sws_after_landing_page_select').hide();
 	});
 
-	$('#pmpro_sws_custom_sale_dates').change(function(){
-		if(this.checked)
-			$('#pmpro_sws_custom_date_select').show();
-		else
-			$('#pmpro_sws_custom_date_select').hide();
-		});
-	$('#pmpro_sws_custom_banner_title').change(function(){
-		if(this.checked)
-			$('#pmpro_sws_custom_title_select').show();
-		else
-			$('#pmpro_sws_custom_title_select').hide();
-		});
 	$('#pmpro_sws_upsell_enabled').change(function(){
 		if(this.checked)
 			$('.pmpro_sws_upsell_settings').show();
