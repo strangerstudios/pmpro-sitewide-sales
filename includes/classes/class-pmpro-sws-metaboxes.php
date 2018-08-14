@@ -223,14 +223,34 @@ class PMPro_SWS_MetaBoxes {
 			$current_page = false;
 		}
 
-		$start_date = esc_html( get_post_meta( $post->ID, 'start_date', true ) );
-		if ( empty( $start_date ) ) {
-			$start_date = date( 'Y-m-d' );
-		}
+		$start_day   = 0;
+		$start_month = 0;
+		$start_year  = 0;
+		$end_day     = 0;
+		$end_month   = 0;
+		$end_year    = 0;
 
+		$start_date = esc_html( get_post_meta( $post->ID, 'start_date', true ) );
 		$end_date = esc_html( get_post_meta( $post->ID, 'end_date', true ) );
-		if ( empty( $end_date ) ) {
-			$end_date = date( 'Y-m-d' );
+
+		if ( ! empty( $start_date ) && ! empty( $end_date ) &&
+					is_string( $start_date ) && is_string( $end_date ) &&
+					count( explode( '-', $start_date ) ) === 3 && count( explode( '-', $end_date ) ) === 3 ) {
+			$start_exploded = explode( '-', $start_date );
+			$end_exploded   = explode( '-', $end_date );
+			$start_day      = $start_exploded[2];
+			$start_month    = $start_exploded[1];
+			$start_year     = $start_exploded[0];
+			$end_day        = $end_exploded[2];
+			$end_month      = $end_exploded[1];
+			$end_year       = $end_exploded[0];
+		} else {
+			$start_day   = date( 'd', strtotime( 'now' ) );
+			$start_month = date( 'm', strtotime( 'now' ) );
+			$start_year  = date( 'Y', strtotime( 'now' ) );
+			$end_day     = date( 'd', strtotime( '+1 week' ) );
+			$end_month   = date( 'm', strtotime( '+1 week' ) );
+			$end_year    = date( 'Y', strtotime( '+1 week' ) );
 		}
 
 		$pre_sale_content = esc_html( get_post_meta( $post->ID, 'pre_sale_content', true ) );
@@ -267,13 +287,41 @@ class PMPro_SWS_MetaBoxes {
 			echo '<input type="submit" class="button button-secondary" name="pmpro_sws_edit_landing_page" value="' . esc_html__( 'edit', 'pmpro-sitewide-sale' ) . '">' . esc_html__( ' or ', 'pmpro_sitewide_sale' );
 		}
 		echo '</span><input type="submit" class="button button-primary" name="pmpro_sws_create_landing_page" value="' . esc_html__( 'create a new landing page', 'pmpro-sitewide-sale' ) . '"><br/><br/>';
-		echo '
-		<label for="pmpro_sws_start_date">Sale Start Date</label>
-		<input type="date" name="pmpro_sws_start_date" value="' . $start_date . '" /> </br>
-		<label for="pmpro_sws_end_date">Sale End Date</label>
-		<input type="date" name="pmpro_sws_end_date" value="' . $end_date . '" /> <br/>
-		';
 		?>
+			<table>
+			<tr>
+				<th scope="row" valign="top"><label for="pmpro_sws_start_date"><?php _e( 'Sale Start Date', 'pmpro-sitewide-sale' );?>:</label></th>
+				<td>
+					<select name="pmpro_sws_start_month">
+						<?php
+						for ( $i = 1; $i < 13; $i++ ) {
+							?>
+							<option value="<?php echo esc_html( $i ); ?>" <?php if ($i == $start_month) { ?>selected="selected"<?php } ?>><?php echo date_i18n("M", strtotime($i . "/1/" . $start_year, current_time("timestamp")))?></option>
+							<?php
+						}
+						?>
+					</select>
+					<input name="pmpro_sws_start_day" type="text" size="2" value="<?php echo esc_html( $start_day ); ?>" />
+					<input name="pmpro_sws_start_year" type="text" size="4" value="<?php echo esc_html( $start_year ); ?>" />
+				</td>
+			</tr>
+			<tr>
+				<th scope="row" valign="top"><label for="pmpro_sws_end_date"><?php _e('Sale End Date', 'pmpro-sitewide-sale' );?>:</label></th>
+				<td>
+					<select name="pmpro_sws_end_month">
+						<?php
+						for ( $i = 1; $i < 13; $i++ ) {
+							?>
+							<option value="<?php echo esc_html( $i ); ?>" <?php if ( $i == $end_month ) { ?>selected="selected"<?php } ?>><?php echo date_i18n("M", strtotime($i . "/1/" . $end_year, current_time("timestamp")))?></option>
+							<?php
+						}
+						?>
+					</select>
+					<input name="pmpro_sws_end_day" type="text" size="2" value="<?php echo esc_html( $end_day ); ?>" />
+					<input name="pmpro_sws_end_year" type="text" size="4" value="<?php echo esc_html( $end_year ); ?>" />
+				</td>
+			</tr>
+		</table>
 		<hr>
 		<h3>[pmpro_sws] <?php esc_html_e( 'Shortcode', 'pmpro-sitewide-sale' ); ?></h3>
 		<p>
@@ -580,22 +628,23 @@ class PMPro_SWS_MetaBoxes {
 		} else {
 			update_post_meta( $post_id, 'discount_code_id', false );
 		}
-		/*
-		if ( isset( $_POST['pmpro_sws_custom_sale_dates'] ) ) {
-			if ( isset( $_POST['pmpro_sws_start_date'] ) && isset( $_POST['pmpro_sws_end_date'] ) ) {
-				update_post_meta( $post_id, 'start_date', trim( $_POST['pmpro_sws_start_date'] ) );
-				update_post_meta( $post_id, 'end_date', trim( $_POST['pmpro_sws_end_date'] ) );
-			}
-			update_post_meta( $post_id, 'custom_dates', true );
-		} elseif ( isset( $_POST['pmpro_sws_discount_code_id'] ) ) {
-			$discount_code_dates = $wpdb->get_results( $wpdb->prepare( "SELECT starts, expires FROM $wpdb->pmpro_discount_codes where id = %d", intval( $_POST['pmpro_sws_discount_code_id'] ) ) );
-			if ( ! empty( $discount_code_dates ) && ! empty( $discount_code_dates[0] ) && ! empty( $discount_code_dates[0]->starts ) && ! empty( $discount_code_dates[0]->expires ) ) {
-				update_post_meta( $post_id, 'start_date', $discount_code_dates[0]->starts );
-				update_post_meta( $post_id, 'end_date', $discount_code_dates[0]->expires );
-			}
-			update_post_meta( $post_id, 'custom_dates', false );
+
+		if ( isset( $_POST['pmpro_sws_start_day'] ) && is_numeric( $_POST['pmpro_sws_start_day'] ) &&
+				isset( $_POST['pmpro_sws_start_month'] ) && is_numeric( $_POST['pmpro_sws_start_month'] ) &&
+				isset( $_POST['pmpro_sws_start_year'] ) && is_numeric( $_POST['pmpro_sws_start_year'] ) &&
+				isset( $_POST['pmpro_sws_end_day'] ) && is_numeric( $_POST['pmpro_sws_end_day'] ) &&
+				isset( $_POST['pmpro_sws_end_month'] ) && is_numeric( $_POST['pmpro_sws_end_month'] ) &&
+				isset( $_POST['pmpro_sws_end_year'] ) && is_numeric( $_POST['pmpro_sws_end_year'] ) &&
+				! empty( strtotime( $_POST['pmpro_sws_start_year'] . '-' . $_POST['pmpro_sws_start_month'] . '-' . $_POST['pmpro_sws_start_day'] ) ) &&
+				! empty( strtotime( $_POST['pmpro_sws_end_year'] . '-' . $_POST['pmpro_sws_end_month'] . '-' . $_POST['pmpro_sws_end_day'] ) )
+		) {
+			update_post_meta( $post_id, 'start_date', $_POST['pmpro_sws_start_year'] . '-' . $_POST['pmpro_sws_start_month'] . '-' . $_POST['pmpro_sws_start_day'] );
+			update_post_meta( $post_id, 'end_date', $_POST['pmpro_sws_end_year'] . '-' . $_POST['pmpro_sws_end_month'] . '-' . $_POST['pmpro_sws_end_day'] );
+		} else {
+			update_post_meta( $post_id, 'start_date', date( 'Y-m-d', strtotime( 'now' ) ) );
+			update_post_meta( $post_id, 'end_date', date( 'Y-m-d', strtotime( '+1 week' ) ) );
 		}
-*/
+
 		if ( isset( $_POST['pmpro_sws_custom_banner_title'] ) ) {
 			if ( isset( $_POST['pmpro_sws_banner_title'] ) ) {
 				update_post_meta( $post_id, 'banner_title', trim( $_POST['pmpro_sws_banner_title'] ) );
