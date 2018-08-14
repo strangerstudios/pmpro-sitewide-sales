@@ -213,6 +213,7 @@ class PMPro_SWS_MetaBoxes {
 			echo ' <input type="submit" class="button button-secondary" name="pmpro_sws_edit_discount" value="' . esc_html__( 'edit', 'pmpro-sitewide-sale' ) . '">' . esc_html__( ' or ', 'pmpro_sitewide_sale' );
 		}
 		echo '</span> <input type="submit" class="button button-primary" name="pmpro_sws_create_discount" value="' . esc_html__( 'create a new discount code', 'pmpro-sitewide-sale' ) . '"><br/><br/>';
+		echo '<input type="submit" class="button button-primary" value="' . esc_html__( 'Save All Settings', 'pmpro-sitewide-sale' ) . '">';
 	}
 
 	public static function display_step_2( $post ) {
@@ -378,6 +379,7 @@ class PMPro_SWS_MetaBoxes {
 		</table>
 
 		<?php
+		echo '<input type="submit" class="button button-primary" value="' . esc_html__( 'Save All Settings', 'pmpro-sitewide-sale' ) . '">';
 	}
 
 	public static function display_step_3_heading() {
@@ -505,7 +507,7 @@ class PMPro_SWS_MetaBoxes {
 	'<p>' . esc_html__( 'Additionally, you can test what a specific kind of banner will look like by adding \'', 'pmpro-sitewide-sale' ) .
 	'&pmpro_sws_preview_banner_type=\', adding on either top, bottom, or bottom_right.' .
 	'</p>';
-
+	echo '<br/><input type="submit" class="button button-primary" value="' . esc_html__( 'Save All Settings', 'pmpro-sitewide-sale' ) . '">';
 	}
 
 	public static function display_step_5( $post ) {
@@ -552,6 +554,7 @@ class PMPro_SWS_MetaBoxes {
 			<th><label for="pmpro_sws_upsell_text">Upsell Text</label></th>
 			<td><textarea class="pmpro_sws_option" name="pmpro_sws_upsell_text">' . esc_html( $upsell_text ) . '</textarea><p class="description">Use !!sws_landing_page_url!! to get the url of your Sitewside Sale landing page.</p></td>
 		</tr></table>';
+		echo '<br/><input type="submit" class="button button-primary" value="' . esc_html__( 'Save All Settings', 'pmpro-sitewide-sale' ) . '">';
 	}
 
 	public static function display_step_6( $post ) {
