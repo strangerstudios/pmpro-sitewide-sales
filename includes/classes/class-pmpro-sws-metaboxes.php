@@ -438,7 +438,9 @@ class PMPro_SWS_MetaBoxes {
 					}
 				}
 				?>
-			</select></td>
+			</select>
+		<input type="submit" class="button button-primary" id="pmpro_sws_preview" name="pmpro_sws_preview" value="<?php echo esc_html__( 'Save and Preview', 'pmpro-sitewide-sale' ); ?>">
+		</td>
 		</tr></table>
 		<table class="form-table" id="pmpro_sws_banner_options">
 	<?php
@@ -731,7 +733,7 @@ class PMPro_SWS_MetaBoxes {
 			$options['active_sitewide_sale_id'] = false;
 		}
 		PMPro_SWS_Settings::pmprosws_save_options( $options );
-
+		
 		if ( isset( $_POST['pmpro_sws_create_discount'] ) ) {
 			wp_redirect( esc_html( get_admin_url() ) . 'admin.php?page=pmpro-discountcodes&edit=-1&pmpro_sws_callback=' . $post_id );
 			exit();
@@ -750,6 +752,11 @@ class PMPro_SWS_MetaBoxes {
 		}
 		if ( isset( $_POST['pmpro_sws_view_landing_page'] ) ) {
 			wp_redirect( get_permalink( $post_id ) );
+			exit();
+		}
+		if ( isset( $_POST['pmpro_sws_preview'] ) ) {
+			$url_to_open = get_home_url() . '?pmpro_sws_preview_sale_banner=' . $post_id;
+			wp_redirect( $url_to_open );
 			exit();
 		}
 		if ( isset( $_POST['pmpro_sws_view_reports'] ) ) {
