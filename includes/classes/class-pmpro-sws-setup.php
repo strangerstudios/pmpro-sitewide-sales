@@ -104,7 +104,7 @@ class PMPro_SWS_Setup {
 	public static function pmpro_sws_plugin_action_links( $links ) {
 		if ( current_user_can( 'manage_options' ) ) {
 			$new_links = array(
-				'<a href="' . get_admin_url( null, 'admin.php?page=pmpro-sws' ) . '">' . __( 'Settings', 'pmpro-sitewide-sale' ) . '</a>',
+				'<a href="' . get_admin_url( null, 'edit.php?post_type=sws_sitewide_sale' ) . '">' . __( 'Settings', 'pmpro-sitewide-sale' ) . '</a>',
 			);
 		}
 		return array_merge( $new_links, $links );
