@@ -85,7 +85,7 @@ class PMPro_SWS_Setup {
 					if( $has_sws_post ) {
 						printf( __( 'Thank you for activating. You can <a href="%s">view your Sitewide Sales here</a>.', 'pmpro-sitewide-sale' ), get_admin_url( null, 'edit.php?post_type=sws_sitewide_sale' ) );
 					} else {
-						printf( __( 'Thank you for activating. You can <a href="%s">create your first Sitewide Sale here</a>.', 'pmpro-sitewide-sale' ), get_admin_url( null, 'edit.php?post_type=sws_sitewide_sale' ) );
+						printf( __( 'Thank you for activating. You can <a href="%s">create your first Sitewide Sale here</a>.', 'pmpro-sitewide-sale' ), get_admin_url( null, 'post-new.php?post_type=sws_sitewide_sale' ) );
 					}
 				?>
 				</p>
