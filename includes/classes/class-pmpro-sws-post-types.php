@@ -155,7 +155,7 @@ class PMPro_SWS_Post_Types {
 				if ( false !== $landing_page ) {
 					$title = get_the_title( $landing_page );
 					if ( ! empty( $title ) ) {
-						echo '<a href="' . esc_html( get_permalink( $post_id ) ) . '">' . esc_html( $title ) . '</a>';
+						echo '<a href="' . esc_html( get_permalink( $landing_page ) ) . '">' . esc_html( $title ) . '</a>';
 					}
 				}
 				break;
