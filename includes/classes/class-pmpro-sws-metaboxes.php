@@ -624,7 +624,7 @@ class PMPro_SWS_MetaBoxes {
 		} else {
 			update_post_meta( $post_id, 'landing_page_post_id', false );
 		}
-		
+
 		if ( isset( $_POST['pmpro_sws_start_day'] ) && is_numeric( $_POST['pmpro_sws_start_day'] ) &&
 				isset( $_POST['pmpro_sws_start_month'] ) && is_numeric( $_POST['pmpro_sws_start_month'] ) &&
 				isset( $_POST['pmpro_sws_start_year'] ) && is_numeric( $_POST['pmpro_sws_start_year'] ) &&
@@ -733,7 +733,7 @@ class PMPro_SWS_MetaBoxes {
 			$options['active_sitewide_sale_id'] = false;
 		}
 		PMPro_SWS_Settings::pmprosws_save_options( $options );
-		
+
 		if ( isset( $_POST['pmpro_sws_create_discount'] ) ) {
 			wp_redirect( esc_html( get_admin_url() ) . 'admin.php?page=pmpro-discountcodes&edit=-1&pmpro_sws_callback=' . $post_id );
 			exit();
@@ -751,7 +751,10 @@ class PMPro_SWS_MetaBoxes {
 			exit();
 		}
 		if ( isset( $_POST['pmpro_sws_view_landing_page'] ) ) {
-			wp_redirect( get_permalink( $post_id ) );
+			$landing_page = get_post_meta( $post_id, 'landing_page_post_id', true );
+			if ( false !== $landing_page ) {
+				wp_redirect( get_permalink( $landing_page ) );
+			}
 			exit();
 		}
 		if ( isset( $_POST['pmpro_sws_preview'] ) ) {
