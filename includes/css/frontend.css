@@ -8,6 +8,9 @@
 	margin-right: 2rem;
 	font-size: 2rem;
 }
+#pmpro_sws_banner_top h3 {
+	display: inline;
+}
 .pmpro_sws_banner h3 {
 	margin: 0 0 10px 0;
 	padding: 0;
@@ -31,9 +34,9 @@
 }
 
 #pmpro_sws_banner_bottom_right a.dismiss,
-a.dismiss:active,
-a.dismiss:link,
-a.dismiss:visited {
+#pmpro_sws_banner_bottom_right a.dismiss:active,
+#pmpro_sws_banner_bottom_right a.dismiss:link,
+#pmpro_sws_banner_bottom_right a.dismiss:visited {
 	color: #FFF;
 	float: right;
 	text-decoration: none;
@@ -69,4 +72,3 @@ a.dismiss:visited {
 #pmpro_sws_banner_bottom .pmpro_sws_banner-inner-right .pmpro_btn {
 	display: block;
 }
-
