@@ -123,9 +123,9 @@ class PMPro_SWS_Post_Types {
 	 * @param [type] $columns [description]
 	 */
 	public static function set_sitewide_sale_columns( $columns ) {
-		$columns['is_active']  = __( 'Selected', 'pmpro_sitewide_sale' );
 		$columns['discount_code'] = __( 'Discount Code', 'pmpro_sitewide_sale' );
 		$columns['landing_page'] = __( 'Landing Page', 'pmpro_sitewide_sale' );
+		$columns['reports']  = __( 'Reports', 'pmpro_sitewide_sale' );
 		$columns['set_active'] = __( 'Select Active Sale', 'pmpro_sitewide_sale' );
 
 		return $columns;
@@ -140,14 +140,6 @@ class PMPro_SWS_Post_Types {
 	 */
 	public static function fill_sitewide_sale_columns( $column, $post_id ) {
 		switch ( $column ) {
-			case 'is_active':
-				$options = PMPro_SWS_Settings::pmprosws_get_options();
-				if ( array_key_exists( 'active_sitewide_sale_id', $options ) && $post_id . '' === $options['active_sitewide_sale_id'] ) {
-					echo '<span class="pmpro_sws_column_active" id="pmpro_sws_column_active_' . $post_id . '">Active Sitewide Sale</span>';
-				} else {
-					echo '<span class="pmpro_sws_column_active" id="pmpro_sws_column_active_' . $post_id . '"></span>';
-				}
-				break;
 			case 'discount_code':
 				$discount_code = get_post_meta( $post_id, 'discount_code_id', true );
 				if ( false !== $discount_code ) {
@@ -167,12 +159,15 @@ class PMPro_SWS_Post_Types {
 					}
 				}
 				break;
+			case 'reports':
+					echo '<a class="button button-primary" href="' . admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports' ) . '">' . __( 'View Reports', 'pmpro-sitewide-sale' ) . '</a>';
+					break;
 			case 'set_active':
 				$options = PMPro_SWS_Settings::pmprosws_get_options();
 				if ( array_key_exists( 'active_sitewide_sale_id', $options ) && $post_id . '' === $options['active_sitewide_sale_id'] ) {
-					echo '<button class="button button-primary pmpro_sws_column_set_active" id="pmpro_sws_column_set_active_' . $post_id . '">Remove Active</button>';
+					echo '<button class="button button-primary pmpro_sws_column_set_active" id="pmpro_sws_column_set_active_' . $post_id . '">' . __( 'Remove Active', 'pmpro-sitewide-sale' ) . '</button>';
 				} else {
-					echo '<button class="button button-secondary pmpro_sws_column_set_active" id="pmpro_sws_column_set_active_' . $post_id . '">Set Active</button>';
+					echo '<button class="button button-secondary pmpro_sws_column_set_active" id="pmpro_sws_column_set_active_' . $post_id . '">' . __( 'Set Active', 'pmpro-sitewide-sale' ) . '</button>';
 				}
 				break;
 		}
