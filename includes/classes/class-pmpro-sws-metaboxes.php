@@ -246,12 +246,12 @@ class PMPro_SWS_MetaBoxes {
 			$end_month      = $end_exploded[1];
 			$end_year       = $end_exploded[0];
 		} else {
-			$start_day   = date( 'd', strtotime( 'now' ) );
-			$start_month = date( 'm', strtotime( 'now' ) );
-			$start_year  = date( 'Y', strtotime( 'now' ) );
-			$end_day     = date( 'd', strtotime( '+1 week' ) );
-			$end_month   = date( 'm', strtotime( '+1 week' ) );
-			$end_year    = date( 'Y', strtotime( '+1 week' ) );
+			$start_day   = date( 'd', current_time( 'timestamp') );
+			$start_month = date( 'm', current_time( 'timestamp') );
+			$start_year  = date( 'Y', current_time( 'timestamp') );
+			$end_day     = date( 'd', strtotime( '+1 week', current_time( 'timestamp') ) );
+			$end_month   = date( 'm', strtotime( '+1 week', current_time( 'timestamp') ) );
+			$end_year    = date( 'Y', strtotime( '+1 week', current_time( 'timestamp') ) );
 		}
 
 		$pre_sale_content = esc_html( get_post_meta( $post->ID, 'pre_sale_content', true ) );
@@ -630,15 +630,24 @@ class PMPro_SWS_MetaBoxes {
 				isset( $_POST['pmpro_sws_start_year'] ) && is_numeric( $_POST['pmpro_sws_start_year'] ) &&
 				isset( $_POST['pmpro_sws_end_day'] ) && is_numeric( $_POST['pmpro_sws_end_day'] ) &&
 				isset( $_POST['pmpro_sws_end_month'] ) && is_numeric( $_POST['pmpro_sws_end_month'] ) &&
-				isset( $_POST['pmpro_sws_end_year'] ) && is_numeric( $_POST['pmpro_sws_end_year'] ) &&
-				! empty( strtotime( $_POST['pmpro_sws_start_year'] . '-' . $_POST['pmpro_sws_start_month'] . '-' . $_POST['pmpro_sws_start_day'] ) ) &&
-				! empty( strtotime( $_POST['pmpro_sws_end_year'] . '-' . $_POST['pmpro_sws_end_month'] . '-' . $_POST['pmpro_sws_end_day'] ) )
+				isset( $_POST['pmpro_sws_end_year'] ) && is_numeric( $_POST['pmpro_sws_end_year'] )
 		) {
-			update_post_meta( $post_id, 'start_date', $_POST['pmpro_sws_start_year'] . '-' . $_POST['pmpro_sws_start_month'] . '-' . $_POST['pmpro_sws_start_day'] );
-			update_post_meta( $post_id, 'end_date', $_POST['pmpro_sws_end_year'] . '-' . $_POST['pmpro_sws_end_month'] . '-' . $_POST['pmpro_sws_end_day'] );
+			$start_day = intval($_POST['pmpro_sws_start_day']);
+			$start_month = intval($_POST['pmpro_sws_start_month']);
+			$start_year = intval($_POST['pmpro_sws_start_year']);
+			$end_day = intval($_POST['pmpro_sws_end_day']);
+			$end_month = intval($_POST['pmpro_sws_end_month']);
+			$end_year = intval($_POST['pmpro_sws_end_year']);
+
+			//fix up dates
+			$start_date = date_i18n("Y-m-d", strtotime($start_month . "/" . $start_day . "/" . $start_year, current_time("timestamp")));
+			$end_date = date_i18n("Y-m-d", strtotime($end_month . "/" . $end_day . "/" . $end_year, current_time("timestamp")));
+
+			update_post_meta( $post_id, 'start_date', $start_date );
+			update_post_meta( $post_id, 'end_date', $end_date );
 		} else {
-			update_post_meta( $post_id, 'start_date', date( 'Y-m-d', strtotime( 'now' ) ) );
-			update_post_meta( $post_id, 'end_date', date( 'Y-m-d', strtotime( '+1 week' ) ) );
+			update_post_meta( $post_id, 'start_date', date_i18n( 'Y-m-d', strtotime( 'now' ) ) );
+			update_post_meta( $post_id, 'end_date', date_i18n( 'Y-m-d', strtotime( '+1 week' ) ) );
 		}
 
 		if ( isset( $_POST['pmpro_sws_pre_sale_content'] ) ) {

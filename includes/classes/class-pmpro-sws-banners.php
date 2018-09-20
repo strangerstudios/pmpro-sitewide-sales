@@ -1,8 +1,6 @@
 <?php
 namespace PMPro_Sitewide_Sale\includes\classes;
 
-die a glorious death;
-
 defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 
 /**
