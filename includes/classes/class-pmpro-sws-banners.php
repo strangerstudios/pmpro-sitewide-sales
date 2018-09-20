@@ -1,6 +1,8 @@
 <?php
 namespace PMPro_Sitewide_Sale\includes\classes;
 
+die a glorious death;
+
 defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 
 /**
@@ -96,8 +98,8 @@ class PMPro_SWS_Banners {
 						! is_page( intval( get_post_meta( $active_sitewide_sale, 'landing_page_post_id', true ) ) ) &&
 						! ( get_post_meta( $active_sitewide_sale, 'hide_on_checkout', true ) && is_page( $pmpro_pages['checkout'] ) ) &&
 						( false === $membership_level || ! in_array( $membership_level->ID, get_post_meta( $active_sitewide_sale, 'hide_for_levels', true ), true ) ) &&
-						date( 'Y-m-d' ) >= get_post_meta( $active_sitewide_sale, 'start_date', true ) &&
-						date( 'Y-m-d' ) <= get_post_meta( $active_sitewide_sale, 'end_date', true )
+						date( 'Y-m-d', current_time( 'timestamp') ) >= get_post_meta( $active_sitewide_sale, 'start_date', true ) &&
+						date( 'Y-m-d', current_time( 'timestamp') ) <= get_post_meta( $active_sitewide_sale, 'end_date', true )
 					)
 				) {
 			// Display the appropriate banner

@@ -120,9 +120,9 @@ class PMPro_SWS_Settings {
 			} else {
 				return '';
 			}
-		} elseif ( date( 'Y-m-d' ) < get_post_meta( $sitewide_sale->ID, 'start_date', true ) ) {
+		} elseif ( date( 'Y-m-d', current_time( 'timestamp') ) < get_post_meta( $sitewide_sale->ID, 'start_date', true ) ) {
 			$sale_content = 'pre-sale';
-		} elseif ( date( 'Y-m-d' ) > get_post_meta( $sitewide_sale->ID, 'end_date', true ) ) {
+		} elseif ( date( 'Y-m-d', current_time( 'timestamp') ) > get_post_meta( $sitewide_sale->ID, 'end_date', true ) ) {
 			$sale_content = 'post-sale';
 		}
 
