@@ -1,3 +1,13 @@
+.edit-php.post-type-sws_sitewide_sale .wrap:before,
+.post-php.post-type-sws_sitewide_sale .wrap:before,
+.post-new-php.post-type-sws_sitewide_sale .wrap:before {
+	background-image: url( '/wp-content/plugins/paid-memberships-pro/images/Paid-Memberships-Pro.png' );
+	background-size: contain;
+	background-repeat: no-repeat;
+	content: '';
+	display: block;
+	height: 75px;
+}
 .post-type-sws_sitewide_sale textarea {
 	line-height: 1.4;
 	resize: vertical;
