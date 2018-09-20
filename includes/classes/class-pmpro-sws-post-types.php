@@ -7,7 +7,7 @@ defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 class PMPro_SWS_Post_Types {
 
 	/**
-	 * [categories_to_pages description]
+	 * [init description]
 	 *
 	 * @return [type] [description]
 	 */
@@ -17,12 +17,14 @@ class PMPro_SWS_Post_Types {
 		add_action( 'init', array( __CLASS__, 'register_sitewide_sale_cpt' ) );
 		add_filter( 'manage_sws_sitewide_sale_posts_columns', array( __CLASS__, 'set_sitewide_sale_columns' ) );
 		add_action( 'manage_sws_sitewide_sale_posts_custom_column', array( __CLASS__, 'fill_sitewide_sale_columns' ), 10, 2 );
+		add_filter( 'months_dropdown_results', '__return_empty_array' );
+		add_filter( 'post_row_actions', array( __CLASS__, 'remove_sitewide_sale_row_actions' ), 10, 2 );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
 		add_action( 'wp_ajax_pmpro_sws_set_active_sitewide_sale', array( __CLASS__, 'set_active_sitewide_sale' ) );
 	}
 
 	/**
-	 * [categories_to_pages description]
+	 * [renaming_cpt_menu_function description]
 	 *
 	 * @return [type] [description]
 	 */
@@ -32,40 +34,60 @@ class PMPro_SWS_Post_Types {
 	}
 
 	/**
-	 * [categories_to_pages description]
+	 * [register_sitewide_sale_cpt description]
 	 *
 	 * @return [type] [description]
 	 */
 	public static function register_sitewide_sale_cpt() {
-		$labels = self::get_label_defaults();
-		$menu_name = self::renaming_cpt_menu_function();
-		$labels['name']     = _x( 'Sitewide Sales', 'Post Type General Name', 'pmpro-sitewide-sale' );
-		$labels['singular_name']         = _x( 'Sitewide Sale', 'Post Type Singular Name', 'pmpro-sitewide-sale' );
-		$labels['all_items']             = __( 'All Sitewide Sales', 'pmpro-sitewide-sale' );
-		$labels['menu_name']             = __( $menu_name, 'pmpro-sitewide-sale' );
-		$labels['name_admin_bar']        = __( 'Sitewide Sales', 'pmpro-sitewide-sale' );
-		$labels['add_new_item']          = __( 'Add New Sitewide Sale', 'pmpro-sitewide-sale' );
-		$labels['search_items']          = __( 'Search Sitewide Sales', 'pmpro-sitewide-sale' );
+		$menu_name						= self::renaming_cpt_menu_function();
 
-		$args = self::get_args_defaults();
-		$args['label']  = __( 'Sitewide Sales', 'pmpro-sitewide-sale' );
-		$args['description']         = __( 'Sitewide Sales', 'pmpro-sitewide-sale' );
-		$args['labels'] = $labels;
-		$args['public']  = false;
-		$args['menu_icon']           = 'dashicons-id';
-		$args['has_archive']         = true;
-		$args['taxonomies']          = array( 'sidecat' );
-		$args['supports']            = array(
+		// Set the custom post type labels.
+		$labels['name']					= _x( 'Sitewide Sales', 'Post Type General Name', 'pmpro-sitewide-sale' );
+		$labels['singular_name']		= _x( 'Sitewide Sale', 'Post Type Singular Name', 'pmpro-sitewide-sale' );
+		$labels['all_items']			= __( 'All Sitewide Sales', 'pmpro-sitewide-sale' );
+		$labels['menu_name']			= __( $menu_name, 'pmpro-sitewide-sale' );
+		$labels['name_admin_bar']		= __( 'Sitewide Sales', 'pmpro-sitewide-sale' );
+		$labels['all_items']			= __( 'All Sitewide Sales', 'pmpro-sitewide-sale' );
+		$labels['add_new_item']			= __( 'Add New Sitewide Sale', 'pmpro-sitewide-sale' );
+		$labels['add_new']				= __( 'Add New', 'pmpro-sitewide-sale' );
+		$labels['new_item']				= __( 'New Sitewide Sale', 'pmpro-sitewide-sale' );
+		$labels['edit_item']			= __( 'Edit Sitewide Sale', 'pmpro-sitewide-sale' );
+		$labels['update_item']			= __( 'Update Sitewide Sale', 'pmpro-sitewide-sale' );
+		$labels['view_item']			= __( 'View Sitewide Sale', 'pmpro-sitewide-sale' );
+		$labels['search_items']			= __( 'Search Sitewide Sales', 'pmpro-sitewide-sale' );
+		$labels['not_found']			= __( 'Not found', 'pmpro-sitewide-sale' );
+		$labels['not_found_in_trash']	= __( 'Not found in Trash', 'pmpro-sitewide-sale' );
+		$labels['insert_into_item']		= __( 'Insert into Sitewide Sale', 'pmpro-sitewide-sale' );
+		$labels['uploaded_to_this_item']= __( 'Uploaded to this Sitewide Sale', 'pmpro-sitewide-sale' );
+		$labels['items_list']			= __( 'Sitewide Sales list', 'pmpro-sitewide-sale' );
+		$labels['items_list_navigation']= __( 'Sitewide Sales list navigation', 'pmpro-sitewide-sale' );
+		$labels['filter_items_list']	= __( 'Filter sitewide sales list', 'pmpro-sitewide-sale' );
+
+		// Build the post type args.
+		$args['labels']				= $labels;
+		$args['description']        = __( 'Sitewide Sales', 'pmpro-sitewide-sale' );
+		$args['public']        		= false;
+		$args['publicly_queryable']	= false;
+		$args['show_ui']			= true;
+		$args['show_in_menu']		= false;
+		$args['show_in_nav_menus']	= false;
+		$args['can_export']			= true;
+		$args['has_archive']		= false;
+		$args['rewrite']			= false;
+		$args['exclude_from_search']= true;
+		$args['query_var']			= false;
+		$args['capability_type']	= 'page';
+		$args['show_in_rest']		= false;
+		$args['rest_base']			= 'sws_sitewide_sale';
+		$args['supports']           = array(
 			'title',
 		);
-
+		/*
 		$args['rewrite']             = array(
 			'with_front' => true,
 			'slug' => 'sws-sitewide-sale',
 		);
-		$args['rest_base']           = 'sws_sitewide_sale';
-		$args['show_in_menu']        = false;
-
+		*/
 		register_post_type( 'sws_sitewide_sale', $args );
 	}
 
@@ -108,7 +130,7 @@ class PMPro_SWS_Post_Types {
 	}
 
 	/**
-	 * [categories_to_pages description]
+	 * [enqueue_scripts description]
 	 *
 	 * @return [type] [description]
 	 */
@@ -190,165 +212,16 @@ class PMPro_SWS_Post_Types {
 	}
 
 	/**
-	 * [categories_to_pages description]
+	 * [remove_sitewide_sale_row_actions description]
 	 *
-	 * @return [type] [description]
-	 */
-	public static function register_sidecat_taxonomy() {
-		$tax_labels = self::get_tax_label_defaults();
-		$tax_labels['name']     = _x( 'SideCats', 'Taxonomy General Name', 'pmpro-sitewide-sale' );
-		$tax_labels['singular_name']         = _x( 'SideCat', 'Taxonomy Singular Name', 'pmpro-sitewide-sale' );
-		$tax_labels['menu_name']         = _x( 'SideCat', 'Taxonomy Singular Name', 'pmpro-sitewide-sale' );
-
-		$tax_args = self::get_tax_args_defaults();
-		$tax_args['label']  = __( 'SideCat', 'pmpro-sitewide-sale' );
-		$tax_args['labels'] = $tax_labels;
-		$tax_args['hierarchical']         = __( true, 'pmpro-sitewide-sale' );
-
-		register_taxonomy( 'sidecat', array( 'sitewide_sale_banner' ), $tax_args );
-	}
-
-	/**
-	 * [categories_to_pages description]
-	 *
-	 * @return [type] [description]
-	 */
-	public static function get_label_defaults() {
-		return array(
-			'name'     => _x( 'Pages', 'Post Type General Name', 'pmpro-sitewide-sale' ),
-			'singular_name'         => _x( 'Page', 'Post Type Singular Name', 'pmpro-sitewide-sale' ),
-			'menu_name'             => __( 'Pages', 'pmpro-sitewide-sale' ),
-			'name_admin_bar'        => __( 'Page', 'pmpro-sitewide-sale' ),
-			'archives' => __( 'Page Archives', 'pmpro-sitewide-sale' ),
-			'parent_item_colon'     => __( 'Parent Page:', 'pmpro-sitewide-sale' ),
-			'all_items'             => __( 'All Pages', 'pmpro-sitewide-sale' ),
-			'add_new_item'          => __( 'Add New Page', 'pmpro-sitewide-sale' ),
-			'add_new'  => __( 'Add New', 'pmpro-sitewide-sale' ),
-			'new_item' => __( 'New Page', 'pmpro-sitewide-sale' ),
-			'edit_item'             => __( 'Edit Page', 'pmpro-sitewide-sale' ),
-			'update_item'           => __( 'Update Page', 'pmpro-sitewide-sale' ),
-			'view_item'             => __( 'View Page', 'pmpro-sitewide-sale' ),
-			'search_items'          => __( 'Search Page', 'pmpro-sitewide-sale' ),
-			'not_found'             => __( 'Not found', 'pmpro-sitewide-sale' ),
-			'not_found_in_trash'    => __( 'Not found in Trash', 'pmpro-sitewide-sale' ),
-			'featured_image'        => __( 'Featured Image', 'pmpro-sitewide-sale' ),
-			'set_featured_image'    => __( 'Set featured image', 'pmpro-sitewide-sale' ),
-			'remove_featured_image' => __( 'Remove featured image', 'pmpro-sitewide-sale' ),
-			'use_featured_image'    => __( 'Use as featured image', 'pmpro-sitewide-sale' ),
-			'insert_into_item'      => __( 'Insert into page', 'pmpro-sitewide-sale' ),
-			'uploaded_to_this_item' => __( 'Uploaded to this page', 'pmpro-sitewide-sale' ),
-			'items_list'            => __( 'Pages list', 'pmpro-sitewide-sale' ),
-			'items_list_navigation' => __( 'Pages list navigation', 'pmpro-sitewide-sale' ),
-			'filter_items_list'     => __( 'Filter pages list', 'pmpro-sitewide-sale' ),
-		);
-	}
-
-	/**
-	 * [categories_to_pages description]
-	 *
-	 * @return [type] [description]
-	 */
-	public static function get_args_defaults() {
-		return array(
-			'label'    => __( 'Page', 'pmpro-sitewide-sale' ),
-			'description'           => __( 'Page Description', 'pmpro-sitewide-sale' ),
-			'supports' => array( 'title', 'editor', 'excerpt', 'thumbnail', 'revisions', 'page-attributes' ),
-			'taxonomies'            => array( 'category' ),
-			'hierarchical'          => true,
-			'public'   => true,
-			'show_ui'  => true,
-			'show_in_menu'          => true,
-			'menu_position'         => 205,
-			'menu_icon'             => 'dashicons-admin-page',
-			'show_in_admin_bar'     => true,
-			'show_in_nav_menus'     => true,
-			'can_export'            => true,
-			// 'has_archive'           => true,
-			'has_archive'           => false,
-			'rewrite'  => array(
-				'with_front' => false,
-				'slug' => 'page',
-			),
-			'exclude_from_search'   => false,
-			'query_var'             => true,
-			'publicly_queryable'    => true,
-			'capability_type'       => 'page',
-			'show_in_rest'          => true,
-			'rest_base'             => 'pages',
-			'rest_controller_class' => 'WP_REST_Posts_Controller',
-		);
-	}
-
-	/**
-	 * [categories_to_pages description]
-	 *
-	 * @return [type] [description]
-	 */
-	public static function get_tax_label_defaults() {
-		return array(
-			'name'          => _x( 'Taxonomies', 'Taxonomy General Name', 'pmpro-sitewide-sale' ),
-			'singular_name' => _x( 'Taxonomy', 'Taxonomy Singular Name', 'pmpro-sitewide-sale' ),
-			'menu_name'     => __( 'Taxonomy', 'pmpro-sitewide-sale' ),
-			'all_items'     => __( 'All Items', 'pmpro-sitewide-sale' ),
-			'parent_item'   => __( 'Parent Item', 'pmpro-sitewide-sale' ),
-			'parent_item_colon'          => __( 'Parent Item:', 'pmpro-sitewide-sale' ),
-			'new_item_name' => __( 'New Item Name', 'pmpro-sitewide-sale' ),
-			'add_new_item'  => __( 'Add New Item', 'pmpro-sitewide-sale' ),
-			'edit_item'     => __( 'Edit Item', 'pmpro-sitewide-sale' ),
-			'update_item'   => __( 'Update Item', 'pmpro-sitewide-sale' ),
-			'view_item'     => __( 'View Item', 'pmpro-sitewide-sale' ),
-			'separate_items_with_commas' => __( 'Separate items with commas', 'pmpro-sitewide-sale' ),
-			'add_or_remove_items'        => __( 'Add or remove items', 'pmpro-sitewide-sale' ),
-			'choose_from_most_used'      => __( 'Choose from the most used', 'pmpro-sitewide-sale' ),
-			'popular_items' => __( 'Popular Items', 'pmpro-sitewide-sale' ),
-			'search_items'  => __( 'Search Items', 'pmpro-sitewide-sale' ),
-			'not_found'     => __( 'Not Found', 'pmpro-sitewide-sale' ),
-			'no_terms'      => __( 'No items', 'pmpro-sitewide-sale' ),
-			'items_list'    => __( 'Items list', 'pmpro-sitewide-sale' ),
-			'items_list_navigation'      => __( 'Items list navigation', 'pmpro-sitewide-sale' ),
-		);
-	}
-
-
-	/**
-	 * [categories_to_pages description]
-	 *
-	 * @return [type] [description]
-	 */
-	public static function get_tax_args_defaults() {
-		return array(
-			'labels'        => __( 'Taxonomies', 'pmpro-sitewide-sale' ),
-			'hierarchical'  => false,
-			'public'        => true,
-			'show_ui'       => true,
-			'show_admin_column'          => true,
-			'show_in_nav_menus'          => true,
-			'show_tagcloud' => true,
-		);
-	}
-
-	/**
-	 * [unset_element_from_array description]
-	 *
-	 * @param  [type] $element [description]
-	 * @param  [type] $array   [description]
+	 * @param  [type] $actions  [description]
+	 * @param  [type] $post [description]
 	 * @return [type]          [description]
 	 */
-	public static function unset_element_from_array( $element, $array ) {
-		$comments_key = array_search( $element, $array );
-		if ( false !== $comments_key ) {
-				unset( $array[ $comments_key ] );
-		}
-		return $array;
+	public static function remove_sitewide_sale_row_actions( $actions, $post ) {
+		// Removes the "Quick Edit" action.
+		unset( $actions['inline hide-if-no-js'] );
+		return $actions;
 	}
 
-	/**
-	 * [categories_to_pages description]
-	 *
-	 * @return [type] [description]
-	 */
-	public static function categories_to_pages() {
-		register_taxonomy_for_object_type( 'category', 'page' );
-		add_post_type_support( 'page', 'excerpt' );
-	}
 }
