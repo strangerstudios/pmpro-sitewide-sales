@@ -39,7 +39,7 @@ class PMPro_SWS_Setup {
 	}
 
 	/**
-	 * Enqueues selectWoo
+	 * Enqueues frontend stylesheet.
 	 */
 	public static function pmpro_sws_frontend_scripts() {
 		wp_register_style( 'frontend', plugins_url( 'includes/css/frontend.css', PMPROSWS_BASENAME ), '1.1' );
