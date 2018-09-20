@@ -418,7 +418,7 @@ class PMPro_SWS_MetaBoxes {
 		}
 		$hide_for_levels = get_post_meta( $post->ID, 'hide_for_levels', true );
 		if ( empty( $hide_for_levels ) ) {
-			$hide_for_levels = [];
+			$hide_for_levels = array();
 		}
 		$hide_on_checkout = esc_html( get_post_meta( $post->ID, 'hide_on_checkout', true ) );
 		if ( empty( $hide_on_checkout ) ) {
@@ -526,7 +526,7 @@ class PMPro_SWS_MetaBoxes {
 
 		$upsell_levels = get_post_meta( $post->ID, 'upsell_levels', true );
 		if ( empty( $upsell_levels ) ) {
-			$upsell_levels = [];
+			$upsell_levels = array();
 		}
 
 		$upsell_text = esc_html( get_post_meta( $post->ID, 'upsell_text', true ) );
@@ -597,7 +597,7 @@ class PMPro_SWS_MetaBoxes {
 		}
 
 		// Add nonce for security and authentication.
-		$nonce_name   = isset( $_POST['custom_nonce'] ) ? $_POST['custom_nonce'] : '';
+		$nonce_name   = isset( $_POST['custom_nonce'] ) ? sanitize_text_field( $_POST['custom_nonce'] ): '';
 		$nonce_action = 'custom_nonce_action';
 
 		// Check if nonce is set.
@@ -614,13 +614,13 @@ class PMPro_SWS_MetaBoxes {
 		global $wpdb;
 
 		if ( isset( $_POST['pmpro_sws_discount_code_id'] ) ) {
-			update_post_meta( $post_id, 'discount_code_id', trim( $_POST['pmpro_sws_discount_code_id'] ) );
+			update_post_meta( $post_id, 'discount_code_id', intval( $_POST['pmpro_sws_discount_code_id'] ) );
 		} else {
 			update_post_meta( $post_id, 'discount_code_id', false );
 		}
 
 		if ( isset( $_POST['pmpro_sws_landing_page_post_id'] ) ) {
-			update_post_meta( $post_id, 'landing_page_post_id', trim( $_POST['pmpro_sws_landing_page_post_id'] ) );
+			update_post_meta( $post_id, 'landing_page_post_id', intval( $_POST['pmpro_sws_landing_page_post_id'] ) );
 		} else {
 			update_post_meta( $post_id, 'landing_page_post_id', false );
 		}
@@ -651,19 +651,19 @@ class PMPro_SWS_MetaBoxes {
 		}
 
 		if ( isset( $_POST['pmpro_sws_pre_sale_content'] ) ) {
-			update_post_meta( $post_id, 'pre_sale_content', trim( $_POST['pmpro_sws_pre_sale_content'] ) );
+			update_post_meta( $post_id, 'pre_sale_content', wp_kses_post( $_POST['pmpro_sws_pre_sale_content'] ) );
 		} else {
 			update_post_meta( $post_id, 'pre_sale_content', '' );
 		}
 
 		if ( isset( $_POST['pmpro_sws_sale_content'] ) ) {
-			update_post_meta( $post_id, 'sale_content', trim( $_POST['pmpro_sws_sale_content'] ) );
+			update_post_meta( $post_id, 'sale_content', wp_kses_post( $_POST['pmpro_sws_sale_content'] ) );
 		} else {
 			update_post_meta( $post_id, 'sale_content', '' );
 		}
 
 		if ( isset( $_POST['pmpro_sws_post_sale_content'] ) ) {
-			update_post_meta( $post_id, 'post_sale_content', trim( $_POST['pmpro_sws_post_sale_content'] ) );
+			update_post_meta( $post_id, 'post_sale_content', wp_kses_post( $_POST['pmpro_sws_post_sale_content'] ) );
 		} else {
 			update_post_meta( $post_id, 'post_css_option', '' );
 		}
@@ -676,7 +676,7 @@ class PMPro_SWS_MetaBoxes {
 		}
 
 		if ( isset( $_POST['pmpro_sws_banner_title'] ) && ! empty( $_POST['pmpro_sws_banner_title'] ) ) {
-			update_post_meta( $post_id, 'banner_title', trim( $_POST['pmpro_sws_banner_title'] ) );
+			update_post_meta( $post_id, 'banner_title', wp_kses_post( $_POST['pmpro_sws_banner_title'] ) );
 		} else {
 			update_post_meta( $post_id, 'banner_title', $post->post_title );
 		}
@@ -694,21 +694,22 @@ class PMPro_SWS_MetaBoxes {
 		}
 
 		if ( isset( $_POST['pmpro_sws_link_text'] ) ) {
-			update_post_meta( $post_id, 'link_text', trim( $_POST['pmpro_sws_link_text'] ) );
+			update_post_meta( $post_id, 'link_text', sanitize_text_field( $_POST['pmpro_sws_link_text'] ) );
 		} else {
 			update_post_meta( $post_id, 'link_text', 'Buy Now' );
 		}
 
 		if ( isset( $_POST['pmpro_sws_css_option'] ) ) {
-			update_post_meta( $post_id, 'css_option', trim( $_POST['pmpro_sws_css_option'] ) );
+			update_post_meta( $post_id, 'css_option', wp_kses_post( $_POST['pmpro_sws_css_option'] ) );
 		} else {
 			update_post_meta( $post_id, 'css_option', '' );
 		}
 
 		if ( isset( $_POST['pmpro_sws_hide_for_levels'] ) && is_array( $_POST['pmpro_sws_hide_for_levels'] ) ) {
-			update_post_meta( $post_id, 'hide_for_levels', $_POST['pmpro_sws_hide_for_levels'] );
+			$pmpro_sws_hide_for_levels = array_map( 'intval', $_POST['pmpro_sws_hide_for_levels'] );
+			update_post_meta( $post_id, 'hide_for_levels', $pmpro_sws_hide_for_levels );
 		} else {
-			update_post_meta( $post_id, 'hide_for_levels', [] );
+			update_post_meta( $post_id, 'hide_for_levels', array() );
 		}
 
 		if ( isset( $_POST['pmpro_sws_hide_on_checkout'] ) ) {
@@ -720,18 +721,19 @@ class PMPro_SWS_MetaBoxes {
 		if ( isset( $_POST['pmpro_sws_upsell_enabled'] ) ) {
 			update_post_meta( $post_id, 'upsell_enabled', true );
 			if ( isset( $_POST['pmpro_sws_upsell_levels'] ) && is_array( $_POST['pmpro_sws_upsell_levels'] ) ) {
-				update_post_meta( $post_id, 'upsell_levels', $_POST['pmpro_sws_upsell_levels'] );
+				$pmpro_sws_upsell_levels = array_map( 'intval', $_POST['pmpro_sws_upsell_levels'] );
+				update_post_meta( $post_id, 'upsell_levels', $pmpro_sws_upsell_levels );
 			} else {
-				update_post_meta( $post_id, 'upsell_levels', [] );
+				update_post_meta( $post_id, 'upsell_levels', array() );
 			}
 			if ( isset( $_POST['pmpro_sws_upsell_text'] ) ) {
-				update_post_meta( $post_id, 'upsell_text', trim( $_POST['pmpro_sws_upsell_text'] ) );
+				update_post_meta( $post_id, 'upsell_text', wp_kses_post( $_POST['pmpro_sws_upsell_text'] ) );
 			} else {
 				update_post_meta( $post_id, 'upsell_text', '' );
 			}
 		} else {
 			update_post_meta( $post_id, 'upsell_enabled', false );
-			update_post_meta( $post_id, 'upsell_levels', [] );
+			update_post_meta( $post_id, 'upsell_levels', array() );
 			update_post_meta( $post_id, 'upsell_text', '' );
 		}
 
@@ -744,19 +746,19 @@ class PMPro_SWS_MetaBoxes {
 		PMPro_SWS_Settings::pmprosws_save_options( $options );
 
 		if ( isset( $_POST['pmpro_sws_create_discount'] ) ) {
-			wp_redirect( esc_html( get_admin_url() ) . 'admin.php?page=pmpro-discountcodes&edit=-1&pmpro_sws_callback=' . $post_id );
+			wp_redirect( esc_url( admin_url( 'admin.php?page=pmpro-discountcodes&edit=-1&pmpro_sws_callback=' . $post_id ) ) );
 			exit();
 		}
 		if ( isset( $_POST['pmpro_sws_edit_discount'] ) ) {
-			wp_redirect( esc_html( get_admin_url() ) . 'admin.php?page=pmpro-discountcodes&edit=' . get_post_meta( $post_id, 'discount_code_id', true ) . '&pmpro_sws_callback=' . $post_id );
+			wp_redirect( esc_url( admin_url( 'admin.php?page=pmpro-discountcodes&edit=' . get_post_meta( $post_id, 'discount_code_id', true ) . '&pmpro_sws_callback=' . $post_id ) ) );
 			exit();
 		}
 		if ( isset( $_POST['pmpro_sws_create_landing_page'] ) ) {
-			wp_redirect( esc_html( get_admin_url() ) . 'post-new.php?post_type=page&pmpro_sws_callback=' . $post_id );
+			wp_redirect( esc_url( admin_url( 'post-new.php?post_type=page&pmpro_sws_callback=' . $post_id ) ) );
 			exit();
 		}
 		if ( isset( $_POST['pmpro_sws_edit_landing_page'] ) ) {
-			wp_redirect( esc_html( get_admin_url() ) . 'post.php?post=' . get_post_meta( $post_id, 'landing_page_post_id', true ) . '&action=edit&pmpro_sws_callback=' . $post_id );
+			wp_redirect( esc_url( admin_url( 'post.php?post=' . get_post_meta( $post_id, 'landing_page_post_id', true ) . '&action=edit&pmpro_sws_callback=' . $post_id ) ) );
 			exit();
 		}
 		if ( isset( $_POST['pmpro_sws_view_landing_page'] ) ) {
@@ -784,10 +786,10 @@ class PMPro_SWS_MetaBoxes {
 	 */
 	public static function discount_code_on_save( $saveid ) {
 		if ( isset( $_REQUEST['pmpro_sws_callback'] ) ) {
-			update_post_meta( $_REQUEST['pmpro_sws_callback'], 'discount_code_id', $saveid );
+			update_post_meta( intval( $_REQUEST['pmpro_sws_callback'] ), 'discount_code_id', $saveid );
 			?>
 			<script type="text/javascript">
-				window.location = "<?php echo esc_html( get_admin_url() ) . 'post.php?post=' . $_REQUEST['pmpro_sws_callback'] . '&action=edit'; ?>";
+				window.location = "<?php echo esc_url( admin_url( 'post.php?post=' . intval( $_REQUEST['pmpro_sws_callback'] ) . '&action=edit' ) ); ?>";
 			</script>
 			<?php
 		}
@@ -801,7 +803,7 @@ class PMPro_SWS_MetaBoxes {
 			?>
 			<div class="notice notice-success">
 				<p><?php esc_html_e( 'Click ', 'pmpro_sitewide_sale' ); ?>
-					<a href="<?php echo esc_html( get_admin_url() ) . 'post.php?post=' . $_REQUEST['pmpro_sws_callback'] . '&action=edit'; ?>">
+					<a href="<?php echo esc_url( admin_url( 'post.php?post=' . intval( $_REQUEST['pmpro_sws_callback'] ) . '&action=edit' ) ); ?>">
 						<?php esc_html_e( 'here', 'pmpro_sitewide_sale' ); ?>
 					</a>
 					<?php esc_html_e( ' to go back to editing Sitewide Sale', 'pmpro_sitewide_sale' ); ?>
@@ -818,7 +820,7 @@ class PMPro_SWS_MetaBoxes {
 	 */
 	public static function landing_page_on_save( $saveid ) {
 		if ( isset( $_REQUEST['pmpro_sws_callback'] ) ) {
-			update_post_meta( $_REQUEST['pmpro_sws_callback'], 'landing_page_post_id', $saveid );
+			update_post_meta( intval( $_REQUEST['pmpro_sws_callback'] ), 'landing_page_post_id', $saveid );
 		}
 	}
 
@@ -837,7 +839,7 @@ class PMPro_SWS_MetaBoxes {
 			// Get id of sitewide sale to redirect to.
 			$sitewide_sale_id = explode( 'pmpro_sws_callback=', $url )[1];
 			$sitewide_sale_id = explode( '$', $sitewide_sale_id )[0];
-			$location = esc_html( get_admin_url() ) . 'post.php?post=' . $sitewide_sale_id . '&action=edit';
+			$location = esc_url( admin_url( 'post.php?post=' . $sitewide_sale_id . '&action=edit' ) );
 		}
 		return $location;
 	}
