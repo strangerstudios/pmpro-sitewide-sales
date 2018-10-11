@@ -16,8 +16,6 @@ class PMPro_SWS_MetaBoxes {
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
 		add_action( 'load-post.php', array( __CLASS__, 'init_metabox' ) );
 		add_action( 'load-post-new.php', array( __CLASS__, 'init_metabox' ) );
-		add_filter( 'mce_buttons', array( __CLASS__, 'remove_editor_buttons' ) );
-		add_filter( 'mce_buttons_2', array( __CLASS__, 'remove_editor_buttons2' ) );
 		add_action( 'pmpro_save_discount_code', array( __CLASS__, 'discount_code_on_save' ) );
 		add_action( 'save_post', array( __CLASS__, 'landing_page_on_save' ), 10, 3 );
 		add_action( 'admin_notices', array( __CLASS__, 'return_from_editing_discount_code_box' ) );
@@ -107,66 +105,6 @@ class PMPro_SWS_MetaBoxes {
 			'normal',
 			'high'
 		);
-	}
-
-	public static function remove_editor_buttons( $buttons ) {
-		$remove_buttons = array(
-			// 'bold',
-			// 'italic',
-			// 'strikethrough',
-			// 'bullist',
-			// 'numlist',
-			'blockquote',
-			// 'alignleft',
-			// 'aligncenter',
-			// 'alignright',
-			'link',
-			'unlink',
-			'wp_page',
-			'wp_more',
-			'spellchecker',
-			'fullscreen',
-			'wp_adv',
-		);
-		// , $editor_id );
-		foreach ( $buttons as $button_key => $button_value ) {
-			if ( in_array( $button_value, $remove_buttons ) ) {
-				unset( $buttons[ $button_key ] );
-			}
-		}
-		return $buttons;
-	}
-
-	/**
-	 * $mce_buttons_2 = apply_filters( 'mce_buttons_2', array( 'formatselect', 'underline', 'alignjustify', 'forecolor', 'pastetext', 'removeformat', 'charmap', 'outdent', 'indent', 'undo', 'redo', 'wp_help' ), $editor_id );
-	 *
-	 * @param  [type] $buttons [description]
-	 *
-	 * @return [type]          [description]
-	 */
-	function remove_editor_buttons2( $buttons ) {
-		$remove_buttons = array(
-			'formatselect',
-			'strikethrough',
-			'underline',
-			'alignjustify',
-			'forecolor',
-			'pastetext',
-			'removeformat',
-			'charmap',
-			'outdent',
-			'indent',
-			'undo',
-			'hr',
-			'redo',
-			'wp_help',
-		);
-		foreach ( $buttons as $button_key => $button_value ) {
-			if ( in_array( $button_value, $remove_buttons ) ) {
-				unset( $buttons[ $button_key ] );
-			}
-		}
-		return $buttons;
 	}
 
 	public static function display_set_as_sitewide_sale( $post ) {
