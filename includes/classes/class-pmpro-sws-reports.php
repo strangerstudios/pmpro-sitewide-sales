@@ -251,7 +251,7 @@ class PMPro_SWS_Reports {
 
 		$used_discount_code = 0;
 		if ( is_page( $pmpro_pages['confirmation'] ) ) {
-			$order = new MemberOrder();
+			$order = new \MemberOrder();
 			$order->getLastMemberOrder();
 			if ( isset( $order->id ) ) {
 				$code = $order->getDiscountCode();
