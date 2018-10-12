@@ -70,53 +70,88 @@ class PMPro_SWS_Banners {
 	 * Logic for when to show banners/which banner to show
 	 */
 	public static function choose_banner() {
-		// Can be optimized to use a single get_post_meta call.
 		global $pmpro_pages;
+
+		// get some settings
 		$options = PMPro_SWS_Settings::pmprosws_get_options();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
 		$membership_level     = pmpro_getMembershipLevelForUser();
-		$custom_sitewide_sale = false;
+
+		// are we previewing?
+		$preview = false;
 		if ( current_user_can( 'administrator' ) && isset( $_REQUEST['pmpro_sws_preview_sale_banner'] ) ) {
-			$active_sitewide_sale = $_REQUEST['pmpro_sws_preview_sale_banner'];
-			$custom_sitewide_sale = true;
+			$active_sitewide_sale = intval( $_REQUEST['pmpro_sws_preview_sale_banner'] );
+			$preview = true;
 		}
 
-		if (
-					(
-						$custom_sitewide_sale &&
-						'sws_sitewide_sale' === get_post_type( $active_sitewide_sale )
-					) ||
-					(
-						false !== $active_sitewide_sale &&
-						'sws_sitewide_sale' === get_post_type( $active_sitewide_sale ) &&
-						false !== get_post_meta( $active_sitewide_sale, 'discount_code_id', true ) &&
-						false !== get_post_meta( $active_sitewide_sale, 'landing_page_post_id', true ) &&
-						'no' !== get_post_meta( $active_sitewide_sale, 'use_banner', true ) &&
-						! PMPro_SWS_Setup::is_login_page() &&
-						! is_page( intval( get_post_meta( $active_sitewide_sale, 'landing_page_post_id', true ) ) ) &&
-						! ( get_post_meta( $active_sitewide_sale, 'hide_on_checkout', true ) && is_page( $pmpro_pages['checkout'] ) ) &&
-						( false === $membership_level || ! in_array( $membership_level->ID, get_post_meta( $active_sitewide_sale, 'hide_for_levels', true ), true ) ) &&
-						date( 'Y-m-d', current_time( 'timestamp') ) >= get_post_meta( $active_sitewide_sale, 'start_date', true ) &&
-						date( 'Y-m-d', current_time( 'timestamp') ) <= get_post_meta( $active_sitewide_sale, 'end_date', true )
-					)
-				) {
-			// Display the appropriate banner
-			// get_post_meta( $active_sitewide_sale, 'use_banner', true ) will be something like top, bottom, etc.
-			$registered_banners = self::get_registered_banners();
-			$banner_to_use = get_post_meta( $active_sitewide_sale, 'use_banner', true );
-			if ( current_user_can( 'administrator' ) && isset( $_REQUEST['pmpro_sws_preview_banner_type'] ) ) {
-				$banner_to_use = $_REQUEST['pmpro_sws_preview_banner_type'];
+		// unless we are previewing, don't show the banner on certain pages
+		if ( ! $preview ) {
+			// no active sale
+			if ( empty( $active_sitewide_sale ) ) {
+				return;
 			}
-			if ( array_key_exists( $banner_to_use, $registered_banners ) && array_key_exists( 'callback', $registered_banners[ $banner_to_use ] ) ) {
-				$callback_func = $registered_banners[ $banner_to_use ]['callback'];
-				if ( is_array( $callback_func ) ) {
-					if ( 2 >= count( $callback_func ) && method_exists( $callback_func[0], $callback_func[1] ) && is_callable( $callback_func[0], $callback_func[1] ) ) {
-						call_user_func( $callback_func[0] . '::' . $callback_func[1] );
-					}
-				} elseif ( is_string( $callback_func ) ) {
-					if ( is_callable( $callback_func ) ) {
-						call_user_func( $callback_func );
-					}
+
+			// no discount code
+			$discount_code_id = get_post_meta( $active_sitewide_sale, 'discount_code_id', true );
+			if( empty( $discount_code_id ) || $discount_code_id < 0 ) {
+				return;
+			}
+
+			// no landing page or on it
+			$landing_page_post_id = get_post_meta( $active_sitewide_sale, 'landing_page_post_id', true );
+			if( empty( $landing_page_post_id ) || $landing_page_post_id < 0 || is_page( $landing_page_post_id ) ) {
+				return;
+			}
+
+			// use banner set to false
+			$use_banner = get_post_meta( $active_sitewide_sale, 'use_banner', true );
+			if( empty( $use_banner ) || 'no' === $use_banner ) {
+				return;
+			}
+
+			// don't show on login page
+			if ( PMPro_SWS_Setup::is_login_page() ) {
+				return;
+			}
+
+			// don't show on checkout page if set that way
+			$hide_on_checkout = get_post_meta( $active_sitewide_sale, 'hide_on_checkout', true );
+			if( $hide_on_checkout && is_page( $pmpro_pages['checkout'] ) ) {
+				return;
+			}
+
+			// don't show banner to users of certain Levels
+			$hide_for_levels = get_post_meta( $active_sitewide_sale, 'hide_for_levels', true );
+			if( !empty( $hide_for_levels ) && !empty( $membership_level )
+				&& in_array( $membership_level->ID, $hide_for_levels ) ) {
+				return;
+			}
+
+			// hide before/after the start/end dates
+			$start_date = get_post_meta( $active_sitewide_sale, 'start_date', true );
+			$end_date = get_post_meta( $active_sitewide_sale, 'end_date', true );
+			$today = date( 'Y-m-d', current_time( 'timestamp') );
+			if( $today < $start_date || $today >= $end_date ) {
+				return;
+			}
+		}
+
+		// Display the appropriate banner
+		// get_post_meta( $active_sitewide_sale, 'use_banner', true ) will be something like top, bottom, etc.
+		$registered_banners = self::get_registered_banners();
+		$banner_to_use = get_post_meta( $active_sitewide_sale, 'use_banner', true );
+		if ( current_user_can( 'administrator' ) && isset( $_REQUEST['pmpro_sws_preview_banner_type'] ) ) {
+			$banner_to_use = $_REQUEST['pmpro_sws_preview_banner_type'];
+		}
+		if ( array_key_exists( $banner_to_use, $registered_banners ) && array_key_exists( 'callback', $registered_banners[ $banner_to_use ] ) ) {
+			$callback_func = $registered_banners[ $banner_to_use ]['callback'];
+			if ( is_array( $callback_func ) ) {
+				if ( 2 >= count( $callback_func ) && method_exists( $callback_func[0], $callback_func[1] ) && is_callable( $callback_func[0], $callback_func[1] ) ) {
+					call_user_func( $callback_func[0] . '::' . $callback_func[1] );
+				}
+			} elseif ( is_string( $callback_func ) ) {
+				if ( is_callable( $callback_func ) ) {
+					call_user_func( $callback_func );
 				}
 			}
 		}
