@@ -18,6 +18,48 @@ class PMPro_SWS_Landing_Pages {
 	}
 
     /**
+     * Get the default level to use on a landing page
+     * @param $post_id Post ID of the landing page
+     */
+     public static function get_default_level( $post_id ) {
+         global $post, $wpdb;
+
+         // guess
+         $all_levels = pmpro_getAllLevels(true, true);
+         if ( ! empty( $all_levels ) ) {
+             $keys = array_keys( $all_levels );
+             $level_id = $keys[0];
+         } else {
+             return false;
+         }
+
+         // default post_id
+         if ( empty ( $post_id ) ) {
+             $post_id = $post->ID;
+         }
+
+         // must have a post_id
+         if ( empty ( $post_id ) ) {
+             return $level_id;
+         }
+
+         // get sale for this $post_id
+         $sitewide_sale_id = get_post_meta( $post_id, 'pmpro_sws_sitewide_sale_id', true );
+
+         if ( ! empty( $sitewide_sale_id ) ) {
+             // get the discount code for this sale
+             $discount_code_id = get_post_meta( $sitewide_sale_id, 'pmpro_sws_discount_code_id', true );
+
+             // get first level that uses this code
+             if ( ! empty ( $discount_code_id ) ) {
+                 $level_id = $wpdb->get_var( "SELECT level_id FROM $wpdb->pmpro_discount_codes_levels WHERE code_id = '" . esc_sql( $discount_code_id )  . "' ORDER BY level_id LIMIT 1" );
+             }
+         }
+
+         return $level_id;
+     }
+
+    /**
 	 * Load the checkout preheader on the landing page.
 	 */
 	public static function pmpro_preheader() {
@@ -42,7 +84,7 @@ class PMPro_SWS_Landing_Pages {
 
 		// Choose a default level if none specified.
 		if ( empty( $_REQUEST['level'] ) ) {
-            $_REQUEST['level'] = 1;
+            $_REQUEST['level'] = PMPro_SWS_Landing_Pages::get_default_level( $queried_object->ID );
 		}
 
         require_once(PMPRO_DIR . '/preheaders/checkout.php');
@@ -85,8 +127,8 @@ class PMPro_SWS_Landing_Pages {
 		$sale_content = 'sale';
 		$possible_sale_contents = [ 'pre-sale', 'sale', 'post-sale' ];
 
-		$sale_start_date = get_post_meta( $sitewide_sale->ID, 'start_date', true );
-		$sale_end_date = get_post_meta( $sitewide_sale->ID, 'end_date', true );
+		$sale_start_date = get_post_meta( $sitewide_sale->ID, 'pmpro_sws_start_date', true );
+		$sale_end_date = get_post_meta( $sitewide_sale->ID, 'pmpro_sws_end_date', true );
 
 		if ( current_user_can( 'administrator' ) && isset( $_REQUEST['pmpro_sws_preview_content'] ) && in_array( $_REQUEST['pmpro_sws_preview_content'], $possible_sale_contents, true ) ) {
 			$sale_content = $_REQUEST['pmpro_sws_preview_content'];
@@ -103,21 +145,21 @@ class PMPro_SWS_Landing_Pages {
 		}
 
   		if ( $sale_content === 'pre-sale') {
-			$landing_content = get_post_meta( $sitewide_sale->ID, 'pre_sale_content', true );
+			$landing_content = get_post_meta( $sitewide_sale->ID, 'pmpro_sws_pre_sale_content', true );
 			$r = '<div class="pmpro_sws_landing_content pmpro_sws_landing_content_pre-sale">';
 			$r .= $landing_content;
 			$formatted_start_date = date( get_option( 'date_format' ), strtotime( $sale_start_date, current_time( 'timestamp' ) ) );
 			$r .= '<p class="pmpro_sws_date pmpro_sws_date_start">' . $formatted_start_date . '</p>';
 			$r .= '</div> <!-- .pmpro_sws_landing_content -->';
 		} elseif ( $sale_content === 'post-sale' ) {
-			$landing_content = get_post_meta( $sitewide_sale->ID, 'post_sale_content', true );
+			$landing_content = get_post_meta( $sitewide_sale->ID, 'pmpro_sws_post_sale_content', true );
 			$r = '<div class="pmpro_sws_landing_content pmpro_sws_landing_content_post-sale">';
 			$r .= $landing_content;
 			$formatted_end_date = date( get_option( 'date_format' ), strtotime( $sale_end_date, current_time( 'timestamp' ) ) );
 			$r .= '<p class="pmpro_sws_date pmpro_sws_date_end">' . $formatted_end_date . '</p>';
 			$r .= '</div> <!-- .pmpro_sws_landing_content -->';
 		} else {
-			$landing_content = apply_filters( 'the_content', get_post_meta( $sitewide_sale->ID, 'sale_content', true ) );
+			$landing_content = apply_filters( 'the_content', get_post_meta( $sitewide_sale->ID, 'pmpro_sws_sale_content', true ) );
 			$template = pmpro_loadTemplate('checkout', 'local', 'pages');
 			$r = '<div class="pmpro_sws_landing_content pmpro_sws_landing_content_sale">';
 			$r .= $landing_content;

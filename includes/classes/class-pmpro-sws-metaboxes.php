@@ -135,7 +135,7 @@ class PMPro_SWS_MetaBoxes {
 
 		?>
 		<label for="pmpro_sws_discount_code_id"><b>Choose Discount Code</b> </label><select class="discount_code_select pmpro_sws_option" id="pmpro_sws_discount_code_select" name="pmpro_sws_discount_code_id">
-		<option value=-1></option>
+		<option value=""></option>
 		<?php
 		$code_found = false;
 		foreach ( $codes as $code ) {
@@ -208,8 +208,9 @@ class PMPro_SWS_MetaBoxes {
 		}
 
 		?>
+		<input type="hidden" id="pmpro_sws_old_landing_page_post_id" name="pmpro_sws_old_landing_page_post_id" value="<?php echo esc_attr( $current_page );?>" />
 		<label for="pmpro_sws_landing_page_post_id"><b>Create Landing Page</b></label> <select class="landing_page_select pmpro_sws_option" id="pmpro_sws_landing_page_select" name="pmpro_sws_landing_page_post_id">
-		<option value=-1></option>
+		<option value=""></option>
 		<?php
 		$page_found = false;
 		foreach ( $pages as $page ) {
@@ -559,8 +560,10 @@ class PMPro_SWS_MetaBoxes {
 
 		if ( isset( $_POST['pmpro_sws_landing_page_post_id'] ) ) {
 			update_post_meta( $post_id, 'pmpro_sws_landing_page_post_id', intval( $_POST['pmpro_sws_landing_page_post_id'] ) );
+			update_post_meta( intval( $_POST['pmpro_sws_landing_page_post_id'] ), 'pmpro_sws_sitewide_sale_id', $post_id );
 		} else {
 			update_post_meta( $post_id, 'pmpro_sws_landing_page_post_id', false );
+			delete_post_meta( intval( $_REQUEST['pmpro_sws_old_landing_page_post_id'] ), 'pmpro_sws_sitewide_sale_id' );
 		}
 
 		if ( isset( $_POST['pmpro_sws_start_day'] ) && is_numeric( $_POST['pmpro_sws_start_day'] ) &&
