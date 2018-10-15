@@ -28,6 +28,9 @@ includes\classes\PMPro_SWS_Banners::init();
 // Handles applying discount automatically and inserting upsell offers.
 includes\classes\PMPro_SWS_Checkout::init();
 
+// Sets up shortcode [pmpro_sws] and landing page-related code.
+includes\classes\PMPro_SWS_Landing_Pages::init();
+
 // Handles displaying/saving metaboxes for Sitewide Sale CPT and
 // returning from editing a discount code/landing page associated
 // with Sitewide Sale.
@@ -40,7 +43,7 @@ includes\classes\PMPro_SWS_Post_Types::init();
 // with Sitewide Sale.
 includes\classes\PMPro_SWS_Reports::init();
 
-// Sets up pmpro_sitewide_sale option and shortcode [pmpro_sws].
+// Sets up pmpro_sitewide_sale option.
 includes\classes\PMPro_SWS_Settings::init();
 
 // Enqueues scripts and does other administrative things.
