@@ -163,7 +163,7 @@ class PMPro_SWS_Post_Types {
 	public static function fill_sitewide_sale_columns( $column, $post_id ) {
 		switch ( $column ) {
 			case 'discount_code':
-				$discount_code = get_post_meta( $post_id, 'discount_code_id', true );
+				$discount_code = get_post_meta( $post_id, 'pmpro_sws_discount_code_id', true );
 				if ( false !== $discount_code ) {
 					global $wpdb;
 					$code_name = $wpdb->get_results( $wpdb->prepare( "SELECT code FROM $wpdb->pmpro_discount_codes WHERE id=%s", $discount_code ) );
@@ -173,7 +173,7 @@ class PMPro_SWS_Post_Types {
 				}
 				break;
 			case 'landing_page':
-				$landing_page = get_post_meta( $post_id, 'landing_page_post_id', true );
+				$landing_page = get_post_meta( $post_id, 'pmpro_sws_landing_page_post_id', true );
 				if ( false !== $landing_page ) {
 					$title = get_the_title( $landing_page );
 					if ( ! empty( $title ) ) {

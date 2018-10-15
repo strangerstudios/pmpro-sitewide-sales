@@ -53,7 +53,7 @@ class PMPro_SWS_Reports {
 		if ( false === $sitewide_sale_id ) {
 			return __( 'No Sitewide Sale Set.', 'pmpro-sitewide-sale' );
 		}
-		$code_id   = get_post_meta( $sitewide_sale_id, 'discount_code_id', true ) . '';
+		$code_id   = get_post_meta( $sitewide_sale_id, 'pmpro_sws_discount_code_id', true ) . '';
 		$code_name = $wpdb->get_results( $wpdb->prepare( "SELECT code FROM $wpdb->pmpro_discount_codes WHERE id=%s", $code_id ) )[0]->code;
 		// check if discount_code_id is set.
 		$reports = get_option( 'pmpro_sitewide_sale_' . $sitewide_sale_id . '_tracking' );
@@ -69,7 +69,7 @@ class PMPro_SWS_Reports {
 		}
 
 		// Reports regarding total sales.
-		$orders_during_sale   = $wpdb->get_results( $wpdb->prepare( "SELECT orders.total, orders.subscription_transaction_id, orders.timestamp, orders.user_id, orders.id, codes.code_id FROM $wpdb->pmpro_membership_orders orders LEFT JOIN wp_pmpro_discount_codes_uses codes ON orders.id = codes.order_id WHERE orders.timestamp >= %s AND orders.timestamp <= %s AND orders.total > 0", get_post_meta( $sitewide_sale_id, 'start_date', true ), date( 'Y-m-d', strtotime( '+1 day', strtotime( get_post_meta( $sitewide_sale_id, 'end_date', true ) ) ) ) ) );
+		$orders_during_sale   = $wpdb->get_results( $wpdb->prepare( "SELECT orders.total, orders.subscription_transaction_id, orders.timestamp, orders.user_id, orders.id, codes.code_id FROM $wpdb->pmpro_membership_orders orders LEFT JOIN wp_pmpro_discount_codes_uses codes ON orders.id = codes.order_id WHERE orders.timestamp >= %s AND orders.timestamp <= %s AND orders.total > 0", get_post_meta( $sitewide_sale_id, 'pmpro_sws_start_date', true ), date( 'Y-m-d', strtotime( '+1 day', strtotime( get_post_meta( $sitewide_sale_id, 'pmpro_sws_end_date', true ) ) ) ) ) );
 		$orders_with_code     = 0;
 		$new_orders_with_code = 0;
 		$revenue_with_code    = 0;
@@ -178,8 +178,8 @@ class PMPro_SWS_Reports {
 					<tr>
 						<td>' . esc_html__( 'Sitewide Sale', 'pmpro_sitewide_sale' ) . '</td>
 						<td>' . esc_html( get_the_title( $sitewide_sale_id ) ) .
-						' (' . date_i18n( get_option( 'date_format' ), ( new \DateTime( get_post_meta( $sitewide_sale_id, 'start_date', true ) ) )->format( 'U' ) ) .
-						' - ' . date_i18n( get_option( 'date_format' ), ( new \DateTime( get_post_meta( $sitewide_sale_id, 'end_date', true ) ) )->format( 'U' ) ) . ')</td>
+						' (' . date_i18n( get_option( 'date_format' ), ( new \DateTime( get_post_meta( $sitewide_sale_id, 'pmpro_sws_start_date', true ) ) )->format( 'U' ) ) .
+						' - ' . date_i18n( get_option( 'date_format' ), ( new \DateTime( get_post_meta( $sitewide_sale_id, 'pmpro_sws_end_date', true ) ) )->format( 'U' ) ) . ')</td>
 					</tr>
 				</thead>
 				<tbody>';
@@ -255,14 +255,14 @@ class PMPro_SWS_Reports {
 			$order->getLastMemberOrder();
 			if ( isset( $order->id ) ) {
 				$code = $order->getDiscountCode();
-				if ( isset( $code->id ) && $code->id . '' === get_post_meta( $active_sitewide_sale, 'discount_code_id', true ) . '' ) {
+				if ( isset( $code->id ) && $code->id . '' === get_post_meta( $active_sitewide_sale, 'pmpro_sws_discount_code_id', true ) . '' ) {
 					$used_discount_code = 1;
 				}
 			}
 		}
 
 		$pmpro_sws_data = array(
-			'landing_page'      => is_page( get_post_meta( $active_sitewide_sale, 'landing_page_post_id', true ) ),
+			'landing_page'      => is_page( get_post_meta( $active_sitewide_sale, 'pmpro_sws_landing_page_post_id', true ) ),
 			'confirmation_page' => is_page( $pmpro_pages['confirmation'] ),
 			'checkout_page'     => is_page( $pmpro_pages['checkout'] ),
 			'used_sale_code'    => $used_discount_code,
