@@ -51,10 +51,18 @@ class PMPro_SWS_Reports {
 			$sitewide_sale_id = $active_sitewide_sale;
 		}
 		if ( false === $sitewide_sale_id ) {
-			return __( 'No Sitewide Sale Set.', 'pmpro-sitewide-sale' );
+			return __( 'No sitewide sale set.', 'pmpro-sitewide-sale' );
 		}
 		$code_id   = get_post_meta( $sitewide_sale_id, 'pmpro_sws_discount_code_id', true ) . '';
-		$code_name = $wpdb->get_results( $wpdb->prepare( "SELECT code FROM $wpdb->pmpro_discount_codes WHERE id=%s", $code_id ) )[0]->code;
+
+		if ( ! empty( $code_id ) ) {
+			$code_name = $wpdb->get_var( $wpdb->prepare( "SELECT code FROM $wpdb->pmpro_discount_codes WHERE id=%s LIMIT 1", $code_id ) );
+		}
+
+		if ( empty( $code_name ) ) {
+			return __( 'No discount code set.', 'pmpro-sitewide-sale' );
+		}
+
 		// check if discount_code_id is set.
 		$reports = get_option( 'pmpro_sitewide_sale_' . $sitewide_sale_id . '_tracking' );
 		if ( false === $reports ) {
