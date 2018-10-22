@@ -627,19 +627,19 @@ class PMPro_SWS_MetaBoxes {
 		PMPro_SWS_Settings::pmprosws_save_options( $options );
 
 		if ( isset( $_POST['pmpro_sws_create_discount'] ) ) {
-			wp_redirect( esc_url( admin_url( 'admin.php?page=pmpro-discountcodes&edit=-1&pmpro_sws_callback=' . $post_id ) ) );
+			wp_redirect( admin_url( 'admin.php?page=pmpro-discountcodes&edit=-1&pmpro_sws_callback=' . $post_id ) );
 			exit();
 		}
 		if ( isset( $_POST['pmpro_sws_edit_discount'] ) ) {
-			wp_redirect( esc_url( admin_url( 'admin.php?page=pmpro-discountcodes&edit=' . get_post_meta( $post_id, 'discount_code_id', true ) . '&pmpro_sws_callback=' . $post_id ) ) );
+			wp_redirect( admin_url( 'admin.php?page=pmpro-discountcodes&edit=' . get_post_meta( $post_id, 'discount_code_id', true ) . '&pmpro_sws_callback=' . $post_id ) );
 			exit();
 		}
 		if ( isset( $_POST['pmpro_sws_create_landing_page'] ) ) {
-			wp_redirect( esc_url( admin_url( 'post-new.php?post_type=page&pmpro_sws_callback=' . $post_id ) ) );
+			wp_redirect( admin_url( 'post-new.php?post_type=page&pmpro_sws_callback=' . $post_id ) );
 			exit();
 		}
 		if ( isset( $_POST['pmpro_sws_edit_landing_page'] ) ) {
-			wp_redirect( esc_url( admin_url( 'post.php?post=' . get_post_meta( $post_id, 'landing_page_post_id', true ) . '&action=edit&pmpro_sws_callback=' . $post_id ) ) );
+			wp_redirect( admin_url( 'post.php?post=' . get_post_meta( $post_id, 'pmpro_sws_landing_page_post_id', true ) . '&action=edit&pmpro_sws_callback=' . $post_id ) );
 			exit();
 		}
 		if ( isset( $_POST['pmpro_sws_view_landing_page'] ) ) {
