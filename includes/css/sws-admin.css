@@ -13,7 +13,7 @@
 	resize: vertical;
 	width: 88%;
 	padding: 1rem;
-	min-height: 10rem;
+	min-height: 4rem;
 }
 #pmpro_sws_options > table:nth-child(6) > tbody > tr > td > span {
 	width: 88%;
