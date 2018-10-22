@@ -13,6 +13,7 @@ class PMPro_SWS_Landing_Pages {
 	public static function init() {
 		add_action( 'wp', array( __CLASS__, 'pmpro_preheader'), 1 );
 		add_shortcode( 'pmpro_sws', array( __CLASS__, 'shortcode' ) );
+		add_filter( 'edit_form_after_title', array( __CLASS__, 'add_edit_form_after_title' ) );
 		add_filter( 'display_post_states', array( __CLASS__, 'add_display_post_states' ), 10, 2 );
 		add_filter( 'page_row_actions', array( __CLASS__, 'add_page_row_actions' ), 10, 2 );
 	}
@@ -168,6 +169,26 @@ class PMPro_SWS_Landing_Pages {
 		}
 
 		return $r;
+	}
+	
+	/**
+	 * Add notice that a page is linked to a Sitewide Sale on the Edit Page screen.
+	 *
+	 * @param WP_Post $$post The current post object.
+	 */
+	public static function add_edit_form_after_title( $post ) {
+		$sitewide_sale = get_posts(
+			array(
+				'post_type'      => 'sws_sitewide_sale',
+				'meta_key'       => 'pmpro_sws_landing_page_post_id',
+				'meta_value'     => '' . $post->ID,
+				'posts_per_page' => 1,
+			)
+		);
+
+		if ( ! empty ( $sitewide_sale[0] ) ) {
+			echo '<div id="message" class="notice notice-info inline"><p>This is a Sitewide Sale Landing Page. <a target="_blank" href="' . get_edit_post_link( $sitewide_sale[0]->ID) . '">Edit the Sitewide Sale</a></p></div>';
+		}
 	}
 
 	/**
