@@ -180,7 +180,7 @@ class PMPro_SWS_Landing_Pages {
 		$sitewide_sale = get_posts(
 			array(
 				'post_type'      => 'sws_sitewide_sale',
-				'meta_key'       => 'landing_page_post_id',
+				'meta_key'       => 'pmpro_sws_landing_page_post_id',
 				'meta_value'     => '' . $post->ID,
 				'posts_per_page' => 1,
 			)
@@ -203,7 +203,7 @@ class PMPro_SWS_Landing_Pages {
 		$sitewide_sale = get_posts(
 			array(
 				'post_type'      => 'sws_sitewide_sale',
-				'meta_key'       => 'landing_page_post_id',
+				'meta_key'       => 'pmpro_sws_landing_page_post_id',
 				'meta_value'     => '' . $post->ID,
 				'posts_per_page' => 1,
 			)
