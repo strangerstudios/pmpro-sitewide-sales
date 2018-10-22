@@ -130,10 +130,10 @@ class PMPro_SWS_Landing_Pages {
 		$sale_start_date = get_post_meta( $sitewide_sale->ID, 'pmpro_sws_start_date', true );
 		$sale_end_date = get_post_meta( $sitewide_sale->ID, 'pmpro_sws_end_date', true );
 
-		if ( current_user_can( 'administrator' ) && isset( $_REQUEST['pmpro_sws_preview_content'] ) && in_array( $_REQUEST['pmpro_sws_preview_content'], $possible_sale_contents, true ) ) {
+		if ( current_user_can( 'administrator' ) && isset( $_REQUEST['pmpro_sws_preview_content'] ) && in_array( $_REQUEST['pmpro_sws_preview_content'], $possible_sale_contents ) ) {
 			$sale_content = $_REQUEST['pmpro_sws_preview_content'];
 		} elseif ( is_array( $atts ) && array_key_exists( 'sale_content', $atts ) ) {
-			if ( in_array( $atts['sale_content'], $possible_sale_contents, true ) ) {
+			if ( in_array( $atts['sale_content'], $possible_sale_contents ) ) {
 				$sale_content = $atts['sale_content'];
 			} else {
 				return '';

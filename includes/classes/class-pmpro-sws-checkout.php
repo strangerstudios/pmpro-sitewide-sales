@@ -70,7 +70,7 @@ class PMPro_SWS_Checkout {
 		$upsell_text = get_post_meta( $active_sitewide_sale, 'pmpro_sws_upsell_text', true );
 		$landing_page_id = get_post_meta( $active_sitewide_sale, 'pmpro_sws_landing_page_post_id', true );
 		if ( empty( $upsell_enabled ) || false === $upsell_enabled ||
-				empty( $upsell_levels ) || ! in_array( $current_user->membership_level->id, $upsell_levels, true ) ||
+				empty( $upsell_levels ) || ! in_array( $current_user->membership_level->id, $upsell_levels ) ||
 				empty( $upsell_text ) || '' === $upsell_text ||
 				false === $landing_page_id || false === get_permalink( intval( $landing_page_id ) ) ) {
 			return $body;
@@ -97,7 +97,7 @@ class PMPro_SWS_Checkout {
 		$upsell_text = get_post_meta( $active_sitewide_sale, 'pmpro_sws_upsell_text', true );
 		$landing_page_id = get_post_meta( $active_sitewide_sale, 'pmpro_sws_landing_page_post_id', true );
 		if ( empty( $upsell_enabled ) || false === $upsell_enabled ||
-				empty( $upsell_levels ) || ! in_array( $current_user->membership_level->id, $upsell_levels, true ) ||
+				empty( $upsell_levels ) || ! in_array( $current_user->membership_level->id, $upsell_levels ) ||
 				empty( $upsell_text ) || '' === $upsell_text ||
 				false === $landing_page_id || false === get_permalink( intval( $landing_page_id ) ) ) {
 			return $confirmation_message;

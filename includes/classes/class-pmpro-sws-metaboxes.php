@@ -278,7 +278,7 @@ class PMPro_SWS_MetaBoxes {
 							}
 						?>
 						</select>
-						
+
 						<p>
 							<span id="pmpro_sws_after_landing_page_select">
 							<?php
@@ -419,23 +419,22 @@ class PMPro_SWS_MetaBoxes {
 						<select class="pmpro_sws_option" id="pmpro_sws_hide_levels_select" name="pmpro_sws_hide_for_levels[]" style="width:12em" multiple/>
 						<?php
 							$all_levels    = pmpro_getAllLevels( true, true );
-							$hidden_levels = $hide_for_levels;
 							foreach ( $all_levels as $level ) {
-								$selected_modifier = in_array( $level->id, $hidden_levels, true ) ? ' selected' : '';
+								$selected_modifier = in_array( $level->id, $hide_for_levels ) ? ' selected' : '';
 								echo '<option value=' . esc_html( $level->id ) . esc_html( $selected_modifier ) . '>' . esc_html( $level->name ) . '</option>';
 							}
 						?>
 					</td>
 				</tr>
 				<tr>
-					<?php 
+					<?php
 						$checked_modifier = $hide_on_checkout ? ' checked' : '';
 					?>
 					<th scope="row" valign="top"><label><?php esc_html_e( 'Hide Banner at Checkout', 'pmpro-sitewide-sale' ); ?></label></th>
 					<td><input class="pmpro_sws_option" type="checkbox" name="pmpro_sws_hide_on_checkout" <?php checked( $hide_on_checkout, 1 ); ?>></td>
 				</tr>
 			</tbody>
-		</table>		
+		</table>
 		<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Save All Settings', 'pmpro-sitewide-sale' ); ?>">
 		<?php
 	}
