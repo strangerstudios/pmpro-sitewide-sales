@@ -19,6 +19,7 @@ class PMPro_SWS_MetaBoxes {
 		add_action( 'pmpro_save_discount_code', array( __CLASS__, 'discount_code_on_save' ) );
 		add_action( 'save_post', array( __CLASS__, 'landing_page_on_save' ), 10, 3 );
 		add_action( 'admin_notices', array( __CLASS__, 'return_from_editing_discount_code_box' ) );
+		add_action( 'edit_form_before_permalink', array( __CLASS__, 'display_title_help_text' ) );
 		add_filter( 'redirect_post_location', array( __CLASS__, 'redirect_after_page_save' ), 10, 2 );
 	}
 
@@ -116,6 +117,15 @@ class PMPro_SWS_MetaBoxes {
 	<td><input name="pmpro_sws_set_as_sitewide_sale" type="checkbox" ' . ( $init_checked ? 'checked' : '' ) . ' /></td>
 	</tr>
 	</table>';
+	}
+
+	/**
+	 * Show a note under the post title text input.
+	 */
+	public static function display_title_help_text() {
+		?>
+		<div><p><?php _e( 'The title above is for reference only.', 'pmpro-sitewide-sale' );?></p></div>
+		<?php
 	}
 
 	public static function display_step_1( $post ) {
