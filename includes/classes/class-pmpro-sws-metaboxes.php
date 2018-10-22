@@ -123,6 +123,12 @@ class PMPro_SWS_MetaBoxes {
 	 * Show a note under the post title text input.
 	 */
 	public static function display_title_help_text() {
+		global $post;
+
+		if ( $post->post_type != 'sws_sitewide_sale' ) {
+			return;
+		}
+		
 		?>
 		<div><p><?php _e( 'The title above is for reference only.', 'pmpro-sitewide-sale' );?></p></div>
 		<?php
