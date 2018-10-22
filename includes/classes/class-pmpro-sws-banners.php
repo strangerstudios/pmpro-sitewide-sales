@@ -29,27 +29,35 @@ class PMPro_SWS_Banners {
 				'option_title'  => __( 'Yes, Top of Site', 'pmpro_sitewide_sale' ),
 				'callback'      => array( __CLASS__, 'hook_top_banner' ),
 				'css_selectors' => array(
+					'.pmpro_sws_banner',
 					'#pmpro_sws_banner_top',
-					'.pmpro_btn',
+					'#pmpro_sws_banner_top h3',
+					'#pmpro_sws_banner_top .pmpro_btn',
 				),
 			),
 			'bottom' => array(
 				'option_title'  => __( 'Yes, Bottom of Site', 'pmpro_sitewide_sale' ),
 				'callback'      => array( __CLASS__, 'hook_bottom_banner' ),
 				'css_selectors' => array(
+					'.pmpro_sws_banner',
 					'#pmpro_sws_banner_bottom',
+					'#pmpro_sws_banner_bottom .dismiss',
 					'.pmpro_sws_banner-inner',
 					'.pmpro_sws_banner-inner-left',
+					'.pmpro_sws_banner-inner-left h3',
 					'.pmpro_sws_banner-inner-right',
-					'.pmpro_btn',
+					'.pmpro_sws_banner-inner-right .pmpro_btn',
 				),
 			),
 			'bottom_right' => array(
 				'option_title'  => __( 'Yes, Bottom Right of Site', 'pmpro_sitewide_sale' ),
 				'callback'      => array( __CLASS__, 'hook_bottom_right_banner' ),
 				'css_selectors' => array(
+					'.pmpro_sws_banner',
 					'#pmpro_sws_banner_bottom_right',
-					'.pmpro_btn',
+					'#pmpro_sws_banner_bottom_right .dismiss',
+					'#pmpro_sws_banner_bottom_right h3',
+					'#pmpro_sws_banner_bottom_right .pmpro_btn',
 				),
 			),
 		);
