@@ -44,7 +44,7 @@ class PMPro_SWS_MetaBoxes {
 	}
 
 	/**
-	 * Add the metaboxes.
+	 * Add/remove the metaboxes.
 	 */
 	public static function add_sws_metaboxes() {
 		add_meta_box(
@@ -95,6 +95,9 @@ class PMPro_SWS_MetaBoxes {
 			'normal',
 			'high'
 		);
+
+		// remove some default metaboxes
+		remove_meta_box( 'slugdiv', 'sws_sitewide_sale', 'normal' );
 	}
 
 	public static function display_set_as_sitewide_sale( $post ) {
