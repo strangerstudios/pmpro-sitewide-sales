@@ -80,6 +80,11 @@ class PMPro_SWS_Banners {
 	public static function choose_banner() {
 		global $pmpro_pages;
 
+		// bail if Paid Memberships Pro is not active
+		if ( ! function_exists( 'pmpro_getMembershipLevelForUser' ) ) {
+			return;
+		}
+		
 		// get some settings
 		$options = PMPro_SWS_Settings::pmprosws_get_options();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
