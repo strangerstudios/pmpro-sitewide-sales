@@ -99,6 +99,7 @@ class PMPro_SWS_MetaBoxes {
 
 		// remove some default metaboxes
 		remove_meta_box( 'slugdiv', 'pmpro_sitewide_sale', 'normal' );
+		remove_meta_box( 'submitdiv', 'pmpro_sitewide_sale', 'side' );
 	}
 
 	public static function display_set_as_sitewide_sale( $post ) {
@@ -112,11 +113,23 @@ class PMPro_SWS_MetaBoxes {
 				$init_checked = true;
 			}
 		}
-		echo '<table class="form-table"><tr>
-	<th scope="row" valign="top"><label>' . esc_html__( 'Set as Current Sitewide Sale', 'pmpro-sitewide-sale' ) . ':</label></th>
-	<td><input name="pmpro_sws_set_as_sitewide_sale" type="checkbox" ' . ( $init_checked ? 'checked' : '' ) . ' /></td>
-	</tr>
-	</table>';
+		?>
+		<table class="form-table">
+			<tr>
+				<th scope="row" valign="top">
+					<label><?php esc_html_e( 'Set as Current Sitewide Sale:', 'pmpro-sitewide-sale' );?></label>
+				</th>
+				<td>
+					<input name="pmpro_sws_set_as_sitewide_sale" type="checkbox" <?php checked( $init_checked, true );?> />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Save All Settings', 'pmpro-sitewide-sale' ); ?>">
+				</td>
+			</tr>
+		</table>
+		<?php
 	}
 
 	/**
