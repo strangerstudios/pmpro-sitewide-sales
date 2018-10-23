@@ -21,6 +21,7 @@ class PMPro_SWS_Post_Types {
 		add_filter( 'post_row_actions', array( __CLASS__, 'remove_sitewide_sale_row_actions' ), 10, 2 );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
 		add_action( 'wp_ajax_pmpro_sws_set_active_sitewide_sale', array( __CLASS__, 'set_active_sitewide_sale' ) );
+		add_filter( 'wp_insert_post_data', array( __CLASS__, 'force_publish_status' ), 10, 2 );
 	}
 
 	/**
@@ -213,10 +214,6 @@ class PMPro_SWS_Post_Types {
 
 	/**
 	 * [remove_sitewide_sale_row_actions description]
-	 *
-	 * @param  [type] $actions  [description]
-	 * @param  [type] $post [description]
-	 * @return [type]          [description]
 	 */
 	public static function remove_sitewide_sale_row_actions( $actions, $post ) {
 		// Removes the "Quick Edit" action.
@@ -224,4 +221,17 @@ class PMPro_SWS_Post_Types {
 		return $actions;
 	}
 
+	/**
+	 * Make sure status is always publish.
+	 * We must allow trash and auto-draft as well.
+	 */
+	 public static function force_publish_status( $data, $postarr ) {
+		 if ( $data['post_type'] === 'pmpro_sitewide_sale'
+		 	&& $data['post_status'] !== 'trash'
+			&& $data['post_status'] !== 'auto-draft' ) {
+			 $data['post_status'] = 'publish';
+		 }
+
+		 return $data;
+	 }
 }
