@@ -174,7 +174,7 @@ class PMPro_SWS_Banners {
 		if ( current_user_can( 'administrator' ) && isset( $_REQUEST['pmpro_sws_preview_sale_banner'] ) ) {
 			$active_sitewide_sale = $_REQUEST['pmpro_sws_preview_sale_banner'];
 		}
-		if ( false === $active_sitewide_sale || 'sws_sitewide_sale' !== get_post_type( $active_sitewide_sale ) ) {
+		if ( false === $active_sitewide_sale || 'pmpro_sitewide_sale' !== get_post_type( $active_sitewide_sale ) ) {
 			// $active_sitewide_sale not set or is a different post type.
 			return;
 		}

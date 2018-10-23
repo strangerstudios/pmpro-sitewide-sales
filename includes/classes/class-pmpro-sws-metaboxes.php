@@ -28,7 +28,7 @@ class PMPro_SWS_MetaBoxes {
 	 */
 	public static function enqueue_scripts() {
 		global $typenow;
-		if ( 'sws_sitewide_sale' === $typenow ) {
+		if ( 'pmpro_sitewide_sale' === $typenow ) {
 			wp_register_script( 'pmpro_sws_cpt_meta', plugins_url( 'includes/js/pmpro-sws-cpt-meta.js', PMPROSWS_BASENAME ), array( 'jquery' ), '1.0.4' );
 			wp_enqueue_script( 'pmpro_sws_cpt_meta' );
 			wp_register_style( 'admin-dash', plugins_url( 'includes/css/sws-admin.css', dirname( dirname( __FILE__ ) ) ), '1.0.4' );
@@ -52,7 +52,7 @@ class PMPro_SWS_MetaBoxes {
 			'pmpro_sws_cpt_set_as_sitewide_sale',
 			__( 'Sitewide Sale', 'pmpro_sitewide_sale' ),
 			array( __CLASS__, 'display_set_as_sitewide_sale' ),
-			array( 'sws_sitewide_sale' ),
+			array( 'pmpro_sitewide_sale' ),
 			'side',
 			'high'
 		);
@@ -60,7 +60,7 @@ class PMPro_SWS_MetaBoxes {
 			'pmpro_sws_cpt_step_1',
 			__( 'Step 1: Start and End Dates', 'pmpro_sitewide_sale' ),
 			array( __CLASS__, 'display_step_1' ),
-			array( 'sws_sitewide_sale' ),
+			array( 'pmpro_sitewide_sale' ),
 			'normal',
 			'high'
 		);
@@ -68,7 +68,7 @@ class PMPro_SWS_MetaBoxes {
 			'pmpro_sws_cpt_step_2',
 			__( 'Step 2: Discount Code', 'pmpro_sitewide_sale' ),
 			array( __CLASS__, 'display_step_2' ),
-			array( 'sws_sitewide_sale' ),
+			array( 'pmpro_sitewide_sale' ),
 			'normal',
 			'high'
 		);
@@ -76,7 +76,7 @@ class PMPro_SWS_MetaBoxes {
 			'pmpro_sws_cpt_step_3',
 			__( 'Step 3: Landing Page', 'pmpro_sitewide_sale' ),
 			array( __CLASS__, 'display_step_3' ),
-			array( 'sws_sitewide_sale' ),
+			array( 'pmpro_sitewide_sale' ),
 			'normal',
 			'high'
 		);
@@ -84,7 +84,7 @@ class PMPro_SWS_MetaBoxes {
 			'pmpro_sws_cpt_step_4',
 			__( 'Step 4: Banners', 'pmpro_sitewide_sale' ),
 			array( __CLASS__, 'display_step_4' ),
-			array( 'sws_sitewide_sale' ),
+			array( 'pmpro_sitewide_sale' ),
 			'normal',
 			'high'
 		);
@@ -92,13 +92,13 @@ class PMPro_SWS_MetaBoxes {
 			'pmpro_sws_cpt_step_5',
 			__( 'Step 5: Reports', 'pmpro_sitewide_sale' ),
 			array( __CLASS__, 'display_step_5' ),
-			array( 'sws_sitewide_sale' ),
+			array( 'pmpro_sitewide_sale' ),
 			'normal',
 			'high'
 		);
 
 		// remove some default metaboxes
-		remove_meta_box( 'slugdiv', 'sws_sitewide_sale', 'normal' );
+		remove_meta_box( 'slugdiv', 'pmpro_sitewide_sale', 'normal' );
 	}
 
 	public static function display_set_as_sitewide_sale( $post ) {
@@ -125,7 +125,7 @@ class PMPro_SWS_MetaBoxes {
 	public static function display_title_help_text() {
 		global $post;
 
-		if ( $post->post_type != 'sws_sitewide_sale' ) {
+		if ( $post->post_type != 'pmpro_sitewide_sale' ) {
 			return;
 		}
 
@@ -474,7 +474,7 @@ class PMPro_SWS_MetaBoxes {
 	 * @return null
 	 */
 	public static function save_sws_metaboxes( $post_id, $post ) {
-		if ( 'sws_sitewide_sale' !== $post->post_type ) {
+		if ( 'pmpro_sitewide_sale' !== $post->post_type ) {
 			return;
 		}
 

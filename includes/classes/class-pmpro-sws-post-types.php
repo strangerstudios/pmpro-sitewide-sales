@@ -15,8 +15,8 @@ class PMPro_SWS_Post_Types {
 		add_action( 'admin_bar_menu', array( __CLASS__, 'add_cpt_to_admin_bar' ), 1001 );
 		add_action( 'admin_menu', array( __CLASS__, 'add_cpt_to_menu' ) );
 		add_action( 'init', array( __CLASS__, 'register_sitewide_sale_cpt' ) );
-		add_filter( 'manage_sws_sitewide_sale_posts_columns', array( __CLASS__, 'set_sitewide_sale_columns' ) );
-		add_action( 'manage_sws_sitewide_sale_posts_custom_column', array( __CLASS__, 'fill_sitewide_sale_columns' ), 10, 2 );
+		add_filter( 'manage_pmpro_sitewide_sale_posts_columns', array( __CLASS__, 'set_sitewide_sale_columns' ) );
+		add_action( 'manage_pmpro_sitewide_sale_posts_custom_column', array( __CLASS__, 'fill_sitewide_sale_columns' ), 10, 2 );
 		add_filter( 'months_dropdown_results', '__return_empty_array' );
 		add_filter( 'post_row_actions', array( __CLASS__, 'remove_sitewide_sale_row_actions' ), 10, 2 );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
@@ -78,7 +78,7 @@ class PMPro_SWS_Post_Types {
 		$args['query_var']			= false;
 		$args['capability_type']	= 'page';
 		$args['show_in_rest']		= false;
-		$args['rest_base']			= 'sws_sitewide_sale';
+		$args['rest_base']			= 'pmpro_sitewide_sale';
 		$args['supports']           = array(
 			'title',
 		);
@@ -88,7 +88,7 @@ class PMPro_SWS_Post_Types {
 			'slug' => 'sws-sitewide-sale',
 		);
 		*/
-		register_post_type( 'sws_sitewide_sale', $args );
+		register_post_type( 'pmpro_sitewide_sale', $args );
 	}
 
 	/**
@@ -117,7 +117,7 @@ class PMPro_SWS_Post_Types {
 				'id'     => 'pmpro-sitewide-sale',
 				'parent' => 'paid-memberships-pro',
 				'title'  => __( 'Sitewide Sales', 'paid-memberships-pro' ),
-				'href'   => get_admin_url( null, '/edit.php?post_type=sws_sitewide_sale' ),
+				'href'   => get_admin_url( null, '/edit.php?post_type=pmpro_sitewide_sale' ),
 			) );
 		}
 	}
@@ -126,7 +126,7 @@ class PMPro_SWS_Post_Types {
 	 * Adds Sitewide Sale to admin menu
 	 */
 	public static function add_cpt_to_menu() {
-		add_submenu_page( 'pmpro-membershiplevels', __('Sitewide Sales', 'paid-memberships-pro' ), __('Sitewide Sales', 'paid-memberships-pro' ), 'manage_options', 'edit.php?post_type=sws_sitewide_sale' );
+		add_submenu_page( 'pmpro-membershiplevels', __('Sitewide Sales', 'paid-memberships-pro' ), __('Sitewide Sales', 'paid-memberships-pro' ), 'manage_options', 'edit.php?post_type=pmpro_sitewide_sale' );
 	}
 
 	/**

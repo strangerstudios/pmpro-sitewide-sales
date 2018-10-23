@@ -81,11 +81,11 @@ class PMPro_SWS_Setup {
 				<p>
 				<?php
 					global $wpdb;
-					$has_sws_post = $wpdb->get_var("SELECT ID FROM $wpdb->posts WHERE post_type = 'sws_sitewide_sale' LIMIT 1");
+					$has_sws_post = $wpdb->get_var("SELECT ID FROM $wpdb->posts WHERE post_type = 'pmpro_sitewide_sale' LIMIT 1");
 					if( $has_sws_post ) {
-						printf( __( 'Thank you for activating. You can <a href="%s">view your Sitewide Sales here</a>.', 'pmpro-sitewide-sale' ), get_admin_url( null, 'edit.php?post_type=sws_sitewide_sale' ) );
+						printf( __( 'Thank you for activating. You can <a href="%s">view your Sitewide Sales here</a>.', 'pmpro-sitewide-sale' ), get_admin_url( null, 'edit.php?post_type=pmpro_sitewide_sale' ) );
 					} else {
-						printf( __( 'Thank you for activating. You can <a href="%s">create your first Sitewide Sale here</a>.', 'pmpro-sitewide-sale' ), get_admin_url( null, 'post-new.php?post_type=sws_sitewide_sale' ) );
+						printf( __( 'Thank you for activating. You can <a href="%s">create your first Sitewide Sale here</a>.', 'pmpro-sitewide-sale' ), get_admin_url( null, 'post-new.php?post_type=pmpro_sitewide_sale' ) );
 					}
 				?>
 				</p>
@@ -104,7 +104,7 @@ class PMPro_SWS_Setup {
 	public static function pmpro_sws_plugin_action_links( $links ) {
 		if ( current_user_can( 'manage_options' ) ) {
 			$new_links = array(
-				'<a href="' . get_admin_url( null, 'edit.php?post_type=sws_sitewide_sale' ) . '">' . __( 'Settings', 'pmpro-sitewide-sale' ) . '</a>',
+				'<a href="' . get_admin_url( null, 'edit.php?post_type=pmpro_sitewide_sale' ) . '">' . __( 'Settings', 'pmpro-sitewide-sale' ) . '</a>',
 			);
 		}
 		return array_merge( $new_links, $links );

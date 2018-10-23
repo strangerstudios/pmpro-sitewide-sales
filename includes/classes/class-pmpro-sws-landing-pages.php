@@ -105,14 +105,14 @@ class PMPro_SWS_Landing_Pages {
 
 		if ( is_array( $atts ) && array_key_exists( 'sitewide_sale_id', $atts ) ) {
 			$sitewide_sale = get_post( $atts['sitewide_sale_id'] );
-			if ( empty( $sitewide_sale ) && 'sws_sitewide_sale' !== $sitewide_sale->post_type ) {
+			if ( empty( $sitewide_sale ) && 'pmpro_sitewide_sale' !== $sitewide_sale->post_type ) {
 				return '';
 			}
 		} else {
 			$post_id = get_the_ID();
 			$sitewide_sale = get_posts(
 				array(
-					'post_type'      => 'sws_sitewide_sale',
+					'post_type'      => 'pmpro_sitewide_sale',
 					'meta_key'       => 'pmpro_sws_landing_page_post_id',
 					'meta_value'     => '' . $post_id,
 					'posts_per_page' => 1,
@@ -170,7 +170,7 @@ class PMPro_SWS_Landing_Pages {
 
 		return $r;
 	}
-	
+
 	/**
 	 * Add notice that a page is linked to a Sitewide Sale on the Edit Page screen.
 	 *
@@ -179,7 +179,7 @@ class PMPro_SWS_Landing_Pages {
 	public static function add_edit_form_after_title( $post ) {
 		$sitewide_sale = get_posts(
 			array(
-				'post_type'      => 'sws_sitewide_sale',
+				'post_type'      => 'pmpro_sitewide_sale',
 				'meta_key'       => 'pmpro_sws_landing_page_post_id',
 				'meta_value'     => '' . $post->ID,
 				'posts_per_page' => 1,
@@ -200,7 +200,7 @@ class PMPro_SWS_Landing_Pages {
 	public static function add_display_post_states( $post_states, $post ) {
 		$sitewide_sale = get_posts(
 			array(
-				'post_type'      => 'sws_sitewide_sale',
+				'post_type'      => 'pmpro_sitewide_sale',
 				'meta_key'       => 'pmpro_sws_landing_page_post_id',
 				'meta_value'     => '' . $post->ID,
 				'posts_per_page' => 1,
@@ -223,7 +223,7 @@ class PMPro_SWS_Landing_Pages {
 	public static function add_page_row_actions( $actions, $post ) {
 		$sitewide_sale = get_posts(
 			array(
-				'post_type'      => 'sws_sitewide_sale',
+				'post_type'      => 'pmpro_sitewide_sale',
 				'meta_key'       => 'pmpro_sws_landing_page_post_id',
 				'meta_value'     => '' . $post->ID,
 				'posts_per_page' => 1,

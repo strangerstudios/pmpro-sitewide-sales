@@ -17,7 +17,7 @@ function pmpro_report_pmpro_sws_reports_page() {
 	$options = PMPro_Sitewide_Sale\includes\classes\PMPro_SWS_Settings::pmprosws_get_options();
 	$sitewide_sales = get_posts(
 		[
-			'post_type' => 'sws_sitewide_sale',
+			'post_type' => 'pmpro_sitewide_sale',
 			'post_status' => 'publish',
 			'numberposts' => -1,
 		]
