@@ -128,7 +128,7 @@ class PMPro_SWS_MetaBoxes {
 		if ( $post->post_type != 'sws_sitewide_sale' ) {
 			return;
 		}
-		
+
 		?>
 		<div><p><?php _e( 'The title above is for reference only.', 'pmpro-sitewide-sale' );?></p></div>
 		<?php
@@ -296,7 +296,8 @@ class PMPro_SWS_MetaBoxes {
 								echo '<option value=' . esc_html( $page->ID ) . esc_html( $selected_modifier ) . '>' . esc_html( $page->post_title ) . '</option>';
 							}
 						?>
-						</select>
+						</select><br />
+						<small class="pmpro_lite"><?php _e( 'Include the [pmpro_sws] shortcode.', 'pmpro-sitewide-sale' );?></small>
 
 						<p>
 							<span id="pmpro_sws_after_landing_page_select">
@@ -316,8 +317,7 @@ class PMPro_SWS_MetaBoxes {
 			</tbody>
 		</table>
 		<hr />
-		<h3><?php esc_html_e( 'The [pmpro_sws] Shortcode', 'pmpro-sitewide-sale' ); ?></h3>
-		<p><?php esc_html_e( 'Include the shortcode [pmpro_sws] to automatically update your Landing Page based on the sale start and end dates using the content below (optional).', 'pmpro-sitewide-sale' ); ?></p>
+		<p><?php _e( 'If the [pmpro_sws] shortcode is in the landing page post content, then the content from the settings below will be automatically shown on the page before, during, and after the sale. You can also remove the shortcode and manually update the landing page content.', 'pmpro-sitewide-sale' );?></p>
 		<table class="form-table">
 			<tbody>
 				<tr>
