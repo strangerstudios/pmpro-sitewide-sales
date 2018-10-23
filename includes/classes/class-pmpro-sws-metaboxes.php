@@ -99,7 +99,7 @@ class PMPro_SWS_MetaBoxes {
 
 		// remove some default metaboxes
 		remove_meta_box( 'slugdiv', 'pmpro_sitewide_sale', 'normal' );
-		//remove_meta_box( 'submitdiv', 'pmpro_sitewide_sale', 'side' );
+		remove_meta_box( 'submitdiv', 'pmpro_sitewide_sale', 'side' );
 	}
 
 	public static function display_set_as_sitewide_sale( $post ) {
