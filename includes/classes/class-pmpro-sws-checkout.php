@@ -10,6 +10,7 @@ class PMPro_SWS_Checkout {
 		add_action( 'init', array( __CLASS__, 'automatic_discount_application' ) );
 		add_filter( 'pmpro_email_body', array( __CLASS__, 'insert_upsell_into_confirmation_emails' ), 10, 2 );
 		add_filter( 'pmpro_confirmation_message', array( __CLASS__, 'insert_upsell_into_confirmation_page' ) );
+		add_filter( 'pmpro_include_pricing_fields', array( __CLASS__, 'maybe_add_choose_level_section' ) );
 	}
 
 	/**
@@ -104,5 +105,32 @@ class PMPro_SWS_Checkout {
 		}
 		$upsell_text = str_replace( '!!sws_landing_page_url!!', get_permalink( intval( $landing_page_id ) ), $upsell_text );
 		return $confirmation_message . $upsell_text . '<br/><br/>';
+	}
+
+	/**
+	 * If the discount code has more than one level associated with it,
+	 * let users choose which level to checkout for.
+	 */
+	public static function maybe_add_choose_level_section( $include_pricing_fields ) {
+		global $wpdb;
+
+		if( PMPro_SWS_Settings::is_active_sitewide_sale_landing_page() ) {
+			$options = PMPro_SWS_Settings::pmprosws_get_options();
+			$discount_code_id = get_post_meta( $options['active_sitewide_sale_id'], 'pmpro_sws_discount_code_id', true );
+
+			if( !empty( $discount_code_id ) ) {
+				$code_levels    = $wpdb->get_results( "SELECT * FROM $wpdb->pmpro_discount_codes_levels WHERE code_id = " . esc_sql( $discount ), OBJECT );
+
+				if ( count( $code_levels ) > 1 ) {
+					//$include_pricing_fields = false;
+
+					// show a radio option to choose level
+					?>
+					<?php
+				}
+			}
+		}
+
+		return $include_pricing_fields;
 	}
 }

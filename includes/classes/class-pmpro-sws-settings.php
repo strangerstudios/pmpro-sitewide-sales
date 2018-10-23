@@ -72,4 +72,34 @@ class PMPro_SWS_Settings {
 		}
 		return $options;
 	}
+
+	/**
+	 * Is the current page the active sitewide sale landing page?
+	 */
+	public static function is_active_sitewide_sale_landing_page( $post_id = false) {
+		global $post;
+
+		// default to global post
+		if ( empty( $post_id ) ) {
+			$post_id = $post->ID;
+		}
+
+		if ( empty( $post_id ) ) {
+			return false;
+		}
+
+		$options = self::pmprosws_get_options();
+
+		if ( empty( $options['active_sitewide_sale_id'] ) ) {
+			return false;
+		}
+
+		$landing_page_id = get_post_meta( $options['active_sitewide_sale_id'], 'pmpro_sws_landing_page_post_id', true );
+
+		if ( !empty( $landing_page_id ) && $landing_page_id == $post_id ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
