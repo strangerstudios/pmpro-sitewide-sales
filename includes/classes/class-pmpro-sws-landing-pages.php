@@ -102,7 +102,7 @@ class PMPro_SWS_Landing_Pages {
 	 */
 	public static function shortcode( $atts ) {
 		$sitewide_sale = null;
-
+		
 		if ( is_array( $atts ) && array_key_exists( 'sitewide_sale_id', $atts ) ) {
 			$sitewide_sale = get_post( $atts['sitewide_sale_id'] );
 			if ( empty( $sitewide_sale ) && 'pmpro_sitewide_sale' !== $sitewide_sale->post_type ) {
@@ -144,20 +144,16 @@ class PMPro_SWS_Landing_Pages {
 		} elseif ( date( 'Y-m-d', current_time( 'timestamp') ) > $sale_end_date ) {
 			$sale_content = 'post-sale';
 		}
-
+		
   		if ( $sale_content === 'pre-sale') {
 			$landing_content = get_post_meta( $sitewide_sale->ID, 'pmpro_sws_pre_sale_content', true );
 			$r = '<div class="pmpro_sws_landing_content pmpro_sws_landing_content_pre-sale">';
 			$r .= $landing_content;
-			$formatted_start_date = date( get_option( 'date_format' ), strtotime( $sale_start_date, current_time( 'timestamp' ) ) );
-			$r .= '<p class="pmpro_sws_date pmpro_sws_date_start">' . $formatted_start_date . '</p>';
 			$r .= '</div> <!-- .pmpro_sws_landing_content -->';
 		} elseif ( $sale_content === 'post-sale' ) {
 			$landing_content = get_post_meta( $sitewide_sale->ID, 'pmpro_sws_post_sale_content', true );
 			$r = '<div class="pmpro_sws_landing_content pmpro_sws_landing_content_post-sale">';
 			$r .= $landing_content;
-			$formatted_end_date = date( get_option( 'date_format' ), strtotime( $sale_end_date, current_time( 'timestamp' ) ) );
-			$r .= '<p class="pmpro_sws_date pmpro_sws_date_end">' . $formatted_end_date . '</p>';
 			$r .= '</div> <!-- .pmpro_sws_landing_content -->';
 		} else {
 			$landing_content = apply_filters( 'the_content', get_post_meta( $sitewide_sale->ID, 'pmpro_sws_sale_content', true ) );
@@ -167,6 +163,9 @@ class PMPro_SWS_Landing_Pages {
 			$r .= '</div> <!-- .pmpro_sws_landing_content -->';
 			$r .= $template;
 		}
+
+		// Filter for themes and plugins to modify the [pmpro_sws] shortcode output.
+		$r = apply_filters( 'pmpro_sws_landing_page_content', $r, $atts );
 
 		return $r;
 	}
