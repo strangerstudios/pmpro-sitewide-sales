@@ -27,11 +27,15 @@ class PMPro_SWS_Settings {
 	 * @return array [description]
 	 */
 	public static function pmprosws_get_options() {
-		$options = get_option( 'pmpro_sitewide_sale' );
+		static $options;
 
-		// Set the defaults.
-		if ( empty( $options ) || ! array_key_exists( 'active_sitewide_sale_id', $options ) ) {
-			$options = self::pmprosws_reset_options();
+		if ( empty( $options ) ) {
+			$options = get_option( 'pmpro_sitewide_sale' );
+
+			// Set the defaults.
+			if ( empty( $options ) || ! array_key_exists( 'active_sitewide_sale_id', $options ) ) {
+				$options = self::pmprosws_reset_options();
+			}
 		}
 		return $options;
 	}
@@ -40,15 +44,9 @@ class PMPro_SWS_Settings {
 	 * Sets SWS settings to default
 	 */
 	public static function pmprosws_reset_options() {
-		$options = get_option( 'pmpro_sitewide_sale' );
-
-		// Set the defaults.
-		if ( empty( $options ) ) {
-			$options = array(
-				'active_sitewide_sale_id' => false,
-			);
-		}
-		return $options;
+		return array(
+			'active_sitewide_sale_id' => false,
+		);
 	}
 
 	/**
