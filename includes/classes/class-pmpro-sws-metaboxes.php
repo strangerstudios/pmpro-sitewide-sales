@@ -410,26 +410,23 @@ class PMPro_SWS_MetaBoxes {
 					<th scope="row" valign="top"><label><?php esc_html_e( 'Custom Banner CSS', 'pmpro-sitewide-sale' ); ?></label></th>
 					<td>
 						<textarea class="pmpro_sws_option" name="pmpro_sws_css_option"><?php esc_html_e( $css_option, 'pmpro-sitewide-sale' ); ?></textarea>
-						<?php
-							if ( isset( $registered_banners[ $use_banner ] ) && ! empty( $registered_banners[ $use_banner ]['css_selectors'] ) ) { ?>
-								<p class="description"><?php esc_html_e( 'Use these selectors to alter the appearance of your banners.', 'pmpro-sitewide-sale' ); ?></p>
-									<div id="pmpro_sws_banner_css_selectors">
-									<?php
-										$css_selectors = $registered_banners[ $use_banner ]['css_selectors'];
-										if ( is_string( $css_selectors ) ) {
-											echo $css_selectors;
-										} elseif ( is_array( $css_selectors ) ) {
-											foreach ( $css_selectors as $css_selector ) {
-												if ( is_string( $css_selector ) ) {
-													echo $css_selector . '<br/>';
-												}
-											}
+						<p id="pmpro_sws_css_selectors_description" class="description" <?php if ( empty($use_banner) || $use_banner == 'no' ) {?>style="display:none;"<?php } ?>><?php esc_html_e( 'Use these selectors to alter the appearance of your banners.', 'pmpro-sitewide-sale' ); ?></p>
+						<?php foreach( $registered_banners as $key => $registered_banner ) { ?>
+							<div data-pmprosws-banner="<?php echo esc_attr($key);?>" class="pmpro_sws_banner_css_selectors" <?php if( $key != $use_banner ) {?>style="display: none;"<?php } ?>>
+							<?php
+								$css_selectors = $registered_banner['css_selectors'];
+								if ( is_string( $css_selectors ) ) {
+									echo $css_selectors;
+								} elseif ( is_array( $css_selectors ) ) {
+									foreach ( $css_selectors as $css_selector ) {
+										if ( is_string( $css_selector ) ) {
+											echo $css_selector . '<br/>';
 										}
-									?>
-									</div>
-								<?php
-							}
-						?>
+									}
+								}
+							?>
+							</div>
+						<?php } ?>
 					</td>
 				</tr>
 				<tr>

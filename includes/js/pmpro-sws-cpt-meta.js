@@ -17,6 +17,18 @@ jQuery( document ).ready(function($) {
 		$('#pmpro_sws_after_landing_page_select').hide();
 	});
 
+	$('#pmpro_sws_use_banner_select').change(function(){
+		var banner = $('#pmpro_sws_use_banner_select').val();
+		if(banner.length < 1 || banner == 'no') {
+			$('#pmpro_sws_css_selectors_description').hide();
+			$('.pmpro_sws_banner_css_selectors').hide();
+		} else {
+			$('#pmpro_sws_css_selectors_description').show();
+			$('.pmpro_sws_banner_css_selectors').hide();
+			$('.pmpro_sws_banner_css_selectors[data-pmprosws-banner='+banner+']').show();
+		}
+	});
+
 	$('#pmpro_sws_upsell_enabled').change(function(){
 		if(this.checked)
 			$('.pmpro_sws_upsell_settings').show();
