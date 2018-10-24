@@ -252,7 +252,10 @@ class PMPro_SWS_MetaBoxes {
 							<span id="pmpro_sws_after_discount_code_select">
 							<?php
 								if ( $code_found ) {
-									echo ' <input type="submit" class="button button-secondary" name="pmpro_sws_edit_discount" value="' . esc_html__( 'edit code', 'pmpro-sitewide-sale' ) . '">';
+									$edit_code_url = admin_url( 'admin.php?page=pmpro-discountcodes&edit=' . $current_discount );
+									?>
+									<a target="_blank" class="button button-secondary" href="<?php echo esc_url( $edit_code_url );?>"><?php esc_html_e( 'edit code', 'pmpro-sitewide-sale' );?></a>
+									<?php
 									esc_html_e( ' or ', 'pmpro_sitewide_sale' );
 								}
 							?>
@@ -316,9 +319,13 @@ class PMPro_SWS_MetaBoxes {
 							<span id="pmpro_sws_after_landing_page_select">
 							<?php
 								if ( $page_found ) {
-									echo '<input type="submit" class="button button-secondary" name="pmpro_sws_edit_landing_page" value="' . esc_html__( 'edit page', 'pmpro-sitewide-sale' ) . '">';
-									echo '&nbsp;';
-									echo '<input type="submit" class="button button-secondary" name="pmpro_sws_view_landing_page" value="' . esc_html__( 'view page', 'pmpro-sitewide-sale' ) . '">';
+									$edit_page_url = admin_url( 'post.php?post=' . $current_page . '&action=edit&pmpro_sws_callback=' . $post->ID );
+									$view_page_url = get_permalink( $current_page );
+									?>
+									<a target="_blank" class="button button-secondary" href="<?php echo esc_url( $edit_page_url );?>"><?php esc_html_e( 'edit page', 'pmpro-sitewide-sale' );?></a>
+									&nbsp;
+									<a target="_blank" class="button button-secondary" href="<?php echo esc_url( $view_page_url );?>"><?php esc_html_e( 'view page', 'pmpro-sitewide-sale' );?></a>
+									<?php
 									esc_html_e( ' or ', 'pmpro_sitewide_sale' );
 								}
 							?>
