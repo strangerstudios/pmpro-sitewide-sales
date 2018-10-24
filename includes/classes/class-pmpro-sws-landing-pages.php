@@ -14,6 +14,7 @@ class PMPro_SWS_Landing_Pages {
 		add_action( 'wp', array( __CLASS__, 'pmpro_preheader'), 1 );
 		add_shortcode( 'pmpro_sws', array( __CLASS__, 'shortcode' ) );
 		add_filter( 'edit_form_after_title', array( __CLASS__, 'add_edit_form_after_title' ) );
+		add_filter( 'body_class', array( __CLASS__, 'add_body_class' ) );
 		add_filter( 'display_post_states', array( __CLASS__, 'add_display_post_states' ), 10, 2 );
 		add_filter( 'page_row_actions', array( __CLASS__, 'add_page_row_actions' ), 10, 2 );
 	}
@@ -176,18 +177,31 @@ class PMPro_SWS_Landing_Pages {
 	 * @param WP_Post $$post The current post object.
 	 */
 	public static function add_edit_form_after_title( $post ) {
-		$sitewide_sale = get_posts(
-			array(
-				'post_type'      => 'pmpro_sitewide_sale',
-				'meta_key'       => 'pmpro_sws_landing_page_post_id',
-				'meta_value'     => '' . $post->ID,
-				'posts_per_page' => 1,
-			)
-		);
 
-		if ( ! empty ( $sitewide_sale[0] ) ) {
-			echo '<div id="message" class="notice notice-info inline"><p>This is a Sitewide Sale Landing Page. <a target="_blank" href="' . get_edit_post_link( $sitewide_sale[0]->ID) . '">Edit the Sitewide Sale</a></p></div>';
+		// Check if this post has an associated Sitewide Sale.
+		$sitewide_sale_id = get_post_meta( $post->ID, 'pmpro_sws_sitewide_sale_id', true );
+
+		if ( ! empty ( $sitewide_sale_id ) ) {
+			echo '<div id="message" class="notice notice-info inline"><p>This is a Sitewide Sale Landing Page. <a target="_blank" href="' . get_edit_post_link( $sitewide_sale_id) . '">Edit the Sitewide Sale</a></p></div>';
 		}
+	}
+
+	/**
+	 * Add the 'pmpro-sitewide-sale-landing-page' to the body_class filter when viewing a Landing Pages.
+	 *
+	 * @param array   $classes An array of classes already in place for the body class.
+	 */
+	public static function add_body_class( $classes ) {
+		
+		// See if any Sitewide Sale CPTs have this post ID set as the Landing Page.
+		$sitewide_sale_id = get_post_meta( get_queried_object_id(), 'pmpro_sws_sitewide_sale_id', true );
+		
+		if ( ! empty ( $sitewide_sale_id ) ) {
+			// This is a landing page, add the custom class.
+			$classes[] = 'pmpro-sitewide-sale-landing-page';
+		}
+
+		return $classes;
 	}
 
 	/**
@@ -197,16 +211,11 @@ class PMPro_SWS_Landing_Pages {
 	 * @param WP_Post $post The current post object.
 	 */
 	public static function add_display_post_states( $post_states, $post ) {
-		$sitewide_sale = get_posts(
-			array(
-				'post_type'      => 'pmpro_sitewide_sale',
-				'meta_key'       => 'pmpro_sws_landing_page_post_id',
-				'meta_value'     => '' . $post->ID,
-				'posts_per_page' => 1,
-			)
-		);
 
-		if( ! empty ( $sitewide_sale[0] ) ) {
+		// Check if this post has an associated Sitewide Sale.
+		$sitewide_sale_id = get_post_meta( $post->ID, 'pmpro_sws_sitewide_sale_id', true );
+
+		if( ! empty ( $sitewide_sale_id ) ) {
 			$post_states['pmpro_sws_landing_page'] = __( 'Sitewide Sale Landing Page', 'pmpro-sitewide-sale' );
 		}
 
@@ -220,19 +229,14 @@ class PMPro_SWS_Landing_Pages {
 	 * @param WP_Post $post The current post object.
 	 */
 	public static function add_page_row_actions( $actions, $post ) {
-		$sitewide_sale = get_posts(
-			array(
-				'post_type'      => 'pmpro_sitewide_sale',
-				'meta_key'       => 'pmpro_sws_landing_page_post_id',
-				'meta_value'     => '' . $post->ID,
-				'posts_per_page' => 1,
-			)
-		);
+		
+		// Check if this post has an associated Sitewide Sale.
+		$sitewide_sale_id = get_post_meta( $post->ID, 'pmpro_sws_sitewide_sale_id', true );
 
-		if( ! empty ( $sitewide_sale[0] ) ) {
+		if( ! empty ( $sitewide_sale_id ) ) {
 			$actions['pmpro_sws_edit_sale'] = sprintf(
 				'<a href="%s" rel="bookmark" aria-label="%s">%s</a>',
-				get_edit_post_link( $sitewide_sale[0]->ID ),
+				get_edit_post_link( $sitewide_sale_id ),
 				esc_attr( 'Edit Sitewide Sale', 'pmpro-sitewide-sale' ),
 				esc_attr( 'Edit Sitewide Sale', 'pmpro-sitewide-sale' )
 			);
