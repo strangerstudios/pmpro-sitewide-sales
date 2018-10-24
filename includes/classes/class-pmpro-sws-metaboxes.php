@@ -337,7 +337,7 @@ class PMPro_SWS_MetaBoxes {
 			</tbody>
 		</table>
 		<hr />
-		<p><?php _e( 'If the [pmpro_sws] shortcode is in the landing page post content, then the content from the settings below will be automatically shown on the page before, during, and after the sale. You can also remove the shortcode and manually update the landing page content.', 'pmpro-sitewide-sale' );?></p>
+		<p><?php _e( 'If the [pmpro_sws] shortcode is in the landing page post content, then the content from the settings below will be automatically shown on the page before, during, and after the sale. Alternatively, you can remove the shortcode and manually update the landing page content.', 'pmpro-sitewide-sale' );?></p>
 		<table class="form-table">
 			<tbody>
 				<tr>
