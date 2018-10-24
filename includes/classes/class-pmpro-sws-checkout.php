@@ -119,7 +119,7 @@ class PMPro_SWS_Checkout {
 			$discount_code_id = get_post_meta( $options['active_sitewide_sale_id'], 'pmpro_sws_discount_code_id', true );
 
 			if( !empty( $discount_code_id ) ) {
-				$code_levels    = $wpdb->get_results( "SELECT * FROM $wpdb->pmpro_discount_codes_levels WHERE code_id = " . esc_sql( $discount ), OBJECT );
+				$code_levels    = $wpdb->get_results( "SELECT * FROM $wpdb->pmpro_discount_codes_levels WHERE code_id = " . esc_sql( $discount_code_id ), OBJECT );
 
 				if ( count( $code_levels ) > 1 ) {
 					//$include_pricing_fields = false;
