@@ -260,7 +260,7 @@ class PMPro_SWS_MetaBoxes {
 								}
 							?>
 							</span>
-							<input type="submit" class="button-link" name="pmpro_sws_create_discount" value="<?php esc_html_e( 'create a new discount code', 'pmpro-sitewide-sale' ); ?>">
+							<a target="_blank" class="button button-secondary" href="<?php echo admin_url( 'admin.php?page=pmpro-discountcodes&edit=-1&pmpro_sws_callback=' . $post->ID );?>"><?php esc_html_e( 'create a new discount code', 'pmpro-sitewide-sale' );?></a>
 						</p>
 					</td>
 				</tr>
@@ -330,7 +330,7 @@ class PMPro_SWS_MetaBoxes {
 								}
 							?>
 							</span>
-							<input type="submit" class="button-link" name="pmpro_sws_create_landing_page" value="<?php esc_html_e( 'create a new landing page', 'pmpro-sitewide-sale' ); ?>">
+							<a target="_blank" class="button button-secondary" href="<?php echo admin_url( 'post-new.php?post_type=page&pmpro_sws_callback=' . $post->ID );?>"><?php esc_html_e( 'create a new landing page', 'pmpro-sitewide-sale' );?></a>
 						</p>
 					</td>
 				</tr>
