@@ -13,7 +13,7 @@ class PMPro_SWS_Banners {
 	 */
 	public static function init() {
 		add_action( 'wp', array( __CLASS__, 'choose_banner' ) );
-		add_action( 'wp_head', array( __CLASS__, 'apply_custom_css' ), 5 );
+		add_action( 'wp_head', array( __CLASS__, 'apply_custom_css' ), 10 );
 	}
 
 	/**
@@ -186,13 +186,13 @@ class PMPro_SWS_Banners {
 
 		$css = get_post_meta( $active_sitewide_sale, 'pmpro_sws_css_option', true )
 		?>
-		<style type="text/css">
-			<?php
+		<!--Sitewide Sale Add On for Paid Memberships Pro Custom CSS-->
+		<style type="text/css"><?php
 			if ( ! empty( $css ) ) {
 				echo $css;
 			}
-			?>
-		</style>
+		?></style>
+		<!--/Sitewide Sale Add On for Paid Memberships Pro Custom CSS-->
 		<?php
 	}
 
