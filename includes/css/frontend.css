@@ -37,12 +37,18 @@
 #pmpro_sws_banner_bottom_right a.dismiss:active,
 #pmpro_sws_banner_bottom_right a.dismiss:link,
 #pmpro_sws_banner_bottom_right a.dismiss:visited {
+	background: rgba( 255, 255, 255, 0.2);
+	border: 1px solid #FFF;
+	border-radius: 3px;
 	color: #FFF;
-	float: right;
+    float: right;
+	font-size: 14px;
+	line-height: 20px;
+    padding: 0 5px;
 	text-decoration: none;
 }
 #pmpro_sws_banner_bottom_right a.dismiss:hover {
-	text-decoration: underline;
+	background: rgba( 255, 255, 255, 0.4);
 }
 
 #pmpro_sws_banner_bottom {
