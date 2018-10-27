@@ -145,26 +145,53 @@ class PMPro_SWS_Landing_Pages {
 		} elseif ( date( 'Y-m-d', current_time( 'timestamp') ) > $sale_end_date ) {
 			$sale_content = 'post-sale';
 		}
+
+		// Our return string.
+		$r = '';
 		
+		// Display the wrapping div for selected template if using Memberlite.
+		if ( DEFINED( 'MEMBERLITE_VERSION' ) ) {
+			$template = get_post_meta( $sitewide_sale->ID, 'pmpro_sws_landing_page_template', true );
+			if ( ! empty ( $template ) ) {
+				$r .= '<div id="pmpro_sitewide_sale_landing_page_template-' . esc_html( $template ) . '" class="pmpro_sitewide_sale_landing_page_template">';
+
+				// Display the wrapping div for photo background image if specified in $template.
+				if ( in_array( $template, array( 'photo', 'scroll' ) ) ) {
+					$background_image = wp_get_attachment_image_src( get_post_thumbnail_id( get_queried_object_id() ), 'full' );
+					if( ! empty( $background_image[0] ) ) {
+						$r .= '<div class="pmpro_sitewide_sale_landing_page_template-background-image" style="background-image: url(' . $background_image[0] . ')">';
+					}
+				}
+			}
+		}
+				
   		if ( $sale_content === 'pre-sale') {
 			$landing_content = get_post_meta( $sitewide_sale->ID, 'pmpro_sws_pre_sale_content', true );
-			$r = '<div class="pmpro_sws_landing_content pmpro_sws_landing_content_pre-sale">';
+			$r .= '<div class="pmpro_sws_landing_content pmpro_sws_landing_content_pre-sale">';
 			$r .= $landing_content;
 			$r .= '</div> <!-- .pmpro_sws_landing_content -->';
 		} elseif ( $sale_content === 'post-sale' ) {
 			$landing_content = get_post_meta( $sitewide_sale->ID, 'pmpro_sws_post_sale_content', true );
-			$r = '<div class="pmpro_sws_landing_content pmpro_sws_landing_content_post-sale">';
+			$r .= '<div class="pmpro_sws_landing_content pmpro_sws_landing_content_post-sale">';
 			$r .= $landing_content;
 			$r .= '</div> <!-- .pmpro_sws_landing_content -->';
 		} else {
 			$landing_content = apply_filters( 'the_content', get_post_meta( $sitewide_sale->ID, 'pmpro_sws_sale_content', true ) );
 			$template = pmpro_loadTemplate('checkout', 'local', 'pages');
-			$r = '<div class="pmpro_sws_landing_content pmpro_sws_landing_content_sale">';
+			$r .= '<div class="pmpro_sws_landing_content pmpro_sws_landing_content_sale">';
 			$r .= $landing_content;
 			$r .= '</div> <!-- .pmpro_sws_landing_content -->';
 			$r .= $template;
 		}
 
+		// Display the closing div for selected template if using Memberlite.
+		if ( DEFINED( 'MEMBERLITE_VERSION' ) && ! empty( $template ) ) {
+			if( ! empty( $background_image[0] ) ) {
+				$r .= '</div> <!-- .pmpro_sitewide_sale_landing_page_template-background-image -->';
+			}
+			$r .= '</div> <!-- .pmpro_sitewide_sale_landing_page_template -->';
+		}
+		
 		// Filter for themes and plugins to modify the [pmpro_sws] shortcode output.
 		$r = apply_filters( 'pmpro_sws_landing_page_content', $r, $atts );
 
@@ -199,6 +226,14 @@ class PMPro_SWS_Landing_Pages {
 		if ( ! empty ( $sitewide_sale_id ) ) {
 			// This is a landing page, add the custom class.
 			$classes[] = 'pmpro-sitewide-sale-landing-page';
+			
+			if ( DEFINED( 'MEMBERLITE_VERSION' ) ) {
+				// If the landing page has a custom template, add the custom class.
+				$template = get_post_meta( $sitewide_sale_id, 'pmpro_sws_landing_page_template', true );
+				if ( ! empty ( $template ) ) {
+					$classes[] = 'pmpro-sitewide-sale-landing-page-' . esc_html( $template );
+				}
+			}
 		}
 
 		return $classes;

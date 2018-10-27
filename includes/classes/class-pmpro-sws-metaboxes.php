@@ -277,6 +277,11 @@ class PMPro_SWS_MetaBoxes {
 		if ( empty( $current_page ) ) {
 			$current_page = false;
 		}
+		
+		$template = esc_html( get_post_meta( $post->ID, 'pmpro_sws_landing_page_template', true ) );
+		if ( empty( $template ) ) {
+			$template = false;
+		}
 
 		$pre_sale_content = esc_html( get_post_meta( $post->ID, 'pmpro_sws_pre_sale_content', true ) );
 		if ( empty( $pre_sale_content ) ) {
@@ -297,7 +302,7 @@ class PMPro_SWS_MetaBoxes {
 		<table class="form-table">
 			<tbody>
 				<tr>
-					<th><label for="pmpro_sws_landing_page_post_id">Landing Page</label></th>
+					<th><label for="pmpro_sws_landing_page_post_id"><?php esc_html_e( 'Landing Page', 'pmpro-sitewide-sale'); ?></label></th>
 					<td>
 						<select class="landing_page_select pmpro_sws_option" id="pmpro_sws_landing_page_select" name="pmpro_sws_landing_page_post_id">
 							<option value=""></option>
@@ -334,6 +339,32 @@ class PMPro_SWS_MetaBoxes {
 						</p>
 					</td>
 				</tr>
+				<?php 
+					// Allow template selection if using Memberlite.
+					if ( DEFINED( 'MEMBERLITE_VERSION' ) ) { ?>
+					<tr>
+						<th><label for="pmpro_sws_landing_page_template"><?php esc_html_e( 'Landing Page Template', 'pmpro-sitewide-sale'); ?></label></th>
+						<td>
+							<select class="landing_page_select_template pmpro_sws_option" id="pmpro_sws_landing_page_template" name="pmpro_sws_landing_page_template">
+								<option value=""></option>
+								<?php 
+									$templates = array( 
+										'gradient' => 'Gradient',
+										'neon' => 'Neon',
+										'ocean' => 'Ocean',
+										'photo' => 'Photo',
+										'scroll' => 'Scroll',
+									);
+									$templates = apply_filters( 'pmpro_sws_landing_page_templates', $templates ); 
+									foreach ( $templates as $key => $value ) {
+										//d( $template );
+										echo '<option value="' . esc_html( $key ) . '" ' . selected( $template, esc_html( $key ) ) . '>' . esc_html( $value ) . '</option>';
+									}
+								?>
+							</select>
+						</td>
+					</tr>
+				<?php } ?>
 			</tbody>
 		</table>
 		<hr />
@@ -548,6 +579,12 @@ class PMPro_SWS_MetaBoxes {
 			delete_post_meta( intval( $_REQUEST['pmpro_sws_old_landing_page_post_id'] ), 'pmpro_sws_sitewide_sale_id' );
 		}
 
+		if ( isset( $_POST['pmpro_sws_landing_page_template'] ) ) {
+			update_post_meta( $post_id, 'pmpro_sws_landing_page_template', wp_kses_post( $_POST['pmpro_sws_landing_page_template'] ) );
+		} else {
+			update_post_meta( $post_id, 'pmpro_sws_landing_page_template', false );
+		}
+		
 		if ( isset( $_POST['pmpro_sws_start_day'] ) && is_numeric( $_POST['pmpro_sws_start_day'] ) &&
 				isset( $_POST['pmpro_sws_start_month'] ) && is_numeric( $_POST['pmpro_sws_start_month'] ) &&
 				isset( $_POST['pmpro_sws_start_year'] ) && is_numeric( $_POST['pmpro_sws_start_year'] ) &&
