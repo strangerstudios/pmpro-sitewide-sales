@@ -19,7 +19,7 @@ class PMPro_SWS_MetaBoxes {
 		add_action( 'pmpro_save_discount_code', array( __CLASS__, 'discount_code_on_save' ) );
 		add_action( 'save_post', array( __CLASS__, 'landing_page_on_save' ), 10, 3 );
 		add_action( 'admin_notices', array( __CLASS__, 'return_from_editing_discount_code_box' ) );
-		add_action( 'edit_form_before_permalink', array( __CLASS__, 'display_title_help_text' ) );
+		add_action( 'enter_title_here', array( __CLASS__, 'update_title_placeholder_text' ), 10, 2 );
 		add_filter( 'redirect_post_location', array( __CLASS__, 'redirect_after_page_save' ), 10, 2 );
 	}
 
@@ -133,18 +133,14 @@ class PMPro_SWS_MetaBoxes {
 	}
 
 	/**
-	 * Show a note under the post title text input.
+	 * Filter the "Enter title here" placeholder in the title field
 	 */
-	public static function display_title_help_text() {
-		global $post;
-
-		if ( $post->post_type != 'pmpro_sitewide_sale' ) {
-			return;
+	public static function update_title_placeholder_text( $text, $post ) {
+		if ( $post->post_type == 'pmpro_sitewide_sale' ) {
+			$text = __( 'Enter title here. (For reference only.)', 'pmpro-sitewide-sale' );
 		}
 
-		?>
-		<div><p><?php _e( 'The title above is for reference only.', 'pmpro-sitewide-sale' );?></p></div>
-		<?php
+		return $text;
 	}
 
 	public static function display_step_1( $post ) {
@@ -277,7 +273,7 @@ class PMPro_SWS_MetaBoxes {
 		if ( empty( $current_page ) ) {
 			$current_page = false;
 		}
-		
+
 		$template = esc_html( get_post_meta( $post->ID, 'pmpro_sws_landing_page_template', true ) );
 		if ( empty( $template ) ) {
 			$template = false;
@@ -339,7 +335,7 @@ class PMPro_SWS_MetaBoxes {
 						</p>
 					</td>
 				</tr>
-				<?php 
+				<?php
 					// Allow template selection if using Memberlite.
 					if ( DEFINED( 'MEMBERLITE_VERSION' ) ) { ?>
 					<tr>
@@ -347,15 +343,15 @@ class PMPro_SWS_MetaBoxes {
 						<td>
 							<select class="landing_page_select_template pmpro_sws_option" id="pmpro_sws_landing_page_template" name="pmpro_sws_landing_page_template">
 								<option value=""></option>
-								<?php 
-									$templates = array( 
+								<?php
+									$templates = array(
 										'gradient' => 'Gradient',
 										'neon' => 'Neon',
 										'ocean' => 'Ocean',
 										'photo' => 'Photo',
 										'scroll' => 'Scroll',
 									);
-									$templates = apply_filters( 'pmpro_sws_landing_page_templates', $templates ); 
+									$templates = apply_filters( 'pmpro_sws_landing_page_templates', $templates );
 									foreach ( $templates as $key => $value ) {
 										//d( $template );
 										echo '<option value="' . esc_html( $key ) . '" ' . selected( $template, esc_html( $key ) ) . '>' . esc_html( $value ) . '</option>';
@@ -584,7 +580,7 @@ class PMPro_SWS_MetaBoxes {
 		} else {
 			update_post_meta( $post_id, 'pmpro_sws_landing_page_template', false );
 		}
-		
+
 		if ( isset( $_POST['pmpro_sws_start_day'] ) && is_numeric( $_POST['pmpro_sws_start_day'] ) &&
 				isset( $_POST['pmpro_sws_start_month'] ) && is_numeric( $_POST['pmpro_sws_start_month'] ) &&
 				isset( $_POST['pmpro_sws_start_year'] ) && is_numeric( $_POST['pmpro_sws_start_year'] ) &&
