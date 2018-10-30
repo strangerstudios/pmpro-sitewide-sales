@@ -485,7 +485,7 @@ class PMPro_SWS_MetaBoxes {
 				<tr>
 					<th scope="row" valign="top"><label><?php esc_html_e( 'Hide Banner by Membership Level', 'pmpro-sitewide-sale' ); ?></label></th>
 					<td>
-						<select class="pmpro_sws_option" id="pmpro_sws_hide_levels_select" name="pmpro_sws_hide_for_levels[]" style="width:12em" multiple/>
+						<select multiple class="pmpro_sws_option" id="pmpro_sws_hide_levels_select" name="pmpro_sws_hide_for_levels[]" style="width:12em">
 						<?php
 							$all_levels    = pmpro_getAllLevels( true, true );
 							foreach ( $all_levels as $level ) {
@@ -493,6 +493,7 @@ class PMPro_SWS_MetaBoxes {
 								echo '<option value=' . esc_html( $level->id ) . esc_html( $selected_modifier ) . '>' . esc_html( $level->name ) . '</option>';
 							}
 						?>
+						</select>
 					</td>
 				</tr>
 				<tr>
