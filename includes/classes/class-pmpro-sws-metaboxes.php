@@ -405,27 +405,38 @@ class PMPro_SWS_MetaBoxes {
 			$use_banner = 'no';
 		}
 
-		$banner_text = $post->post_content;
-
-		$banner_title = esc_html( get_post_meta( $post->ID, 'pmpro_sws_banner_title', true ) );
-		if ( empty( $banner_title ) ) {
-			$banner_title = '';
-		}
-		$link_text = esc_html( get_post_meta( $post->ID, 'pmpro_sws_link_text', true ) );
-		if ( empty( $link_text ) ) {
-			$link_text = 'Buy Now';
-		}
-		$css_option = esc_html( get_post_meta( $post->ID, 'pmpro_sws_css_option', true ) );
-		if ( empty( $css_option ) ) {
+		// Set defaults if this is a brand new post.
+		if ( $post->post_status == 'auto-draft' ) {
+			$banner_title = esc_html__( 'Limited Time Offer', 'pmpro-sitewide-sale' );
+			$banner_text = sprintf( esc_html__( 'Save on %s membership.', 'pmpro-sitewide-sale' ), get_bloginfo( 'sitename' ) );
+			$link_text = esc_html__( 'Buy Now', 'pmpro-sitewide-sale' );
 			$css_option = '';
-		}
-		$hide_for_levels = get_post_meta( $post->ID, 'pmpro_sws_hide_for_levels', true );
-		if ( empty( $hide_for_levels ) ) {
-			$hide_for_levels = array();
-		}
-		$hide_on_checkout = esc_html( get_post_meta( $post->ID, 'pmpro_sws_hide_on_checkout', true ) );
-		if ( empty( $hide_on_checkout ) ) {
-			$hide_on_checkout = false;
+			$hide_for_levels = PMPro_SWS_Setup::get_paid_level_ids();
+			$hide_on_checkout = true;
+		} else {
+			$banner_text = $post->post_content;
+
+			$banner_title = esc_html( get_post_meta( $post->ID, 'pmpro_sws_banner_title', true ) );
+			if ( empty( $banner_title ) ) {
+				$banner_title = '';
+			}
+			$link_text = esc_html( get_post_meta( $post->ID, 'pmpro_sws_link_text', true ) );
+			if ( empty( $link_text ) ) {
+				$link_text = 'Buy Now';
+			}
+			$css_option = esc_html( get_post_meta( $post->ID, 'pmpro_sws_css_option', true ) );
+			if ( empty( $css_option ) ) {
+				$css_option = '';
+			}
+			$hide_for_levels = get_post_meta( $post->ID, 'pmpro_sws_hide_for_levels', true );
+			if ( empty( $hide_for_levels ) ) {
+				$hide_for_levels = array();
+			}
+
+			$hide_on_checkout = esc_html( get_post_meta( $post->ID, 'pmpro_sws_hide_on_checkout', true ) );
+			if ( empty( $hide_on_checkout ) ) {
+				$hide_on_checkout = false;
+			}
 		}
 		?>
 		<table class="form-table">

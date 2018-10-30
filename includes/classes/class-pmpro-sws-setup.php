@@ -70,6 +70,25 @@ class PMPro_SWS_Setup {
 	}
 
 	/**
+	 * Return an array of PMPro membership level ids for paid levels only
+	 */
+	public static function get_paid_level_ids() {
+		static $paid_level_ids;
+
+		if ( ! isset( $paid_levels ) && function_exists( 'pmpro_getAllLevels' ) ) {
+			$all_levels = pmpro_getAllLevels(true, true);
+			$paid_level_ids = array();
+			foreach( $all_levels as $level ) {
+				if( ! pmpro_isLevelFree( $level ) ) {
+					$paid_level_ids[] = $level->id;
+				}
+			}
+		}
+
+		return $paid_level_ids;
+	}
+
+	/**
 	 * Admin Notice on Activation.
 	 *
 	 * @since 0.1.0
