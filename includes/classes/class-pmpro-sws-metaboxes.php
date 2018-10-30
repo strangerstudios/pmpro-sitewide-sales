@@ -485,7 +485,7 @@ class PMPro_SWS_MetaBoxes {
 								} elseif ( is_array( $css_selectors ) ) {
 									foreach ( $css_selectors as $css_selector ) {
 										if ( is_string( $css_selector ) ) {
-											echo $css_selector . '<br/>';
+											echo $css_selector . ' { }<br/>';
 										}
 									}
 								}
