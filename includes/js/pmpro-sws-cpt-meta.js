@@ -25,18 +25,24 @@ jQuery( document ).ready(function($) {
 		$('#pmpro_sws_after_landing_page_select').hide();
 	});
 
-	// toggling the banner CSS hint
-	$('#pmpro_sws_use_banner_select').change(function(){
+	// toggling the banner settings and banner CSS hint
+	function pmpro_sws_toggle_banner_settings() {
 		var banner = $('#pmpro_sws_use_banner_select').val();
 		if(banner.length < 1 || banner == 'no') {
+			$('#pmpro_sws_banner_options').hide();
 			$('#pmpro_sws_css_selectors_description').hide();
 			$('.pmpro_sws_banner_css_selectors').hide();
 		} else {
 			$('#pmpro_sws_css_selectors_description').show();
 			$('.pmpro_sws_banner_css_selectors').hide();
 			$('.pmpro_sws_banner_css_selectors[data-pmprosws-banner='+banner+']').show();
+			$('#pmpro_sws_banner_options').show();
 		}
+	}
+	$('#pmpro_sws_use_banner_select').change(function(){
+		pmpro_sws_toggle_banner_settings();
 	});
+	pmpro_sws_toggle_banner_settings();
 
 	// toggling the upsell settings
 	$('#pmpro_sws_upsell_enabled').change(function(){
