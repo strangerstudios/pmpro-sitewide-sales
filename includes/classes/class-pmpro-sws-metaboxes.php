@@ -109,7 +109,8 @@ class PMPro_SWS_MetaBoxes {
 			$init_checked = true;
 		} else {
 			$options = PMPro_SWS_Settings::pmprosws_get_options();
-			if ( $post->ID . '' === $options['active_sitewide_sale_id'] ) {
+			if ( empty( $options['active_sitewide_sale_id'] ) && $post->post_status == 'auto-draft'
+				|| $post->ID . '' === $options['active_sitewide_sale_id'] ) {
 				$init_checked = true;
 			}
 		}
@@ -117,10 +118,10 @@ class PMPro_SWS_MetaBoxes {
 		<table class="form-table">
 			<tr>
 				<th scope="row" valign="top">
-					<label><?php esc_html_e( 'Set as Current Sitewide Sale:', 'pmpro-sitewide-sale' );?></label>
+					<label for="pmpro_sws_set_as_sitewide_sale"><?php esc_html_e( 'Set as Current Sitewide Sale:', 'pmpro-sitewide-sale' );?></label>
 				</th>
 				<td>
-					<input name="pmpro_sws_set_as_sitewide_sale" type="checkbox" <?php checked( $init_checked, true );?> />
+					<input name="pmpro_sws_set_as_sitewide_sale" id="pmpro_sws_set_as_sitewide_sale" type="checkbox" <?php checked( $init_checked, true );?> />
 				</td>
 			</tr>
 			<tr>
