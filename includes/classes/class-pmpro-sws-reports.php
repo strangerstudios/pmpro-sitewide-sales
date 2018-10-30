@@ -24,7 +24,7 @@ class PMPro_SWS_Reports {
 	public static function assign_pmpro_sws_reports() {
 		global $pmpro_reports;
 		// Functions called by adding this report are below the class.
-		$pmpro_reports['pmpro_sws_reports'] = __( 'PMPro Sitewide Sale', 'pmpro_sitewide_sale' );
+		$pmpro_reports['pmpro_sws_reports'] = __( 'Sitewide Sale', 'pmpro_sitewide_sale' );
 		return $pmpro_reports;
 	}
 
@@ -51,9 +51,18 @@ class PMPro_SWS_Reports {
 			$sitewide_sale_id = $active_sitewide_sale;
 		}
 		if ( false === $sitewide_sale_id ) {
-			return __( 'No sitewide sale set.', 'pmpro-sitewide-sale' );
+			$sitewide_sales = get_posts(
+				[
+					'post_type' => 'pmpro_sitewide_sale',
+					'post_status' => 'publish',
+					'numberposts' => 1,
+					'orderby' => 'ID',
+					'order' => 'DESC',
+				]
+			);
+			$sitewide_sale_id = $sitewide_sales[0]->ID;
 		}
-		$code_id   = get_post_meta( $sitewide_sale_id, 'pmpro_sws_discount_code_id', true ) . '';
+		$code_id = get_post_meta( $sitewide_sale_id, 'pmpro_sws_discount_code_id', true ) . '';
 
 		if ( ! empty( $code_id ) ) {
 			$code_name = $wpdb->get_var( $wpdb->prepare( "SELECT code FROM $wpdb->pmpro_discount_codes WHERE id=%s LIMIT 1", $code_id ) );
@@ -77,7 +86,7 @@ class PMPro_SWS_Reports {
 		}
 
 		// Reports regarding total sales.
-		$orders_during_sale   = $wpdb->get_results( $wpdb->prepare( "SELECT orders.total, orders.subscription_transaction_id, orders.timestamp, orders.user_id, orders.id, codes.code_id FROM $wpdb->pmpro_membership_orders orders LEFT JOIN wp_pmpro_discount_codes_uses codes ON orders.id = codes.order_id WHERE orders.timestamp >= %s AND orders.timestamp <= %s AND orders.total > 0", get_post_meta( $sitewide_sale_id, 'pmpro_sws_start_date', true ), date( 'Y-m-d', strtotime( '+1 day', strtotime( get_post_meta( $sitewide_sale_id, 'pmpro_sws_end_date', true ) ) ) ) ) );
+		$orders_during_sale   = $wpdb->get_results( $wpdb->prepare( "SELECT orders.total, orders.subscription_transaction_id, orders.timestamp, orders.user_id, orders.id, codes.code_id FROM $wpdb->pmpro_membership_orders orders LEFT JOIN wp_pmpro_discount_codes_uses codes ON orders.id = codes.order_id WHERE orders.timestamp >= %s AND orders.timestamp <= %s AND orders.total > 0", get_post_meta( $sitewide_sale_id, 'pmpro_sws_start_date', true ), date( 'Y-m-d', strtotime( '+1 day', strtotime(get_post_meta( $sitewide_sale_id, 'pmpro_sws_end_date', true ) ) ) ) ) );
 		$orders_with_code     = 0;
 		$new_orders_with_code = 0;
 		$revenue_with_code    = 0;
@@ -123,11 +132,11 @@ class PMPro_SWS_Reports {
 		$checkout_conversions_percent          = self::divide_into_percent( $checkout_conversions, $landing_page_visits );
 
 		$reports_to_output = array(
-			'Total Sales' => array(
+			'Total Sales During Sale Period' => array(
 				'value'  => '$' . number_format_i18n( $total_revenue ) . ' (' . number_format_i18n( $total_sales ) . ')',
 				'child' => false,
 			),
-			'With the Discount Code ' . $code_name => array(
+			'Using the Discount Code ' . $code_name => array(
 				'value'  => '$' . number_format_i18n( $revenue_with_code ) . ' (' . number_format_i18n( $orders_with_code ) . ' Total, ' . number_format_i18n( $new_orders_with_code ) . ' New)',
 				'child' => true,
 			),
@@ -147,17 +156,21 @@ class PMPro_SWS_Reports {
 				'value'  => number_format_i18n( $landing_page_visits ),
 				'child' => false,
 			),
-			'People Going to Sitewide Sale Page after Seeing Banner' => array(
+			'Landing Page Visits After Banner Impression' => array(
 				'value'  => number_format_i18n( $landing_page_after_banner ) . ' (' . number_format_i18n( $landing_page_after_banner_percent ) . '% of Banner Impressions)',
 				'child' => true,
 			),
-			'People Going Directly to Sitewide Sale Page without Seeing Banner' => array(
+			'Landing Page Visits Without Banner Impression' => array(
 				'value'  => number_format_i18n( $landing_page_not_after_banner ) . ' (' . number_format_i18n( $landing_page_not_after_banner_percent ) . '% of Sitewide Sale Page Visits)',
 				'child' => true,
 			),
-			'Sales After Visiting Sitewide Sale Page' => array(
-				'value'  => number_format_i18n( $checkout_conversions ) . ' (' . number_format_i18n( $checkout_conversions_percent ) . '% of Sitewide Sale Page Visits)',
+			'Sales After Landing Page Visit' => array(
+				'value'  => number_format_i18n( $checkout_conversions ),
 				'child' => false,
+			),
+			'Landing Page Conversion Rate' => array(
+				'value'  =>  number_format_i18n( $checkout_conversions_percent ) . '%',
+				'child' => true,
 			),
 			'Using the Discount Code ' . $code_name => array(
 				'value'  => number_format_i18n( $checkout_conversions_with_code ),
@@ -179,18 +192,12 @@ class PMPro_SWS_Reports {
 		 */
 		$reports_to_output = apply_filters( 'pmpro_sws_reports', $reports_to_output, $sitewide_sale_id );
 
-		$to_return = '
-		<span id="pmpro_sws_reports">
-			<table class="widefat fixed striped">
-				<thead>
-					<tr>
-						<td>' . esc_html__( 'Sitewide Sale', 'pmpro_sitewide_sale' ) . '</td>
-						<td>' . esc_html( get_the_title( $sitewide_sale_id ) ) .
-						' (' . date_i18n( get_option( 'date_format' ), ( new \DateTime( get_post_meta( $sitewide_sale_id, 'pmpro_sws_start_date', true ) ) )->format( 'U' ) ) .
-						' - ' . date_i18n( get_option( 'date_format' ), ( new \DateTime( get_post_meta( $sitewide_sale_id, 'pmpro_sws_end_date', true ) ) )->format( 'U' ) ) . ')</td>
-					</tr>
-				</thead>
-				<tbody>';
+		$to_return = '<span id="pmpro_sws_reports">';
+		$to_return .= '<hr /><h2>' . esc_html( get_the_title( $sitewide_sale_id ) ) . '</h2>';
+		$to_return .= date_i18n( get_option( 'date_format' ), ( new \DateTime( get_post_meta( $sitewide_sale_id, 'pmpro_sws_start_date', true ) ) )->format( 'U' ) );
+		$to_return .= ' - ';
+		$to_return .= date_i18n( get_option( 'date_format' ), ( new \DateTime( get_post_meta( $sitewide_sale_id, 'pmpro_sws_end_date', true ) ) )->format( 'U' ) );
+		$to_return .= '<table class="wp-list-table widefat striped"><tbody>';
 
 		foreach ( $reports_to_output as $name => $value ) {
 			if ( ! is_array( $value ) || ! is_string( $name ) || ! isset( $value['value'] ) ) {
@@ -206,8 +213,8 @@ class PMPro_SWS_Reports {
 			} else {
 				$to_return .= '
 				<tr>
-					<td scope="row"><strong>' . esc_html__( $name, 'pmpro_sitewide_sale' ) . '</strong></td>
-					<td><strong>' . esc_html__( $value['value'], 'pmpro_sitewide_sale' ) . '</strong></td>
+					<td scope="row"><h2><strong>' . esc_html__( $name, 'pmpro_sitewide_sale' ) . '</strong></h2></td>
+					<td><h2><strong>' . esc_html__( $value['value'], 'pmpro_sitewide_sale' ) . '</strong></h2></td>
 				</tr>
 				';
 			}
