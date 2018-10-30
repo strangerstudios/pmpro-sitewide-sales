@@ -89,6 +89,23 @@ class PMPro_SWS_Setup {
 	}
 
 	/**
+	 * Returns true of there are any posts of type sitewide_sale, false otherwise.
+	 */
+	public static function has_sitewide_sales() {
+		global $wpdb;
+		$sale_id = $wpdb->get_var( "SELECT *
+									FROM $wpdb->posts
+									WHERE post_type = 'pmpro_sitewide_sale'
+										AND post_status <> 'auto-draft'
+									LIMIT 1" );
+		if ( ! empty( $sale_id ) ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
 	 * Admin Notice on Activation.
 	 *
 	 * @since 0.1.0

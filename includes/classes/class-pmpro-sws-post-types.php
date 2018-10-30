@@ -22,6 +22,7 @@ class PMPro_SWS_Post_Types {
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
 		add_action( 'wp_ajax_pmpro_sws_set_active_sitewide_sale', array( __CLASS__, 'set_active_sitewide_sale' ) );
 		add_filter( 'wp_insert_post_data', array( __CLASS__, 'force_publish_status' ), 10, 2 );
+		add_action( 'admin_notices', array( __CLASS__, 'override_list_table' ) );
 	}
 
 	/**
@@ -234,4 +235,24 @@ class PMPro_SWS_Post_Types {
 
 		 return $data;
 	 }
+
+	 /**
+	  * Override wp list table if there are no sales yet.
+	  */
+	  public static function override_list_table() {
+		  $current_screen = get_current_screen();
+
+		  if ( $current_screen->base == 'edit'
+		  	&& $current_screen->post_type == 'pmpro_sitewide_sale'
+			&& $current_screen->action == ''
+			&& ! PMPro_SWS_Setup::has_sitewide_sales() ) {
+			?>
+			<div class="pmpro-new-install" style="display: none;">
+	            <h2><?php esc_html_e( 'Welcome to Sitewide Sales', 'pmpro-sitewide-sale' ); ?></h2>
+	            <a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=pmpro_sitewide_sale' ) ); ?>" class="button-primary"><?php esc_html_e( 'Create a Sitewide Sale', 'pmpro-sitewide-sale' ); ?></a>
+	            <a href="<?php echo esc_url( admin_url( 'https://www.paidmembershipspro.com/add-ons/sitewide-sale/' ) ); ?>" target="_blank" class="button"><?php esc_html_e( 'Read Sitewide Sale Docs', 'pmpro-sitewide-sale' ); ?></a>
+	        </div> <!-- end pmpro-new-install -->
+			<?php
+		  }
+	  }
 }

@@ -1,4 +1,13 @@
 jQuery( document ).ready(function($) {
+	// show new install screen if it was rendered
+	var pmpro_sws_new_install = $('div.pmpro-new-install');
+	if(pmpro_sws_new_install.length > 0) {
+		$('#posts-filter').hide();
+		$('#posts-filter').siblings('ul.subsubsub').hide();
+		pmpro_sws_new_install.insertAfter('hr.wp-header-end');
+		pmpro_sws_new_install.show();
+	}
+
 	// multiselects
 	$("#pmpro_sws_discount_code_select").selectWoo();
 	$("#pmpro_sws_landing_page_select").selectWoo();
@@ -28,6 +37,11 @@ jQuery( document ).ready(function($) {
 	// toggling the banner settings and banner CSS hint
 	function pmpro_sws_toggle_banner_settings() {
 		var banner = $('#pmpro_sws_use_banner_select').val();
+
+		if(typeof banner == 'undefined' ) {
+			return;
+		}
+
 		if(banner.length < 1 || banner == 'no') {
 			$('#pmpro_sws_banner_options').hide();
 			$('#pmpro_sws_css_selectors_description').hide();
