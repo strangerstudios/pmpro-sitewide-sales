@@ -109,7 +109,8 @@ class PMPro_SWS_MetaBoxes {
 			$init_checked = true;
 		} else {
 			$options = PMPro_SWS_Settings::pmprosws_get_options();
-			if ( $post->ID . '' === $options['active_sitewide_sale_id'] ) {
+			if ( empty( $options['active_sitewide_sale_id'] ) && $post->post_status == 'auto-draft'
+				|| $post->ID . '' === $options['active_sitewide_sale_id'] ) {
 				$init_checked = true;
 			}
 		}
@@ -117,10 +118,10 @@ class PMPro_SWS_MetaBoxes {
 		<table class="form-table">
 			<tr>
 				<th scope="row" valign="top">
-					<label><?php esc_html_e( 'Set as Current Sitewide Sale:', 'pmpro-sitewide-sale' );?></label>
+					<label for="pmpro_sws_set_as_sitewide_sale"><?php esc_html_e( 'Set as Current Sitewide Sale:', 'pmpro-sitewide-sale' );?></label>
 				</th>
 				<td>
-					<input name="pmpro_sws_set_as_sitewide_sale" type="checkbox" <?php checked( $init_checked, true );?> />
+					<input name="pmpro_sws_set_as_sitewide_sale" id="pmpro_sws_set_as_sitewide_sale" type="checkbox" <?php checked( $init_checked, true );?> />
 				</td>
 			</tr>
 			<tr>
@@ -177,7 +178,6 @@ class PMPro_SWS_MetaBoxes {
 			$end_year    = date( 'Y', strtotime( '+1 week', current_time( 'timestamp') ) );
 		}
 		?>
-		<p><?php esc_html_e( 'These fields control when the banner (if applicable) and built-in sale reporting will be active for your site. They also control what content is displayed on your sale Landing Page according to the "Landing Page" settings in Step 3 below.', 'pmpro-sitewide-sale' ); ?></p>
 		<table class="form-table">
 			<tbody>
 				<tr>
@@ -194,7 +194,6 @@ class PMPro_SWS_MetaBoxes {
 						</select>
 						<input name="pmpro_sws_start_day" type="text" size="2" value="<?php echo esc_html( $start_day ); ?>" />
 						<input name="pmpro_sws_start_year" type="text" size="4" value="<?php echo esc_html( $start_year ); ?>" />
-						<p><small class="pmpro_lite"><?php esc_html_e( 'Set this date to first day of your sale.', 'pmpro-sitewide-sale' ); ?></small></p>
 					</td>
 				</tr>
 				<tr>
@@ -211,7 +210,6 @@ class PMPro_SWS_MetaBoxes {
 						</select>
 						<input name="pmpro_sws_end_day" type="text" size="2" value="<?php echo esc_html( $end_day ); ?>" />
 						<input name="pmpro_sws_end_year" type="text" size="4" value="<?php echo esc_html( $end_year ); ?>" />
-						<p><small class="pmpro_lite"><?php esc_html_e( 'Set this date to the last full day of your sale.', 'pmpro-sitewide-sale' ); ?></small></p>
 					</td>
 				</tr>
 			</tbody>
@@ -261,7 +259,6 @@ class PMPro_SWS_MetaBoxes {
 							</span>
 							<a target="_blank" class="button button-secondary" href="<?php echo admin_url( 'admin.php?page=pmpro-discountcodes&edit=-1&pmpro_sws_callback=' . $post->ID );?>"><?php esc_html_e( 'create a new discount code', 'pmpro-sitewide-sale' );?></a>
 						</p>
-						<p><small class="pmpro_lite"><?php esc_html_e( 'Select the code that will be automatically applied for users that complete an applicable membership checkout after visiting your Landing Page.', 'pmpro-sitewide-sale' ); ?></small></p>
 					</td>
 				</tr>
 			</tbody>
@@ -318,7 +315,7 @@ class PMPro_SWS_MetaBoxes {
 							}
 						?>
 						</select><br />
-						<small class="pmpro_lite"><?php esc_html_e( 'Include the [pmpro_sws] shortcode.', 'pmpro-sitewide-sale' );?></small>
+						<small class="pmpro_lite"><?php _e( 'Include the [pmpro_sws] shortcode.', 'pmpro-sitewide-sale' );?></small>
 
 						<p>
 							<span id="pmpro_sws_after_landing_page_select">
@@ -456,33 +453,23 @@ class PMPro_SWS_MetaBoxes {
 							?>
 						</select>
 						<input type="submit" class="button button-secondary" id="pmpro_sws_preview" name="pmpro_sws_preview" value="<?php echo esc_html__( 'Save and Preview', 'pmpro-sitewide-sale' ); ?>">
-						<p><small class="pmpro_lite"><?php esc_html_e( 'Optionally display a banner, which you can customize using additional settings below, to advertise your sale.', 'pmpro-sitewide-sale' ); ?></small></p>
 					</td>
 				</tr>
 			</tbody>
 		</table>
-		<table class="form-table" id="pmpro_sws_banner_options">
+		<table class="form-table" id="pmpro_sws_banner_options" <?php if ( $use_banner == 'no' ) { ?>style="disaply: none;"<?php } ?>>
 			<tbody>
 				<tr>
 					<th><label for="pmpro_sws_banner_title"><?php esc_html_e( 'Banner Title', 'pmpro-sitewide-sale' ); ?></label></th>
-					<td>
-						<input type="textbox" name="pmpro_sws_banner_title" value="<?php esc_html_e( $banner_title, 'pmpro-sitewide-sale' ); ?>">
-						<p><small class="pmpro_lite"><?php esc_html_e( 'A brief title for your sale, such as the holiday or purpose of the sale. (i.e. "Limited Time Offer")', 'pmpro-sitewide-sale' ); ?></small></p>
-					</td>
+					<td><input type="textbox" name="pmpro_sws_banner_title" value="<?php esc_html_e( $banner_title, 'pmpro-sitewide-sale' ); ?>"></td>
 				</tr>
 				<tr>
 					<th><label for="pmpro_sws_banner_text"><?php esc_html_e( 'Banner Text', 'pmpro-sitewide-sale' ); ?></label></th>
-					<td>
-						<textarea class="pmpro_sws_option" id="pmpro_sws_banner_text" name="pmpro_sws_banner_text"><?php esc_html_e( $banner_text, 'pmpro-sitewide-sale' ); ?></textarea>
-						<p><small class="pmpro_lite"><?php esc_html_e( 'A brief message about your sale. (i.e. "Save 50% on membership through December.")', 'pmpro-sitewide-sale' ); ?></small></p>
-					</td>
+					<td><textarea class="pmpro_sws_option" id="pmpro_sws_banner_text" name="pmpro_sws_banner_text"><?php esc_html_e( $banner_text, 'pmpro-sitewide-sale' ); ?></textarea></td>
 				</tr>
 				<tr>
 					<th scope="row" valign="top"><label><?php esc_html_e( 'Button Text', 'pmpro-sitewide-sale' ); ?></label></th>
-					<td>
-						<input class="pmpro_sws_option" type="text" name="pmpro_sws_link_text" value="<?php esc_html_e( $link_text, 'pmpro-sitewide-sale' ); ?>">
-						<p><small class="pmpro_lite"><?php esc_html_e( 'The text displayed on the button of your banner that links to the Landing Page.', 'pmpro-sitewide-sale' ); ?></small></p>
-					</td>
+					<td><input class="pmpro_sws_option" type="text" name="pmpro_sws_link_text" value="<?php esc_html_e( $link_text, 'pmpro-sitewide-sale' ); ?>"></td>
 				</tr>
 				<tr>
 					<th scope="row" valign="top"><label><?php esc_html_e( 'Custom Banner CSS', 'pmpro-sitewide-sale' ); ?></label></th>
@@ -505,7 +492,6 @@ class PMPro_SWS_MetaBoxes {
 							?>
 							</div>
 						<?php } ?>
-						<p><small class="pmpro_lite"><?php esc_html_e( 'Optional. Use this area to add custom styles to modify the banner appearance.', 'pmpro-sitewide-sale'); ?></small></p>
 					</td>
 				</tr>
 				<tr>
@@ -528,10 +514,7 @@ class PMPro_SWS_MetaBoxes {
 						$checked_modifier = $hide_on_checkout ? ' checked' : '';
 					?>
 					<th scope="row" valign="top"><label><?php esc_html_e( 'Hide Banner at Checkout', 'pmpro-sitewide-sale' ); ?></label></th>
-					<td>
-						<input class="pmpro_sws_option" type="checkbox" name="pmpro_sws_hide_on_checkout" <?php checked( $hide_on_checkout, 1 ); ?>>
-						<p><small class="pmpro_lite"><?php esc_html_e( 'Recommended: Leave checked. This will ensure that only users aware of your active sale\'s marketing efforts will pay the sale price.', 'pmpro-sitewide-sale' ); ?></small></p>
-					</td>
+					<td><input class="pmpro_sws_option" type="checkbox" name="pmpro_sws_hide_on_checkout" <?php checked( $hide_on_checkout, 1 ); ?>></td>
 				</tr>
 			</tbody>
 		</table>
