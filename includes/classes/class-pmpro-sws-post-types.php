@@ -250,7 +250,7 @@ class PMPro_SWS_Post_Types {
 			<div class="pmpro-new-install" style="display: none;">
 	            <h2><?php esc_html_e( 'Welcome to Sitewide Sales', 'pmpro-sitewide-sale' ); ?></h2>
 	            <a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=pmpro_sitewide_sale' ) ); ?>" class="button-primary"><?php esc_html_e( 'Create a Sitewide Sale', 'pmpro-sitewide-sale' ); ?></a>
-	            <a href="<?php echo esc_url( admin_url( 'https://www.paidmembershipspro.com/add-ons/sitewide-sale/' ) ); ?>" target="_blank" class="button"><?php esc_html_e( 'Read Sitewide Sale Docs', 'pmpro-sitewide-sale' ); ?></a>
+	            <a href="<?php echo esc_url( 'https://www.paidmembershipspro.com/add-ons/sitewide-sale/' ); ?>" target="_blank" class="button"><?php esc_html_e( 'Read Sitewide Sale Docs', 'pmpro-sitewide-sale' ); ?></a>
 	        </div> <!-- end pmpro-new-install -->
 			<?php
 		  }
