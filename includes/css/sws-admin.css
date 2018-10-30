@@ -24,3 +24,37 @@
 	padding: 1rem;
 	width: 77%;
 }
+
+/* Custom Box for PMPro 1.10 Welcome Experience */
+body.post-type-pmpro_sitewide_sale .pmpro-new-install {
+    padding: 2rem;
+    text-align: center;
+}
+body.post-type-pmpro_sitewide_sale .pmpro-new-install h2 {
+    color: #AAA;
+    font-size: 2rem;
+}
+body.post-type-pmpro_sitewide_sale .pmpro-new-install h2:before {
+    display: block;
+    font: 400 5rem/1.5 dashicons;
+}
+body.post-type-pmpro_sitewide_sale .pmpro-new-install h2:before {
+    content: "\f323";
+}
+body.post-type-pmpro_sitewide_sale .pmpro-new-install .button-primary,
+body.post-type-pmpro_sitewide_sale .pmpro-new-install .button {
+    font-size: 1.2em;
+    height: auto;
+    margin-bottom: .5rem;
+    padding: .75em 1.5em;
+}
+
+@media screen and (max-width: 782px) {
+    body.post-type-pmpro_sitewide_sale .pmpro-new-install { padding: 0; }
+    body.post-type-pmpro_sitewide_sale .pmpro-new-install h2 { font-size: 1.4rem; }
+	
+    body.post-type-pmpro_sitewide_sale .pmpro-new-install .button-primary, 
+	body.post-type-pmpro_sitewide_sale .pmpro-new-install .button { display: block; }
+}
+
+ 
