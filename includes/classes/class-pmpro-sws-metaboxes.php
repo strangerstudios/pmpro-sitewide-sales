@@ -371,21 +371,21 @@ class PMPro_SWS_MetaBoxes {
 					<th scope="row" valign="top"><label><?php esc_html_e( 'Pre-Sale Content', 'pmpro-sitewide-sale' ); ?></label></th>
 					<td>
 						<textarea class="pmpro_sws_option" rows="4" name="pmpro_sws_pre_sale_content"><?php echo( esc_html( $pre_sale_content ) ); ?></textarea><br />
-						<small class="pmpro_lite"><?php _e( "Mention when the sale is starting and how awesome it will be.", 'pmpro-sitewide-sale' );?></small>
+						<p><small class="pmpro_lite"><?php esc_html_e( 'Mention when the sale is starting and how awesome it will be.', 'pmpro-sitewide-sale' ); ?></small></p>
 					</td>
 				</tr>
 				<tr>
 					<th scope="row" valign="top"><label><?php esc_html_e( 'Sale Content', 'pmpro-sitewide-sale' ); ?></label></th>
 					<td>
 						<textarea class="pmpro_sws_option" rows="4" name="pmpro_sws_sale_content"><?php echo( esc_html( $sale_content ) ); ?></textarea><br />
-						<small class="pmpro_lite"><?php esc_html_e( 'A membership checkout form will automatically be included when the sale is active.', 'pmpro-sitewide-sale' ); ?></small>
+						<p><small class="pmpro_lite"><?php esc_html_e( 'A membership checkout form will automatically be included when the sale is active.', 'pmpro-sitewide-sale' ); ?></small></p>
 					</td>
 				</tr>
 				<tr>
 					<th scope="row" valign="top"><label><?php esc_html_e( 'Post-Sale Content', 'pmpro-sitewide-sale' ); ?></label></th>
 					<td>
 						<textarea class="pmpro_sws_option" rows="4" name="pmpro_sws_post_sale_content"><?php echo( esc_html( $post_sale_content ) ); ?></textarea><br />
-						<small class="pmpro_lite"><?php _e( "Mention that the sale has ended and thank your customers.", 'pmpro-sitewide-sale' );?></small>
+						<p><small class="pmpro_lite"><?php esc_html_e( 'Mention that the sale has ended and thank your customers.', 'pmpro-sitewide-sale' );?></small></p>
 					</td>
 				</tr>
 			</tbody>
@@ -505,6 +505,7 @@ class PMPro_SWS_MetaBoxes {
 							}
 						?>
 						</select>
+						<p><small class="pmpro_lite"><?php esc_html_e( 'This setting will hide the banner for members of the selected levels.', 'pmpro-sitewide-sale' ); ?></small></p>
 					</td>
 				</tr>
 				<tr>
