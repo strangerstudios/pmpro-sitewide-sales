@@ -743,29 +743,6 @@ class PMPro_SWS_MetaBoxes {
 		}
 		PMPro_SWS_Settings::pmprosws_save_options( $options );
 
-		if ( isset( $_POST['pmpro_sws_create_discount'] ) ) {
-			wp_redirect( admin_url( 'admin.php?page=pmpro-discountcodes&edit=-1&pmpro_sws_callback=' . $post_id ) );
-			exit();
-		}
-		if ( isset( $_POST['pmpro_sws_edit_discount'] ) ) {
-			wp_redirect( admin_url( 'admin.php?page=pmpro-discountcodes&edit=' . get_post_meta( $post_id, 'discount_code_id', true ) . '&pmpro_sws_callback=' . $post_id ) );
-			exit();
-		}
-		if ( isset( $_POST['pmpro_sws_create_landing_page'] ) ) {
-			wp_redirect( admin_url( 'post-new.php?post_type=page&pmpro_sws_callback=' . $post_id ) );
-			exit();
-		}
-		if ( isset( $_POST['pmpro_sws_edit_landing_page'] ) ) {
-			wp_redirect( admin_url( 'post.php?post=' . get_post_meta( $post_id, 'pmpro_sws_landing_page_post_id', true ) . '&action=edit&pmpro_sws_callback=' . $post_id ) );
-			exit();
-		}
-		if ( isset( $_POST['pmpro_sws_view_landing_page'] ) ) {
-			$landing_page = get_post_meta( $post_id, 'pmpro_sws_landing_page_post_id', true );
-			if ( false !== $landing_page ) {
-				wp_redirect( get_permalink( $landing_page ) );
-			}
-			exit();
-		}
 		if ( isset( $_POST['pmpro_sws_preview'] ) ) {
 			$url_to_open = get_home_url() . '?pmpro_sws_preview_sale_banner=' . $post_id;
 			wp_redirect( $url_to_open );
