@@ -196,7 +196,7 @@ class PMPro_SWS_MetaBoxes {
 						</select>
 						<input name="pmpro_sws_start_day" type="text" size="2" value="<?php echo esc_html( $start_day ); ?>" />
 						<input name="pmpro_sws_start_year" type="text" size="4" value="<?php echo esc_html( $start_year ); ?>" />
-						<p><small class="pmpro_lite"><?php esc_html_e( 'Set this date to first day of your sale.', 'pmpro-sitewide-sale' ); ?></small></p>
+						<p><small class="pmpro_lite"><?php esc_html_e( 'Set this date to the first day of your sale.', 'pmpro-sitewide-sale' ); ?></small></p>
 					</td>
 				</tr>
 				<tr>
