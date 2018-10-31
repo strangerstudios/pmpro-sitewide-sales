@@ -21,6 +21,8 @@ class PMPro_SWS_MetaBoxes {
 		add_action( 'admin_notices', array( __CLASS__, 'return_from_editing_discount_code_box' ) );
 		add_action( 'enter_title_here', array( __CLASS__, 'update_title_placeholder_text' ), 10, 2 );
 		add_filter( 'redirect_post_location', array( __CLASS__, 'redirect_after_page_save' ), 10, 2 );
+		add_action( 'wp_ajax_pmpro_sws_create_landing_page', array( __CLASS__, 'create_landing_page_ajax' ) );
+		add_action( 'wp_ajax_pmpro_sws_create_discount_code', array( __CLASS__, 'create_discount_code_ajax' ) );
 	}
 
 	/**
@@ -31,6 +33,14 @@ class PMPro_SWS_MetaBoxes {
 		if ( 'pmpro_sitewide_sale' === $typenow ) {
 			wp_register_script( 'pmpro_sws_cpt_meta', plugins_url( 'includes/js/pmpro-sws-cpt-meta.js', PMPROSWS_BASENAME ), array( 'jquery' ), '1.0.4' );
 			wp_enqueue_script( 'pmpro_sws_cpt_meta' );
+			wp_localize_script( 'pmpro_sws_cpt_meta', 'pmpro_sws', array(
+				'create_discount_code_nonce' => wp_create_nonce( 'pmpro_sws_create_discount_code' ),
+				'create_landing_page_nonce' => wp_create_nonce( 'pmpro_sws_create_landing_page' ),
+				'home_url' => home_url(),
+				'admin_url' => admin_url(),
+				)
+			);
+
 			wp_register_style( 'admin-dash', plugins_url( 'includes/css/sws-admin.css', dirname( dirname( __FILE__ ) ) ), '1.0.4' );
 			wp_enqueue_style( 'admin-dash' );
 		}
@@ -255,13 +265,13 @@ class PMPro_SWS_MetaBoxes {
 								if ( $code_found ) {
 									$edit_code_url = admin_url( 'admin.php?page=pmpro-discountcodes&edit=' . $current_discount );
 									?>
-									<a target="_blank" class="button button-secondary" href="<?php echo esc_url( $edit_code_url );?>"><?php esc_html_e( 'edit code', 'pmpro-sitewide-sale' );?></a>
+									<a target="_blank" class="button button-secondary" id="pmpro_sws_edit_discount_code" href="<?php echo esc_url( $edit_code_url );?>"><?php esc_html_e( 'edit code', 'pmpro-sitewide-sale' );?></a>
 									<?php
 									esc_html_e( ' or ', 'pmpro_sitewide_sale' );
 								}
 							?>
 							</span>
-							<a target="_blank" class="button button-secondary" href="<?php echo admin_url( 'admin.php?page=pmpro-discountcodes&edit=-1&pmpro_sws_callback=' . $post->ID );?>"><?php esc_html_e( 'create a new discount code', 'pmpro-sitewide-sale' );?></a>
+							<button type="button" id="pmpro_sws_create_discount_code" class="button button-secondary"><?php esc_html_e( 'create a new discount code', 'pmpro-sitewide-sale' );?></button>
 							<p><small class="pmpro_lite"><?php esc_html_e( 'Select the code that will be automatically applied for users that complete an applicable membership checkout after visiting your Landing Page.', 'pmpro-sitewide-sale' ); ?></small></p>
 						</p>
 					</td>
@@ -323,21 +333,19 @@ class PMPro_SWS_MetaBoxes {
 						<small class="pmpro_lite"><?php esc_html_e( 'Include the [pmpro_sws] shortcode.', 'pmpro-sitewide-sale' );?></small>
 
 						<p>
-							<span id="pmpro_sws_after_landing_page_select">
+							<span id="pmpro_sws_after_landing_page_select" <?php if ( ! $page_found ) {?>style="display: none;"<?php } ?>>
 							<?php
-								if ( $page_found ) {
-									$edit_page_url = admin_url( 'post.php?post=' . $current_page . '&action=edit&pmpro_sws_callback=' . $post->ID );
-									$view_page_url = get_permalink( $current_page );
-									?>
-									<a target="_blank" class="button button-secondary" href="<?php echo esc_url( $edit_page_url );?>"><?php esc_html_e( 'edit page', 'pmpro-sitewide-sale' );?></a>
-									&nbsp;
-									<a target="_blank" class="button button-secondary" href="<?php echo esc_url( $view_page_url );?>"><?php esc_html_e( 'view page', 'pmpro-sitewide-sale' );?></a>
-									<?php
-									esc_html_e( ' or ', 'pmpro_sitewide_sale' );
-								}
+								$edit_page_url = admin_url( 'post.php?post=' . $current_page . '&action=edit&pmpro_sws_callback=' . $post->ID );
+								$view_page_url = get_permalink( $current_page );
+							?>
+							<a target="_blank" class="button button-secondary" id="pmpro_sws_edit_landing_page" href="<?php echo esc_url( $edit_page_url );?>"><?php esc_html_e( 'edit page', 'pmpro-sitewide-sale' );?></a>
+							&nbsp;
+							<a target="_blank" class="button button-secondary" id="pmpro_sws_view_landing_page" href="<?php echo esc_url( $view_page_url );?>"><?php esc_html_e( 'view page', 'pmpro-sitewide-sale' );?></a>
+							<?php
+								esc_html_e( ' or ', 'pmpro_sitewide_sale' );
 							?>
 							</span>
-							<a target="_blank" class="button button-secondary" href="<?php echo admin_url( 'post-new.php?post_type=page&pmpro_sws_callback=' . $post->ID );?>"><?php esc_html_e( 'create a new landing page', 'pmpro-sitewide-sale' );?></a>
+							<button type="button" id="pmpro_sws_create_landing_page" class="button button-secondary"><?php esc_html_e( 'create a new landing page', 'pmpro-sitewide-sale' );?></button>
 						</p>
 					</td>
 				</tr>
@@ -832,5 +840,87 @@ class PMPro_SWS_MetaBoxes {
 			$location = esc_url( admin_url( 'post.php?post=' . $sitewide_sale_id . '&action=edit' ) );
 		}
 		return $location;
+	}
+
+	/**
+	 * AJAX callback to create a new discount code for your sale
+	 */
+	public static function create_discount_code_ajax() {
+		global $wpdb;
+
+		check_ajax_referer( 'pmpro_sws_create_discount_code', 'nonce' );
+
+		if ( ! function_exists('pmpro_getDiscountCode') ) {
+			exit;
+		}
+
+		$sitewide_sale_id = intval( $_REQUEST['pmpro_sws_id'] );
+		if ( empty( $sitewide_sale_id ) ) {
+			echo json_encode( array( 'status' => 'error', 'error' => esc_html__( 'No sitewide sale ID given. Try doing it manually.', 'pmpro-sitewide-sale') ) );
+			exit;
+		}
+
+		$wpdb->insert(
+			$wpdb->pmpro_discount_codes,
+			array(
+				'id'=>0,
+				'code' => pmpro_getDiscountCode(),
+				'starts' => sanitize_text_field( $_REQUEST['pmpro_sws_start'] ),
+				'expires' => sanitize_text_field( $_REQUEST['pmpro_sws_end'] ),
+				'uses' => 0
+			),
+			array(
+				'%d',
+				'%s',
+				'%s',
+				'%s',
+				'%d'
+			)
+		);
+
+		if ( ! empty( $wpdb->last_error ) ) {
+			$r = array( 'status' => 'error', 'error' => esc_html__( 'Error inserting discount code. Try doing it manually.', 'pmpro-sitewide-sale' ) );
+		} else {
+			$discount_code = $wpdb->get_row( "SELECT * FROM $wpdb->pmpro_discount_codes WHERE id = '" . intval( $wpdb->insert_id ) . "' LIMIT 1");
+			$r = array( 'status' => 'success', 'code' => $discount_code );
+		}
+
+		echo json_encode( $r );
+		exit;
+	}
+
+	/**
+	 * AJAX callback to create a new landing page for your sale
+	 */
+	public static function create_landing_page_ajax() {
+		check_ajax_referer( 'pmpro_sws_create_landing_page', 'nonce' );
+
+		$sitewide_sale_id = intval( $_REQUEST['pmpro_sws_id'] );
+		if ( empty( $sitewide_sale_id ) ) {
+			echo json_encode( array( 'status' => 'error', 'error' => esc_html__( 'No sitewide sale ID given. Try doing it manually.', 'pmpro-sitewide-sale') ) );
+			exit;
+		}
+
+		$landing_page_title = sanitize_text_field( $_REQUEST['pmpro_sws_landing_page_title'] );
+		if ( empty( $landing_page_title ) ) {
+			$landing_page_title = esc_html__( 'Sitewide Sale Landing Page', 'pmpro-sitewide-sale' );
+		}
+
+		$landing_page_post_id = wp_insert_post( array(
+			'post_title' => $landing_page_title,
+			'post_content' => '[pmpro_sws]',
+			'post_type' => 'page',
+			'post_status' => 'publish',
+			)
+		);
+
+		if ( empty( $landing_page_post_id ) ) {
+			$r = array( 'status' => 'error', 'error' => esc_html__( 'Error inserting post. Try doing it manually.', 'pmpro-sitewide-sale' ) );
+		} else {
+			$r = array( 'status' => 'success', 'post' => get_post( $landing_page_post_id ) );
+		}
+
+		echo json_encode( $r );
+		exit;
 	}
 }
