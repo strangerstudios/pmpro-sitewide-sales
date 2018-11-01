@@ -12,17 +12,12 @@ class PMPro_SWS_Setup {
 	 * @package pmpro-sitewide-sale/includes
 	 */
 	public static function init() {
-		add_filter( 'renaming_cpt_menu_filter', array( __CLASS__, 'pmpro_sws_cpt_name' ) );
 		register_activation_hook( PMPROSWS_BASENAME, array( __CLASS__, 'pmpro_sws_admin_notice_activation_hook' ) );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'pmpro_sws_admin_scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'pmpro_sws_frontend_scripts' ) );
 		add_filter( 'plugin_row_meta', array( __CLASS__, 'pmpro_sws_plugin_row_meta' ), 10, 2 );
 		add_filter( 'plugin_action_links_' . PMPROSWS_BASENAME, array( __CLASS__, 'pmpro_sws_plugin_action_links' ) );
 		add_action( 'admin_notices', array( __CLASS__, 'pmpro_sws_admin_notice' ) );
-	}
-	public static function pmpro_sws_cpt_name() {
-		$label = 'All PMPro CPTs';
-		return $label;
 	}
 
 	/**
