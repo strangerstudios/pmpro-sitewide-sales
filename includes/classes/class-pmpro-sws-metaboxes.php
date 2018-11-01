@@ -634,14 +634,12 @@ class PMPro_SWS_MetaBoxes {
 
 		if ( isset( $_POST['pmpro_sws_discount_code_id'] ) ) {
 			update_post_meta( $post_id, 'pmpro_sws_discount_code_id', intval( $_POST['pmpro_sws_discount_code_id'] ) );
-		} else {
-			update_post_meta( $post_id, 'pmpro_sws_discount_code_id', false );
 		}
 
-		if ( isset( $_POST['pmpro_sws_landing_page_post_id'] ) ) {
+		if ( ! empty( $_POST['pmpro_sws_landing_page_post_id'] ) ) {
 			update_post_meta( $post_id, 'pmpro_sws_landing_page_post_id', intval( $_POST['pmpro_sws_landing_page_post_id'] ) );
 			update_post_meta( intval( $_POST['pmpro_sws_landing_page_post_id'] ), 'pmpro_sws_sitewide_sale_id', $post_id );
-		} else {
+		} elseif( isset( $_POST['pmpro_sws_landing_page_post_id'] ) ) {
 			update_post_meta( $post_id, 'pmpro_sws_landing_page_post_id', false );
 			delete_post_meta( intval( $_REQUEST['pmpro_sws_old_landing_page_post_id'] ), 'pmpro_sws_sitewide_sale_id' );
 		}
@@ -652,8 +650,6 @@ class PMPro_SWS_MetaBoxes {
 
 		if ( isset( $_POST['pmpro_sws_landing_page_template'] ) ) {
 			update_post_meta( $post_id, 'pmpro_sws_landing_page_template', wp_kses_post( $_POST['pmpro_sws_landing_page_template'] ) );
-		} else {
-			update_post_meta( $post_id, 'pmpro_sws_landing_page_template', false );
 		}
 
 		if ( isset( $_POST['pmpro_sws_start_day'] ) && is_numeric( $_POST['pmpro_sws_start_day'] ) &&
@@ -676,39 +672,28 @@ class PMPro_SWS_MetaBoxes {
 
 			update_post_meta( $post_id, 'pmpro_sws_start_date', $start_date );
 			update_post_meta( $post_id, 'pmpro_sws_end_date', $end_date );
-		} else {
-			update_post_meta( $post_id, 'pmpro_sws_start_date', date_i18n( 'Y-m-d', strtotime( 'now' ) ) );
-			update_post_meta( $post_id, 'pmpro_sws_end_date', date_i18n( 'Y-m-d', strtotime( '+1 week' ) ) );
 		}
 
 		if ( isset( $_POST['pmpro_sws_pre_sale_content'] ) ) {
 			update_post_meta( $post_id, 'pmpro_sws_pre_sale_content', wp_kses_post( $_POST['pmpro_sws_pre_sale_content'] ) );
-		} else {
-			update_post_meta( $post_id, 'pmpro_sws_pre_sale_content', '' );
 		}
 
 		if ( isset( $_POST['pmpro_sws_sale_content'] ) ) {
 			update_post_meta( $post_id, 'pmpro_sws_sale_content', wp_kses_post( $_POST['pmpro_sws_sale_content'] ) );
-		} else {
-			update_post_meta( $post_id, 'pmpro_sws_sale_content', '' );
 		}
 
 		if ( isset( $_POST['pmpro_sws_post_sale_content'] ) ) {
 			update_post_meta( $post_id, 'pmpro_sws_post_sale_content', wp_kses_post( $_POST['pmpro_sws_post_sale_content'] ) );
-		} else {
-			update_post_meta( $post_id, 'pmpro_sws_post_css_option', '' );
 		}
 
 		$possible_options = PMPro_SWS_Banners::get_registered_banners();
 		if ( isset( $_POST['pmpro_sws_use_banner'] ) && array_key_exists( trim( $_POST['pmpro_sws_use_banner'] ), $possible_options ) ) {
 			update_post_meta( $post_id, 'pmpro_sws_use_banner', trim( $_POST['pmpro_sws_use_banner'] ) );
-		} else {
-			update_post_meta( $post_id, 'pmpro_sws_use_banner', 'no' );
 		}
 
-		if ( isset( $_POST['pmpro_sws_banner_title'] ) && ! empty( $_POST['pmpro_sws_banner_title'] ) ) {
+		if ( ! empty( $_POST['pmpro_sws_banner_title'] ) ) {
 			update_post_meta( $post_id, 'pmpro_sws_banner_title', wp_kses_post( $_POST['pmpro_sws_banner_title'] ) );
-		} else {
+		} elseif( isset( $_POST['pmpro_sws_banner_title'] ) ) {
 			update_post_meta( $post_id, 'pmpro_sws_banner_title', $post->post_title );
 		}
 
@@ -717,30 +702,21 @@ class PMPro_SWS_MetaBoxes {
 			remove_action( 'save_post', array( __CLASS__, 'save_sws_metaboxes' ) );
 			wp_update_post( $post, true );
 			add_action( 'save_post', array( __CLASS__, 'save_sws_metaboxes' ), 10, 2 );
-		} else {
-			$post->post_content = '';
-			remove_action( 'save_post', array( __CLASS__, 'save_sws_metaboxes' ) );
-			wp_update_post( $post, true );
-			add_action( 'save_post', array( __CLASS__, 'save_sws_metaboxes' ), 10, 2 );
 		}
 
-		if ( isset( $_POST['pmpro_sws_link_text'] ) ) {
+		if ( ! empty ( $_POST['pmpro_sws_link_text'] ) ) {
 			update_post_meta( $post_id, 'pmpro_sws_link_text', sanitize_text_field( $_POST['pmpro_sws_link_text'] ) );
-		} else {
+		} elseif( isset( $_POST['pmpro_sws_link_text'] ) ) {
 			update_post_meta( $post_id, 'pmpro_sws_link_text', 'Buy Now' );
 		}
 
 		if ( isset( $_POST['pmpro_sws_css_option'] ) ) {
 			update_post_meta( $post_id, 'pmpro_sws_css_option', wp_kses_post( $_POST['pmpro_sws_css_option'] ) );
-		} else {
-			update_post_meta( $post_id, 'pmpro_sws_css_option', '' );
 		}
 
 		if ( isset( $_POST['pmpro_sws_hide_for_levels'] ) && is_array( $_POST['pmpro_sws_hide_for_levels'] ) ) {
 			$pmpro_sws_hide_for_levels = array_map( 'intval', $_POST['pmpro_sws_hide_for_levels'] );
 			update_post_meta( $post_id, 'pmpro_sws_hide_for_levels', $pmpro_sws_hide_for_levels );
-		} else {
-			update_post_meta( $post_id, 'pmpro_sws_hide_for_levels', array() );
 		}
 
 		if ( isset( $_POST['pmpro_sws_hide_on_checkout'] ) ) {
