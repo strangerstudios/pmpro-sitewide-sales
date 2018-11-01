@@ -563,6 +563,8 @@ class PMPro_SWS_MetaBoxes {
 	 * @return null
 	 */
 	public static function save_sws_metaboxes( $post_id, $post ) {
+		global $wpdb;
+
 		if ( 'pmpro_sitewide_sale' !== $post->post_type ) {
 			return;
 		}
@@ -600,8 +602,15 @@ class PMPro_SWS_MetaBoxes {
 			die( '<br/>Nonce failed' );
 		}
 
-
-		global $wpdb;
+		// Make sure the post title is not blank
+		if( isset( $_POST['post_title'] ) && empty( $_POST['post_title'] ) ) {
+			$post->post_title = sanitize_post_field(
+				'post_title',
+				esc_html__( 'Sitewide Sale', 'pmpro-sitewide-sale' ),
+				$post->ID,
+				'edit'
+			);
+		}
 
 		if ( isset( $_POST['pmpro_sws_discount_code_id'] ) ) {
 			update_post_meta( $post_id, 'pmpro_sws_discount_code_id', intval( $_POST['pmpro_sws_discount_code_id'] ) );
