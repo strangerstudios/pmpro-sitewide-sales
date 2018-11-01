@@ -249,7 +249,7 @@ class PMPro_SWS_MetaBoxes {
 					<th><label for="pmpro_sws_discount_code_id">Discount Code</label></th>
 					<td>
 						<select class="discount_code_select pmpro_sws_option" id="pmpro_sws_discount_code_select" name="pmpro_sws_discount_code_id">
-							<option value=""></option>
+							<option value="0"><?php esc_html_e( '- Choose One -', 'pmpro-sitewide-sale'); ?></option>
 							<?php
 							$code_found = false;
 							foreach ( $codes as $code ) {
@@ -322,7 +322,7 @@ class PMPro_SWS_MetaBoxes {
 					<th><label for="pmpro_sws_landing_page_post_id"><?php esc_html_e( 'Landing Page', 'pmpro-sitewide-sale'); ?></label></th>
 					<td>
 						<select class="landing_page_select pmpro_sws_option" id="pmpro_sws_landing_page_select" name="pmpro_sws_landing_page_post_id">
-							<option value=""></option>
+							<option value="0"><?php esc_html_e( '- Choose One -', 'pmpro-sitewide-sale'); ?></option>
 							<?php
 							$page_found = false;
 							foreach ( $pages as $page ) {
@@ -358,6 +358,7 @@ class PMPro_SWS_MetaBoxes {
 					<th><label for="pmpro_sws_landing_page_default_level"><?php esc_html_e( 'Default Level', 'pmpro-sitewide-sale' ); ?></label></th>
 					<td>
 						<select id="pmpro_sws_landing_page_default_level" name="pmpro_sws_landing_page_default_level">
+						<option value="0"><?php esc_html_e( '- Choose One -', 'pmpro-sitewide-sale'); ?></option>
 						<?php
 							$all_levels = pmpro_getAllLevels( true, true );
 							foreach( $all_levels as $level ) {
@@ -376,7 +377,7 @@ class PMPro_SWS_MetaBoxes {
 						<th><label for="pmpro_sws_landing_page_template"><?php esc_html_e( 'Landing Page Template', 'pmpro-sitewide-sale'); ?></label></th>
 						<td>
 							<select class="landing_page_select_template pmpro_sws_option" id="pmpro_sws_landing_page_template" name="pmpro_sws_landing_page_template">
-								<option value=""></option>
+								<option value="0"><?php esc_html_e( 'None', 'pmpro-sitewide-sale'); ?></option>
 								<?php
 									$templates = array(
 										'gradient' => 'Gradient',
@@ -542,11 +543,12 @@ class PMPro_SWS_MetaBoxes {
 				<tr>
 					<th scope="row" valign="top"><label><?php esc_html_e( 'Hide Banner by Membership Level', 'pmpro-sitewide-sale' ); ?></label></th>
 					<td>
+						<input type="hidden" name="pmpro_sws_hide_for_levels_exists" value="1" />
 						<select multiple class="pmpro_sws_option" id="pmpro_sws_hide_levels_select" name="pmpro_sws_hide_for_levels[]" style="width:12em">
 						<?php
 							$all_levels    = pmpro_getAllLevels( true, true );
 							foreach ( $all_levels as $level ) {
-								$selected_modifier = in_array( $level->id, $hide_for_levels ) ? ' selected' : '';
+								$selected_modifier = in_array( $level->id, $hide_for_levels ) ? ' selected="selected"' : '';
 								echo '<option value=' . esc_html( $level->id ) . esc_html( $selected_modifier ) . '>' . esc_html( $level->name ) . '</option>';
 							}
 						?>
@@ -560,6 +562,7 @@ class PMPro_SWS_MetaBoxes {
 					?>
 					<th scope="row" valign="top"><label><?php esc_html_e( 'Hide Banner at Checkout', 'pmpro-sitewide-sale' ); ?></label></th>
 					<td>
+						<input type="hidden" name="pmpro_sws_hide_on_checkout_exists" value="1" />
 						<input class="pmpro_sws_option" type="checkbox" id="pmpro_sws_hide_on_checkout" name="pmpro_sws_hide_on_checkout" <?php checked( $hide_on_checkout, 1 ); ?>> <label for="pmpro_sws_hide_on_checkout"><?php esc_html_e( 'Check this box to hide the banner on checkout pages.', 'pmpro-sitewide-sale' ); ?></label>
 						<p><small class="pmpro_lite"><?php esc_html_e( "Recommended: Leave checked so only users using your landing page will pay the sale price.", 'pmpro-sitewide-sale' ); ?></small></p>
 					</td>
@@ -686,7 +689,7 @@ class PMPro_SWS_MetaBoxes {
 			update_post_meta( $post_id, 'pmpro_sws_post_sale_content', wp_kses_post( $_POST['pmpro_sws_post_sale_content'] ) );
 		}
 
-		$possible_options = PMPro_SWS_Banners::get_registered_banners();
+		$possible_options = array_merge( array( 'no' => 'no' ), PMPro_SWS_Banners::get_registered_banners() );
 		if ( isset( $_POST['pmpro_sws_use_banner'] ) && array_key_exists( trim( $_POST['pmpro_sws_use_banner'] ), $possible_options ) ) {
 			update_post_meta( $post_id, 'pmpro_sws_use_banner', trim( $_POST['pmpro_sws_use_banner'] ) );
 		}
@@ -714,14 +717,16 @@ class PMPro_SWS_MetaBoxes {
 			update_post_meta( $post_id, 'pmpro_sws_css_option', wp_kses_post( $_POST['pmpro_sws_css_option'] ) );
 		}
 
-		if ( isset( $_POST['pmpro_sws_hide_for_levels'] ) && is_array( $_POST['pmpro_sws_hide_for_levels'] ) ) {
+		if ( ! empty( $_POST['pmpro_sws_hide_for_levels'] ) && is_array( $_POST['pmpro_sws_hide_for_levels'] ) ) {
 			$pmpro_sws_hide_for_levels = array_map( 'intval', $_POST['pmpro_sws_hide_for_levels'] );
 			update_post_meta( $post_id, 'pmpro_sws_hide_for_levels', $pmpro_sws_hide_for_levels );
+		} elseif ( isset( $_POST['pmpro_sws_hide_for_levels_exists'] ) ) {
+			update_post_meta( $post_id, 'pmpro_sws_hide_for_levels', false );
 		}
 
-		if ( isset( $_POST['pmpro_sws_hide_on_checkout'] ) ) {
+		if ( ! empty( $_POST['pmpro_sws_hide_on_checkout'] ) ) {
 			update_post_meta( $post_id, 'pmpro_sws_hide_on_checkout', true );
-		} else {
+		} elseif ( isset( $_POST['pmpro_sws_hide_on_checkout_exists'] ) ) {
 			update_post_meta( $post_id, 'pmpro_sws_hide_on_checkout', false );
 		}
 
