@@ -293,6 +293,8 @@ class PMPro_SWS_MetaBoxes {
 			$current_page = false;
 		}
 
+		$default_level = get_post_meta( $post->ID, 'pmpro_sws_landing_page_default_level_id', true );
+
 		$template = esc_html( get_post_meta( $post->ID, 'pmpro_sws_landing_page_template', true ) );
 		if ( empty( $template ) ) {
 			$template = false;
@@ -350,6 +352,21 @@ class PMPro_SWS_MetaBoxes {
 							</span>
 							<button type="button" id="pmpro_sws_create_landing_page" class="button button-secondary"><?php esc_html_e( 'create a new landing page', 'pmpro-sitewide-sale' );?></button>
 						</p>
+					</td>
+				</tr>
+				<tr>
+					<th><label for="pmpro_sws_landing_page_default_level"><?php esc_html_e( 'Default Level', 'pmpro-sitewide-sale' ); ?></label></th>
+					<td>
+						<select id="pmpro_sws_landing_page_default_level" name="pmpro_sws_landing_page_default_level">
+						<?php
+							$all_levels = pmpro_getAllLevels( true, true );
+							foreach( $all_levels as $level ) {
+							?>
+							<option value="<?php echo esc_attr( $level->id ); ?>" <?php selected( $default_level, $level->id );?>><?php echo esc_textarea( $level->name ); ?></option>
+							<?php
+							}
+						?>
+						</select>
 					</td>
 				</tr>
 				<?php
@@ -627,6 +644,10 @@ class PMPro_SWS_MetaBoxes {
 		} else {
 			update_post_meta( $post_id, 'pmpro_sws_landing_page_post_id', false );
 			delete_post_meta( intval( $_REQUEST['pmpro_sws_old_landing_page_post_id'] ), 'pmpro_sws_sitewide_sale_id' );
+		}
+
+		if ( isset( $_POST['pmpro_sws_landing_page_default_level'] ) ) {
+			update_post_meta( $post_id, 'pmpro_sws_landing_page_default_level_id', intval( $_POST['pmpro_sws_landing_page_default_level'] ) );
 		}
 
 		if ( isset( $_POST['pmpro_sws_landing_page_template'] ) ) {

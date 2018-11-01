@@ -49,13 +49,26 @@ class PMPro_SWS_Landing_Pages {
          $sitewide_sale_id = get_post_meta( $post_id, 'pmpro_sws_sitewide_sale_id', true );
 
          if ( ! empty( $sitewide_sale_id ) ) {
-             // get the discount code for this sale
-             $discount_code_id = get_post_meta( $sitewide_sale_id, 'pmpro_sws_discount_code_id', true );
+			// check for setting
+			$default_level_id = get_post_meta( $sitewide_sale_id, 'pmpro_sws_landing_page_default_level_id', true );
 
-             // get first level that uses this code
-             if ( ! empty ( $discount_code_id ) ) {
-                 $level_id = $wpdb->get_var( "SELECT level_id FROM $wpdb->pmpro_discount_codes_levels WHERE code_id = '" . esc_sql( $discount_code_id )  . "' ORDER BY level_id LIMIT 1" );
-             }
+			// no default set? get the discount code for this sale
+			if ( ! empty( $default_level_id ) ) {
+				// use the setting
+				$level_id = $default_level_id;
+			} else {
+				// check for discount code
+				$discount_code_id = get_post_meta( $sitewide_sale_id, 'pmpro_sws_discount_code_id', true );
+
+				// get first level that uses this code
+				if ( ! empty ( $discount_code_id ) ) {
+					$first_code_level_id = $wpdb->get_var( "SELECT level_id FROM $wpdb->pmpro_discount_codes_levels WHERE code_id = '" . esc_sql( $discount_code_id )  . "' ORDER BY level_id LIMIT 1" );
+
+					if( ! empty( $first_code_level_id ) ) {
+						$level_id = $first_code_level_id;
+					}
+				}
+			}
          }
 
          return $level_id;
@@ -103,7 +116,7 @@ class PMPro_SWS_Landing_Pages {
 	 */
 	public static function shortcode( $atts ) {
 		$sitewide_sale = null;
-		
+
 		if ( is_array( $atts ) && array_key_exists( 'sitewide_sale_id', $atts ) ) {
 			$sitewide_sale = get_post( $atts['sitewide_sale_id'] );
 			if ( empty( $sitewide_sale ) && 'pmpro_sitewide_sale' !== $sitewide_sale->post_type ) {
@@ -148,7 +161,7 @@ class PMPro_SWS_Landing_Pages {
 
 		// Our return string.
 		$r = '';
-		
+
 		// Display the wrapping div for selected template if using Memberlite.
 		if ( DEFINED( 'MEMBERLITE_VERSION' ) ) {
 			$template = get_post_meta( $sitewide_sale->ID, 'pmpro_sws_landing_page_template', true );
@@ -164,7 +177,7 @@ class PMPro_SWS_Landing_Pages {
 				}
 			}
 		}
-				
+
   		if ( $sale_content === 'pre-sale') {
 			$landing_content = get_post_meta( $sitewide_sale->ID, 'pmpro_sws_pre_sale_content', true );
 			$r .= '<div class="pmpro_sws_landing_content pmpro_sws_landing_content_pre-sale">';
@@ -191,7 +204,7 @@ class PMPro_SWS_Landing_Pages {
 			}
 			$r .= '</div> <!-- .pmpro_sitewide_sale_landing_page_template -->';
 		}
-		
+
 		// Filter for themes and plugins to modify the [pmpro_sws] shortcode output.
 		$r = apply_filters( 'pmpro_sws_landing_page_content', $r, $atts );
 
@@ -219,14 +232,14 @@ class PMPro_SWS_Landing_Pages {
 	 * @param array   $classes An array of classes already in place for the body class.
 	 */
 	public static function add_body_class( $classes ) {
-		
+
 		// See if any Sitewide Sale CPTs have this post ID set as the Landing Page.
 		$sitewide_sale_id = get_post_meta( get_queried_object_id(), 'pmpro_sws_sitewide_sale_id', true );
-		
+
 		if ( ! empty ( $sitewide_sale_id ) ) {
 			// This is a landing page, add the custom class.
 			$classes[] = 'pmpro-sitewide-sale-landing-page';
-			
+
 			if ( DEFINED( 'MEMBERLITE_VERSION' ) ) {
 				// If the landing page has a custom template, add the custom class.
 				$template = get_post_meta( $sitewide_sale_id, 'pmpro_sws_landing_page_template', true );
@@ -264,7 +277,7 @@ class PMPro_SWS_Landing_Pages {
 	 * @param WP_Post $post The current post object.
 	 */
 	public static function add_page_row_actions( $actions, $post ) {
-		
+
 		// Check if this post has an associated Sitewide Sale.
 		$sitewide_sale_id = get_post_meta( $post->ID, 'pmpro_sws_sitewide_sale_id', true );
 
