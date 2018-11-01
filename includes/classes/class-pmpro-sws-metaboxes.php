@@ -139,6 +139,9 @@ class PMPro_SWS_MetaBoxes {
 					<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Save All Settings', 'pmpro-sitewide-sale' ); ?>">
 				</td>
 			</tr>
+			<tr>
+				<td><a target="_blank" href="<?php echo esc_url( admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports' ) );?>"><?php esc_html_e( 'View Sitewide Sale Reports', 'pmpro-sitewide-sale' ); ?></a></td>
+			</tr>
 		</table>
 		<?php
 	}
