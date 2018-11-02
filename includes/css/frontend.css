@@ -386,6 +386,9 @@ body.pmpro-sitewide-sale-landing-page-scroll {
 	background: #E4E3DF;
     padding: 0 0 5.8rem 0;
 }
+#pmpro_sitewide_sale_landing_page_template-scroll {
+	margin-top: 0;
+}
 #pmpro_sitewide_sale_landing_page_template-scroll .pmpro_sws_landing_content {
     overflow: hidden;
     padding: 2.9rem 0 10rem 0;
@@ -424,9 +427,6 @@ body.pmpro-sitewide-sale-landing-page-scroll {
     to {
         opacity: 1;
     }
-}
-#pmpro_sitewide_sale_landing_page_template-scroll {
-    margin: 2.9rem 0 0 0;
 }
 #pmpro_sitewide_sale_landing_page_template-scroll #pmpro_form {
     max-width: 800px;
