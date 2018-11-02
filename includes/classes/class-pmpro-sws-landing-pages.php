@@ -78,7 +78,9 @@ class PMPro_SWS_Landing_Pages {
 	 * Load the checkout preheader on the landing page.
 	 */
 	public static function pmpro_preheader() {
-        // Make sure PMPro is loaded.
+		global $wpdb;
+
+		// Make sure PMPro is loaded.
 		if ( ! defined( 'PMPRO_DIR' ) ) {
 			return;
 		}
@@ -93,15 +95,22 @@ class PMPro_SWS_Landing_Pages {
         if ( empty ( $queried_object ) ) {
             return;
         }
-        if ( ! has_shortcode( $queried_object->post_content, 'pmpro_sws' ) ) {
-            return;
-        }
 
 		// Choose a default level if none specified.
 		if ( empty( $_REQUEST['level'] ) ) {
             $_REQUEST['level'] = PMPro_SWS_Landing_Pages::get_default_level( $queried_object->ID );
 		}
 
+		// Set the discount code if none specified.
+		if ( empty( $_REQUEST['discount_code'] ) ) {
+			$sitewide_sale_id = get_post_meta( $queried_object->ID, 'pmpro_sws_sitewide_sale_id', true );
+			$discount_code_id = get_post_meta( $sitewide_sale_id, 'pmpro_sws_discount_code_id', true );
+			$_REQUEST['discount_code'] = $wpdb->get_var( "SELECT code FROM $wpdb->pmpro_discount_codes WHERE id = '" . intval( $discount_code_id ) . "' LIMIT 1" );
+		}
+
+		if ( ! has_shortcode( $queried_object->post_content, 'pmpro_sws' ) ) {
+            return;
+        }
         require_once(PMPRO_DIR . '/preheaders/checkout.php');
 	}
 
@@ -161,7 +170,7 @@ class PMPro_SWS_Landing_Pages {
 
 		// Our return string.
 		$r = '';
-		
+
 		// Display the wrapping div for selected template if using Memberlite or Advanced Setting set to "Yes".
 		if ( defined( 'MEMBERLITE_VERSION' ) || pmpro_getOption( 'pmpro_sws_allow_template' ) === 'Yes' ) {
 			$landing_template = get_post_meta( $sitewide_sale->ID, 'pmpro_sws_landing_page_template', true );

@@ -17,7 +17,7 @@ class PMPro_SWS_Checkout {
 	 * Automatically applies discount code if user has the cookie set from sale page
 	 */
 	public static function automatic_discount_application() {
-		global $wpdb, $post, $pmpro_pages;
+		global $wpdb, $pmpro_pages;
 
 		if ( empty( $_REQUEST['level'] ) || ! empty( $_REQUEST['discount_code'] ) ) {
 			return;
