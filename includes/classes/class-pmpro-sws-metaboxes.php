@@ -394,7 +394,7 @@ class PMPro_SWS_MetaBoxes {
 									}
 								?>
 							</select>
-							<p><small class="pmpro_lite"><?php esc_html_e( 'Full page templates available to your theme.', 'pmpro-sitewide-sale' ); ?></small></p>
+							<p><small class="pmpro_lite"><?php esc_html_e( 'Stylish templates available to your theme.', 'pmpro-sitewide-sale' ); ?></small></p>
 						</td>
 					</tr>
 				<?php } ?>
