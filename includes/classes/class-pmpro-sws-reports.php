@@ -85,9 +85,11 @@ class PMPro_SWS_Reports {
 		}
 
 		$discount_code_id = get_post_meta( $sitewide_sale_id, 'pmpro_sws_discount_code_id', true );
-		if ( ! empty( $code_id ) ) {
+		if ( ! empty( $discount_code_id ) ) {
+			$stats['discount_code_id'] = $discount_code_id;
 			$stats['discount_code'] = $wpdb->get_var( $wpdb->prepare( "SELECT code FROM $wpdb->pmpro_discount_codes WHERE id=%d LIMIT 1", $discount_code_id ) );
 		} else {
+			$stats['discount_code_id'] = 0;
 			$stats['discount_code'] = esc_html__( 'N/A', 'pmpro-sitewide-sales' );
 		}
 
