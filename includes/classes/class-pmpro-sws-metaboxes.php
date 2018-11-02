@@ -70,7 +70,7 @@ class PMPro_SWS_MetaBoxes {
 	public static function add_sws_metaboxes() {
 		add_meta_box(
 			'pmpro_sws_cpt_publish_sitewide_sale',
-			__( 'Sitewide Sale', 'pmpro-sitewide-sales' ),
+			__( 'Admin', 'pmpro-sitewide-sales' ),
 			array( __CLASS__, 'publish_sitewide_sale' ),
 			array( 'pmpro_sitewide_sale' ),
 			'side',
@@ -410,7 +410,7 @@ class PMPro_SWS_MetaBoxes {
 									}
 								?>
 							</select>
-							<p><small class="pmpro_lite"><?php esc_html_e( 'Stylish templates available to your theme.', 'pmpro-sitewide-sales' ); ?></small></p>
+							<p><small class="pmpro_lite"><?php esc_html_e( 'Stylish templates available for your theme.', 'pmpro-sitewide-sales' ); ?></small></p>
 						</td>
 					</tr>
 				<?php } ?>
