@@ -101,9 +101,9 @@ jQuery( document ).ready(function($) {
 			if(response.status == 'error' ) {
 				alert(response.error);
 			} else {
-				console.log(response);
 				// success
-				$('#pmpro_sws_landing_page_select').append('<option value="' + response.post.ID + '">' + response.post.post_title + '</option>');
+				pmpro_sws.pages_with_shortcodes.push(String(response.post.ID));
+				$('#pmpro_sws_landing_page_select').append('<option value="' + response.post.ID + '">' + response.post.post_title + ' (' + pmpro_sws.str_draft + ')</option>');
 				$('#pmpro_sws_landing_page_select').val(response.post.ID);
 				pmpro_sws_toggle_landing_page();
 			}

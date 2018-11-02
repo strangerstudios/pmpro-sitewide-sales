@@ -14,7 +14,7 @@ function pmpro_sws_get_tracking_cookie() {
 
 function pmpro_sws_set_tracking_cookie(cookie_array) {
 	var cookie_string = cookie_array.banner + ';' + cookie_array.landing_page + ';' + cookie_array.confirmation_page;
-	wpCookies.set('pmpro_sitewide_sale_' + pmpro_sws.sitewide_sale_id + '_tracking', cookie_string, 86400*30, '/' );
+	wpCookies.set('pmpro_sws_' + pmpro_sws.sitewide_sale_id + '_tracking', cookie_string, 86400*30, '/' );
 }
 
 function pmpro_sws_send_ajax(element) {
