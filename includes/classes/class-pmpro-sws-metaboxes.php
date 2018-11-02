@@ -38,7 +38,7 @@ class PMPro_SWS_MetaBoxes {
 				"SELECT ID
 				 FROM $wpdb->posts
 				 WHERE post_type = 'page'
-				 	AND post_status = 'publish'
+				 	AND post_status IN( 'publish', 'draft' )
 					AND post_content LIKE '%[pmpro_sws%'"
 			 );
 
@@ -48,6 +48,7 @@ class PMPro_SWS_MetaBoxes {
 				'home_url' => home_url(),
 				'admin_url' => admin_url(),
 				'pages_with_shortcodes' => $pages_with_pmpro_sws_shortcode,
+				'str_draft' => esc_html__( 'Draft', 'pmpro-sitewide-sales' ),
 				)
 			);
 
@@ -296,7 +297,7 @@ class PMPro_SWS_MetaBoxes {
 
 	public static function display_step_3( $post ) {
 		global $wpdb;
-		$pages        = get_pages();
+		$pages        = get_pages( array( 'post_status' => 'publish,draft' ) );
 		$current_page = esc_html( get_post_meta( $post->ID, 'pmpro_sws_landing_page_post_id', true ) );
 		if ( empty( $current_page ) ) {
 			$current_page = false;
@@ -340,7 +341,12 @@ class PMPro_SWS_MetaBoxes {
 									$selected_modifier = ' selected="selected"';
 									$page_found        = true;
 								}
-								echo '<option value=' . esc_html( $page->ID ) . esc_html( $selected_modifier ) . '>' . esc_html( $page->post_title ) . '</option>';
+								if ( $page->post_status == 'draft' ) {
+									$status_part = ' (' . esc_html__( 'Draft', 'pmpro-sitewide-sales' ) . ')';
+								} else {
+									$status_part = '';
+								}
+								echo '<option value=' . esc_html( $page->ID ) . esc_html( $selected_modifier ) . '>' . esc_html( $page->post_title ) . $status_part . '</option>';
 							}
 						?>
 						</select><br />
@@ -396,7 +402,7 @@ class PMPro_SWS_MetaBoxes {
 							<p><small class="pmpro_lite"><?php esc_html_e( 'Stylish templates available for your theme.', 'pmpro-sitewide-sales' ); ?></small></p>
 						</td>
 					</tr>
-				<?php } ?>				
+				<?php } ?>
 				<tr>
 					<th><label for="pmpro_sws_landing_page_default_level"><?php esc_html_e( 'Checkout Level', 'pmpro-sitewide-sales' ); ?></label></th>
 					<td>
@@ -481,7 +487,7 @@ class PMPro_SWS_MetaBoxes {
 			$hide_on_checkout = true;
 		} else {
 			$banner_text = $post->post_content;
-			
+
 			$banner_template = esc_html( get_post_meta( $post->ID, 'pmpro_sws_banner_template', true ) );
 			if ( empty( $banner_template ) ) {
 				$banner_template = false;
@@ -971,7 +977,7 @@ class PMPro_SWS_MetaBoxes {
 			'post_title' => $landing_page_title,
 			'post_content' => '[pmpro_sws]',
 			'post_type' => 'page',
-			'post_status' => 'publish',
+			'post_status' => 'draft',
 			)
 		);
 
