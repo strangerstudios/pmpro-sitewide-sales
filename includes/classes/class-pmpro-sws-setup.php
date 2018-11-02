@@ -135,7 +135,7 @@ class PMPro_SWS_Setup {
 	public static function pmpro_sws_plugin_action_links( $links ) {
 		if ( current_user_can( 'manage_options' ) ) {
 			$new_links = array(
-				'<a href="' . get_admin_url( null, 'edit.php?post_type=pmpro_sitewide_sale' ) . '">' . __( 'Settings', 'pmpro-sitewide-sales' ) . '</a>',
+				'<a href="' . get_admin_url( null, 'edit.php?post_type=pmpro_sitewide_sale' ) . '">' . __( 'View Sitewide Sales', 'pmpro-sitewide-sales' ) . '</a>',
 			);
 		}
 		return array_merge( $new_links, $links );
@@ -150,7 +150,7 @@ class PMPro_SWS_Setup {
 	public static function pmpro_sws_plugin_row_meta( $links, $file ) {
 		if ( strpos( $file, 'pmpro-sitewide-sale.php' ) !== false ) {
 			$new_links = array(
-				'<a href="' . esc_url( 'https://www.paidmembershipspro.com/add-ons/sitewide-sale/' ) . '" title="' . esc_attr( __( 'View Documentation', 'pmpro' ) ) . '">' . __( 'Docs', 'pmpro-sitewide-sales' ) . '</a>',
+				'<a href="' . esc_url( 'https://www.paidmembershipspro.com/add-ons/sitewide-sales/' ) . '" title="' . esc_attr( __( 'View Documentation', 'pmpro' ) ) . '">' . __( 'Docs', 'pmpro-sitewide-sales' ) . '</a>',
 				'<a href="' . esc_url( 'https://www.paidmembershipspro.com/support/' ) . '" title="' . esc_attr( __( 'Visit Customer Support Forum', 'pmpro' ) ) . '">' . __( 'Support', 'pmpro-sitewide-sales' ) . '</a>',
 			);
 			$links     = array_merge( $links, $new_links );
