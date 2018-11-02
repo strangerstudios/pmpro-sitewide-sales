@@ -128,7 +128,7 @@ class PMPro_SWS_MetaBoxes {
 		if ( isset( $_REQUEST['set_sitewide_sale'] ) && 'true' === $_REQUEST['set_sitewide_sale'] ) {
 			$init_checked = true;
 		} else {
-			$options = PMPro_SWS_Settings::pmprosws_get_options();
+			$options = PMPro_SWS_Settings::get_options();
 			if ( empty( $options['active_sitewide_sale_id'] ) && $post->post_status == 'auto-draft'
 				|| $post->ID . '' === $options['active_sitewide_sale_id'] ) {
 				$init_checked = true;
@@ -769,13 +769,13 @@ class PMPro_SWS_MetaBoxes {
 			update_post_meta( $post_id, 'pmpro_sws_upsell_text', '' );
 		}
 
-		$options = PMPro_SWS_Settings::pmprosws_get_options();
+		$options = PMPro_SWS_Settings::get_options();
 		if ( isset( $_POST['pmpro_sws_set_as_sitewide_sale'] ) ) {
 			$options['active_sitewide_sale_id'] = $post_id;
 		} elseif ( $options['active_sitewide_sale_id'] === $post_id . '' ) {
 			$options['active_sitewide_sale_id'] = false;
 		}
-		PMPro_SWS_Settings::pmprosws_save_options( $options );
+		PMPro_SWS_Settings::save_options( $options );
 
 		if ( isset( $_POST['pmpro_sws_preview'] ) ) {
 			$url_to_open = get_home_url() . '?pmpro_sws_preview_sale_banner=' . $post_id;

@@ -45,7 +45,7 @@ class PMPro_SWS_Reports {
 	 */
 	public static function get_report_for_code( $sitewide_sale_id = null ) {
 		global $wpdb;
-		$options = PMPro_SWS_Settings::pmprosws_get_options();
+		$options = PMPro_SWS_Settings::get_options();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
 		if ( null === $sitewide_sale_id ) {
 			$sitewide_sale_id = $active_sitewide_sale;
@@ -260,7 +260,7 @@ class PMPro_SWS_Reports {
 	public static function enqueue_tracking_js() {
 		global $pmpro_pages;
 
-		$options = PMPro_SWS_Settings::pmprosws_get_options();
+		$options = PMPro_SWS_Settings::get_options();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
 		wp_register_script( 'pmpro_sws_tracking', plugins_url( 'includes/js/pmpro-sws-tracking.js', PMPROSWS_BASENAME ), array( 'jquery', 'utils' ) );
 

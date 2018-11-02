@@ -15,8 +15,8 @@ function pmpro_report_pmpro_sws_reports_widget() {
 			'order' => 'DESC',
 		]
 	);
-	if ( ! empty ( $sitewide_sales ) ) { 
-		foreach ( $sitewide_sales as $sitewide_sale ) { 
+	if ( ! empty ( $sitewide_sales ) ) {
+		foreach ( $sitewide_sales as $sitewide_sale ) {
 			echo '<p>';
 			echo '<strong><a href="' . admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports' ) . '">' . esc_html( get_the_title( $sitewide_sale->ID ) ) . '</a></strong>';
 			echo ' (';
@@ -35,7 +35,7 @@ function pmpro_report_pmpro_sws_reports_widget() {
  */
 function pmpro_report_pmpro_sws_reports_page() {
 	global $wpdb;
-	$options = PMPro_Sitewide_Sale\includes\classes\PMPro_SWS_Settings::pmprosws_get_options();
+	$options = PMPro_Sitewide_Sale\includes\classes\PMPro_SWS_Settings::get_options();
 	$sitewide_sales = get_posts(
 		[
 			'post_type' => 'pmpro_sitewide_sale',

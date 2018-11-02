@@ -26,7 +26,7 @@ class PMPro_SWS_Settings {
 	 *
 	 * @return array [description]
 	 */
-	public static function pmprosws_get_options() {
+	public static function get_options() {
 		static $options;
 
 		if ( empty( $options ) ) {
@@ -34,7 +34,7 @@ class PMPro_SWS_Settings {
 
 			// Set the defaults.
 			if ( empty( $options ) || ! array_key_exists( 'active_sitewide_sale_id', $options ) ) {
-				$options = self::pmprosws_reset_options();
+				$options = self::reset_options();
 			}
 		}
 		return $options;
@@ -43,18 +43,18 @@ class PMPro_SWS_Settings {
 	/**
 	 * Sets SWS settings to default
 	 */
-	public static function pmprosws_reset_options() {
+	public static function reset_options() {
 		return array(
 			'active_sitewide_sale_id' => false,
 		);
 	}
 
 	/**
-	 * [pmprosws_save_options description]
+	 * Save options
 	 *
 	 * @param array $options contains information about sale to be saved.
 	 */
-	public static function pmprosws_save_options( $options ) {
+	public static function save_options( $options ) {
 		update_option( 'pmpro_sitewide_sales', $options, 'no' );
 	}
 
@@ -64,7 +64,7 @@ class PMPro_SWS_Settings {
 	 * @param  array $input info to be validated.
 	 */
 	public static function validate( $input ) {
-		$options = self::pmprosws_get_options();
+		$options = self::get_options();
 		if ( ! empty( $input['active_sitewide_sale_id'] ) && '-1' !== $input['active_sitewide_sale_id'] ) {
 			$options['active_sitewide_sale_id'] = trim( $input['active_sitewide_sale_id'] );
 		} else {
@@ -88,7 +88,7 @@ class PMPro_SWS_Settings {
 			return false;
 		}
 
-		$options = self::pmprosws_get_options();
+		$options = self::get_options();
 
 		if ( empty( $options['active_sitewide_sale_id'] ) ) {
 			return false;

@@ -86,7 +86,7 @@ class PMPro_SWS_Banners {
 		}
 
 		// get some settings
-		$options = PMPro_SWS_Settings::pmprosws_get_options();
+		$options = PMPro_SWS_Settings::get_options();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
 		$membership_level     = pmpro_getMembershipLevelForUser();
 
@@ -174,7 +174,7 @@ class PMPro_SWS_Banners {
 	 * Applies user's custom css to banner
 	 */
 	public static function apply_custom_css() {
-		$options = PMPro_SWS_Settings::pmprosws_get_options();
+		$options = PMPro_SWS_Settings::get_options();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
 		if ( current_user_can( 'administrator' ) && isset( $_REQUEST['pmpro_sws_preview_sale_banner'] ) ) {
 			$active_sitewide_sale = $_REQUEST['pmpro_sws_preview_sale_banner'];
@@ -207,7 +207,7 @@ class PMPro_SWS_Banners {
 	 * Adds top banner
 	 */
 	public static function show_top_banner() {
-		$options = PMPro_SWS_Settings::pmprosws_get_options();
+		$options = PMPro_SWS_Settings::get_options();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
 		if ( current_user_can( 'administrator' ) && isset( $_REQUEST['pmpro_sws_preview_sale_banner'] ) ) {
 			$active_sitewide_sale = $_REQUEST['pmpro_sws_preview_sale_banner'];
@@ -233,7 +233,7 @@ class PMPro_SWS_Banners {
 	 * Adds bottom banner
 	 */
 	public static function show_bottom_banner() {
-		$options = PMPro_SWS_Settings::pmprosws_get_options();
+		$options = PMPro_SWS_Settings::get_options();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
 		if ( current_user_can( 'administrator' ) && isset( $_REQUEST['pmpro_sws_preview_sale_banner'] ) ) {
 			$active_sitewide_sale = $_REQUEST['pmpro_sws_preview_sale_banner'];
@@ -265,7 +265,7 @@ class PMPro_SWS_Banners {
 	 * Adds bottom right banner
 	 */
 	public static function show_bottom_right_banner() {
-		$options = PMPro_SWS_Settings::pmprosws_get_options();
+		$options = PMPro_SWS_Settings::get_options();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
 		if ( current_user_can( 'administrator' ) && isset( $_REQUEST['pmpro_sws_preview_sale_banner'] ) ) {
 			$active_sitewide_sale = $_REQUEST['pmpro_sws_preview_sale_banner'];

@@ -22,7 +22,7 @@ class PMPro_SWS_Checkout {
 		if ( empty( $_REQUEST['level'] ) || ! empty( $_REQUEST['discount_code'] ) ) {
 			return;
 		}
-		$options = PMPro_SWS_Settings::pmprosws_get_options();
+		$options = PMPro_SWS_Settings::get_options();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
 		$current_discount     = get_post_meta( $active_sitewide_sale, 'pmpro_sws_discount_code_id', true );
 		if ( empty( $current_discount ) ||
@@ -61,7 +61,7 @@ class PMPro_SWS_Checkout {
 		}
 
 		global $current_user;
-		$options = PMPro_SWS_Settings::pmprosws_get_options();
+		$options = PMPro_SWS_Settings::get_options();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
 		if ( false === $active_sitewide_sale || empty( $current_user->membership_level ) ) {
 			return $confirmation_message;
@@ -88,7 +88,7 @@ class PMPro_SWS_Checkout {
 	 */
 	public static function insert_upsell_into_confirmation_page( $confirmation_message ) {
 		global $current_user;
-		$options = PMPro_SWS_Settings::pmprosws_get_options();
+		$options = PMPro_SWS_Settings::get_options();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
 		if ( false === $active_sitewide_sale || empty( $current_user->membership_level ) ) {
 			return $confirmation_message;
@@ -115,7 +115,7 @@ class PMPro_SWS_Checkout {
 		global $wpdb;
 
 		if( PMPro_SWS_Settings::is_active_sitewide_sale_landing_page() ) {
-			$options = PMPro_SWS_Settings::pmprosws_get_options();
+			$options = PMPro_SWS_Settings::get_options();
 			$discount_code_id = get_post_meta( $options['active_sitewide_sale_id'], 'pmpro_sws_discount_code_id', true );
 
 			if( !empty( $discount_code_id ) ) {

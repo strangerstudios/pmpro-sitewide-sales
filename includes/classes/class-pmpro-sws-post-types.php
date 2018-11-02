@@ -187,7 +187,7 @@ class PMPro_SWS_Post_Types {
 					echo '<a class="button button-primary" href="' . admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports' ) . '">' . __( 'View Reports', 'pmpro-sitewide-sales' ) . '</a>';
 					break;
 			case 'set_active':
-				$options = PMPro_SWS_Settings::pmprosws_get_options();
+				$options = PMPro_SWS_Settings::get_options();
 				if ( array_key_exists( 'active_sitewide_sale_id', $options ) && $post_id . '' === $options['active_sitewide_sale_id'] ) {
 					echo '<button class="button button-primary pmpro_sws_column_set_active" id="pmpro_sws_column_set_active_' . $post_id . '">' . __( 'Remove Active', 'pmpro-sitewide-sales' ) . '</button>';
 				} else {
@@ -202,7 +202,7 @@ class PMPro_SWS_Post_Types {
 	 */
 	public static function set_active_sitewide_sale() {
 		$sitewide_sale_id = $_POST['sitewide_sale_id'];
-		$options          = PMPro_SWS_Settings::pmprosws_get_options();
+		$options          = PMPro_SWS_Settings::get_options();
 
 		if ( array_key_exists( 'active_sitewide_sale_id', $options ) && $sitewide_sale_id === $options['active_sitewide_sale_id'] ) {
 			$options['active_sitewide_sale_id'] = false;
@@ -210,7 +210,7 @@ class PMPro_SWS_Post_Types {
 			$options['active_sitewide_sale_id'] = $sitewide_sale_id;
 		}
 
-		PMPro_SWS_Settings::pmprosws_save_options( $options );
+		PMPro_SWS_Settings::save_options( $options );
 	}
 
 	/**
