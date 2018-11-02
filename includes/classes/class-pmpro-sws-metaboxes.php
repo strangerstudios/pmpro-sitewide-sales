@@ -372,8 +372,8 @@ class PMPro_SWS_MetaBoxes {
 					</td>
 				</tr>
 				<?php
-					// Allow template selection if using Memberlite.
-					if ( defined( 'MEMBERLITE_VERSION' ) || ( pmpro_getOption( 'pmpro_sws_landing_page_allow_template' ) === 'Yes' ) ) { ?>
+					// Allow template selection if using Memberlite or set the Advanced Setting to "Yes".
+					if ( defined( 'MEMBERLITE_VERSION' ) || ( pmpro_getOption( 'pmpro_sws_allow_template' ) === 'Yes' ) ) { ?>
 					<tr>
 						<th><label for="pmpro_sws_landing_page_template"><?php esc_html_e( 'Landing Page Template', 'pmpro-sitewide-sales'); ?></label></th>
 						<td>
@@ -481,6 +481,11 @@ class PMPro_SWS_MetaBoxes {
 			$hide_on_checkout = true;
 		} else {
 			$banner_text = $post->post_content;
+			
+			$banner_template = esc_html( get_post_meta( $post->ID, 'pmpro_sws_banner_template', true ) );
+			if ( empty( $banner_template ) ) {
+				$banner_template = false;
+			}
 
 			$banner_title = esc_html( get_post_meta( $post->ID, 'pmpro_sws_banner_title', true ) );
 			if ( empty( $banner_title ) ) {
@@ -529,6 +534,32 @@ class PMPro_SWS_MetaBoxes {
 		</table>
 		<table class="form-table" id="pmpro_sws_banner_options" <?php if ( $use_banner == 'no' ) { ?>style="disaply: none;"<?php } ?>>
 			<tbody>
+				<?php
+					// Allow template selection if using Memberlite or set the Advanced Setting to "Yes".
+					if ( defined( 'MEMBERLITE_VERSION' ) || ( pmpro_getOption( 'pmpro_sws_allow_template' ) === 'Yes' ) ) { ?>
+					<tr>
+						<th><label for="pmpro_sws_banner_template"><?php esc_html_e( 'Banner Template', 'pmpro-sitewide-sales'); ?></label></th>
+						<td>
+							<select class="banner_select_template pmpro_sws_option" id="pmpro_sws_banner_template" name="pmpro_sws_banner_template">
+								<option value="0"><?php esc_html_e( 'None', 'pmpro-sitewide-sales'); ?></option>
+								<?php
+									$templates = array(
+										'gradient' => 'Gradient',
+										'neon' => 'Neon',
+										'ocean' => 'Ocean',
+										'photo' => 'Photo',
+										'scroll' => 'Scroll',
+									);
+									$templates = apply_filters( 'pmpro_sws_banner_templates', $templates );
+									foreach ( $templates as $key => $value ) {
+										echo '<option value="' . esc_html( $key ) . '" ' . selected( $banner_template, esc_html( $key ) ) . '>' . esc_html( $value ) . '</option>';
+									}
+								?>
+							</select>
+							<p><small class="pmpro_lite"><?php esc_html_e( 'Stylish templates available for your theme.', 'pmpro-sitewide-sales' ); ?></small></p>
+						</td>
+					</tr>
+				<?php } ?>
 				<tr>
 					<th><label for="pmpro_sws_banner_title"><?php esc_html_e( 'Banner Title', 'pmpro-sitewide-sales' ); ?></label></th>
 					<td>
