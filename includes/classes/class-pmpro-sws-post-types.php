@@ -147,6 +147,8 @@ class PMPro_SWS_Post_Types {
 	 * @param [type] $columns [description]
 	 */
 	public static function set_sitewide_sale_columns( $columns ) {
+		unset( $columns['date'] );
+		$columns['sale_date'] = __( 'Sale Date', 'pmpro_sitewide_sale' );
 		$columns['discount_code'] = __( 'Discount Code', 'pmpro_sitewide_sale' );
 		$columns['landing_page'] = __( 'Landing Page', 'pmpro_sitewide_sale' );
 		$columns['reports']  = __( 'Reports', 'pmpro_sitewide_sale' );
@@ -164,6 +166,13 @@ class PMPro_SWS_Post_Types {
 	 */
 	public static function fill_sitewide_sale_columns( $column, $post_id ) {
 		switch ( $column ) {
+			case 'sale_date':
+				$start_date = date_i18n( get_option( 'date_format' ), ( new \DateTime( get_post_meta( $post_id, 'pmpro_sws_start_date', true ) ) )->format( 'U' ) );
+				$end_date = date_i18n( get_option( 'date_format' ), ( new \DateTime( get_post_meta( $post_id, 'pmpro_sws_end_date', true ) ) )->format( 'U' ) );
+				echo $start_date;
+				echo ' - ';
+				echo $end_date;
+				break;
 			case 'discount_code':
 				$discount_code = get_post_meta( $post_id, 'pmpro_sws_discount_code_id', true );
 				if ( false !== $discount_code ) {
