@@ -1,15 +1,21 @@
-#pmpro_sws_banner_top {
-	width: 100%;
-	background: rgba(240,248,255,1);
+/* General Banner Styles */
+.pmpro_sws_banner {
+	background: #DADADA;
+}
+.pmpro_sws_banner a.dismiss,
+.pmpro_sws_banner a.dismiss:active,
+.pmpro_sws_banner a.dismiss:link,
+.pmpro_sws_banner a.dismiss:visited {
+	text-decoration: none;
+}
+.pmpro_sws_banner a.dismiss:before {
+	color: #AAA;
+	content: "\2716";
+	font: normal 1em/1 Arial, sans-serif;
 	text-align: center;
-	padding: 1rem;
 }
-#pmpro_sws_banner_top span {
-	margin-right: 2rem;
-	font-size: 2rem;
-}
-#pmpro_sws_banner_top h3 {
-	display: inline;
+.pmpro_sws_banner a.dismiss:hover {
+	color: #CCC;
 }
 .pmpro_sws_banner h3 {
 	margin: 0 0 10px 0;
@@ -19,8 +25,27 @@
 	margin: 0 0 10px 0;
 	padding: 0;
 }
+
+/* Top Banner Styles */
+#pmpro_sws_banner_top {
+	padding: 1rem;
+	text-align: center;
+	width: 100%;
+}
+#pmpro_sws_banner_top span {
+	margin-right: 2rem;
+	font-size: 2rem;
+}
+#pmpro_sws_banner_top h3,
+#pmpro_sws_banner_top p,
+#pmpro_sws_banner_top span.pmpro_sws_banner-button {
+	display: inline;
+	margin: 0 1rem;
+	padding: 0;
+}
+
+/* Bottom Right Banner Styles */
 #pmpro_sws_banner_bottom_right {
-	background: rgba(240,248,255,1);
 	bottom: 0;
 	box-shadow: 0 2px 20px 0 rgba(0,0,0,.2);
 	padding: 20px;
@@ -32,27 +57,12 @@
 #pmpro_sws_banner_bottom_right .pmpro_btn {
 	display: block;
 }
-
-#pmpro_sws_banner_bottom_right a.dismiss,
-#pmpro_sws_banner_bottom_right a.dismiss:active,
-#pmpro_sws_banner_bottom_right a.dismiss:link,
-#pmpro_sws_banner_bottom_right a.dismiss:visited {
-	background: rgba( 255, 255, 255, 0.2);
-	border: 1px solid #FFF;
-	border-radius: 3px;
-	color: #FFF;
-    float: right;
-	font-size: 14px;
-	line-height: 20px;
-    padding: 0 5px;
-	text-decoration: none;
-}
-#pmpro_sws_banner_bottom_right a.dismiss:hover {
-	background: rgba( 255, 255, 255, 0.4);
+#pmpro_sws_banner_bottom_right a.dismiss {
+	float: right;
 }
 
+/* Bottom Banner Styles */
 #pmpro_sws_banner_bottom {
-	background: rgba(215, 215, 215, .95);
 	bottom: 0;
 	box-shadow: 0 2px 20px 0 rgba(0,0,0,.2);
 	left: 0;
@@ -62,23 +72,30 @@
 	width: 100%;
 	z-index: 400;
 }
+#pmpro_sws_banner_bottom a.dismiss {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+}
 #pmpro_sws_banner_bottom .pmpro_sws_banner-inner {
+	display: grid;
+	grid-gap: 20px;
+	grid-template-columns: 3fr 1fr;
 	margin: 0 auto;
 	max-width: 1170px;
 }
+
 #pmpro_sws_banner_bottom .pmpro_sws_banner-inner-left {
-	display: inline-block;
-	padding-right: 5%;
-	width: 70%;
+	align-self: center;
 }
 #pmpro_sws_banner_bottom .pmpro_sws_banner-inner-right {
-	display: inline-block;
-	width: 25%;
+	align-self: center;
 }
 #pmpro_sws_banner_bottom .pmpro_sws_banner-inner-right .pmpro_btn {
 	display: block;
 }
 
+/* Landing Page Templates */
 .pmpro_sitewide_sale_landing_page_template {
 }
 .pmpro_sitewide_sale_landing_page_template #pmpro_form {
@@ -117,6 +134,9 @@
 }
 
 /* Gradient Theme */
+.pmpro_sws_banner_template-gradient a.dismiss:before {
+	color: #FFF;
+}
 body.pmpro-sitewide-sale-landing-page-gradient {
     background: repeating-linear-gradient(
         -45deg, 
@@ -135,16 +155,19 @@ body.pmpro-sitewide-sale-landing-page-gradient {
 #pmpro_sitewide_sale_landing_page_template-gradient #pmpro_form {
     max-width: 800px;
 }
-#pmpro_sitewide_sale_landing_page_template-gradient .pmpro_sws_landing_content {
+#pmpro_sitewide_sale_landing_page_template-gradient .pmpro_sws_landing_content,
+.pmpro_sws_banner_template-gradient {
     background: linear-gradient(270deg, #4bcf93, #4b79cf, #a24bcf);
     background-size: 600% 600%;
-    box-shadow: 0px 10px 40px #000;
-    color: #FFF;
-    padding: 5.8rem 5.8rem 11.6rem 5.8rem;
-    text-align: center;
-    -webkit-animation: SWSGradient 30s ease infinite;
+	color: #FFF;
+	-webkit-animation: SWSGradient 30s ease infinite;
     -moz-animation: SWSGradient 30s ease infinite;
     animation: SWSGradient 30s ease infinite;
+}
+#pmpro_sitewide_sale_landing_page_template-gradient .pmpro_sws_landing_content {
+    box-shadow: 0px 10px 40px #000;
+    padding: 5.8rem 5.8rem 11.6rem 5.8rem;
+    text-align: center;
 }
 @-webkit-keyframes SWSGradient {
     0%{background-position:0% 50%}
@@ -175,6 +198,27 @@ body.pmpro-sitewide-sale-landing-page-gradient #pmpro_form {
 }
 
 /* Neon Theme */
+.pmpro_sws_banner_template-neon {
+	background: #000 url(../../images/darkness.png) repeat;
+	color: #FFF;
+}
+.pmpro_sws_banner_template-neon h3 {
+	animation-name: SWSNeon2;
+    animation-delay: 1s;
+    animation-duration: 1s;
+    animation-direction: alternate-reverse;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+	color: #f084e7;
+	font-size: 30px;
+	font-style: italic;
+    font-weight: 900;
+    letter-spacing: -2px;
+	text-shadow: 0px 0px 15px #BBB;
+}
+.pmpro_sws_banner_template-neon a.dismiss:before {
+	color: #666;
+}
 body.pmpro-sitewide-sale-landing-page-neon {
 	background: #000 url(../../images/darkness.png) repeat;
     padding: 5.8rem 0;
@@ -271,6 +315,66 @@ body.pmpro-sitewide-sale-landing-page-neon {
 }
 
 /* Ocean Theme */
+.pmpro_sws_banner_template-ocean a.dismiss:before {
+	color: #FFF;
+}
+#pmpro_sws_banner_top.pmpro_sws_banner_template-ocean {
+	background-color: #f67656;
+	background-image: url(../../images/waves.png);
+    background-repeat: repeat-x;
+    background-position: bottom left;
+    background-size: 30px 30px;
+	color: #FFF;
+}
+#pmpro_sws_banner_top.pmpro_sws_banner_template-ocean .pmpro_sws_banner-inner {
+	padding: 0 0 30px 0;
+}
+#pmpro_sws_banner_top.pmpro_sws_banner_template-ocean .pmpro_sws_banner-inner h3 {
+	font-family: 'Brush Script MT', cursive;
+	font-size: 30px;
+    font-weight: 400;
+	line-height: 40px;
+}
+#pmpro_sws_banner_bottom.pmpro_sws_banner_template-ocean {
+	background-color: #f67656;
+	background-image: url(../../images/waves.png);
+    background-repeat: repeat-x;
+    background-position: bottom left;
+    background-size: 50px 50px;
+	color: #FFF;
+}
+#pmpro_sws_banner_bottom.pmpro_sws_banner_template-ocean .pmpro_sws_banner-inner {
+	padding: 0 0 40px 0;
+}
+#pmpro_sws_banner_bottom.pmpro_sws_banner_template-ocean .pmpro_sws_banner-inner h3 {
+	font-family: 'Brush Script MT', cursive;
+	font-size: 50px;
+    font-weight: 400;
+	line-height: 60px;
+}
+#pmpro_sws_banner_bottom_right.pmpro_sws_banner_template-ocean {
+	padding: 0;
+	background-color: #4ab1ad;
+	color: #FFF;
+}
+#pmpro_sws_banner_bottom_right.pmpro_sws_banner_template-ocean .pmpro_sws_banner-inner {
+	background-color: #f67656;
+	background-image: url(../../images/waves.png);
+    background-repeat: repeat-x;
+    background-position: bottom left;
+    background-size: 50px 50px;
+	padding: 20px 20px 40px 20px;
+}
+#pmpro_sws_banner_bottom_right.pmpro_sws_banner_template-ocean .pmpro_sws_banner-inner h3 {
+	font-family: 'Brush Script MT', cursive;
+	font-size: 30px;
+    font-weight: 400;
+	line-height: 40px;
+}
+#pmpro_sws_banner_bottom_right.pmpro_sws_banner_template-ocean span.pmpro_sws_banner-button {
+	display: block;
+	padding: 0 20px 20px 20px;
+}
 body.pmpro-sitewide-sale-landing-page-ocean {
 	background: #4ab1ad;
     padding: 0 0 5.8rem 0;
@@ -279,12 +383,12 @@ body.pmpro-sitewide-sale-landing-page-ocean {
     margin: 0;
 }
 #pmpro_sitewide_sale_landing_page_template-ocean .pmpro_sws_landing_content {
-    background-color: #f67656;
+	background-color: #f67656;
     background-image: url(../../images/waves.png);
     background-repeat: repeat-x;
     background-position: bottom left;
     background-size: 100px 100px;
-    color: #FFF;
+	color: #FFF;
     padding: 5.8rem 0 110px 0;
     text-align: center;
 }
@@ -331,6 +435,36 @@ body.pmpro-sitewide-sale-landing-page-ocean {
 }
 
 /* Photo Theme */
+.pmpro_sws_banner_template-photo {
+	background: rgba( 0, 0, 0, 0.5 );
+	color: #FFF;
+	transition: background 1s ease;
+}
+.pmpro_sws_banner_template-photo:hover {
+    background: rgba( 0, 0, 0, 0.8 );
+}
+#pmpro_sws_banner_top.pmpro_sws_banner_template-photo {
+	border-bottom-left-radius: 40px;
+	border-bottom-right-radius: 40px;
+	margin-left: 10px;
+	margin-right: 10px;
+	width: auto;
+}
+#pmpro_sws_banner_bottom_right.pmpro_sws_banner_template-photo {
+	border-top-left-radius: 40px;
+}
+#pmpro_sws_banner_bottom.pmpro_sws_banner_template-photo {
+	border-top-left-radius: 40px;
+	border-top-right-radius: 40px;
+	margin-left: 10px;
+	margin-right: 10px;
+	width: auto;
+}
+#pmpro_sws_banner_bottom.pmpro_sws_banner_template-photo a.dismiss {
+	bottom: 10px;
+	right: 15px;
+	top: auto;
+}
 body.pmpro-sitewide-sale-landing-page-photo {
 	background: #FAFAFA;
     padding: 0 0 5.8rem 0;
@@ -382,6 +516,39 @@ body.pmpro-sitewide-sale-landing-page-photo {
 }
 
 /* Scroll Theme */
+.pmpro_sws_banner_template-scroll {
+	background: #E4E3DF;
+}
+#pmpro_sws_banner_bottom_right.pmpro_sws_banner_template-scroll {
+	padding: 0;
+}
+#pmpro_sws_banner_bottom_right.pmpro_sws_banner_template-scroll .pmpro_sws_banner-inner {
+	padding: 20px 20px 0 20px;
+}
+#pmpro_sws_banner_bottom_right.pmpro_sws_banner_template-scroll .pmpro_sws_banner-button {
+	background: rgba( 255, 255, 255, 0.4 );
+	display: block;
+	padding: 20px;
+}
+.pmpro_sws_banner_template-scroll a.dismiss:before {
+	color: #B5B5A5;
+}
+.pmpro_sws_banner_template-scroll h3 {
+	animation: SWSFadeIn 1s;
+}
+.pmpro_sws_banner_template-scroll p {
+    animation: SWSFadeIn 2s;
+}
+#pmpro_sws_banner_top.pmpro_sws_banner_template-scroll .pmpro_sws_banner-inner {
+	animation: SWSScroll 1s;
+}
+#pmpro_sws_banner_top.pmpro_sws_banner_template-scroll h3,
+#pmpro_sws_banner_bottom.pmpro_sws_banner_template-scroll h3 {
+	background: rgba( 255, 255, 255, 0.4 );
+	display: inline-block;
+	padding: 5px 10px;
+}
+
 body.pmpro-sitewide-sale-landing-page-scroll {
 	background: #E4E3DF;
     padding: 0 0 5.8rem 0;

@@ -212,12 +212,22 @@ class PMPro_SWS_Banners {
 		if ( current_user_can( 'administrator' ) && isset( $_REQUEST['pmpro_sws_preview_sale_banner'] ) ) {
 			$active_sitewide_sale = $_REQUEST['pmpro_sws_preview_sale_banner'];
 		}
+
+		// Display the wrapping div for selected template.
+		if ( defined( 'MEMBERLITE_VERSION' ) || ( pmpro_getOption( 'pmpro_sws_allow_template' ) === 'Yes' ) ) {
+			$banner_template = esc_html( get_post_meta( $active_sitewide_sale, 'pmpro_sws_banner_template', true ) );
+			if ( empty( $banner_template ) ) {
+				$banner_template = false;
+			}
+		}
 		/* Maybe use JavaScript here to detect the height of the bar and adjust margin-top of html elemenet. */
 		?>
-		<div id="pmpro_sws_banner_top" class="pmpro_sws_banner">
-			<h3><?php _e( get_post_meta( $active_sitewide_sale, 'pmpro_sws_banner_title', true ) ); ?></h3>
-			<?php echo esc_attr_e( get_post_field( 'post_content', $active_sitewide_sale ) ); ?>
-			<a class="pmpro_btn" href="<?php echo get_permalink( get_post_meta( $active_sitewide_sale, 'pmpro_sws_landing_page_post_id', true ) ); ?>"><?php _e( get_post_meta( $active_sitewide_sale, 'pmpro_sws_link_text', true ) ); ?></a>
+		<div id="pmpro_sws_banner_top" class="pmpro_sws_banner<?php if ( ! empty( $banner_template ) ) { echo ' pmpro_sws_banner_template-' . esc_html( $banner_template ); } ?>">
+			<div class="pmpro_sws_banner-inner">
+				<h3><?php _e( get_post_meta( $active_sitewide_sale, 'pmpro_sws_banner_title', true ) ); ?></h3>
+				<?php echo esc_attr_e( get_post_field( 'post_content', $active_sitewide_sale ) ); ?>
+				<span class="pmpro_sws_banner-button"><a class="pmpro_btn" href="<?php echo get_permalink( get_post_meta( $active_sitewide_sale, 'pmpro_sws_landing_page_post_id', true ) ); ?>"><?php _e( get_post_meta( $active_sitewide_sale, 'pmpro_sws_link_text', true ) ); ?></a></span>
+			</div>
 		</div> <!-- end pmpro_sws_banner -->
 		<?php
 	}
@@ -238,18 +248,26 @@ class PMPro_SWS_Banners {
 		if ( current_user_can( 'administrator' ) && isset( $_REQUEST['pmpro_sws_preview_sale_banner'] ) ) {
 			$active_sitewide_sale = $_REQUEST['pmpro_sws_preview_sale_banner'];
 		}
+		
+		// Display the wrapping div for selected template.
+		if ( defined( 'MEMBERLITE_VERSION' ) || ( pmpro_getOption( 'pmpro_sws_allow_template' ) === 'Yes' ) ) {
+			$banner_template = esc_html( get_post_meta( $active_sitewide_sale, 'pmpro_sws_banner_template', true ) );
+			if ( empty( $banner_template ) ) {
+				$banner_template = false;
+			}
+		}
 		?>
-		<div id="pmpro_sws_banner_bottom" class="pmpro_sws_banner">
+		<div id="pmpro_sws_banner_bottom" class="pmpro_sws_banner<?php if ( ! empty( $banner_template ) ) { echo ' pmpro_sws_banner_template-' . esc_html( $banner_template ); } ?>">
 			<div class="pmpro_sws_banner-inner">
-			<a href="javascript:void(0);" onclick="document.getElementById('pmpro_sws_banner_bottom').style.display = 'none';" class="dismiss">x</a>
+			<a href="javascript:void(0);" onclick="document.getElementById('pmpro_sws_banner_bottom').style.display = 'none';" class="dismiss" title="Dismiss"></a>
 				<div class="pmpro_sws_banner-inner-left">
 					<h3><?php _e( get_post_meta( $active_sitewide_sale, 'pmpro_sws_banner_title', true ) ); ?></h3>
 					<?php echo apply_filters( 'the_content', get_post_field( 'post_content', $active_sitewide_sale ) ); ?>
 				</div>
 				<div class="pmpro_sws_banner-inner-right">
-					<a class="pmpro_btn" href="<?php echo get_permalink( get_post_meta( $active_sitewide_sale, 'landing_page_post_id', true ) ); ?>"><?php _e( get_post_meta( $active_sitewide_sale, 'pmpro_sws_link_text', true ) ); ?></a>
+					<span class="pmpro_sws_banner-button"><a class="pmpro_btn" href="<?php echo get_permalink( get_post_meta( $active_sitewide_sale, 'landing_page_post_id', true ) ); ?>"><?php _e( get_post_meta( $active_sitewide_sale, 'pmpro_sws_link_text', true ) ); ?></a></span>
 				</div>
-			</div>
+			</div> <!-- end pmpro_sws_banner-inner -->
 		</div> <!-- end pmpro_sws_banner -->
 		<?php
 	}
@@ -270,12 +288,22 @@ class PMPro_SWS_Banners {
 		if ( current_user_can( 'administrator' ) && isset( $_REQUEST['pmpro_sws_preview_sale_banner'] ) ) {
 			$active_sitewide_sale = $_REQUEST['pmpro_sws_preview_sale_banner'];
 		}
+
+		// Display the wrapping div for selected template.
+		if ( defined( 'MEMBERLITE_VERSION' ) || ( pmpro_getOption( 'pmpro_sws_allow_template' ) === 'Yes' ) ) {
+			$banner_template = esc_html( get_post_meta( $active_sitewide_sale, 'pmpro_sws_banner_template', true ) );
+			if ( empty( $banner_template ) ) {
+				$banner_template = false;
+			}
+		}
 		?>
-		<div id="pmpro_sws_banner_bottom_right" class="pmpro_sws_banner">
-			<a href="javascript:void(0);" onclick="document.getElementById('pmpro_sws_banner_bottom_right').style.display = 'none';" class="dismiss">x</a>
-			<h3><?php _e( get_post_meta( $active_sitewide_sale, 'pmpro_sws_banner_title', true ) ); ?></h3>
-			<?php echo wpautop( get_post_field( 'post_content', $active_sitewide_sale ) ); ?>
-			<a class="pmpro_btn" href="<?php echo get_permalink( get_post_meta( $active_sitewide_sale, 'pmpro_sws_landing_page_post_id', true ) ); ?>"><?php _e( get_post_meta( $active_sitewide_sale, 'pmpro_sws_link_text', true ) ); ?></a>
+		<div id="pmpro_sws_banner_bottom_right" class="pmpro_sws_banner<?php if ( ! empty( $banner_template ) ) { echo ' pmpro_sws_banner_template-' . esc_html( $banner_template ); } ?>">
+			<div class="pmpro_sws_banner-inner">
+				<a href="javascript:void(0);" onclick="document.getElementById('pmpro_sws_banner_bottom_right').style.display = 'none';" class="dismiss" title="Dismiss"></a>
+				<h3><?php _e( get_post_meta( $active_sitewide_sale, 'pmpro_sws_banner_title', true ) ); ?></h3>
+				<?php echo wpautop( get_post_field( 'post_content', $active_sitewide_sale ) ); ?>
+			</div> <!-- end pmpro_sws_banner-inner -->
+			<span class="pmpro_sws_banner-button"><a class="pmpro_btn" href="<?php echo get_permalink( get_post_meta( $active_sitewide_sale, 'pmpro_sws_landing_page_post_id', true ) ); ?>"><?php _e( get_post_meta( $active_sitewide_sale, 'pmpro_sws_link_text', true ) ); ?></a></span>
 		</div> <!-- end pmpro_sws_banner -->
 		<?php
 	}
