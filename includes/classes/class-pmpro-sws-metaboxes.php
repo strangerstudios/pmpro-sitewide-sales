@@ -390,7 +390,7 @@ class PMPro_SWS_MetaBoxes {
 				</tr>
 				<?php
 					// Allow template selection if using Memberlite.
-					if ( DEFINED( 'MEMBERLITE_VERSION' ) ) { ?>
+					if ( defined( 'MEMBERLITE_VERSION' ) || ( pmpro_getOption( 'pmpro_sws_landing_page_allow_template' ) === 'Yes' ) ) { ?>
 					<tr>
 						<th><label for="pmpro_sws_landing_page_template"><?php esc_html_e( 'Landing Page Template', 'pmpro-sitewide-sales'); ?></label></th>
 						<td>
@@ -406,7 +406,6 @@ class PMPro_SWS_MetaBoxes {
 									);
 									$templates = apply_filters( 'pmpro_sws_landing_page_templates', $templates );
 									foreach ( $templates as $key => $value ) {
-										//d( $template );
 										echo '<option value="' . esc_html( $key ) . '" ' . selected( $template, esc_html( $key ) ) . '>' . esc_html( $value ) . '</option>';
 									}
 								?>
