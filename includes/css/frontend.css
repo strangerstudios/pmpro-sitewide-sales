@@ -133,7 +133,7 @@ body.pmpro-sitewide-sale-landing-page-gradient {
     color: #FFF;
 }
 #pmpro_sitewide_sale_landing_page_template-gradient #pmpro_form {
-    max-width: 750px;
+    max-width: 800px;
 }
 #pmpro_sitewide_sale_landing_page_template-gradient .pmpro_sws_landing_content {
     background: linear-gradient(270deg, #4bcf93, #4b79cf, #a24bcf);
@@ -371,7 +371,7 @@ body.pmpro-sitewide-sale-landing-page-photo {
 }
 #pmpro_sitewide_sale_landing_page_template-photo #pmpro_form {
     margin-top: 5.8rem;
-    max-width: 750px;
+    max-width: 800px;
 }
 #pmpro_sitewide_sale_landing_page_template-photo #pmpro_form hr {
 	display: none;
