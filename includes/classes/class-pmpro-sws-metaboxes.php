@@ -29,15 +29,25 @@ class PMPro_SWS_MetaBoxes {
 	 * Enqueues js/pmpro-sws-cpt-meta.js
 	 */
 	public static function enqueue_scripts() {
-		global $typenow;
+		global $wpdb, $typenow;
 		if ( 'pmpro_sitewide_sale' === $typenow ) {
 			wp_register_script( 'pmpro_sws_cpt_meta', plugins_url( 'includes/js/pmpro-sws-cpt-meta.js', PMPROSWS_BASENAME ), array( 'jquery' ), '1.0.4' );
 			wp_enqueue_script( 'pmpro_sws_cpt_meta' );
+
+			$pages_with_pmpro_sws_shortcode = $wpdb->get_col(
+				"SELECT ID
+				 FROM $wpdb->posts
+				 WHERE post_type = 'page'
+				 	AND post_status = 'publish'
+					AND post_content LIKE '%[pmpro_sws%'"
+			 );
+
 			wp_localize_script( 'pmpro_sws_cpt_meta', 'pmpro_sws', array(
 				'create_discount_code_nonce' => wp_create_nonce( 'pmpro_sws_create_discount_code' ),
 				'create_landing_page_nonce' => wp_create_nonce( 'pmpro_sws_create_landing_page' ),
 				'home_url' => home_url(),
 				'admin_url' => admin_url(),
+				'pages_with_shortcodes' => $pages_with_pmpro_sws_shortcode,
 				)
 			);
 
@@ -335,7 +345,15 @@ class PMPro_SWS_MetaBoxes {
 							}
 						?>
 						</select><br />
-						<small class="pmpro_lite"><?php esc_html_e( 'Include the [pmpro_sws] shortcode.', 'pmpro-sitewide-sale' );?></small>
+						<?php
+							$current_page_post = get_post( $current_page );
+							if( ! empty( $current_page_post->post_content ) && strpos( $current_page_post->post_content, '[pmpro_sws') !== false ) {
+								$show_shortcode_warning = false;
+							} else {
+								$show_shortcode_warning = true;
+							}
+						?>
+						<small id="pmpro_sws_shortcode_warning" class="pmpro_red" <?php if ( ! $show_shortcode_warning ) {?>style="display: none;"<?php } ?><?php echo wp_kses_post( '<strong>Warning:</strong> The [pmpro_sws] shortcode was not found in this post.', 'pmpro-sitewide-sale' );?></small>
 
 						<p>
 							<span id="pmpro_sws_after_landing_page_select" <?php if ( ! $page_found ) {?>style="display: none;"<?php } ?>>
