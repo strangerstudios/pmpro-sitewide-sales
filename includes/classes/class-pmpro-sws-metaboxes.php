@@ -355,7 +355,7 @@ class PMPro_SWS_MetaBoxes {
 					</td>
 				</tr>
 				<tr>
-					<th><label for="pmpro_sws_landing_page_default_level"><?php esc_html_e( 'Default Level', 'pmpro-sitewide-sale' ); ?></label></th>
+					<th><label for="pmpro_sws_landing_page_default_level"><?php esc_html_e( 'Checkout Level', 'pmpro-sitewide-sale' ); ?></label></th>
 					<td>
 						<select id="pmpro_sws_landing_page_default_level" name="pmpro_sws_landing_page_default_level">
 						<option value="0"><?php esc_html_e( '- Choose One -', 'pmpro-sitewide-sale'); ?></option>
@@ -367,7 +367,8 @@ class PMPro_SWS_MetaBoxes {
 							<?php
 							}
 						?>
-						</select>
+					</select>
+					<p><small class="pmpro_lite"><?php esc_html_e( 'If the [pmpro_sws] shortcode is on the page, a checkout form for this level will be shown.', 'pmpro-sitewide-sale' ); ?></small></p>
 					</td>
 				</tr>
 				<?php
@@ -393,6 +394,7 @@ class PMPro_SWS_MetaBoxes {
 									}
 								?>
 							</select>
+							<p><small class="pmpro_lite"><?php esc_html_e( 'Full page templates available to your theme.', 'pmpro-sitewide-sale' ); ?></small></p>
 						</td>
 					</tr>
 				<?php } ?>
