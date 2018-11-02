@@ -1,12 +1,12 @@
 <?php
-namespace PMPro_Sitewide_Sale;
+namespace PMPro_Sitewide_Sales;
 
 defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 
 /**
  * This autoloader looks for class declarations as follows:
  *
- * PMPro_Sitewide_Sale\includes\classes\PMPro_SWS_Settings
+ * PMPro_Sitewide_Sales\includes\classes\PMPro_SWS_Settings
  * ^          ^   ^
  * ^          ^   class-pmpro-sws-settings.php
  * ^          in the /classes/ folder
@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 function autoload( $class ) {
 
 	// project-specific namespace prefix.
-	$prefix = 'PMPro_Sitewide_Sale\\';
+	$prefix = 'PMPro_Sitewide_Sales\\';
 
 	// base directory for the namespace prefix.
 	$base_dir = __DIR__ . '/';

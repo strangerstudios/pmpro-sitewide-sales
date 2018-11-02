@@ -1,18 +1,18 @@
 <?php
 /**
- * Plugin Name: Paid Memberships Pro - Sitewide Sale Add On
- * Plugin URI: https://www.paidmembershipspro.com/add-ons/sitewide-sale/
- * Description: Run a sitewide sale (Black Friday, Cyber Monday, etc.) with Paid Memberships Pro
+ * Plugin Name: Paid Memberships Pro - Sitewide Sales Add On
+ * Plugin URI: https://www.paidmembershipspro.com/add-ons/sitewide-sales/
+ * Description: Run sitewide sales (Black Friday, Cyber Monday, etc.) with Paid Memberships Pro
  * Author: Paid Memberships Pro
  * Author URI: https://www.paidmembershipspro.com
  * Version: 1.0.1
  * Plugin URI:
  * License: GNU GPLv2+
- * Text Domain: pmpro-sitewide-sale
+ * Text Domain: pmpro-sitewide-sales
  *
- * @package pmpro-sitewide-sale
+ * @package pmpro-sitewide-sales
  */
-namespace PMPro_Sitewide_Sale;
+namespace PMPro_Sitewide_Sales;
 
 defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 

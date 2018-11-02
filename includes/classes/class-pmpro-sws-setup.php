@@ -1,6 +1,6 @@
 <?php
 
-namespace PMPro_Sitewide_Sale\includes\classes;
+namespace PMPro_Sitewide_Sales\includes\classes;
 
 defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 
@@ -114,9 +114,9 @@ class PMPro_SWS_Setup {
 					global $wpdb;
 					$has_sws_post = $wpdb->get_var("SELECT ID FROM $wpdb->posts WHERE post_type = 'pmpro_sitewide_sale' LIMIT 1");
 					if( $has_sws_post ) {
-						printf( __( 'Thank you for activating. You can <a href="%s">view your Sitewide Sales here</a>.', 'pmpro-sitewide-sale' ), get_admin_url( null, 'edit.php?post_type=pmpro_sitewide_sale' ) );
+						printf( __( 'Thank you for activating. You can <a href="%s">view your Sitewide Sales here</a>.', 'pmpro-sitewide-sales' ), get_admin_url( null, 'edit.php?post_type=pmpro_sitewide_sale' ) );
 					} else {
-						printf( __( 'Thank you for activating. You can <a href="%s">create your first Sitewide Sale here</a>.', 'pmpro-sitewide-sale' ), get_admin_url( null, 'post-new.php?post_type=pmpro_sitewide_sale' ) );
+						printf( __( 'Thank you for activating. You can <a href="%s">create your first Sitewide Sale here</a>.', 'pmpro-sitewide-sales' ), get_admin_url( null, 'post-new.php?post_type=pmpro_sitewide_sale' ) );
 					}
 				?>
 				</p>
@@ -135,7 +135,7 @@ class PMPro_SWS_Setup {
 	public static function pmpro_sws_plugin_action_links( $links ) {
 		if ( current_user_can( 'manage_options' ) ) {
 			$new_links = array(
-				'<a href="' . get_admin_url( null, 'edit.php?post_type=pmpro_sitewide_sale' ) . '">' . __( 'Settings', 'pmpro-sitewide-sale' ) . '</a>',
+				'<a href="' . get_admin_url( null, 'edit.php?post_type=pmpro_sitewide_sale' ) . '">' . __( 'Settings', 'pmpro-sitewide-sales' ) . '</a>',
 			);
 		}
 		return array_merge( $new_links, $links );
@@ -150,8 +150,8 @@ class PMPro_SWS_Setup {
 	public static function pmpro_sws_plugin_row_meta( $links, $file ) {
 		if ( strpos( $file, 'pmpro-sitewide-sale.php' ) !== false ) {
 			$new_links = array(
-				'<a href="' . esc_url( 'https://www.paidmembershipspro.com/add-ons/sitewide-sale/' ) . '" title="' . esc_attr( __( 'View Documentation', 'pmpro' ) ) . '">' . __( 'Docs', 'pmpro-sitewide-sale' ) . '</a>',
-				'<a href="' . esc_url( 'https://www.paidmembershipspro.com/support/' ) . '" title="' . esc_attr( __( 'Visit Customer Support Forum', 'pmpro' ) ) . '">' . __( 'Support', 'pmpro-sitewide-sale' ) . '</a>',
+				'<a href="' . esc_url( 'https://www.paidmembershipspro.com/add-ons/sitewide-sale/' ) . '" title="' . esc_attr( __( 'View Documentation', 'pmpro' ) ) . '">' . __( 'Docs', 'pmpro-sitewide-sales' ) . '</a>',
+				'<a href="' . esc_url( 'https://www.paidmembershipspro.com/support/' ) . '" title="' . esc_attr( __( 'Visit Customer Support Forum', 'pmpro' ) ) . '">' . __( 'Support', 'pmpro-sitewide-sales' ) . '</a>',
 			);
 			$links     = array_merge( $links, $new_links );
 		}

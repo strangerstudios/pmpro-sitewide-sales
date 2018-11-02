@@ -1,6 +1,6 @@
 <?php
 
-namespace PMPro_Sitewide_Sale\includes\classes;
+namespace PMPro_Sitewide_Sales\includes\classes;
 
 defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 
@@ -44,30 +44,30 @@ class PMPro_SWS_Post_Types {
 		$menu_name						= self::renaming_cpt_menu_function();
 
 		// Set the custom post type labels.
-		$labels['name']					= _x( 'Sitewide Sales', 'Post Type General Name', 'pmpro-sitewide-sale' );
-		$labels['singular_name']		= _x( 'Sitewide Sale', 'Post Type Singular Name', 'pmpro-sitewide-sale' );
-		$labels['all_items']			= __( 'All Sitewide Sales', 'pmpro-sitewide-sale' );
-		$labels['menu_name']			= __( $menu_name, 'pmpro-sitewide-sale' );
-		$labels['name_admin_bar']		= __( 'Sitewide Sales', 'pmpro-sitewide-sale' );
-		$labels['all_items']			= __( 'All Sitewide Sales', 'pmpro-sitewide-sale' );
-		$labels['add_new_item']			= __( 'Add New Sitewide Sale', 'pmpro-sitewide-sale' );
-		$labels['add_new']				= __( 'Add New', 'pmpro-sitewide-sale' );
-		$labels['new_item']				= __( 'New Sitewide Sale', 'pmpro-sitewide-sale' );
-		$labels['edit_item']			= __( 'Edit Sitewide Sale', 'pmpro-sitewide-sale' );
-		$labels['update_item']			= __( 'Update Sitewide Sale', 'pmpro-sitewide-sale' );
-		$labels['view_item']			= __( 'View Sitewide Sale', 'pmpro-sitewide-sale' );
-		$labels['search_items']			= __( 'Search Sitewide Sales', 'pmpro-sitewide-sale' );
-		$labels['not_found']			= __( 'Not found', 'pmpro-sitewide-sale' );
-		$labels['not_found_in_trash']	= __( 'Not found in Trash', 'pmpro-sitewide-sale' );
-		$labels['insert_into_item']		= __( 'Insert into Sitewide Sale', 'pmpro-sitewide-sale' );
-		$labels['uploaded_to_this_item']= __( 'Uploaded to this Sitewide Sale', 'pmpro-sitewide-sale' );
-		$labels['items_list']			= __( 'Sitewide Sales list', 'pmpro-sitewide-sale' );
-		$labels['items_list_navigation']= __( 'Sitewide Sales list navigation', 'pmpro-sitewide-sale' );
-		$labels['filter_items_list']	= __( 'Filter sitewide sales list', 'pmpro-sitewide-sale' );
+		$labels['name']					= _x( 'Sitewide Sales', 'Post Type General Name', 'pmpro-sitewide-sales' );
+		$labels['singular_name']		= _x( 'Sitewide Sale', 'Post Type Singular Name', 'pmpro-sitewide-sales' );
+		$labels['all_items']			= __( 'All Sitewide Sales', 'pmpro-sitewide-sales' );
+		$labels['menu_name']			= __( $menu_name, 'pmpro-sitewide-sales' );
+		$labels['name_admin_bar']		= __( 'Sitewide Sales', 'pmpro-sitewide-sales' );
+		$labels['all_items']			= __( 'All Sitewide Sales', 'pmpro-sitewide-sales' );
+		$labels['add_new_item']			= __( 'Add New Sitewide Sale', 'pmpro-sitewide-sales' );
+		$labels['add_new']				= __( 'Add New', 'pmpro-sitewide-sales' );
+		$labels['new_item']				= __( 'New Sitewide Sale', 'pmpro-sitewide-sales' );
+		$labels['edit_item']			= __( 'Edit Sitewide Sale', 'pmpro-sitewide-sales' );
+		$labels['update_item']			= __( 'Update Sitewide Sale', 'pmpro-sitewide-sales' );
+		$labels['view_item']			= __( 'View Sitewide Sale', 'pmpro-sitewide-sales' );
+		$labels['search_items']			= __( 'Search Sitewide Sales', 'pmpro-sitewide-sales' );
+		$labels['not_found']			= __( 'Not found', 'pmpro-sitewide-sales' );
+		$labels['not_found_in_trash']	= __( 'Not found in Trash', 'pmpro-sitewide-sales' );
+		$labels['insert_into_item']		= __( 'Insert into Sitewide Sale', 'pmpro-sitewide-sales' );
+		$labels['uploaded_to_this_item']= __( 'Uploaded to this Sitewide Sale', 'pmpro-sitewide-sales' );
+		$labels['items_list']			= __( 'Sitewide Sales list', 'pmpro-sitewide-sales' );
+		$labels['items_list_navigation']= __( 'Sitewide Sales list navigation', 'pmpro-sitewide-sales' );
+		$labels['filter_items_list']	= __( 'Filter sitewide sales list', 'pmpro-sitewide-sales' );
 
 		// Build the post type args.
 		$args['labels']				= $labels;
-		$args['description']        = __( 'Sitewide Sales', 'pmpro-sitewide-sale' );
+		$args['description']        = __( 'Sitewide Sales', 'pmpro-sitewide-sales' );
 		$args['public']        		= false;
 		$args['publicly_queryable']	= false;
 		$args['show_ui']			= true;
@@ -116,7 +116,7 @@ class PMPro_SWS_Post_Types {
 		}
 		if ( current_user_can( 'manage_options' ) ) {
 			$wp_admin_bar->add_menu( array(
-				'id'     => 'pmpro-sitewide-sale',
+				'id'     => 'pmpro-sitewide-sales',
 				'parent' => 'paid-memberships-pro',
 				'title'  => __( 'Sitewide Sales', 'paid-memberships-pro' ),
 				'href'   => get_admin_url( null, '/edit.php?post_type=pmpro_sitewide_sale' ),
@@ -184,14 +184,14 @@ class PMPro_SWS_Post_Types {
 				}
 				break;
 			case 'reports':
-					echo '<a class="button button-primary" href="' . admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports' ) . '">' . __( 'View Reports', 'pmpro-sitewide-sale' ) . '</a>';
+					echo '<a class="button button-primary" href="' . admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports' ) . '">' . __( 'View Reports', 'pmpro-sitewide-sales' ) . '</a>';
 					break;
 			case 'set_active':
 				$options = PMPro_SWS_Settings::pmprosws_get_options();
 				if ( array_key_exists( 'active_sitewide_sale_id', $options ) && $post_id . '' === $options['active_sitewide_sale_id'] ) {
-					echo '<button class="button button-primary pmpro_sws_column_set_active" id="pmpro_sws_column_set_active_' . $post_id . '">' . __( 'Remove Active', 'pmpro-sitewide-sale' ) . '</button>';
+					echo '<button class="button button-primary pmpro_sws_column_set_active" id="pmpro_sws_column_set_active_' . $post_id . '">' . __( 'Remove Active', 'pmpro-sitewide-sales' ) . '</button>';
 				} else {
-					echo '<button class="button button-secondary pmpro_sws_column_set_active" id="pmpro_sws_column_set_active_' . $post_id . '">' . __( 'Set Active', 'pmpro-sitewide-sale' ) . '</button>';
+					echo '<button class="button button-secondary pmpro_sws_column_set_active" id="pmpro_sws_column_set_active_' . $post_id . '">' . __( 'Set Active', 'pmpro-sitewide-sales' ) . '</button>';
 				}
 				break;
 		}
@@ -248,9 +248,9 @@ class PMPro_SWS_Post_Types {
 			&& ! PMPro_SWS_Setup::has_sitewide_sales() ) {
 			?>
 			<div class="pmpro-new-install" style="display: none;">
-	            <h2><?php esc_html_e( 'Welcome to Sitewide Sales', 'pmpro-sitewide-sale' ); ?></h2>
-	            <a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=pmpro_sitewide_sale' ) ); ?>" class="button-primary"><?php esc_html_e( 'Create a Sitewide Sale', 'pmpro-sitewide-sale' ); ?></a>
-	            <a href="<?php echo esc_url( 'https://www.paidmembershipspro.com/add-ons/sitewide-sale/' ); ?>" target="_blank" class="button"><?php esc_html_e( 'Read Sitewide Sale Docs', 'pmpro-sitewide-sale' ); ?></a>
+	            <h2><?php esc_html_e( 'Welcome to Sitewide Sales', 'pmpro-sitewide-sales' ); ?></h2>
+	            <a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=pmpro_sitewide_sale' ) ); ?>" class="button-primary"><?php esc_html_e( 'Create a Sitewide Sale', 'pmpro-sitewide-sales' ); ?></a>
+	            <a href="<?php echo esc_url( 'https://www.paidmembershipspro.com/add-ons/sitewide-sale/' ); ?>" target="_blank" class="button"><?php esc_html_e( 'Read Sitewide Sale Docs', 'pmpro-sitewide-sales' ); ?></a>
 	        </div> <!-- end pmpro-new-install -->
 			<?php
 		  }

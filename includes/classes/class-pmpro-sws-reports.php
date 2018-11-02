@@ -1,6 +1,6 @@
 <?php
 
-namespace PMPro_Sitewide_Sale\includes\classes;
+namespace PMPro_Sitewide_Sales\includes\classes;
 
 defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 
@@ -24,7 +24,7 @@ class PMPro_SWS_Reports {
 	public static function assign_pmpro_sws_reports() {
 		global $pmpro_reports;
 		// Functions called by adding this report are below the class.
-		$pmpro_reports['pmpro_sws_reports'] = __( 'Sitewide Sale', 'pmpro_sitewide_sale' );
+		$pmpro_reports['pmpro_sws_reports'] = __( 'Sitewide Sale', 'pmpro-sitewide-sales' );
 		return $pmpro_reports;
 	}
 
@@ -73,7 +73,7 @@ class PMPro_SWS_Reports {
 		}
 
 		// check if discount_code_id is set.
-		$reports = get_option( 'pmpro_sitewide_sale_' . $sitewide_sale_id . '_tracking' );
+		$reports = get_option( 'pmpro_sws_' . $sitewide_sale_id . '_tracking' );
 		if ( false === $reports ) {
 			$reports = array(
 				'banner_impressions'   => 0,
@@ -82,7 +82,7 @@ class PMPro_SWS_Reports {
 				'checkout_conversions_with_code'    => 0,
 				'checkout_conversions_without_code' => 0,
 			);
-			update_option( 'pmpro_sitewide_sale_' . $sitewide_sale_id . '_tracking', $reports, 'no' );
+			update_option( 'pmpro_sws_' . $sitewide_sale_id . '_tracking', $reports, 'no' );
 		}
 
 		// Reports regarding total sales.
@@ -206,15 +206,15 @@ class PMPro_SWS_Reports {
 			if ( ! empty( $value['child'] && true === $value['child'] ) ) {
 				$to_return .= '
 				<tr>
-					<td scope="row"> - ' . esc_html__( $name, 'pmpro_sitewide_sale' ) . '</td>
-					<td>' . esc_html__( $value['value'], 'pmpro_sitewide_sale' ) . '</td>
+					<td scope="row"> - ' . esc_textarea( $name ) . '</td>
+					<td>' . esc_textarea( $value['value'] ) . '</td>
 				</tr>
 				';
 			} else {
 				$to_return .= '
 				<tr>
-					<td scope="row"><h2><strong>' . esc_html__( $name, 'pmpro_sitewide_sale' ) . '</strong></h2></td>
-					<td><h2><strong>' . esc_html__( $value['value'], 'pmpro_sitewide_sale' ) . '</strong></h2></td>
+					<td scope="row"><h2><strong>' . esc_textarea( $name ) . '</strong></h2></td>
+					<td><h2><strong>' . esc_textarea( $value['value'] ) . '</strong></h2></td>
 				</tr>
 				';
 			}
@@ -298,7 +298,7 @@ class PMPro_SWS_Reports {
 		global $wpdb;
 		$sitewide_sale_id = $_POST['sitewide_sale_id'];
 		$element = $_POST['element'];
-		$reports = get_option( 'pmpro_sitewide_sale_' . $sitewide_sale_id . '_tracking' );
+		$reports = get_option( 'pmpro_sws_' . $sitewide_sale_id . '_tracking' );
 		if ( false === $reports ) {
 			$reports = array(
 				'banner_impressions'   => 0,
@@ -310,7 +310,7 @@ class PMPro_SWS_Reports {
 		}
 		if ( array_key_exists( $element, $reports ) ) {
 			$reports[ $element ] += 1;
-			update_option( 'pmpro_sitewide_sale_' . $sitewide_sale_id . '_tracking', $reports, 'no' );
+			update_option( 'pmpro_sws_' . $sitewide_sale_id . '_tracking', $reports, 'no' );
 		} else {
 			return -1;
 		}

@@ -1,5 +1,5 @@
 <?php
-namespace PMPro_Sitewide_Sale\includes\classes;
+namespace PMPro_Sitewide_Sales\includes\classes;
 
 defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 
@@ -26,7 +26,7 @@ class PMPro_SWS_Banners {
 
 		$registered_banners = array(
 			'top' => array(
-				'option_title'  => __( 'Yes, Top of Site', 'pmpro_sitewide_sale' ),
+				'option_title'  => __( 'Yes, Top of Site', 'pmpro_sitewide_Sales' ),
 				'callback'      => array( __CLASS__, 'hook_top_banner' ),
 				'css_selectors' => array(
 					'.pmpro_sws_banner',
@@ -36,7 +36,7 @@ class PMPro_SWS_Banners {
 				),
 			),
 			'bottom' => array(
-				'option_title'  => __( 'Yes, Bottom of Site', 'pmpro_sitewide_sale' ),
+				'option_title'  => __( 'Yes, Bottom of Site', 'pmpro_sitewide_sales' ),
 				'callback'      => array( __CLASS__, 'hook_bottom_banner' ),
 				'css_selectors' => array(
 					'.pmpro_sws_banner',
@@ -50,7 +50,7 @@ class PMPro_SWS_Banners {
 				),
 			),
 			'bottom_right' => array(
-				'option_title'  => __( 'Yes, Bottom Right of Site', 'pmpro_sitewide_sale' ),
+				'option_title'  => __( 'Yes, Bottom Right of Site', 'pmpro_sitewide_sales' ),
 				'callback'      => array( __CLASS__, 'hook_bottom_right_banner' ),
 				'css_selectors' => array(
 					'.pmpro_sws_banner',
@@ -84,7 +84,7 @@ class PMPro_SWS_Banners {
 		if ( ! function_exists( 'pmpro_getMembershipLevelForUser' ) ) {
 			return;
 		}
-		
+
 		// get some settings
 		$options = PMPro_SWS_Settings::pmprosws_get_options();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];

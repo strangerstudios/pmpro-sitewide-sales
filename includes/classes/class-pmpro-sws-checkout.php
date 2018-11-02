@@ -1,6 +1,6 @@
 <?php
 
-namespace PMPro_Sitewide_Sale\includes\classes;
+namespace PMPro_Sitewide_Sales\includes\classes;
 
 defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 
@@ -31,7 +31,7 @@ class PMPro_SWS_Checkout {
 		) {
 			return;
 		}
-		$cookie_name = 'pmpro_sitewide_sale_' . $active_sitewide_sale . '_tracking';
+		$cookie_name = 'pmpro_sws_' . $active_sitewide_sale . '_tracking';
 		if ( ! isset( $_COOKIE[ $cookie_name ] ) || false == strpos( $_COOKIE[ $cookie_name ], ';1;' ) ) {
 			return;
 		}

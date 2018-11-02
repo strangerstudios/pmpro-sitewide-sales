@@ -1,6 +1,6 @@
 <?php
 
-namespace PMPro_Sitewide_Sale\includes\classes;
+namespace PMPro_Sitewide_Sales\includes\classes;
 
 defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 
@@ -264,7 +264,7 @@ class PMPro_SWS_Landing_Pages {
 		$sitewide_sale_id = get_post_meta( $post->ID, 'pmpro_sws_sitewide_sale_id', true );
 
 		if( ! empty ( $sitewide_sale_id ) ) {
-			$post_states['pmpro_sws_landing_page'] = __( 'Sitewide Sale Landing Page', 'pmpro-sitewide-sale' );
+			$post_states['pmpro_sws_landing_page'] = __( 'Sitewide Sale Landing Page', 'pmpro-sitewide-sales' );
 		}
 
 		return $post_states;
@@ -285,8 +285,8 @@ class PMPro_SWS_Landing_Pages {
 			$actions['pmpro_sws_edit_sale'] = sprintf(
 				'<a href="%s" rel="bookmark" aria-label="%s">%s</a>',
 				get_edit_post_link( $sitewide_sale_id ),
-				esc_attr( 'Edit Sitewide Sale', 'pmpro-sitewide-sale' ),
-				esc_attr( 'Edit Sitewide Sale', 'pmpro-sitewide-sale' )
+				esc_attr( 'Edit Sitewide Sale', 'pmpro-sitewide-sales' ),
+				esc_attr( 'Edit Sitewide Sale', 'pmpro-sitewide-sales' )
 			);
 		}
 

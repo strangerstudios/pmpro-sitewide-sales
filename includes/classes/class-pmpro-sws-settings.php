@@ -1,6 +1,6 @@
 <?php
 
-namespace PMPro_Sitewide_Sale\includes\classes;
+namespace PMPro_Sitewide_Sales\includes\classes;
 
 defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 
@@ -18,7 +18,7 @@ class PMPro_SWS_Settings {
 	 * Init settings page
 	 */
 	public static function admin_init() {
-		register_setting( 'pmpro-sws-group', 'pmpro_sitewide_sale', array( __CLASS__, 'validate' ) );
+		register_setting( 'pmpro-sws-group', 'pmpro_sitewide_sales', array( __CLASS__, 'validate' ) );
 	}
 
 	/**
@@ -30,7 +30,7 @@ class PMPro_SWS_Settings {
 		static $options;
 
 		if ( empty( $options ) ) {
-			$options = get_option( 'pmpro_sitewide_sale' );
+			$options = get_option( 'pmpro_sitewide_sales' );
 
 			// Set the defaults.
 			if ( empty( $options ) || ! array_key_exists( 'active_sitewide_sale_id', $options ) ) {
@@ -55,7 +55,7 @@ class PMPro_SWS_Settings {
 	 * @param array $options contains information about sale to be saved.
 	 */
 	public static function pmprosws_save_options( $options ) {
-		update_option( 'pmpro_sitewide_sale', $options, 'no' );
+		update_option( 'pmpro_sitewide_sales', $options, 'no' );
 	}
 
 	/**

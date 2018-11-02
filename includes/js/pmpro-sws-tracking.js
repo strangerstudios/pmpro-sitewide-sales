@@ -1,5 +1,5 @@
 function pmpro_sws_get_tracking_cookie() {
-	var cookie_string = wpCookies.get('pmpro_sitewide_sale_' + pmpro_sws.sitewide_sale_id + '_tracking', '/');
+	var cookie_string = wpCookies.get('pmpro_sws_' + pmpro_sws.sitewide_sale_id + '_tracking', '/');
 	var cookie_array;
 	if( null == cookie_string ) {
 		cookie_array = {'banner': 0, 'landing_page': 0, 'confirmation_page': 0};
