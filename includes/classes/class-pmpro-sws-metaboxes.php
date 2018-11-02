@@ -353,7 +353,7 @@ class PMPro_SWS_MetaBoxes {
 								$show_shortcode_warning = true;
 							}
 						?>
-						<small id="pmpro_sws_shortcode_warning" class="pmpro_red" <?php if ( ! $show_shortcode_warning ) {?>style="display: none;"<?php } ?><?php echo wp_kses_post( '<strong>Warning:</strong> The [pmpro_sws] shortcode was not found in this post.', 'pmpro-sitewide-sales' );?></small>
+						<p<?php if ( ! $show_shortcode_warning ) {?> style="display: none;"<?php } ?>><small id="pmpro_sws_shortcode_warning" class="pmpro_red"><?php echo wp_kses_post( '<strong>Warning:</strong> The [pmpro_sws] shortcode was not found in this post.', 'pmpro-sitewide-sales' );?></small></p>
 
 						<p>
 							<span id="pmpro_sws_after_landing_page_select" <?php if ( ! $page_found ) {?>style="display: none;"<?php } ?>>
