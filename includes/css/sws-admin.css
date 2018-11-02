@@ -18,6 +18,14 @@
 #pmpro_sws_options > table:nth-child(6) > tbody > tr > td > span {
 	width: 88%;
 }
+#pmpro_sws_cpt_publish_sitewide_sale .inside {
+	margin: 0;
+	padding: 0;
+}
+
+#pmpro_sws_cpt_publish_sitewide_sale .misc-pub-section {
+	padding: 12px;
+}
 
 .pmpro_sws_banner_css_selectors {
 	background: aliceblue;

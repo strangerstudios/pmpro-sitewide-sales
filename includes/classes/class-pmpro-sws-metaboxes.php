@@ -69,9 +69,9 @@ class PMPro_SWS_MetaBoxes {
 	 */
 	public static function add_sws_metaboxes() {
 		add_meta_box(
-			'pmpro_sws_cpt_set_as_sitewide_sale',
+			'pmpro_sws_cpt_publish_sitewide_sale',
 			__( 'Sitewide Sale', 'pmpro-sitewide-sales' ),
-			array( __CLASS__, 'display_set_as_sitewide_sale' ),
+			array( __CLASS__, 'publish_sitewide_sale' ),
 			array( 'pmpro_sitewide_sale' ),
 			'side',
 			'high'
@@ -122,7 +122,7 @@ class PMPro_SWS_MetaBoxes {
 		remove_meta_box( 'submitdiv', 'pmpro_sitewide_sale', 'side' );
 	}
 
-	public static function display_set_as_sitewide_sale( $post ) {
+	public static function publish_sitewide_sale( $post ) {
 		wp_nonce_field( 'custom_nonce_action', 'custom_nonce' );
 		$init_checked = false;
 		if ( isset( $_REQUEST['set_sitewide_sale'] ) && 'true' === $_REQUEST['set_sitewide_sale'] ) {
@@ -135,24 +135,21 @@ class PMPro_SWS_MetaBoxes {
 			}
 		}
 		?>
-		<table class="form-table">
-			<tr>
-				<th scope="row" valign="top">
-					<label for="pmpro_sws_set_as_sitewide_sale"><?php esc_html_e( 'Set as Current Sitewide Sale:', 'pmpro-sitewide-sales' );?></label>
-				</th>
-				<td>
-					<input name="pmpro_sws_set_as_sitewide_sale" id="pmpro_sws_set_as_sitewide_sale" type="checkbox" <?php checked( $init_checked, true );?> />
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Save All Settings', 'pmpro-sitewide-sales' ); ?>">
-				</td>
-			</tr>
-			<tr>
-				<td><a target="_blank" href="<?php echo esc_url( admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports' ) );?>"><?php esc_html_e( 'View Sitewide Sale Reports', 'pmpro-sitewide-sales' ); ?></a></td>
-			</tr>
-		</table>
+		<div id="misc-publishing-actions">
+			<div class="misc-pub-section">
+				<label for="pmpro_sws_set_as_sitewide_sale"><?php esc_html_e( 'Set as Current Sitewide Sale:', 'pmpro-sitewide-sales' );?></label>
+				<input name="pmpro_sws_set_as_sitewide_sale" id="pmpro_sws_set_as_sitewide_sale" type="checkbox" <?php checked( $init_checked, true );?> />
+			</div>
+			<div class="misc-pub-section">
+				<a class="button button-secondary" target="_blank" href="<?php echo esc_url( admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports' ) );?>"><?php esc_html_e( 'View Sitewide Sale Reports', 'pmpro-sitewide-sales' ); ?></a>
+			</div>
+		</div>
+		<div id="major-publishing-actions">
+			<div id="publishing-action">
+				<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Save All Settings', 'pmpro-sitewide-sales' ); ?>">
+			</div>
+			<div class="clear"></div>
+		</div>
 		<?php
 	}
 
