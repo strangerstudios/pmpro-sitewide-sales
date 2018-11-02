@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Paid Memberships Pro - Sitewide Sales Add On
  * Plugin URI: https://www.paidmembershipspro.com/add-ons/sitewide-sales/
- * Description: Run sitewide sales (Black Friday, Cyber Monday, etc.) with Paid Memberships Pro
+ * Description: Create, manage, and view advanced reports for a sitewide or flash sale on membership (Black Friday or Cyber Monday) using Paid Memberships Pro.
  * Author: Paid Memberships Pro
  * Author URI: https://www.paidmembershipspro.com
  * Version: 1.0.1
