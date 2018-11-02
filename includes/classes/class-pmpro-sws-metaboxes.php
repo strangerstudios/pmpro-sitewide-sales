@@ -144,7 +144,7 @@ class PMPro_SWS_MetaBoxes {
 				</p>
 			</div>
 			<div class="misc-pub-section">
-				<p><a target="_blank" href="<?php echo esc_url( admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports' ) );?>"><?php esc_html_e( 'View Sitewide Sale Reports', 'pmpro-sitewide-sales' ); ?></a></p>
+				<p><a target="_blank" href="<?php echo esc_url( admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports&pmpro_sws_sitewide_sale_id=' . $post->ID ) );?>"><?php esc_html_e( 'View Sitewide Sale Reports', 'pmpro-sitewide-sales' ); ?></a></p>
 			</div>
 		</div>
 		<div id="major-publishing-actions">
@@ -645,9 +645,10 @@ class PMPro_SWS_MetaBoxes {
 		<?php
 	}
 
-	public static function display_step_5( $post ) { ?>
-		<input type="submit" class="button button-primary" name="pmpro_sws_view_reports" value="<?php echo esc_html__( 'View Sitewide Sale Reports', 'pmpro-sitewide-sales' ); ?>">
-		<?php
+	public static function display_step_5( $post ) {
+	?>
+		<p>We will update pmpro_report_pmpro_sws_reports_page() to show a condensed version and call that here with a link to the larger report.</p>
+	<?php
 	}
 
 	/**

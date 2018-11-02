@@ -193,7 +193,7 @@ class PMPro_SWS_Post_Types {
 				}
 				break;
 			case 'reports':
-					echo '<a class="button button-primary" href="' . admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports' ) . '">' . __( 'View Reports', 'pmpro-sitewide-sales' ) . '</a>';
+					echo '<a class="button button-primary" href="' . admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports&pmpro_sws_sitewide_sale_id=' . $post_id ) . '">' . __( 'View Reports', 'pmpro-sitewide-sales' ) . '</a>';
 					break;
 			case 'set_active':
 				$options = PMPro_SWS_Settings::get_options();

@@ -45,20 +45,52 @@ function pmpro_report_pmpro_sws_reports_page() {
 			'order' => 'DESC',
 		]
 	);
-	$active_sitewide_sale = $options['active_sitewide_sale_id'];
-	echo '<h1>' . esc_html( 'Sitewide Sale Reports', 'pmpro-sitewide-sale' ) . '</h1>';
-	echo '<p><label for="pmpro_sws_sitewide_sale_select">' . esc_html__( 'Select a Sitewide Sale', 'pmpro-sitewide-sale' ) . '</label> ';
-	echo '<select id="pmpro_sws_sitewide_sale_select">';
-
-	foreach ( $sitewide_sales as $sitewide_sale ) {
-		$selected_modifier = '';
-		if ( $sitewide_sale->ID . '' === $active_sitewide_sale . '' ) {
-			$selected_modifier = ' selected="selected"';
-		}
-		echo '<option value = ' . esc_html( $sitewide_sale->ID ) . esc_html( $selected_modifier ) . '>' . esc_html( get_the_title( $sitewide_sale->ID ) ) . '</option>';
+	if( ! empty( $_REQUEST['pmpro_sws_sitewide_sale_id'] ) ) {
+		$sitewide_sale_id = intval( $_REQUEST['pmpro_sws_sitewide_sale_id'] );
+	} else {
+		$sitewide_sale_id = $options['active_sitewide_sale_id'];
 	}
-	echo '</select></p>';
-	echo '<div id="pmpro_sws_reports_container">';
-	echo PMPro_Sitewide_Sales\includes\classes\PMPro_SWS_Reports::get_report_for_code();
-	echo '</div>';
+
+	$stats = PMPro_Sitewide_Sales\includes\classes\PMPro_SWS_Reports::get_stats_for_sale( $sitewide_sale_id );
+
+	?>
+	<form id="posts-filter" method="get" action="">
+		<h1>
+			<?php esc_html_e( 'Sitewide Sales Report', 'pmpro-sitewide-sales' );?>
+		</h1>
+		<ul class="subsubsub">
+			<li>
+				<?php esc_html_e( 'Show reports for ', 'pmpro-sitewide-sales' );?>
+				<select name="pmpro_sws_sitewide_sale_id">
+				<?php
+					foreach ( $sitewide_sales as $sitewide_sale ) {
+						echo '<option value="' . esc_attr( $sitewide_sale->ID ) . '" ' . selected( $sitewide_sale_id, $sitewide_sale->ID ) . '>' . esc_html( get_the_title( $sitewide_sale->ID ) ) . '</option>';
+					}
+				?>
+				</select>
+
+				<input type="hidden" name="page" value="pmpro-reports" />
+				<input type="hidden" name="report" value="pmpro_sws_reports" />
+				<input type="submit" class="button" value="<?php echo esc_attr_e( 'Generate Report', 'pmpro-sitewide-sales' );?>" />
+			</li>
+		</ul>
+		<br /><br />
+		<hr class="clear" />
+		<p>
+		<?php
+			printf( wp_kses_post( 'From %s to %s using discount code %s on landing page <a target="_blank" href="%s">%s</a>.', 'pmpro-sitewide-sales' ),
+					$stats['start_date'],
+					$stats['end_date'],
+					$stats['discount_code'],
+					$stats['landing_page_url'],
+					$stats['landing_page_title']
+				);
+		?>
+		</p>
+		<hr />
+		<pre>
+			<?php var_dump( $stats ); ?>
+		</pre>
+	</form>
+	<?php
 }
