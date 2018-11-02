@@ -1,7 +1,7 @@
 .edit-php.post-type-pmpro_sitewide_sale .wrap:before,
 .post-php.post-type-pmpro_sitewide_sale .wrap:before,
 .post-new-php.post-type-pmpro_sitewide_sale .wrap:before {
-	background-image: url( '/wp-content/plugins/paid-memberships-pro/images/Paid-Memberships-Pro.png' );
+	background-image: url( '../../images/Paid-Memberships-Pro.png' );
 	background-size: contain;
 	background-repeat: no-repeat;
 	content: '';
