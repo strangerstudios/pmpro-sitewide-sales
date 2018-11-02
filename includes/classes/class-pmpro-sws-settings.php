@@ -108,15 +108,17 @@ class PMPro_SWS_Settings {
 	 * Add an Advanced Setting to allow non-Memberlite themes to enable Templates.
 	 */
 	public static function custom_advanced_settings() {
-	    $custom_fields = array(
-			'pmpro_sws_allow_template' => array(
-				'field_name' => 'pmpro_sws_allow_template',
-				'field_type' => 'select',
-				'label'		 => __( 'Allow Sitewide Sale Custom Templates', 'pmpro-sitewide-sale' ),
-				'description' => __( 'Check this box to allow the use of custom Landing Page and Banner templates. Note that we cannot ensure theme compatiblity for included templates.', 'pmpro-sitewide-sale' ),
-				'options' => array(0 => 'No', 1 => 'Yes'),
-			),
-	    );
+	    if ( ! defined( 'MEMBERLITE_VERSION' ) ) {
+			$custom_fields = array(
+				'pmpro_sws_allow_template' => array(
+					'field_name' => 'pmpro_sws_allow_template',
+					'field_type' => 'select',
+					'label'		 => __( 'Allow Sitewide Sale Custom Templates', 'pmpro-sitewide-sale' ),
+					'description' => __( 'Check this box to allow the use of custom Landing Page and Banner templates. Note that we cannot ensure theme compatiblity for included templates.', 'pmpro-sitewide-sale' ),
+					'options' => array(0 => 'No', 1 => 'Yes'),
+				),
+		    );
+		}
 	    return $custom_fields;
 	}
 }
