@@ -24,7 +24,7 @@ class PMPro_SWS_Reports {
 	public static function assign_pmpro_sws_reports() {
 		global $pmpro_reports;
 		// Functions called by adding this report are below the class.
-		$pmpro_reports['pmpro_sws_reports'] = __( 'Sitewide Sale', 'pmpro-sitewide-sales' );
+		$pmpro_reports['pmpro_sws_reports'] = __( 'Sitewide Sales', 'pmpro-sitewide-sales' );
 		return $pmpro_reports;
 	}
 
