@@ -386,7 +386,7 @@ class PMPro_SWS_MetaBoxes {
 							}
 						?>
 					</select>
-					<p><small class="pmpro_lite"><?php esc_html_e( 'If the [pmpro_sws] shortcode is on the page, a checkout form for this level will be shown.', 'pmpro-sitewide-sales' ); ?></small></p>
+					<p><small class="pmpro_lite"><?php esc_html_e( '[pmpro_sws] shortcode will display a checkout form for this level (if applicable).', 'pmpro-sitewide-sales' ); ?></small></p>
 					</td>
 				</tr>
 				<?php
@@ -419,7 +419,7 @@ class PMPro_SWS_MetaBoxes {
 			</tbody>
 		</table>
 		<hr />
-		<p><?php _e( 'If the [pmpro_sws] shortcode is in the landing page post content, then the content from the settings below will be automatically shown on the page before, during, and after the sale. Alternatively, you can remove the shortcode and manually update the landing page content.', 'pmpro-sitewide-sales' );?></p>
+		<p><?php _e( 'Use the [pmpro_sws] shortcode in your landing page to automatically display the following sections before, during, and after the sale. Alternatively, you can remove the shortcode and manually update the landing page content.', 'pmpro-sitewide-sales' );?></p>
 		<table class="form-table">
 			<tbody>
 				<tr>
