@@ -5,7 +5,7 @@ Requires at least:
 Tested up to: 4.9.8
 Stable tag: 1.0.1
 
-Run a sitewide sales (Black Friday, Cyber Monday, etc.) with Paid Memberships Pro.
+Create, manage, and view advanced reports for a sitewide or flash sale on membership (Black Friday or Cyber Monday) using Paid Memberships Pro.
 
 == Description ==
 
@@ -19,8 +19,9 @@ The plugin also adds the option to display sitewide page banners to advertise yo
 
 1. Upload the `pmpro-sitewide-sales` directory to the `/wp-content/plugins/` directory of your site.
 1. Activate the plugin through the 'Plugins' menu in WordPress.
-1. Create a new `Sitewide Sale` CPT by going to `All PMPro CPTs > Add New`.
-1. Choose a discount code, sale page and banner settings.
+1. Create a new `Sitewide Sale` under `Memberships` > `Sitewide Sales` > `Add New`.
+
+Documentation for additional settings can be found here: https://www.paidmembershipspro.com/add-ons/sitewide-sales/
 
 == Changelog ==
 
