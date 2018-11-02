@@ -304,9 +304,9 @@ class PMPro_SWS_MetaBoxes {
 
 		$default_level = get_post_meta( $post->ID, 'pmpro_sws_landing_page_default_level_id', true );
 
-		$template = esc_html( get_post_meta( $post->ID, 'pmpro_sws_landing_page_template', true ) );
-		if ( empty( $template ) ) {
-			$template = false;
+		$landing_template = esc_html( get_post_meta( $post->ID, 'pmpro_sws_landing_page_template', true ) );
+		if ( empty( $landing_template ) ) {
+			$landing_template = false;
 		}
 
 		$pre_sale_content = esc_html( get_post_meta( $post->ID, 'pmpro_sws_pre_sale_content', true ) );
@@ -371,23 +371,6 @@ class PMPro_SWS_MetaBoxes {
 						</p>
 					</td>
 				</tr>
-				<tr>
-					<th><label for="pmpro_sws_landing_page_default_level"><?php esc_html_e( 'Checkout Level', 'pmpro-sitewide-sales' ); ?></label></th>
-					<td>
-						<select id="pmpro_sws_landing_page_default_level" name="pmpro_sws_landing_page_default_level">
-						<option value="0"><?php esc_html_e( '- Choose One -', 'pmpro-sitewide-sales'); ?></option>
-						<?php
-							$all_levels = pmpro_getAllLevels( true, true );
-							foreach( $all_levels as $level ) {
-							?>
-							<option value="<?php echo esc_attr( $level->id ); ?>" <?php selected( $default_level, $level->id );?>><?php echo esc_textarea( $level->name ); ?></option>
-							<?php
-							}
-						?>
-					</select>
-					<p><small class="pmpro_lite"><?php esc_html_e( '[pmpro_sws] shortcode will display a checkout form for this level (if applicable).', 'pmpro-sitewide-sales' ); ?></small></p>
-					</td>
-				</tr>
 				<?php
 					// Allow template selection if using Memberlite.
 					if ( defined( 'MEMBERLITE_VERSION' ) || ( pmpro_getOption( 'pmpro_sws_landing_page_allow_template' ) === 'Yes' ) ) { ?>
@@ -406,14 +389,31 @@ class PMPro_SWS_MetaBoxes {
 									);
 									$templates = apply_filters( 'pmpro_sws_landing_page_templates', $templates );
 									foreach ( $templates as $key => $value ) {
-										echo '<option value="' . esc_html( $key ) . '" ' . selected( $template, esc_html( $key ) ) . '>' . esc_html( $value ) . '</option>';
+										echo '<option value="' . esc_html( $key ) . '" ' . selected( $landing_template, esc_html( $key ) ) . '>' . esc_html( $value ) . '</option>';
 									}
 								?>
 							</select>
 							<p><small class="pmpro_lite"><?php esc_html_e( 'Stylish templates available for your theme.', 'pmpro-sitewide-sales' ); ?></small></p>
 						</td>
 					</tr>
-				<?php } ?>
+				<?php } ?>				
+				<tr>
+					<th><label for="pmpro_sws_landing_page_default_level"><?php esc_html_e( 'Checkout Level', 'pmpro-sitewide-sales' ); ?></label></th>
+					<td>
+						<select id="pmpro_sws_landing_page_default_level" name="pmpro_sws_landing_page_default_level">
+						<option value="0"><?php esc_html_e( '- Choose One -', 'pmpro-sitewide-sales'); ?></option>
+						<?php
+							$all_levels = pmpro_getAllLevels( true, true );
+							foreach( $all_levels as $level ) {
+							?>
+							<option value="<?php echo esc_attr( $level->id ); ?>" <?php selected( $default_level, $level->id );?>><?php echo esc_textarea( $level->name ); ?></option>
+							<?php
+							}
+						?>
+					</select>
+					<p><small class="pmpro_lite"><?php esc_html_e( 'Using the [pmpro_sws] or [pmpro_checkout] shortcode on your Landing Page will display a checkout form for this level.', 'pmpro-sitewide-sales' ); ?></small></p>
+					</td>
+				</tr>
 			</tbody>
 		</table>
 		<hr />
@@ -727,6 +727,10 @@ class PMPro_SWS_MetaBoxes {
 		$possible_options = array_merge( array( 'no' => 'no' ), PMPro_SWS_Banners::get_registered_banners() );
 		if ( isset( $_POST['pmpro_sws_use_banner'] ) && array_key_exists( trim( $_POST['pmpro_sws_use_banner'] ), $possible_options ) ) {
 			update_post_meta( $post_id, 'pmpro_sws_use_banner', trim( $_POST['pmpro_sws_use_banner'] ) );
+		}
+
+		if ( isset( $_POST['pmpro_sws_banner_template'] ) ) {
+			update_post_meta( $post_id, 'pmpro_sws_banner_template', wp_kses_post( $_POST['pmpro_sws_banner_template'] ) );
 		}
 
 		if ( ! empty( $_POST['pmpro_sws_banner_title'] ) ) {
