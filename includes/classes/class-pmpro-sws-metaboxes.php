@@ -352,7 +352,7 @@ class PMPro_SWS_MetaBoxes {
 								$show_shortcode_warning = true;
 							}
 						?>
-						<p<?php if ( ! $show_shortcode_warning ) {?> style="display: none;"<?php } ?>><small id="pmpro_sws_shortcode_warning" class="pmpro_red"><?php echo wp_kses_post( '<strong>Warning:</strong> The [pmpro_sws] shortcode was not found in this post.', 'pmpro-sitewide-sales' );?></small></p>
+						<p<?php if ( ! $show_shortcode_warning ) {?> style="display: none;"<?php } ?> class="pmpro_sws_shortcode_warning"><small class="pmpro_red"><?php echo wp_kses_post( '<strong>Warning:</strong> The [pmpro_sws] shortcode was not found in this post.', 'pmpro-sitewide-sales' );?></small></p>
 
 						<p>
 							<span id="pmpro_sws_after_landing_page_select" <?php if ( ! $page_found ) {?>style="display: none;"<?php } ?>>
@@ -418,6 +418,7 @@ class PMPro_SWS_MetaBoxes {
 		</table>
 		<hr />
 		<p><?php _e( 'Use the [pmpro_sws] shortcode in your landing page to automatically display the following sections before, during, and after the sale. Alternatively, you can remove the shortcode and manually update the landing page content.', 'pmpro-sitewide-sales' );?></p>
+		<p<?php if ( ! $show_shortcode_warning ) {?> style="display: none;"<?php } ?> class="pmpro_sws_shortcode_warning"><small class="pmpro_red"><?php echo wp_kses_post( '<strong>Warning:</strong> The chosen Landing Page does not include the [pmpro_sws] shortcode, so the following sections will not be displayed.', 'pmpro-sitewide-sales' );?></small></p>
 		<table class="form-table">
 			<tbody>
 				<tr>

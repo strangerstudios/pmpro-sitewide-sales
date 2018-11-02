@@ -71,14 +71,14 @@ jQuery( document ).ready(function($) {
 		var landing_page_id = $('#pmpro_sws_landing_page_select').val();
 		if(landing_page_id == 0) {
 			$('#pmpro_sws_after_landing_page_select').hide();
-			$('#pmpro_sws_shortcode_warning').hide();
+			$('.pmpro_sws_shortcode_warning').hide();
 		} else {
 			$('#pmpro_sws_edit_landing_page').attr('href', pmpro_sws.admin_url + 'post.php?post=' + landing_page_id + '&action=edit');
 			$('#pmpro_sws_view_landing_page').attr('href', pmpro_sws.home_url + '?p=' + landing_page_id);
 			if( pmpro_sws.pages_with_shortcodes.indexOf(landing_page_id) > -1)
-				$('#pmpro_sws_shortcode_warning').hide();
+				$('.pmpro_sws_shortcode_warning').hide();
 			else {
-				$('#pmpro_sws_shortcode_warning').show();
+				$('.pmpro_sws_shortcode_warning').show();
 			}
 			$('#pmpro_sws_after_landing_page_select').show();
 		}
