@@ -88,6 +88,93 @@ function pmpro_report_pmpro_sws_reports_page() {
 		?>
 		</p>
 		<hr />
+		<style>
+		.pmpro_sws_reports-box {
+			background: #FFF;
+			border: 1px solid #CCC;
+			margin-bottom: 2rem;
+			padding: 20px;
+			text-align: center;
+		}
+		.pmpro_sws_reports-box h1.pmpro_sws_reports-box-title {
+			border-bottom: 1px solid #EFEFEF;
+			color: #999;
+			font-family: Georgia, Times, "Times New Roman", serif;
+			margin: 0 0 1rem 0;
+			padding: 0 0 1rem 0;
+		}
+		.pmpro_sws_reports-data {
+			display: grid;
+			grid-gap: 1rem;
+			grid-template-columns: 1fr 1fr 1fr;
+		}
+		.pmpro_sws_reports-data-section {
+		}
+		.pmpro_sws_reports-data-section h1 {
+			font-size: 40px;
+			line-height: 50px;
+			margin: 0;
+		}
+		.pmpro_sws_reports-data-section-sub {
+			display: grid;
+			grid-gap: 1rem;
+			grid-template-columns: 3fr 1fr;
+			margin: 1rem 0;
+			text-align: left;
+		}
+		.pmpro_sws_reports-data-section-sub .pmpro_sws_reports-data-label {
+			text-align: right;
+		}
+		</style>
+		<div class="pmpro_sws_reports-box">
+			<h1 class="pmpro_sws_reports-box-title"><?php esc_html_e( 'Overall Sale Performance', 'pmpro-sitewide-sales' ); ?></h1>
+			<div class="pmpro_sws_reports-data">
+				<div class="pmpro_sws_reports-data-section">
+					<h1><?php echo esc_attr( $stats['new_rev_with_code'] ); ?></h1>
+					<p><?php esc_html_e( 'Total Sales Revenue Using Discount', 'pmpro-sitewide-sales' ); ?></p>
+				</div>
+				<div id="pmpro_sws_reports-data-section_banner" class="pmpro_sws_reports-data-section">
+					<h1><?php echo esc_attr( $stats['banner_impressions'] ); ?></h1>
+					<p><?php esc_html_e( 'Banner Impressions', 'pmpro-sitewide-sales' ); ?></p>
+				</div>
+				<div id="pmpro_sws_reports-data-section_sales" class="pmpro_sws_reports-data-section">
+					<h1><?php echo esc_attr( $stats['landing_page_visits'] ); ?></h1>
+					<p><?php esc_html_e( 'Landing Page Visits', 'pmpro-sitewide-sales' ); ?></p>
+				</div>
+			</div>
+		</div>
+		<div class="pmpro_sws_reports-box">
+			<h1 class="pmpro_sws_reports-box-title"><?php esc_html_e( 'Sales Comparision Data', 'pmpro-sitewide-sales' ); ?></h1>
+			<div class="pmpro_sws_reports-data">
+				<div class="pmpro_sws_reports-data-section">
+					<h1><?php echo esc_attr( $stats['checkout_conversions_with_code'] ); ?></h1>
+					<p><?php esc_html_e( 'Checkouts Using Discount', 'pmpro-sitewide-sales' ); ?></p>
+				</div>
+				<div id="pmpro_sws_reports-data-section_banner" class="pmpro_sws_reports-data-section">
+					<h1><?php echo esc_attr( $stats['checkout_conversions_without_code'] ); ?></h1>
+					<p><?php esc_html_e( 'Checkouts Without Discount', 'pmpro-sitewide-sales' ); ?></p>
+				</div>
+				<div id="pmpro_sws_reports-data-section_sales" class="pmpro_sws_reports-data-section">
+					<h1><?php echo esc_attr( $stats['checkout_conversions_with_code'] ) + esc_attr( $stats['checkout_conversions_with_code'] ); ?></h1>
+					<p><?php esc_html_e( 'Total Checkouts in Period', 'pmpro-sitewide-sales' ); ?></p>
+				</div>
+			</div>
+			<hr />
+			<div class="pmpro_sws_reports-data">
+				<div class="pmpro_sws_reports-data-section">
+					<span class="pmpro_sws_reports-data-label"><?php esc_html_e( 'Sales Without Discount in Period', 'pmpro-sitewide-sales' ); ?></span>
+					<span class="pmpro_sws_reports-data-value"><?php echo esc_attr( $stats['new_rev_without_code'] ); ?></span>
+				</div>
+				<div class="pmpro_sws_reports-data-section">
+					<span class="pmpro_sws_reports-data-label"><?php esc_html_e( 'Other Sales (Renewals) in Period', 'pmpro-sitewide-sales' ); ?></span>
+					<span class="pmpro_sws_reports-data-value"><?php echo esc_attr( $stats['old_rev'] ); ?></span>
+				</div>
+				<div class="pmpro_sws_reports-data-section">	
+					<span class="pmpro_sws_reports-data-label"><?php esc_html_e( 'Total Sales in Period', 'pmpro-sitewide-sales' ); ?></span>
+					<span class="pmpro_sws_reports-data-value"><?php echo esc_attr( $stats['new_rev_with_code'] ) + esc_attr( $stats['new_rev_without_code'] ) + esc_attr( $stats['old_rev'] ); ?></span>
+				</div>
+			</div>			
+		</div>
 		<pre>
 			<?php var_dump( $stats ); ?>
 		</pre>
