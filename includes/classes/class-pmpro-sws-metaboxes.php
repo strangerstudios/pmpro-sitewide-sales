@@ -137,11 +137,13 @@ class PMPro_SWS_MetaBoxes {
 		?>
 		<div id="misc-publishing-actions">
 			<div class="misc-pub-section">
-				<label for="pmpro_sws_set_as_sitewide_sale"><?php esc_html_e( 'Set as Current Sitewide Sale:', 'pmpro-sitewide-sales' );?></label>
-				<input name="pmpro_sws_set_as_sitewide_sale" id="pmpro_sws_set_as_sitewide_sale" type="checkbox" <?php checked( $init_checked, true );?> />
+				<p>
+					<label for="pmpro_sws_set_as_sitewide_sale"><strong><?php esc_html_e( 'Set as Current Sitewide Sale:', 'pmpro-sitewide-sales' );?></strong></label>
+					<input name="pmpro_sws_set_as_sitewide_sale" id="pmpro_sws_set_as_sitewide_sale" type="checkbox" <?php checked( $init_checked, true );?> />
+				</p>
 			</div>
 			<div class="misc-pub-section">
-				<a class="button button-secondary" target="_blank" href="<?php echo esc_url( admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports' ) );?>"><?php esc_html_e( 'View Sitewide Sale Reports', 'pmpro-sitewide-sales' ); ?></a>
+				<p><a target="_blank" href="<?php echo esc_url( admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports' ) );?>"><?php esc_html_e( 'View Sitewide Sale Reports', 'pmpro-sitewide-sales' ); ?></a></p>
 			</div>
 		</div>
 		<div id="major-publishing-actions">
@@ -423,21 +425,37 @@ class PMPro_SWS_MetaBoxes {
 					<th scope="row" valign="top"><label><?php esc_html_e( 'Pre-Sale Content', 'pmpro-sitewide-sales' ); ?></label></th>
 					<td>
 						<textarea class="pmpro_sws_option" rows="4" name="pmpro_sws_pre_sale_content"><?php echo( esc_html( $pre_sale_content ) ); ?></textarea><br />
-						<p><small class="pmpro_lite"><?php esc_html_e( 'Mention when the sale is starting and how awesome it will be.', 'pmpro-sitewide-sales' ); ?></small></p>
+						<p><small class="pmpro_lite">
+							<?php esc_html_e( 'Mention when the sale is starting and how awesome it will be.', 'pmpro-sitewide-sales' ); ?>
+							<?php if( ! empty( $view_page_url ) ) { ?>
+								<a target="_blank" id="pmpro_sws_view_landing_page" href="<?php echo esc_url( $view_page_url ); ?>/?pmpro_sws_preview_content=pre-sale"><?php esc_html_e( 'preview', 'pmpro-sitewide-sales' );?></a>
+							<?php } ?>
+						</small></p>
 					</td>
 				</tr>
 				<tr>
 					<th scope="row" valign="top"><label><?php esc_html_e( 'Sale Content', 'pmpro-sitewide-sales' ); ?></label></th>
 					<td>
 						<textarea class="pmpro_sws_option" rows="4" name="pmpro_sws_sale_content"><?php echo( esc_html( $sale_content ) ); ?></textarea><br />
-						<p><small class="pmpro_lite"><?php esc_html_e( 'A membership checkout form will automatically be included when the sale is active.', 'pmpro-sitewide-sales' ); ?></small></p>
+						<p><small class="pmpro_lite">
+							<?php esc_html_e( 'A membership checkout form will automatically be included when the sale is active.', 'pmpro-sitewide-sales' ); ?>
+							<?php if( ! empty( $view_page_url ) ) { ?>
+								<a target="_blank" id="pmpro_sws_view_landing_page" href="<?php echo esc_url( $view_page_url ); ?>/?pmpro_sws_preview_content=sale"><?php esc_html_e( 'preview', 'pmpro-sitewide-sales' );?></a>
+							<?php } ?>
+						</small></p>
+						</small></p>
 					</td>
 				</tr>
 				<tr>
 					<th scope="row" valign="top"><label><?php esc_html_e( 'Post-Sale Content', 'pmpro-sitewide-sales' ); ?></label></th>
 					<td>
 						<textarea class="pmpro_sws_option" rows="4" name="pmpro_sws_post_sale_content"><?php echo( esc_html( $post_sale_content ) ); ?></textarea><br />
-						<p><small class="pmpro_lite"><?php esc_html_e( 'Mention that the sale has ended and thank your customers.', 'pmpro-sitewide-sales' );?></small></p>
+						<p><small class="pmpro_lite">
+							<?php esc_html_e( 'Mention that the sale has ended and thank your customers.', 'pmpro-sitewide-sales' );?>
+							<?php if( ! empty( $view_page_url ) ) { ?>
+								<a target="_blank" id="pmpro_sws_view_landing_page" href="<?php echo esc_url( $view_page_url ); ?>/?pmpro_sws_preview_content=post-sale"><?php esc_html_e( 'preview', 'pmpro-sitewide-sales' );?></a>
+							<?php } ?>
+						</small></p>
 					</td>
 				</tr>
 			</tbody>
@@ -591,7 +609,7 @@ class PMPro_SWS_MetaBoxes {
 	}
 
 	public static function display_step_5( $post ) { ?>
-		<input type="submit" class="button button-primary" name="pmpro_sws_view_reports" value="<?php echo esc_html__( 'Click here to view Sitewide Sale reports', 'pmpro-sitewide-sales' ); ?>">
+		<input type="submit" class="button button-primary" name="pmpro_sws_view_reports" value="<?php echo esc_html__( 'View Sitewide Sale Reports', 'pmpro-sitewide-sales' ); ?>">
 		<?php
 	}
 
