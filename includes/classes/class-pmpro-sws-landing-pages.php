@@ -163,7 +163,7 @@ class PMPro_SWS_Landing_Pages {
 		$r = '';
 
 		// Display the wrapping div for selected template if using Memberlite.
-		if ( defined( 'MEMBERLITE_VERSION' ) || ( pmpro_getOption( 'pmpro_sws_landing_page_allow_template' ) === 'Yes' ) ) {
+		if ( defined( 'MEMBERLITE_VERSION' ) || ( pmpro_getOption( 'pmpro_sws_allow_template' ) === 'Yes' ) ) {
 			$landing_template = get_post_meta( $sitewide_sale->ID, 'pmpro_sws_landing_page_template', true );
 			if ( ! empty ( $landing_template ) ) {
 				$r .= '<div id="pmpro_sitewide_sale_landing_page_template-' . esc_html( $landing_template ) . '" class="pmpro_sitewide_sale_landing_page_template">';
