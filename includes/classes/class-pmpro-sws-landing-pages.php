@@ -161,9 +161,9 @@ class PMPro_SWS_Landing_Pages {
 
 		// Our return string.
 		$r = '';
-
-		// Display the wrapping div for selected template if using Memberlite.
-		if ( defined( 'MEMBERLITE_VERSION' ) || ( pmpro_getOption( 'pmpro_sws_allow_template' ) === 'Yes' ) ) {
+		
+		// Display the wrapping div for selected template if using Memberlite or Advanced Setting set to "Yes".
+		if ( defined( 'MEMBERLITE_VERSION' ) || pmpro_getOption( 'pmpro_sws_allow_template' ) === 'Yes' ) {
 			$landing_template = get_post_meta( $sitewide_sale->ID, 'pmpro_sws_landing_page_template', true );
 			if ( ! empty ( $landing_template ) ) {
 				$r .= '<div id="pmpro_sitewide_sale_landing_page_template-' . esc_html( $landing_template ) . '" class="pmpro_sitewide_sale_landing_page_template">';
@@ -197,8 +197,8 @@ class PMPro_SWS_Landing_Pages {
 			$r .= $template;
 		}
 
-		// Display the closing div for selected template if using Memberlite.
-		if ( DEFINED( 'MEMBERLITE_VERSION' ) && ! empty( $landing_template ) ) {
+		// Display the closing div for selected template if using Memberlite or Advanced Setting set to "Yes".
+		if ( defined( 'MEMBERLITE_VERSION' ) || pmpro_getOption( 'pmpro_sws_allow_template' ) === 'Yes' && ! empty( $landing_template ) ) {
 			if( ! empty( $background_image[0] ) ) {
 				$r .= '</div> <!-- .pmpro_sitewide_sale_landing_page_template-background-image -->';
 			}
@@ -240,7 +240,7 @@ class PMPro_SWS_Landing_Pages {
 			// This is a landing page, add the custom class.
 			$classes[] = 'pmpro-sitewide-sale-landing-page';
 
-			if ( DEFINED( 'MEMBERLITE_VERSION' ) ) {
+			if ( defined( 'MEMBERLITE_VERSION' ) || ( pmpro_getOption( 'pmpro_sws_allow_template' ) === 'Yes' ) ) {
 				// If the landing page has a custom template, add the custom class.
 				$landing_template = get_post_meta( $sitewide_sale_id, 'pmpro_sws_landing_page_template', true );
 				if ( ! empty ( $landing_template ) ) {
