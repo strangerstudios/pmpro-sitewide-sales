@@ -35,7 +35,7 @@ function pmpro_report_pmpro_sws_reports_widget() {
  */
 function pmpro_report_pmpro_sws_reports_page() {
 	global $wpdb;
-	$options = PMPro_Sitewide_Sale\includes\classes\PMPro_SWS_Settings::get_options();
+	$options = PMPro_Sitewide_Sales\includes\classes\PMPro_SWS_Settings::get_options();
 	$sitewide_sales = get_posts(
 		[
 			'post_type' => 'pmpro_sitewide_sale',
@@ -59,6 +59,6 @@ function pmpro_report_pmpro_sws_reports_page() {
 	}
 	echo '</select></p>';
 	echo '<div id="pmpro_sws_reports_container">';
-	echo PMPro_Sitewide_Sale\includes\classes\PMPro_SWS_Reports::get_report_for_code();
+	echo PMPro_Sitewide_Sales\includes\classes\PMPro_SWS_Reports::get_report_for_code();
 	echo '</div>';
 }
