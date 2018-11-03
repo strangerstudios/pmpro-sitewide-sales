@@ -52,8 +52,6 @@ class PMPro_SWS_MetaBoxes {
 				)
 			);
 
-			wp_register_style( 'admin-dash', plugins_url( 'includes/css/sws-admin.css', dirname( dirname( __FILE__ ) ) ), '1.0.4' );
-			wp_enqueue_style( 'admin-dash' );
 		}
 	}
 
@@ -646,8 +644,27 @@ class PMPro_SWS_MetaBoxes {
 	}
 
 	public static function display_step_5( $post ) {
-	?>
-		<p>We will update pmpro_report_pmpro_sws_reports_page() to show a condensed version and call that here with a link to the larger report.</p>
+		$stats = PMPro_SWS_Reports::get_stats_for_sale( $post->ID );
+		?>
+		<div class="pmpro_sws_reports-box">
+			<h1 class="pmpro_sws_reports-box-title"><?php esc_html_e( 'Overall Sale Performance', 'pmpro-sitewide-sales' ); ?></h1>
+			<hr />
+			<div class="pmpro_sws_reports-data pmpro_sws_reports-data-3col">
+				<div class="pmpro_sws_reports-data-section">
+					<h1><?php echo esc_attr( $stats['new_rev_with_code'] ); ?></h1>
+					<p><?php esc_html_e( 'Sales With Discount', 'pmpro-sitewide-sales' ); ?></p>
+				</div>
+				<div id="pmpro_sws_reports-data-section_banner" class="pmpro_sws_reports-data-section">
+					<h1><?php echo esc_attr( $stats['banner_impressions'] ); ?></h1>
+					<p><?php esc_html_e( 'Banner Impressions', 'pmpro-sitewide-sales' ); ?></p>
+				</div>
+				<div id="pmpro_sws_reports-data-section_sales" class="pmpro_sws_reports-data-section">
+					<h1><?php echo esc_attr( $stats['landing_page_visits'] ); ?></h1>
+					<p><?php esc_html_e( 'Landing Page Visits', 'pmpro-sitewide-sales' ); ?></p>
+				</div>
+			</div>
+			<p><?php echo '<a class="button button-secondary" href="' . admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports&pmpro_sws_sitewide_sale_id=' . $post->ID ) . '">' . __( 'View Reports', 'pmpro-sitewide-sales' ) . '</a>'; ?></p>
+		</div>
 	<?php
 	}
 

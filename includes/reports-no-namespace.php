@@ -90,64 +90,6 @@ function pmpro_report_pmpro_sws_reports_page() {
 				);
 		?>
 		</p>
-		<style>
-		.pmpro_sws_reports-box {
-			background: #FFF;
-			border: 1px solid #CCC;
-			margin: 2rem 0;
-			padding: 2rem;
-			text-align: center;
-		}
-		.pmpro_sws_reports-box h1.pmpro_sws_reports-box-title {
-			color: #999;
-			font-family: Georgia, Times, "Times New Roman", serif;
-			margin: 0;
-			padding: 0;
-		}
-		.pmpro_sws_reports-box hr {
-			margin: 2rem 0;
-		}
-		.pmpro_sws_reports-data {
-			display: grid;
-			grid-gap: 1rem;
-		}
-		.pmpro_sws_reports-data-3col {
-			grid-template-columns: 1fr 1fr 1fr;
-		}
-		.pmpro_sws_reports-data-4col {
-			grid-template-columns: 1fr 1fr 1fr 1fr;
-		}
-		.pmpro_sws_reports-data-section {
-		}
-		.pmpro_sws_reports-data-section h1 {
-			font-size: 30px;
-			line-height: 40px;
-			margin: 0;
-		}
-		@media screen and (max-width: 768px) {
-			.pmpro_sws_reports-box {
-				margin: 0 1rem;
-				padding: 1rem;
-			}
-			.pmpro_sws_reports-box hr {
-				margin: .5rem 0;
-			}
-			.pmpro_sws_reports-data {
-				display: block;
-			}
-			.pmpro_sws_reports-data-section h1,
-			.pmpro_sws_reports-data-section p {
-				display: inline-block;
-				font-size: 18px;
-			}
-			.pmpro_sws_reports-data-section br {
-				display: none;
-			}
-			.pmpro_sws_reports-data-section h1:after {
-				content: ": ";
-			}
-		}
-		</style>
 		<div class="pmpro_sws_reports-box">
 			<h1 class="pmpro_sws_reports-box-title"><?php esc_html_e( 'Overall Sale Performance', 'pmpro-sitewide-sales' ); ?></h1>
 			<hr />

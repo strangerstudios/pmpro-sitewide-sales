@@ -31,14 +31,17 @@ class PMPro_SWS_Setup {
 		wp_enqueue_script( 'selectWoo' );
 		wp_register_style( 'selectWooCSS', plugins_url( 'includes/css/selectWoo' . $suffix . '.css', PMPROSWS_BASENAME ) );
 		wp_enqueue_style( 'selectWooCSS' );
+
+		wp_register_style( 'pmpro-sitewide-sales_admin', plugins_url( 'includes/css/admin.css', PMPROSWS_BASENAME ) );
+		wp_enqueue_style( 'pmpro-sitewide-sales_admin' );
 	}
 
 	/**
 	 * Enqueues frontend stylesheet.
 	 */
 	public static function pmpro_sws_frontend_scripts() {
-		wp_register_style( 'pmpro-sws-frontend', plugins_url( 'includes/css/frontend.css', PMPROSWS_BASENAME ), '1.1' );
-		wp_enqueue_style( 'pmpro-sws-frontend' );
+		wp_register_style( 'pmpro-sitewide-sales_frontend', plugins_url( 'includes/css/frontend.css', PMPROSWS_BASENAME ), '1.1' );
+		wp_enqueue_style( 'pmpro-sitewide-sales_frontend' );
 	}
 
 	/**
