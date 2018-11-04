@@ -162,9 +162,6 @@ function pmpro_report_pmpro_sws_reports_page() {
 				</div>
 			</div>
 		</div>
-		<pre>
-			<?php var_dump( $stats ); ?>
-		</pre>
 	</form>
 	<?php
 }
