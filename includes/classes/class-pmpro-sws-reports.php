@@ -13,7 +13,6 @@ class PMPro_SWS_Reports {
 		add_action( 'init', array( __CLASS__, 'assign_pmpro_sws_reports' ) );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_reports_js' ) );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_tracking_js' ) );
-		add_action( 'wp_ajax_pmpro_sws_ajax_reporting', array( __CLASS__, 'ajax_reporting' ) );
 		add_action( 'wp_ajax_pmpro_sws_ajax_tracking', array( __CLASS__, 'ajax_tracking' ) );
 		add_action( 'wp_ajax_nopriv_pmpro_sws_ajax_tracking', array( __CLASS__, 'ajax_tracking' ) );
 	}
@@ -59,7 +58,7 @@ class PMPro_SWS_Reports {
 
 		// check if discount_code_id is set.
 		$stats = get_option( 'pmpro_sws_' . $sitewide_sale_id . '_tracking' );
-		if ( empty( $reports ) ) {
+		if ( empty( $stats ) ) {
 			$stats = array(
 				'banner_impressions'   => 0,
 				'landing_page_visits'  => 0,
@@ -96,6 +95,8 @@ class PMPro_SWS_Reports {
 		$stats['new_rev_with_code'] = '200.00';
 		$stats['new_rev_without_code'] = '100.00';
 		$stats['old_rev'] = '50.00';
+
+		d($stats);
 
 		return $stats;
 	}
@@ -168,11 +169,11 @@ class PMPro_SWS_Reports {
 	 * Ajax call to update SWS statistics
 	 */
 	public static function ajax_tracking() {
-		global $wpdb;
-		$sitewide_sale_id = $_POST['sitewide_sale_id'];
-		$element = $_POST['element'];
+		$sitewide_sale_id = intval( $_POST['sitewide_sale_id'] );
+		$element = sanitize_text_field( $_POST['element'] );
 		$reports = get_option( 'pmpro_sws_' . $sitewide_sale_id . '_tracking' );
-		if ( false === $reports ) {
+
+		if ( empty( $reports ) ) {
 			$reports = array(
 				'banner_impressions'   => 0,
 				'landing_page_visits'  => 0,
@@ -181,6 +182,7 @@ class PMPro_SWS_Reports {
 				'checkout_conversions_without_code' => 0,
 			);
 		}
+
 		if ( array_key_exists( $element, $reports ) ) {
 			$reports[ $element ] += 1;
 			update_option( 'pmpro_sws_' . $sitewide_sale_id . '_tracking', $reports, 'no' );
