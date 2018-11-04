@@ -96,8 +96,6 @@ class PMPro_SWS_Reports {
 		$stats['new_rev_without_code'] = '100.00';
 		$stats['old_rev'] = '50.00';
 
-		d($stats);
-
 		return $stats;
 	}
 
