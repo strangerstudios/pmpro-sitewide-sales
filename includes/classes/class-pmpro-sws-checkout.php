@@ -8,9 +8,9 @@ class PMPro_SWS_Checkout {
 
 	public static function init() {
 		add_action( 'init', array( __CLASS__, 'automatic_discount_application' ) );
-		add_filter( 'pmpro_email_body', array( __CLASS__, 'insert_upsell_into_confirmation_emails' ), 10, 2 );
-		add_filter( 'pmpro_confirmation_message', array( __CLASS__, 'insert_upsell_into_confirmation_page' ) );
-		add_filter( 'pmpro_include_pricing_fields', array( __CLASS__, 'maybe_add_choose_level_section' ) );
+		//add_filter( 'pmpro_email_body', array( __CLASS__, 'insert_upsell_into_confirmation_emails' ), 10, 2 );
+		//add_filter( 'pmpro_confirmation_message', array( __CLASS__, 'insert_upsell_into_confirmation_page' ) );
+		//add_filter( 'pmpro_include_pricing_fields', array( __CLASS__, 'maybe_add_choose_level_section' ) );
 	}
 
 	/**
@@ -49,17 +49,21 @@ class PMPro_SWS_Checkout {
 	 * @return string            new email body.
 	 */
 	public static function insert_upsell_into_confirmation_emails( $body, $email ) {
+		global $current_user;
+
 		// Check if sending a confirmation email.
 		if ( 0 !== strpos( $email->template, 'checkout' ) ) {
 			return $body;
 		}
 
-		global $current_user;
+		// Check if a sale is active.
 		$options = PMPro_SWS_Settings::get_options();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
 		if ( false === $active_sitewide_sale || empty( $current_user->membership_level ) ) {
-			return $confirmation_message;
+			return $body;
 		}
+
+		// Check if upsell is enabled/etc.
 		$upsell_enabled = get_post_meta( $active_sitewide_sale, 'pmpro_sws_upsell_enabled', true );
 		$upsell_levels = get_post_meta( $active_sitewide_sale, 'pmpro_sws_upsell_levels', true );
 		$upsell_text = get_post_meta( $active_sitewide_sale, 'pmpro_sws_upsell_text', true );
@@ -70,7 +74,10 @@ class PMPro_SWS_Checkout {
 				false === $landing_page_id || false === get_permalink( intval( $landing_page_id ) ) ) {
 			return $body;
 		}
+
+		// Insert upsell.
 		$upsell_text = str_replace( '!!sws_landing_page_url!!', get_permalink( intval( $landing_page_id ) ), $upsell_text );
+
 		return $body . $upsell_text . '<br/><br/>';
 	}
 
