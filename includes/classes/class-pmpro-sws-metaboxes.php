@@ -656,7 +656,7 @@ class PMPro_SWS_MetaBoxes {
 				</div>
 				<div id="pmpro_sws_reports-data-section_banner" class="pmpro_sws_reports-data-section">
 					<h1><?php echo esc_attr( $stats['banner_impressions'] ); ?></h1>
-					<p><?php esc_html_e( 'Banner Impressions', 'pmpro-sitewide-sales' ); ?></p>
+					<p><?php esc_html_e( 'Banner Reach', 'pmpro-sitewide-sales' ); ?></p>
 				</div>
 				<div id="pmpro_sws_reports-data-section_sales" class="pmpro_sws_reports-data-section">
 					<h1><?php echo esc_attr( $stats['landing_page_visits'] ); ?></h1>

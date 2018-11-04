@@ -81,9 +81,11 @@ function pmpro_report_pmpro_sws_reports_page() {
 		<a href="<?php edit_post_link( $sitewide_sale_id ); ?>" class="page-title-action"><?php esc_html_e( 'Edit', 'pmpro-sitewide-sale' ); ?></a>
 		<p>
 		<?php
-			printf( wp_kses_post( 'From %s to %s using discount code %s on landing page <a target="_blank" href="%s">%s</a>.', 'pmpro-sitewide-sales' ),
-					$stats['start_date'],
-					$stats['end_date'],
+			printf( wp_kses_post( '<a href="%s">This sitewide sale</a> is active from %s to %s using <a href="%s">discount code %s</a> on landing page <a href="%s">%s</a>.', 'pmpro-sitewide-sales' ),
+					admin_url( 'post.php?post=' . $sitewide_sale->ID . '&action=edit' ),
+					date( get_option( 'date_format' ), strtotime( $stats['start_date'] ) ),
+					date( get_option( 'date_format' ), strtotime( $stats['end_date'] ) ),
+					admin_url( 'admin.php?page=pmpro-discountcodes&edit=' . $stats['discount_code_id'] ),
 					$stats['discount_code'],
 					$stats['landing_page_url'],
 					$stats['landing_page_title']
@@ -100,7 +102,7 @@ function pmpro_report_pmpro_sws_reports_page() {
 				</div>
 				<div id="pmpro_sws_reports-data-section_banner" class="pmpro_sws_reports-data-section">
 					<h1><?php echo esc_attr( $stats['banner_impressions'] ); ?></h1>
-					<p><?php esc_html_e( 'Banner Impressions', 'pmpro-sitewide-sales' ); ?></p>
+					<p><?php esc_html_e( 'Banner Reach', 'pmpro-sitewide-sales' ); ?></p>
 				</div>
 				<div id="pmpro_sws_reports-data-section_sales" class="pmpro_sws_reports-data-section">
 					<h1><?php echo esc_attr( $stats['landing_page_visits'] ); ?></h1>
