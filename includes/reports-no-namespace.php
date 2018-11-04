@@ -18,11 +18,11 @@ function pmpro_report_pmpro_sws_reports_widget() {
 	if ( ! empty ( $sitewide_sales ) ) {
 		foreach ( $sitewide_sales as $sitewide_sale ) {
 			echo '<p>';
-			echo '<strong><a href="' . admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports' ) . '">' . esc_html( get_the_title( $sitewide_sale->ID ) ) . '</a></strong>';
+			echo '<strong><a href="' . admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports&pmpro_sws_sitewide_sale_id=' . $sitewide_sale->ID ) . '">' . esc_html( get_the_title( $sitewide_sale->ID ) ) . '</a></strong>';
 			echo ' (';
-			echo date_i18n( get_option( 'date_format' ), ( new \DateTime( get_post_meta( $sitewide_sale->ID, 'pmpro_sws_start_date', true ) ) )->format( 'U' ) );
+			echo date_i18n( get_option( 'date_format' ), strtotime( $sitewide_sale->pmpro_sws_start_date, current_time( 'timestamp' ) ) );
 			echo ' - ';
-			echo date_i18n( get_option( 'date_format' ), ( new \DateTime( get_post_meta( $sitewide_sale->ID, 'pmpro_sws_end_date', true ) ) )->format( 'U' ) );
+			echo date_i18n( get_option( 'date_format' ), strtotime( $sitewide_sale->pmpro_sws_end_date, current_time( 'timestamp' ) ) );
 			echo ')';
 			echo '</p>';
 		}
@@ -82,9 +82,9 @@ function pmpro_report_pmpro_sws_reports_page() {
 		<p>
 		<?php
 			printf( wp_kses_post( '<a href="%s">This sitewide sale</a> is active from %s to %s using <a href="%s">discount code %s</a> on landing page <a href="%s">%s</a>.', 'pmpro-sitewide-sales' ),
-					admin_url( 'post.php?post=' . $sitewide_sale->ID . '&action=edit' ),
-					date( get_option( 'date_format' ), strtotime( $stats['start_date'] ) ),
-					date( get_option( 'date_format' ), strtotime( $stats['end_date'] ) ),
+					admin_url( 'post.php?post=' . $sitewide_sale_id . '&action=edit' ),
+					date( get_option( 'date_format' ), strtotime( $stats['start_date'], current_time( 'timestamp' ) ) ),
+					date( get_option( 'date_format' ), strtotime( $stats['end_date'], current_time( 'timestamp' ) ) ),
 					admin_url( 'admin.php?page=pmpro-discountcodes&edit=' . $stats['discount_code_id'] ),
 					$stats['discount_code'],
 					$stats['landing_page_url'],
