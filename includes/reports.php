@@ -78,87 +78,89 @@ function pmpro_report_pmpro_sws_reports_page() {
 		<hr />
 		<br />
 		<h1 class="wp-heading-inline"><?php echo get_the_title( $sitewide_sale_id ); ?></h1>
-		<a href="<?php edit_post_link( $sitewide_sale_id ); ?>" class="page-title-action"><?php esc_html_e( 'Edit', 'pmpro-sitewide-sale' ); ?></a>
-		<p>
-		<?php
-			printf( wp_kses_post( '<a href="%s">This sitewide sale</a> is active from %s to %s using <a href="%s">discount code %s</a> on landing page <a href="%s">%s</a>.', 'pmpro-sitewide-sales' ),
-					admin_url( 'post.php?post=' . $sitewide_sale_id . '&action=edit' ),
-					date( get_option( 'date_format' ), strtotime( $stats['start_date'], current_time( 'timestamp' ) ) ),
-					date( get_option( 'date_format' ), strtotime( $stats['end_date'], current_time( 'timestamp' ) ) ),
-					admin_url( 'admin.php?page=pmpro-discountcodes&edit=' . $stats['discount_code_id'] ),
-					$stats['discount_code'],
-					$stats['landing_page_url'],
-					$stats['landing_page_title']
-				);
-		?>
-		</p>
+		<a href="<?php echo esc_url( get_edit_post_link( $sitewide_sale_id ) ); ?>" class="page-title-action"><?php esc_html_e( 'Edit', 'pmpro-sitewide-sale' ); ?></a>
 		<div class="pmpro_sws_reports-box">
 			<h1 class="pmpro_sws_reports-box-title"><?php esc_html_e( 'Overall Sale Performance', 'pmpro-sitewide-sales' ); ?></h1>
+			<p>
+			<?php
+				printf( wp_kses_post( 'All visitors from %s to %s.', 'pmpro-sitewide-sales' ),
+						date( get_option( 'date_format' ), strtotime( $stats['start_date'], current_time( 'timestamp' ) ) ),
+						date( get_option( 'date_format' ), strtotime( $stats['end_date'], current_time( 'timestamp' ) ) )
+					);
+			?>
+			</p>
 			<hr />
-			<div class="pmpro_sws_reports-data pmpro_sws_reports-data-3col">
-				<div class="pmpro_sws_reports-data-section">
-					<h1><?php echo esc_attr( $stats['new_rev_with_code'] ); ?></h1>
-					<p><?php esc_html_e( 'Sales With Discount', 'pmpro-sitewide-sales' ); ?></p>
-				</div>
+			<div class="pmpro_sws_reports-data pmpro_sws_reports-data-4col">
 				<div id="pmpro_sws_reports-data-section_banner" class="pmpro_sws_reports-data-section">
 					<h1><?php echo esc_attr( $stats['banner_impressions'] ); ?></h1>
 					<p><?php esc_html_e( 'Banner Reach', 'pmpro-sitewide-sales' ); ?></p>
 				</div>
 				<div id="pmpro_sws_reports-data-section_sales" class="pmpro_sws_reports-data-section">
 					<h1><?php echo esc_attr( $stats['landing_page_visits'] ); ?></h1>
-					<p><?php esc_html_e( 'Landing Page Visits', 'pmpro-sitewide-sales' ); ?></p>
+					<p>
+						<?php
+							printf( wp_kses_post( '<a href="%s" title="%s">Landing</a> Page Visits', 'pmpro-sitewide-sales' ),
+								$stats['landing_page_url'],
+								$stats['landing_page_title']
+							); ?>
+					</p>
+				</div>
+				<div id="pmpro_sws_reports-data-section_sales" class="pmpro_sws_reports-data-section">
+					<h1><?php echo esc_attr( $stats['checkout_conversions_with_code'] ); ?></h1>
+					<p>
+						<?php
+							printf( wp_kses_post( 'Checkouts using <a href="%s">%s</a>', 'pmpro-sitewide-sales' ),
+								admin_url( 'admin.php?page=pmpro-discountcodes&edit=' . $stats['discount_code_id'] ),
+								$stats['discount_code']
+							);
+						?>
+					</p>
+				</div>
+				<div class="pmpro_sws_reports-data-section">
+					<h1><?php echo esc_attr( pmpro_formatPrice( $stats['new_rev_with_code'] ) ); ?></h1>
+					<p><?php esc_html_e( 'Sale Revenue', 'pmpro-sitewide-sales' ); ?></p>
 				</div>
 			</div>
 		</div>
 		<div class="pmpro_sws_reports-box">
-			<h1 class="pmpro_sws_reports-box-title"><?php esc_html_e( 'Sales Comparision Data', 'pmpro-sitewide-sales' ); ?></h1>
-			<hr />
-			<div class="pmpro_sws_reports-data pmpro_sws_reports-data-3col">
-				<div class="pmpro_sws_reports-data-section">
-					<h1><?php echo esc_attr( $stats['checkout_conversions_with_code'] ); ?></h1>
-					<p><?php esc_html_e( 'Checkouts Using Discount', 'pmpro-sitewide-sales' ); ?></p>
-				</div>
-				<div id="pmpro_sws_reports-data-section_banner" class="pmpro_sws_reports-data-section">
-					<h1><?php echo esc_attr( $stats['checkout_conversions_without_code'] ); ?></h1>
-					<p><?php esc_html_e( 'Checkouts Without Discount', 'pmpro-sitewide-sales' ); ?></p>
-				</div>
-				<div id="pmpro_sws_reports-data-section_sales" class="pmpro_sws_reports-data-section">
-					<h1><?php echo esc_attr( $stats['checkout_conversions_with_code'] ) + esc_attr( $stats['checkout_conversions_with_code'] ); ?></h1>
-					<p><?php esc_html_e( 'Total Checkouts in Period', 'pmpro-sitewide-sales' ); ?></p>
-				</div>
-			</div>
+			<h1 class="pmpro_sws_reports-box-title"><?php esc_html_e( 'Revenue Breakdown', 'pmpro-sitewide-sales' ); ?></h1>
+			<p>
+				<?php
+				printf( wp_kses_post( 'All orders from %s to %s.', 'pmpro-sitewide-sales' ),
+						date( get_option( 'date_format' ), strtotime( $stats['start_date'], current_time( 'timestamp' ) ) ),
+						date( get_option( 'date_format' ), strtotime( $stats['end_date'], current_time( 'timestamp' ) ) )
+					);
+				?>
+			</p>
 			<hr />
 			<div class="pmpro_sws_reports-data pmpro_sws_reports-data-4col">
-				<?php
-					$total_sales_in_period = $stats['new_rev_with_code'] + $stats['new_rev_without_code'] + $stats['old_rev'];
-				?>
 				<div class="pmpro_sws_reports-data-section">
-					<h1><?php echo esc_attr( $stats['new_rev_with_code'] ); ?></h1>
+					<h1><?php echo esc_attr( pmpro_formatPrice( $stats['new_rev_with_code'] ) ); ?></h1>
 					<p>
-						<?php esc_html_e( 'Sales With Discount', 'pmpro-sitewide-sales' ); ?>
+						<?php esc_html_e( 'Sale Revenue', 'pmpro-sitewide-sales' ); ?>
 						<br />
-						(<?php echo round ( PMPro_Sitewide_Sales\includes\classes\PMPro_SWS_Reports::divide_into_percent( $stats['new_rev_with_code'], $total_sales_in_period ), 2 ); ?>%)
+						(<?php echo round ( PMPro_Sitewide_Sales\includes\classes\PMPro_SWS_Reports::divide_into_percent( $stats['new_rev_with_code'], $stats['total_rev'] ), 2 ); ?>%)
 					</p>
 				</div>
 				<div class="pmpro_sws_reports-data-section">
-					<h1><?php echo esc_attr( $stats['new_rev_without_code'] ); ?></h1>
+					<h1><?php echo esc_attr( pmpro_formatPrice( $stats['new_rev_without_code'] ) ); ?></h1>
 					<p>
-						<?php esc_html_e( 'Sales Without Discount', 'pmpro-sitewide-sales' ); ?>
+						<?php esc_html_e( 'Other New Revenue', 'pmpro-sitewide-sales' ); ?>
 						<br />
-						(<?php echo round ( PMPro_Sitewide_Sales\includes\classes\PMPro_SWS_Reports::divide_into_percent( $stats['new_rev_without_code'], $total_sales_in_period ), 2 ); ?>%)
+						(<?php echo round ( PMPro_Sitewide_Sales\includes\classes\PMPro_SWS_Reports::divide_into_percent( $stats['new_rev_without_code'], $stats['total_rev'] ), 2 ); ?>%)
 					</p>
 				</div>
 				<div class="pmpro_sws_reports-data-section">
-					<h1><?php echo esc_attr( $stats['old_rev'] ); ?></h1>
+					<h1><?php echo esc_attr( pmpro_formatPrice( $stats['old_rev'] ) ); ?></h1>
 					<p>
-						<?php esc_html_e( 'Other Sales (including Renewals)', 'pmpro-sitewide-sales' ); ?>
+						<?php esc_html_e( 'Renewals', 'pmpro-sitewide-sales' ); ?>
 						<br />
-						(<?php echo round ( PMPro_Sitewide_Sales\includes\classes\PMPro_SWS_Reports::divide_into_percent( $stats['old_rev'], $total_sales_in_period ), 2 ); ?>%)
+						(<?php echo round ( PMPro_Sitewide_Sales\includes\classes\PMPro_SWS_Reports::divide_into_percent( $stats['old_rev'], $stats['total_rev'] ), 2 ); ?>%)
 					</p>
 				</div>
 				<div class="pmpro_sws_reports-data-section">
-					<h1><?php echo esc_attr( $stats['new_rev_with_code'] ) + esc_attr( $stats['new_rev_without_code'] ) + esc_attr( $stats['old_rev'] ); ?></h1>
-					<p><?php esc_html_e( 'Total Sales in Period', 'pmpro-sitewide-sales' ); ?></p>
+					<h1><?php echo esc_attr( pmpro_formatPrice( $stats['total_rev'] ) ); ?></h1>
+					<p><?php esc_html_e( 'Total Revenue in Period', 'pmpro-sitewide-sales' ); ?></p>
 				</div>
 			</div>
 		</div>

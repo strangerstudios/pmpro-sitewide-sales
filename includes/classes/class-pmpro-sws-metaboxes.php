@@ -648,19 +648,44 @@ class PMPro_SWS_MetaBoxes {
 		?>
 		<div class="pmpro_sws_reports-box">
 			<h1 class="pmpro_sws_reports-box-title"><?php esc_html_e( 'Overall Sale Performance', 'pmpro-sitewide-sales' ); ?></h1>
+			<p>
+			<?php
+				printf( wp_kses_post( 'All visitors from %s to %s.', 'pmpro-sitewide-sales' ),
+						date( get_option( 'date_format' ), strtotime( $stats['start_date'], current_time( 'timestamp' ) ) ),
+						date( get_option( 'date_format' ), strtotime( $stats['end_date'], current_time( 'timestamp' ) ) )
+					);
+			?>
+			</p>
 			<hr />
-			<div class="pmpro_sws_reports-data pmpro_sws_reports-data-3col">
-				<div class="pmpro_sws_reports-data-section">
-					<h1><?php echo esc_attr( $stats['new_rev_with_code'] ); ?></h1>
-					<p><?php esc_html_e( 'Sales With Discount', 'pmpro-sitewide-sales' ); ?></p>
-				</div>
+			<div class="pmpro_sws_reports-data pmpro_sws_reports-data-4col">
 				<div id="pmpro_sws_reports-data-section_banner" class="pmpro_sws_reports-data-section">
 					<h1><?php echo esc_attr( $stats['banner_impressions'] ); ?></h1>
 					<p><?php esc_html_e( 'Banner Reach', 'pmpro-sitewide-sales' ); ?></p>
 				</div>
 				<div id="pmpro_sws_reports-data-section_sales" class="pmpro_sws_reports-data-section">
 					<h1><?php echo esc_attr( $stats['landing_page_visits'] ); ?></h1>
-					<p><?php esc_html_e( 'Landing Page Visits', 'pmpro-sitewide-sales' ); ?></p>
+					<p>
+						<?php
+							printf( wp_kses_post( '<a href="%s" title="%s">Landing</a> Page Visits', 'pmpro-sitewide-sales' ),
+								$stats['landing_page_url'],
+								$stats['landing_page_title']
+							); ?>
+					</p>
+				</div>
+				<div id="pmpro_sws_reports-data-section_sales" class="pmpro_sws_reports-data-section">
+					<h1><?php echo esc_attr( $stats['checkout_conversions_with_code'] ); ?></h1>
+					<p>
+						<?php
+							printf( wp_kses_post( 'Checkouts using <a href="%s">%s</a>', 'pmpro-sitewide-sales' ),
+								admin_url( 'admin.php?page=pmpro-discountcodes&edit=' . $stats['discount_code_id'] ),
+								$stats['discount_code']
+							);
+						?>
+					</p>
+				</div>
+				<div class="pmpro_sws_reports-data-section">
+					<h1><?php echo esc_attr( pmpro_formatPrice( $stats['new_rev_with_code'] ) ); ?></h1>
+					<p><?php esc_html_e( 'Sale Revenue', 'pmpro-sitewide-sales' ); ?></p>
 				</div>
 			</div>
 			<p><?php echo '<a class="button button-secondary" href="' . admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports&pmpro_sws_sitewide_sale_id=' . $post->ID ) . '">' . __( 'View Reports', 'pmpro-sitewide-sales' ) . '</a>'; ?></p>

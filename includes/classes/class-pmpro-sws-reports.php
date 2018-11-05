@@ -69,6 +69,8 @@ class PMPro_SWS_Reports {
 			update_option( 'pmpro_sws_' . $sitewide_sale_id . '_tracking', $stats, 'no' );
 		}
 
+		$stats['checkout_conversions_total'] = $stats['checkout_conversions_with_code'] + $stats['checkout_conversions_without_code'];
+
 		$stats['start_date'] = get_post_meta( $sitewide_sale_id, 'pmpro_sws_start_date', true );
 		$stats['end_date'] = get_post_meta( $sitewide_sale_id, 'pmpro_sws_end_date', true );
 
@@ -92,9 +94,99 @@ class PMPro_SWS_Reports {
 			$stats['discount_code'] = esc_html__( 'N/A', 'pmpro-sitewide-sales' );
 		}
 
-		$stats['new_rev_with_code'] = '200.00';
-		$stats['new_rev_without_code'] = '100.00';
-		$stats['old_rev'] = '50.00';
+		$gateway_environment = pmpro_getOption("gateway_environment");
+		$stats['new_rev_with_code'] = $wpdb->get_var( $wpdb->prepare(
+			"
+				SELECT SUM(total) FROM (
+					SELECT mo.total  as total
+					FROM $wpdb->pmpro_membership_orders mo
+						LEFT JOIN $wpdb->pmpro_discount_codes_uses dcu
+							ON dcu.order_id = mo.id
+					WHERE dcu.code_id = %d #discount code is used
+						AND mo.status NOT IN('refunded', 'review', 'token', 'error')
+						AND mo.gateway_environment = %s
+						AND mo.timestamp >= %s
+						AND mo.timestamp < %s
+					GROUP BY mo.id
+				) temp
+			",
+			$stats['discount_code_id'],
+			$gateway_environment,
+			$stats['start_date'] . ' 00:00:00',
+			$stats['end_date'] . ' 23:59:59'
+		) );
+
+		$stats['new_rev_without_code'] = $wpdb->get_var( $wpdb->prepare(
+			"
+			SELECT SUM(total) FROM (
+				SELECT mo.total  as total
+				FROM $wpdb->pmpro_membership_orders mo
+					LEFT JOIN $wpdb->pmpro_discount_codes_uses dcu
+						ON dcu.order_id = mo.id
+					LEFT JOIN $wpdb->pmpro_membership_orders mo2
+						ON mo.user_id = mo2.user_id
+							AND mo2.id <> mo.id
+							AND mo2.status NOT IN('refunded', 'review', 'token', 'error')
+							AND mo2.gateway_environment = %s
+				WHERE (dcu.code_id IS NULL OR dcu.code_id <> %d) #null or different code
+					AND mo.status NOT IN('refunded', 'review', 'token', 'error')
+					AND mo.gateway_environment = %s
+					AND mo.timestamp >= %s
+					AND mo.timestamp < %s
+					#no other order for the same user
+					AND mo2.id IS NULL
+				GROUP BY mo.id
+				) temp
+			",
+			$gateway_environment,
+			$stats['discount_code_id'],
+			$gateway_environment,
+			$stats['start_date'] . ' 00:00:00',
+			$stats['end_date'] . ' 23:59:59'
+		) );
+
+		$stats['old_rev'] = $wpdb->get_var( $wpdb->prepare(
+			"
+				SELECT SUM(total) FROM (
+					SELECT mo.total  as total
+					FROM $wpdb->pmpro_membership_orders mo
+						LEFT JOIN $wpdb->pmpro_discount_codes_uses dcu
+							ON dcu.order_id = mo.id
+						LEFT JOIN $wpdb->pmpro_membership_orders mo2
+							ON mo.user_id = mo2.user_id
+								AND mo2.id <> mo.id
+								AND mo2.status NOT IN('refunded', 'review', 'token', 'error')
+								AND mo2.gateway_environment = %s
+					WHERE (dcu.code_id IS NULL OR dcu.code_id <> %d) #null or different code
+						AND mo.status NOT IN('refunded', 'review', 'token', 'error')
+						AND mo.gateway_environment = %s
+						AND mo.timestamp >= %s
+						AND mo.timestamp < %s
+						#another order for the same user
+						AND mo2.id IS NOT NULL
+					GROUP BY mo.id
+					) temp
+			",
+			$gateway_environment,
+			$stats['discount_code_id'],
+			$gateway_environment,
+			$stats['start_date'] . ' 00:00:00',
+			$stats['end_date'] . ' 23:59:59'
+		) );
+
+		$stats['total_rev'] = $wpdb->get_var( $wpdb->prepare(
+			"
+				SELECT SUM(mo.total)
+				FROM $wpdb->pmpro_membership_orders mo
+				WHERE mo.status NOT IN('refunded', 'review', 'token', 'error')
+					AND mo.gateway_environment = %s
+					AND mo.timestamp >= %s
+					AND mo.timestamp < %s
+			",
+			$gateway_environment,
+			$stats['start_date'] . ' 00:00:00',
+			$stats['end_date'] . ' 23:59:59'
+		) );
 
 		return $stats;
 	}
