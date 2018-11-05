@@ -3,7 +3,7 @@ Contributors: strangerstudios, dlparker1005, pbrocks
 Tags: paid memberships pro, pmpro, memberships, ecommerce
 Requires at least:
 Tested up to: 4.9.8
-Stable tag: 1.0.1
+Stable tag: 1.0
 
 Create, manage, and view advanced reports for a sitewide or flash sale on membership (Black Friday or Cyber Monday) using Paid Memberships Pro.
 
@@ -25,9 +25,5 @@ Documentation for additional settings can be found here: https://www.paidmembers
 
 == Changelog ==
 
-= 1.0.0 =
-* CPT created
-* Reports updated
-
-= .1 =
-* Initial Version
+= 1.0 =
+* Initial Release
