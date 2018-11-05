@@ -224,6 +224,10 @@ class PMPro_SWS_Reports {
 	public static function enqueue_tracking_js() {
 		global $pmpro_pages;
 
+		if( ! class_exists( 'MemberOrder' ) ) {
+			return;
+		}
+
 		$options = PMPro_SWS_Settings::get_options();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
 		wp_register_script( 'pmpro_sws_tracking', plugins_url( 'includes/js/pmpro-sws-tracking.js', PMPROSWS_BASENAME ), array( 'jquery', 'utils' ) );

@@ -199,7 +199,13 @@ class PMPro_SWS_Landing_Pages {
 			$r .= '</div> <!-- .pmpro_sws_landing_content -->';
 		} else {
 			$landing_content = apply_filters( 'the_content', get_post_meta( $sitewide_sale->ID, 'pmpro_sws_sale_content', true ) );
-			$template = pmpro_loadTemplate('checkout', 'local', 'pages');
+
+			if( function_exists( 'pmpro_loadTemplate' ) ) {
+				$template = pmpro_loadTemplate('checkout', 'local', 'pages');
+			} else {
+				$template = '';
+			}
+			
 			$r .= '<div class="pmpro_sws_landing_content pmpro_sws_landing_content_sale">';
 			$r .= $landing_content;
 			$r .= '</div> <!-- .pmpro_sws_landing_content -->';
