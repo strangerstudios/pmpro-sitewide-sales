@@ -148,8 +148,8 @@ body.pmpro-sitewide-sale-landing-page-gradient {
 #pmpro_sitewide_sale_landing_page_template-gradient {
     margin: 0;
 }
-#pmpro_sitewide_sale_landing_page_template-gradient h1,
-#pmpro_sitewide_sale_landing_page_template-gradient h2 {
+#pmpro_sitewide_sale_landing_page_template-gradient .pmpro_sws_landing_content h1,
+#pmpro_sitewide_sale_landing_page_template-gradient .pmpro_sws_landing_content h2 {
     color: #FFF;
 }
 #pmpro_sitewide_sale_landing_page_template-gradient #pmpro_form {
