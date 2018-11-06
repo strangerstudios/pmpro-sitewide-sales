@@ -12,6 +12,7 @@
  *
  * @package pmpro-sitewide-sales
  */
+
 namespace PMPro_Sitewide_Sales;
 
 defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
