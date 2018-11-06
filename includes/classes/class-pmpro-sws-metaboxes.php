@@ -432,7 +432,7 @@ class PMPro_SWS_MetaBoxes {
 						<p><small class="pmpro_lite">
 							<?php esc_html_e( 'Mention when the sale is starting and how awesome it will be.', 'pmpro-sitewide-sales' ); ?>
 							<?php if( ! empty( $view_page_url ) ) { ?>
-								<a target="_blank" id="pmpro_sws_view_landing_page" href="<?php echo esc_url( $view_page_url ); ?>/?pmpro_sws_preview_content=pre-sale"><?php esc_html_e( 'preview', 'pmpro-sitewide-sales' );?></a>
+								<a target="_blank" id="pmpro_sws_view_landing_page" href="<?php echo add_query_arg( 'pmpro_sws_preview_content', 'pre-sale', esc_url( $view_page_url ) ); ?>"><?php esc_html_e( 'preview', 'pmpro-sitewide-sales' );?></a>
 							<?php } ?>
 						</small></p>
 					</td>
@@ -444,7 +444,7 @@ class PMPro_SWS_MetaBoxes {
 						<p><small class="pmpro_lite">
 							<?php esc_html_e( 'A membership checkout form will automatically be included when the sale is active.', 'pmpro-sitewide-sales' ); ?>
 							<?php if( ! empty( $view_page_url ) ) { ?>
-								<a target="_blank" id="pmpro_sws_view_landing_page" href="<?php echo esc_url( $view_page_url ); ?>/?pmpro_sws_preview_content=sale"><?php esc_html_e( 'preview', 'pmpro-sitewide-sales' );?></a>
+								<a target="_blank" id="pmpro_sws_view_landing_page" href="<?php echo add_query_arg( 'pmpro_sws_preview_content', 'sale', esc_url( $view_page_url ) ); ?>"><?php esc_html_e( 'preview', 'pmpro-sitewide-sales' );?></a>
 							<?php } ?>
 						</small></p>
 						</small></p>
@@ -457,7 +457,7 @@ class PMPro_SWS_MetaBoxes {
 						<p><small class="pmpro_lite">
 							<?php esc_html_e( 'Mention that the sale has ended and thank your customers.', 'pmpro-sitewide-sales' );?>
 							<?php if( ! empty( $view_page_url ) ) { ?>
-								<a target="_blank" id="pmpro_sws_view_landing_page" href="<?php echo esc_url( $view_page_url ); ?>/?pmpro_sws_preview_content=post-sale"><?php esc_html_e( 'preview', 'pmpro-sitewide-sales' );?></a>
+								<a target="_blank" id="pmpro_sws_view_landing_page" href="<?php echo add_query_arg( 'pmpro_sws_preview_content', 'post-sale', esc_url( $view_page_url ) ); ?>"><?php esc_html_e( 'preview', 'pmpro-sitewide-sales' );?></a>
 							<?php } ?>
 						</small></p>
 					</td>
