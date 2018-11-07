@@ -74,10 +74,10 @@ class PMPro_SWS_Setup {
 		static $paid_level_ids;
 
 		if ( ! isset( $paid_levels ) && function_exists( 'pmpro_getAllLevels' ) ) {
-			$all_levels = pmpro_getAllLevels(true, true);
+			$all_levels     = pmpro_getAllLevels( true, true );
 			$paid_level_ids = array();
-			foreach( $all_levels as $level ) {
-				if( ! pmpro_isLevelFree( $level ) ) {
+			foreach ( $all_levels as $level ) {
+				if ( ! pmpro_isLevelFree( $level ) ) {
 					$paid_level_ids[] = $level->id;
 				}
 			}
@@ -91,11 +91,13 @@ class PMPro_SWS_Setup {
 	 */
 	public static function has_sitewide_sales() {
 		global $wpdb;
-		$sale_id = $wpdb->get_var( "SELECT *
+		$sale_id = $wpdb->get_var(
+			"SELECT *
 									FROM $wpdb->posts
 									WHERE post_type = 'pmpro_sitewide_sale'
 										AND post_status <> 'auto-draft'
-									LIMIT 1" );
+									LIMIT 1"
+		);
 		if ( ! empty( $sale_id ) ) {
 			return true;
 		} else {
@@ -115,12 +117,12 @@ class PMPro_SWS_Setup {
 				<p>
 				<?php
 					global $wpdb;
-					$has_sws_post = $wpdb->get_var("SELECT ID FROM $wpdb->posts WHERE post_type = 'pmpro_sitewide_sale' LIMIT 1");
-					if( $has_sws_post ) {
-						printf( __( 'Thank you for activating. You can <a href="%s">view your Sitewide Sales here</a>.', 'pmpro-sitewide-sales' ), get_admin_url( null, 'edit.php?post_type=pmpro_sitewide_sale' ) );
-					} else {
-						printf( __( 'Thank you for activating. You can <a href="%s">create your first Sitewide Sale here</a>.', 'pmpro-sitewide-sales' ), get_admin_url( null, 'post-new.php?post_type=pmpro_sitewide_sale' ) );
-					}
+					$has_sws_post = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_type = 'pmpro_sitewide_sale' LIMIT 1" );
+				if ( $has_sws_post ) {
+					printf( __( 'Thank you for activating. You can <a href="%s">view your Sitewide Sales here</a>.', 'pmpro-sitewide-sales' ), get_admin_url( null, 'edit.php?post_type=pmpro_sitewide_sale' ) );
+				} else {
+					printf( __( 'Thank you for activating. You can <a href="%s">create your first Sitewide Sale here</a>.', 'pmpro-sitewide-sales' ), get_admin_url( null, 'post-new.php?post_type=pmpro_sitewide_sale' ) );
+				}
 				?>
 				</p>
 			</div>

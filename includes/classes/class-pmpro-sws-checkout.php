@@ -8,9 +8,9 @@ class PMPro_SWS_Checkout {
 
 	public static function init() {
 		add_action( 'init', array( __CLASS__, 'automatic_discount_application' ) );
-		//add_filter( 'pmpro_email_body', array( __CLASS__, 'insert_upsell_into_confirmation_emails' ), 10, 2 );
-		//add_filter( 'pmpro_confirmation_message', array( __CLASS__, 'insert_upsell_into_confirmation_page' ) );
-		//add_filter( 'pmpro_include_pricing_fields', array( __CLASS__, 'maybe_add_choose_level_section' ) );
+		// add_filter( 'pmpro_email_body', array( __CLASS__, 'insert_upsell_into_confirmation_emails' ), 10, 2 );
+		// add_filter( 'pmpro_confirmation_message', array( __CLASS__, 'insert_upsell_into_confirmation_page' ) );
+		// add_filter( 'pmpro_include_pricing_fields', array( __CLASS__, 'maybe_add_choose_level_section' ) );
 	}
 
 	/**
@@ -22,7 +22,7 @@ class PMPro_SWS_Checkout {
 		if ( empty( $_REQUEST['level'] ) || ! empty( $_REQUEST['discount_code'] ) ) {
 			return;
 		}
-		$options = PMPro_SWS_Settings::get_options();
+		$options              = PMPro_SWS_Settings::get_options();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
 		$discount_code_id     = get_post_meta( $active_sitewide_sale, 'pmpro_sws_discount_code_id', true );
 
@@ -57,16 +57,16 @@ class PMPro_SWS_Checkout {
 		}
 
 		// Check if a sale is active.
-		$options = PMPro_SWS_Settings::get_options();
+		$options              = PMPro_SWS_Settings::get_options();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
 		if ( false === $active_sitewide_sale || empty( $current_user->membership_level ) ) {
 			return $body;
 		}
 
 		// Check if upsell is enabled/etc.
-		$upsell_enabled = get_post_meta( $active_sitewide_sale, 'pmpro_sws_upsell_enabled', true );
-		$upsell_levels = get_post_meta( $active_sitewide_sale, 'pmpro_sws_upsell_levels', true );
-		$upsell_text = get_post_meta( $active_sitewide_sale, 'pmpro_sws_upsell_text', true );
+		$upsell_enabled  = get_post_meta( $active_sitewide_sale, 'pmpro_sws_upsell_enabled', true );
+		$upsell_levels   = get_post_meta( $active_sitewide_sale, 'pmpro_sws_upsell_levels', true );
+		$upsell_text     = get_post_meta( $active_sitewide_sale, 'pmpro_sws_upsell_text', true );
 		$landing_page_id = get_post_meta( $active_sitewide_sale, 'pmpro_sws_landing_page_post_id', true );
 		if ( empty( $upsell_enabled ) || false === $upsell_enabled ||
 				empty( $upsell_levels ) || ! in_array( $current_user->membership_level->id, $upsell_levels ) ||
@@ -89,14 +89,14 @@ class PMPro_SWS_Checkout {
 	 */
 	public static function insert_upsell_into_confirmation_page( $confirmation_message ) {
 		global $current_user;
-		$options = PMPro_SWS_Settings::get_options();
+		$options              = PMPro_SWS_Settings::get_options();
 		$active_sitewide_sale = $options['active_sitewide_sale_id'];
 		if ( false === $active_sitewide_sale || empty( $current_user->membership_level ) ) {
 			return $confirmation_message;
 		}
-		$upsell_enabled = get_post_meta( $active_sitewide_sale, 'pmpro_sws_upsell_enabled', true );
-		$upsell_levels = get_post_meta( $active_sitewide_sale, 'pmpro_sws_upsell_levels', true );
-		$upsell_text = get_post_meta( $active_sitewide_sale, 'pmpro_sws_upsell_text', true );
+		$upsell_enabled  = get_post_meta( $active_sitewide_sale, 'pmpro_sws_upsell_enabled', true );
+		$upsell_levels   = get_post_meta( $active_sitewide_sale, 'pmpro_sws_upsell_levels', true );
+		$upsell_text     = get_post_meta( $active_sitewide_sale, 'pmpro_sws_upsell_text', true );
 		$landing_page_id = get_post_meta( $active_sitewide_sale, 'pmpro_sws_landing_page_post_id', true );
 		if ( empty( $upsell_enabled ) || false === $upsell_enabled ||
 				empty( $upsell_levels ) || ! in_array( $current_user->membership_level->id, $upsell_levels ) ||
@@ -115,16 +115,15 @@ class PMPro_SWS_Checkout {
 	public static function maybe_add_choose_level_section( $include_pricing_fields ) {
 		global $wpdb;
 
-		if( PMPro_SWS_Settings::is_active_sitewide_sale_landing_page() ) {
-			$options = PMPro_SWS_Settings::get_options();
+		if ( PMPro_SWS_Settings::is_active_sitewide_sale_landing_page() ) {
+			$options          = PMPro_SWS_Settings::get_options();
 			$discount_code_id = get_post_meta( $options['active_sitewide_sale_id'], 'pmpro_sws_discount_code_id', true );
 
-			if( !empty( $discount_code_id ) ) {
-				$code_levels    = $wpdb->get_results( "SELECT * FROM $wpdb->pmpro_discount_codes_levels WHERE code_id = " . esc_sql( $discount_code_id ), OBJECT );
+			if ( ! empty( $discount_code_id ) ) {
+				$code_levels = $wpdb->get_results( "SELECT * FROM $wpdb->pmpro_discount_codes_levels WHERE code_id = " . esc_sql( $discount_code_id ), OBJECT );
 
 				if ( count( $code_levels ) > 1 ) {
-					//$include_pricing_fields = false;
-
+					// $include_pricing_fields = false;
 					// show a radio option to choose level
 					?>
 					<?php

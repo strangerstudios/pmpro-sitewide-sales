@@ -45,7 +45,7 @@ function autoload( $class ) {
 }
 
 function prepend_class( $string ) {
-	$parts = explode( '\\', $string );
+	$parts    = explode( '\\', $string );
 	$new_name = '';
 
 	for ( $i = 0; $i < count( $parts ); $i++ ) {
