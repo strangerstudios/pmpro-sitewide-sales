@@ -77,7 +77,7 @@ class PMPro_SWS_Settings {
 	/**
 	 * Is the current page the active sitewide sale landing page?
 	 */
-	public static function is_active_sitewide_sale_landing_page( $post_id = false) {
+	public static function is_active_sitewide_sale_landing_page( $post_id = false ) {
 		global $post;
 
 		// default to global post
@@ -97,28 +97,31 @@ class PMPro_SWS_Settings {
 
 		$landing_page_id = get_post_meta( $options['active_sitewide_sale_id'], 'pmpro_sws_landing_page_post_id', true );
 
-		if ( !empty( $landing_page_id ) && $landing_page_id == $post_id ) {
+		if ( ! empty( $landing_page_id ) && $landing_page_id == $post_id ) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Add an Advanced Setting to allow non-Memberlite themes to enable Templates.
 	 */
 	public static function custom_advanced_settings() {
-	    if ( ! defined( 'MEMBERLITE_VERSION' ) ) {
+		if ( ! defined( 'MEMBERLITE_VERSION' ) ) {
 			$custom_fields = array(
 				'pmpro_sws_allow_template' => array(
-					'field_name' => 'pmpro_sws_allow_template',
-					'field_type' => 'select',
-					'label'		 => __( 'Allow Sitewide Sale Custom Templates', 'pmpro-sitewide-sale' ),
+					'field_name'  => 'pmpro_sws_allow_template',
+					'field_type'  => 'select',
+					'label'       => __( 'Allow Sitewide Sale Custom Templates', 'pmpro-sitewide-sale' ),
 					'description' => __( 'Check this box to allow the use of custom Landing Page and Banner templates. Note that we cannot ensure theme compatiblity for included templates.', 'pmpro-sitewide-sale' ),
-					'options' => array(0 => 'No', 1 => 'Yes'),
+					'options'     => array(
+						0 => 'No',
+						1 => 'Yes',
+					),
 				),
-		    );
+			);
 		}
-	    return $custom_fields;
+		return $custom_fields;
 	}
 }

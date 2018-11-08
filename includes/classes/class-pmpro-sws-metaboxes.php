@@ -40,15 +40,18 @@ class PMPro_SWS_MetaBoxes {
 				 WHERE post_type = 'page'
 				 	AND post_status IN( 'publish', 'draft' )
 					AND post_content LIKE '%[pmpro_sws%'"
-			 );
+			);
 
-			wp_localize_script( 'pmpro_sws_cpt_meta', 'pmpro_sws', array(
-				'create_discount_code_nonce' => wp_create_nonce( 'pmpro_sws_create_discount_code' ),
-				'create_landing_page_nonce' => wp_create_nonce( 'pmpro_sws_create_landing_page' ),
-				'home_url' => home_url(),
-				'admin_url' => admin_url(),
-				'pages_with_shortcodes' => $pages_with_pmpro_sws_shortcode,
-				'str_draft' => esc_html__( 'Draft', 'pmpro-sitewide-sales' ),
+			wp_localize_script(
+				'pmpro_sws_cpt_meta',
+				'pmpro_sws',
+				array(
+					'create_discount_code_nonce' => wp_create_nonce( 'pmpro_sws_create_discount_code' ),
+					'create_landing_page_nonce'  => wp_create_nonce( 'pmpro_sws_create_landing_page' ),
+					'home_url'                   => home_url(),
+					'admin_url'                  => admin_url(),
+					'pages_with_shortcodes'      => $pages_with_pmpro_sws_shortcode,
+					'str_draft'                  => esc_html__( 'Draft', 'pmpro-sitewide-sales' ),
 				)
 			);
 
@@ -137,12 +140,12 @@ class PMPro_SWS_MetaBoxes {
 		<div id="misc-publishing-actions">
 			<div class="misc-pub-section">
 				<p>
-					<label for="pmpro_sws_set_as_sitewide_sale"><strong><?php esc_html_e( 'Set as Current Sitewide Sale:', 'pmpro-sitewide-sales' );?></strong></label>
-					<input name="pmpro_sws_set_as_sitewide_sale" id="pmpro_sws_set_as_sitewide_sale" type="checkbox" <?php checked( $init_checked, true );?> />
+					<label for="pmpro_sws_set_as_sitewide_sale"><strong><?php esc_html_e( 'Set as Current Sitewide Sale:', 'pmpro-sitewide-sales' ); ?></strong></label>
+					<input name="pmpro_sws_set_as_sitewide_sale" id="pmpro_sws_set_as_sitewide_sale" type="checkbox" <?php checked( $init_checked, true ); ?> />
 				</p>
 			</div>
 			<div class="misc-pub-section">
-				<p><a target="_blank" href="<?php echo esc_url( admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports&pmpro_sws_sitewide_sale_id=' . $post->ID ) );?>"><?php esc_html_e( 'View Sitewide Sale Reports', 'pmpro-sitewide-sales' ); ?></a></p>
+				<p><a target="_blank" href="<?php echo esc_url( admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports&pmpro_sws_sitewide_sale_id=' . $post->ID ) ); ?>"><?php esc_html_e( 'View Sitewide Sale Reports', 'pmpro-sitewide-sales' ); ?></a></p>
 			</div>
 		</div>
 		<div id="major-publishing-actions">
@@ -177,7 +180,7 @@ class PMPro_SWS_MetaBoxes {
 		$end_year    = 0;
 
 		$start_date = esc_html( get_post_meta( $post->ID, 'pmpro_sws_start_date', true ) );
-		$end_date = esc_html( get_post_meta( $post->ID, 'pmpro_sws_end_date', true ) );
+		$end_date   = esc_html( get_post_meta( $post->ID, 'pmpro_sws_end_date', true ) );
 
 		if ( ! empty( $start_date ) && ! empty( $end_date ) &&
 					is_string( $start_date ) && is_string( $end_date ) &&
@@ -191,12 +194,12 @@ class PMPro_SWS_MetaBoxes {
 			$end_month      = $end_exploded[1];
 			$end_year       = $end_exploded[0];
 		} else {
-			$start_day   = date( 'd', current_time( 'timestamp') );
-			$start_month = date( 'm', current_time( 'timestamp') );
-			$start_year  = date( 'Y', current_time( 'timestamp') );
-			$end_day     = date( 'd', strtotime( '+1 week', current_time( 'timestamp') ) );
-			$end_month   = date( 'm', strtotime( '+1 week', current_time( 'timestamp') ) );
-			$end_year    = date( 'Y', strtotime( '+1 week', current_time( 'timestamp') ) );
+			$start_day   = date( 'd', current_time( 'timestamp' ) );
+			$start_month = date( 'm', current_time( 'timestamp' ) );
+			$start_year  = date( 'Y', current_time( 'timestamp' ) );
+			$end_day     = date( 'd', strtotime( '+1 week', current_time( 'timestamp' ) ) );
+			$end_month   = date( 'm', strtotime( '+1 week', current_time( 'timestamp' ) ) );
+			$end_year    = date( 'Y', strtotime( '+1 week', current_time( 'timestamp' ) ) );
 		}
 		?>
 		<p><?php esc_html_e( 'These fields control when the banner (if applicable) and built-in sale reporting will be active for your site. They also control what content is displayed on your sale Landing Page according to the "Landing Page" settings in Step 3 below.', 'pmpro-sitewide-sales' ); ?></p>
@@ -204,13 +207,17 @@ class PMPro_SWS_MetaBoxes {
 		<table class="form-table">
 			<tbody>
 				<tr>
-					<th scope="row" valign="top"><label for="pmpro_sws_start_date"><?php _e( 'Sale Start Date', 'pmpro-sitewide-sales' );?>:</label></th>
+					<th scope="row" valign="top"><label for="pmpro_sws_start_date"><?php _e( 'Sale Start Date', 'pmpro-sitewide-sales' ); ?>:</label></th>
 					<td>
 						<select name="pmpro_sws_start_month">
 							<?php
 							for ( $i = 1; $i < 13; $i++ ) {
 								?>
-								<option value="<?php echo esc_html( $i ); ?>" <?php if ($i == $start_month) { ?>selected="selected"<?php } ?>><?php echo date_i18n("M", strtotime($i . "/1/" . $start_year, current_time("timestamp")))?></option>
+								<option value="<?php echo esc_html( $i ); ?>" 
+														  <?php
+															if ( $i == $start_month ) {
+																?>
+									selected="selected"<?php } ?>><?php echo date_i18n( 'M', strtotime( $i . '/1/' . $start_year, current_time( 'timestamp' ) ) ); ?></option>
 								<?php
 							}
 							?>
@@ -221,13 +228,17 @@ class PMPro_SWS_MetaBoxes {
 					</td>
 				</tr>
 				<tr>
-					<th scope="row" valign="top"><label for="pmpro_sws_end_date"><?php _e('Sale End Date', 'pmpro-sitewide-sales' );?>:</label></th>
+					<th scope="row" valign="top"><label for="pmpro_sws_end_date"><?php _e( 'Sale End Date', 'pmpro-sitewide-sales' ); ?>:</label></th>
 					<td>
 						<select name="pmpro_sws_end_month">
 							<?php
 							for ( $i = 1; $i < 13; $i++ ) {
 								?>
-								<option value="<?php echo esc_html( $i ); ?>" <?php if ( $i == $end_month ) { ?>selected="selected"<?php } ?>><?php echo date_i18n("M", strtotime($i . "/1/" . $end_year, current_time("timestamp")))?></option>
+								<option value="<?php echo esc_html( $i ); ?>" 
+														  <?php
+															if ( $i == $end_month ) {
+																?>
+									selected="selected"<?php } ?>><?php echo date_i18n( 'M', strtotime( $i . '/1/' . $end_year, current_time( 'timestamp' ) ) ); ?></option>
 								<?php
 							}
 							?>
@@ -257,7 +268,7 @@ class PMPro_SWS_MetaBoxes {
 					<th><label for="pmpro_sws_discount_code_id">Discount Code</label></th>
 					<td>
 						<select class="discount_code_select pmpro_sws_option" id="pmpro_sws_discount_code_select" name="pmpro_sws_discount_code_id">
-							<option value="0"><?php esc_html_e( '- Choose One -', 'pmpro-sitewide-sales'); ?></option>
+							<option value="0"><?php esc_html_e( '- Choose One -', 'pmpro-sitewide-sales' ); ?></option>
 							<?php
 							$code_found = false;
 							foreach ( $codes as $code ) {
@@ -268,21 +279,21 @@ class PMPro_SWS_MetaBoxes {
 								}
 								echo '<option value = ' . esc_html( $code->id ) . esc_html( $selected_modifier ) . '>' . esc_html( $code->code ) . '</option>';
 							}
-						?>
+							?>
 						</select>
 						<p>
 							<span id="pmpro_sws_after_discount_code_select">
 							<?php
-								if ( $code_found ) {
-									$edit_code_url = admin_url( 'admin.php?page=pmpro-discountcodes&edit=' . $current_discount );
-									?>
-									<a target="_blank" class="button button-secondary" id="pmpro_sws_edit_discount_code" href="<?php echo esc_url( $edit_code_url );?>"><?php esc_html_e( 'edit code', 'pmpro-sitewide-sales' );?></a>
+							if ( $code_found ) {
+								$edit_code_url = admin_url( 'admin.php?page=pmpro-discountcodes&edit=' . $current_discount );
+								?>
+									<a target="_blank" class="button button-secondary" id="pmpro_sws_edit_discount_code" href="<?php echo esc_url( $edit_code_url ); ?>"><?php esc_html_e( 'edit code', 'pmpro-sitewide-sales' ); ?></a>
 									<?php
 									esc_html_e( ' or ', 'pmpro-sitewide-sales' );
-								}
+							}
 							?>
 							</span>
-							<button type="button" id="pmpro_sws_create_discount_code" class="button button-secondary"><?php esc_html_e( 'create a new discount code', 'pmpro-sitewide-sales' );?></button>
+							<button type="button" id="pmpro_sws_create_discount_code" class="button button-secondary"><?php esc_html_e( 'create a new discount code', 'pmpro-sitewide-sales' ); ?></button>
 							<p><small class="pmpro_lite"><?php esc_html_e( 'Select the code that will be automatically applied for users that complete an applicable membership checkout after visiting your Landing Page.', 'pmpro-sitewide-sales' ); ?></small></p>
 						</p>
 					</td>
@@ -323,14 +334,14 @@ class PMPro_SWS_MetaBoxes {
 			$post_sale_content = '';
 		}
 		?>
-		<input type="hidden" id="pmpro_sws_old_landing_page_post_id" name="pmpro_sws_old_landing_page_post_id" value="<?php echo esc_attr( $current_page );?>" />
+		<input type="hidden" id="pmpro_sws_old_landing_page_post_id" name="pmpro_sws_old_landing_page_post_id" value="<?php echo esc_attr( $current_page ); ?>" />
 		<table class="form-table">
 			<tbody>
 				<tr>
-					<th><label for="pmpro_sws_landing_page_post_id"><?php esc_html_e( 'Landing Page', 'pmpro-sitewide-sales'); ?></label></th>
+					<th><label for="pmpro_sws_landing_page_post_id"><?php esc_html_e( 'Landing Page', 'pmpro-sitewide-sales' ); ?></label></th>
 					<td>
 						<select class="landing_page_select pmpro_sws_option" id="pmpro_sws_landing_page_select" name="pmpro_sws_landing_page_post_id">
-							<option value="0"><?php esc_html_e( '- Choose One -', 'pmpro-sitewide-sales'); ?></option>
+							<option value="0"><?php esc_html_e( '- Choose One -', 'pmpro-sitewide-sales' ); ?></option>
 							<?php
 							$page_found = false;
 							foreach ( $pages as $page ) {
@@ -346,55 +357,64 @@ class PMPro_SWS_MetaBoxes {
 								}
 								echo '<option value=' . esc_html( $page->ID ) . esc_html( $selected_modifier ) . '>' . esc_html( $page->post_title ) . $status_part . '</option>';
 							}
-						?>
+							?>
 						</select><br />
 						<?php
 							$current_page_post = get_post( $current_page );
-							if( ! empty( $current_page_post->post_content ) && strpos( $current_page_post->post_content, '[pmpro_sws') !== false ) {
-								$show_shortcode_warning = false;
-							} else {
-								$show_shortcode_warning = true;
-							}
+						if ( ! empty( $current_page_post->post_content ) && strpos( $current_page_post->post_content, '[pmpro_sws' ) !== false ) {
+							$show_shortcode_warning = false;
+						} else {
+							$show_shortcode_warning = true;
+						}
 						?>
-						<p<?php if ( ! $show_shortcode_warning ) {?> style="display: none;"<?php } ?> class="pmpro_sws_shortcode_warning"><small class="pmpro_red"><?php echo wp_kses_post( '<strong>Warning:</strong> The [pmpro_sws] shortcode was not found in this post.', 'pmpro-sitewide-sales' );?></small></p>
+						<p
+						<?php
+						if ( ! $show_shortcode_warning ) {
+							?>
+  style="display: none;"<?php } ?> class="pmpro_sws_shortcode_warning"><small class="pmpro_red"><?php echo wp_kses_post( '<strong>Warning:</strong> The [pmpro_sws] shortcode was not found in this post.', 'pmpro-sitewide-sales' ); ?></small></p>
 
 						<p>
-							<span id="pmpro_sws_after_landing_page_select" <?php if ( ! $page_found ) {?>style="display: none;"<?php } ?>>
+							<span id="pmpro_sws_after_landing_page_select" 
+							<?php
+							if ( ! $page_found ) {
+								?>
+ style="display: none;"<?php } ?>>
 							<?php
 								$edit_page_url = admin_url( 'post.php?post=' . $current_page . '&action=edit&pmpro_sws_callback=' . $post->ID );
 								$view_page_url = get_permalink( $current_page );
 							?>
-							<a target="_blank" class="button button-secondary" id="pmpro_sws_edit_landing_page" href="<?php echo esc_url( $edit_page_url );?>"><?php esc_html_e( 'edit page', 'pmpro-sitewide-sales' );?></a>
+							<a target="_blank" class="button button-secondary" id="pmpro_sws_edit_landing_page" href="<?php echo esc_url( $edit_page_url ); ?>"><?php esc_html_e( 'edit page', 'pmpro-sitewide-sales' ); ?></a>
 							&nbsp;
-							<a target="_blank" class="button button-secondary" id="pmpro_sws_view_landing_page" href="<?php echo esc_url( $view_page_url );?>"><?php esc_html_e( 'view page', 'pmpro-sitewide-sales' );?></a>
+							<a target="_blank" class="button button-secondary" id="pmpro_sws_view_landing_page" href="<?php echo esc_url( $view_page_url ); ?>"><?php esc_html_e( 'view page', 'pmpro-sitewide-sales' ); ?></a>
 							<?php
 								esc_html_e( ' or ', 'pmpro-sitewide-sales' );
 							?>
 							</span>
-							<button type="button" id="pmpro_sws_create_landing_page" class="button button-secondary"><?php esc_html_e( 'create a new landing page', 'pmpro-sitewide-sales' );?></button>
+							<button type="button" id="pmpro_sws_create_landing_page" class="button button-secondary"><?php esc_html_e( 'create a new landing page', 'pmpro-sitewide-sales' ); ?></button>
 						</p>
 					</td>
 				</tr>
 				<?php
 					// Allow template selection if using Memberlite or set the Advanced Setting to "Yes".
-					if ( defined( 'MEMBERLITE_VERSION' ) || ( pmpro_getOption( 'pmpro_sws_allow_template' ) === 'Yes' ) ) { ?>
+				if ( defined( 'MEMBERLITE_VERSION' ) || ( pmpro_getOption( 'pmpro_sws_allow_template' ) === 'Yes' ) ) {
+					?>
 					<tr>
-						<th><label for="pmpro_sws_landing_page_template"><?php esc_html_e( 'Landing Page Template', 'pmpro-sitewide-sales'); ?></label></th>
+						<th><label for="pmpro_sws_landing_page_template"><?php esc_html_e( 'Landing Page Template', 'pmpro-sitewide-sales' ); ?></label></th>
 						<td>
 							<select class="landing_page_select_template pmpro_sws_option" id="pmpro_sws_landing_page_template" name="pmpro_sws_landing_page_template">
-								<option value="0"><?php esc_html_e( 'None', 'pmpro-sitewide-sales'); ?></option>
+								<option value="0"><?php esc_html_e( 'None', 'pmpro-sitewide-sales' ); ?></option>
 								<?php
-									$templates = array(
-										'gradient' => 'Gradient',
-										'neon' => 'Neon',
-										'ocean' => 'Ocean',
-										'photo' => 'Photo',
-										'scroll' => 'Scroll',
-									);
-									$templates = apply_filters( 'pmpro_sws_landing_page_templates', $templates );
-									foreach ( $templates as $key => $value ) {
-										echo '<option value="' . esc_html( $key ) . '" ' . selected( $landing_template, esc_html( $key ) ) . '>' . esc_html( $value ) . '</option>';
-									}
+								$templates = array(
+									'gradient' => 'Gradient',
+									'neon'     => 'Neon',
+									'ocean'    => 'Ocean',
+									'photo'    => 'Photo',
+									'scroll'   => 'Scroll',
+								);
+								$templates = apply_filters( 'pmpro_sws_landing_page_templates', $templates );
+								foreach ( $templates as $key => $value ) {
+									echo '<option value="' . esc_html( $key ) . '" ' . selected( $landing_template, esc_html( $key ) ) . '>' . esc_html( $value ) . '</option>';
+								}
 								?>
 							</select>
 							<p><small class="pmpro_lite"><?php esc_html_e( 'Stylish templates available for your theme.', 'pmpro-sitewide-sales' ); ?></small></p>
@@ -405,14 +425,14 @@ class PMPro_SWS_MetaBoxes {
 					<th><label for="pmpro_sws_landing_page_default_level"><?php esc_html_e( 'Checkout Level', 'pmpro-sitewide-sales' ); ?></label></th>
 					<td>
 						<select id="pmpro_sws_landing_page_default_level" name="pmpro_sws_landing_page_default_level">
-						<option value="0"><?php esc_html_e( '- Choose One -', 'pmpro-sitewide-sales'); ?></option>
+						<option value="0"><?php esc_html_e( '- Choose One -', 'pmpro-sitewide-sales' ); ?></option>
 						<?php
 							$all_levels = pmpro_getAllLevels( true, true );
-							foreach( $all_levels as $level ) {
+						foreach ( $all_levels as $level ) {
 							?>
-							<option value="<?php echo esc_attr( $level->id ); ?>" <?php selected( $default_level, $level->id );?>><?php echo esc_textarea( $level->name ); ?></option>
+							<option value="<?php echo esc_attr( $level->id ); ?>" <?php selected( $default_level, $level->id ); ?>><?php echo esc_textarea( $level->name ); ?></option>
 							<?php
-							}
+						}
 						?>
 					</select>
 					<p><small class="pmpro_lite"><?php esc_html_e( 'Using the [pmpro_sws] or [pmpro_checkout] shortcode on your Landing Page will display a checkout form for this level.', 'pmpro-sitewide-sales' ); ?></small></p>
@@ -421,8 +441,12 @@ class PMPro_SWS_MetaBoxes {
 			</tbody>
 		</table>
 		<hr />
-		<p><?php _e( 'Use the [pmpro_sws] shortcode in your landing page to automatically display the following sections before, during, and after the sale. Alternatively, you can remove the shortcode and manually update the landing page content.', 'pmpro-sitewide-sales' );?></p>
-		<p<?php if ( ! $show_shortcode_warning ) {?> style="display: none;"<?php } ?> class="pmpro_sws_shortcode_warning"><small class="pmpro_red"><?php echo wp_kses_post( '<strong>Warning:</strong> The chosen Landing Page does not include the [pmpro_sws] shortcode, so the following sections will not be displayed.', 'pmpro-sitewide-sales' );?></small></p>
+		<p><?php _e( 'Use the [pmpro_sws] shortcode in your landing page to automatically display the following sections before, during, and after the sale. Alternatively, you can remove the shortcode and manually update the landing page content.', 'pmpro-sitewide-sales' ); ?></p>
+		<p
+		<?php
+		if ( ! $show_shortcode_warning ) {
+			?>
+  style="display: none;"<?php } ?> class="pmpro_sws_shortcode_warning"><small class="pmpro_red"><?php echo wp_kses_post( '<strong>Warning:</strong> The chosen Landing Page does not include the [pmpro_sws] shortcode, so the following sections will not be displayed.', 'pmpro-sitewide-sales' ); ?></small></p>
 		<table class="form-table">
 			<tbody>
 				<tr>
@@ -431,8 +455,8 @@ class PMPro_SWS_MetaBoxes {
 						<textarea class="pmpro_sws_option" rows="4" name="pmpro_sws_pre_sale_content"><?php echo( esc_html( $pre_sale_content ) ); ?></textarea><br />
 						<p><small class="pmpro_lite">
 							<?php esc_html_e( 'Mention when the sale is starting and how awesome it will be.', 'pmpro-sitewide-sales' ); ?>
-							<?php if( ! empty( $view_page_url ) ) { ?>
-								<a target="_blank" id="pmpro_sws_view_landing_page" href="<?php echo add_query_arg( 'pmpro_sws_preview_content', 'pre-sale', esc_url( $view_page_url ) ); ?>"><?php esc_html_e( 'preview', 'pmpro-sitewide-sales' );?></a>
+							<?php if ( ! empty( $view_page_url ) ) { ?>
+								<a target="_blank" id="pmpro_sws_view_landing_page" href="<?php echo add_query_arg( 'pmpro_sws_preview_content', 'pre-sale', esc_url( $view_page_url ) ); ?>"><?php esc_html_e( 'preview', 'pmpro-sitewide-sales' ); ?></a>
 							<?php } ?>
 						</small></p>
 					</td>
@@ -443,8 +467,8 @@ class PMPro_SWS_MetaBoxes {
 						<textarea class="pmpro_sws_option" rows="4" name="pmpro_sws_sale_content"><?php echo( esc_html( $sale_content ) ); ?></textarea><br />
 						<p><small class="pmpro_lite">
 							<?php esc_html_e( 'A membership checkout form will automatically be included when the sale is active.', 'pmpro-sitewide-sales' ); ?>
-							<?php if( ! empty( $view_page_url ) ) { ?>
-								<a target="_blank" id="pmpro_sws_view_landing_page" href="<?php echo add_query_arg( 'pmpro_sws_preview_content', 'sale', esc_url( $view_page_url ) ); ?>"><?php esc_html_e( 'preview', 'pmpro-sitewide-sales' );?></a>
+							<?php if ( ! empty( $view_page_url ) ) { ?>
+								<a target="_blank" id="pmpro_sws_view_landing_page" href="<?php echo add_query_arg( 'pmpro_sws_preview_content', 'sale', esc_url( $view_page_url ) ); ?>"><?php esc_html_e( 'preview', 'pmpro-sitewide-sales' ); ?></a>
 							<?php } ?>
 						</small></p>
 						</small></p>
@@ -455,9 +479,9 @@ class PMPro_SWS_MetaBoxes {
 					<td>
 						<textarea class="pmpro_sws_option" rows="4" name="pmpro_sws_post_sale_content"><?php echo( esc_html( $post_sale_content ) ); ?></textarea><br />
 						<p><small class="pmpro_lite">
-							<?php esc_html_e( 'Mention that the sale has ended and thank your customers.', 'pmpro-sitewide-sales' );?>
-							<?php if( ! empty( $view_page_url ) ) { ?>
-								<a target="_blank" id="pmpro_sws_view_landing_page" href="<?php echo add_query_arg( 'pmpro_sws_preview_content', 'post-sale', esc_url( $view_page_url ) ); ?>"><?php esc_html_e( 'preview', 'pmpro-sitewide-sales' );?></a>
+							<?php esc_html_e( 'Mention that the sale has ended and thank your customers.', 'pmpro-sitewide-sales' ); ?>
+							<?php if ( ! empty( $view_page_url ) ) { ?>
+								<a target="_blank" id="pmpro_sws_view_landing_page" href="<?php echo add_query_arg( 'pmpro_sws_preview_content', 'post-sale', esc_url( $view_page_url ) ); ?>"><?php esc_html_e( 'preview', 'pmpro-sitewide-sales' ); ?></a>
 							<?php } ?>
 						</small></p>
 					</td>
@@ -477,11 +501,11 @@ class PMPro_SWS_MetaBoxes {
 
 		// Set defaults if this is a brand new post.
 		if ( $post->post_status == 'auto-draft' ) {
-			$banner_title = esc_html__( 'Limited Time Offer', 'pmpro-sitewide-sales' );
-			$banner_text = sprintf( esc_html__( 'Save on %s membership.', 'pmpro-sitewide-sales' ), get_bloginfo( 'sitename' ) );
-			$link_text = esc_html__( 'Buy Now', 'pmpro-sitewide-sales' );
-			$css_option = '';
-			$hide_for_levels = PMPro_SWS_Setup::get_paid_level_ids();
+			$banner_title     = esc_html__( 'Limited Time Offer', 'pmpro-sitewide-sales' );
+			$banner_text      = sprintf( esc_html__( 'Save on %s membership.', 'pmpro-sitewide-sales' ), get_bloginfo( 'sitename' ) );
+			$link_text        = esc_html__( 'Buy Now', 'pmpro-sitewide-sales' );
+			$css_option       = '';
+			$hide_for_levels  = PMPro_SWS_Setup::get_paid_level_ids();
 			$hide_on_checkout = true;
 		} else {
 			$banner_text = $post->post_content;
@@ -523,11 +547,11 @@ class PMPro_SWS_MetaBoxes {
 							<option value="no" <?php selected( $use_banner, 'no' ); ?>><?php esc_html_e( 'No', 'pmpro-sitewide-sales' ); ?></option>
 							<?php
 								$registered_banners = PMPro_SWS_Banners::get_registered_banners();
-								foreach ( $registered_banners as $banner => $data ) {
-									if ( is_string( $banner ) && is_array( $data ) && ! empty( $data['option_title'] ) && is_string( $data['option_title'] ) ) {
-										echo '<option value="' . $banner . '"' . selected( $use_banner, $banner ) . '>' . esc_html( $data['option_title'] ) . '</option>';
-									}
+							foreach ( $registered_banners as $banner => $data ) {
+								if ( is_string( $banner ) && is_array( $data ) && ! empty( $data['option_title'] ) && is_string( $data['option_title'] ) ) {
+									echo '<option value="' . $banner . '"' . selected( $use_banner, $banner ) . '>' . esc_html( $data['option_title'] ) . '</option>';
 								}
+							}
 							?>
 						</select>
 						<input type="submit" class="button button-secondary" id="pmpro_sws_preview" name="pmpro_sws_preview" value="<?php echo esc_html__( 'Save and Preview', 'pmpro-sitewide-sales' ); ?>">
@@ -536,28 +560,33 @@ class PMPro_SWS_MetaBoxes {
 				</tr>
 			</tbody>
 		</table>
-		<table class="form-table" id="pmpro_sws_banner_options" <?php if ( $use_banner == 'no' ) { ?>style="disaply: none;"<?php } ?>>
+		<table class="form-table" id="pmpro_sws_banner_options" 
+		<?php
+		if ( $use_banner == 'no' ) {
+			?>
+			style="disaply: none;"<?php } ?>>
 			<tbody>
 				<?php
 					// Allow template selection if using Memberlite or set the Advanced Setting to "Yes".
-					if ( defined( 'MEMBERLITE_VERSION' ) || ( pmpro_getOption( 'pmpro_sws_allow_template' ) === 'Yes' ) ) { ?>
+				if ( defined( 'MEMBERLITE_VERSION' ) || ( pmpro_getOption( 'pmpro_sws_allow_template' ) === 'Yes' ) ) {
+					?>
 					<tr>
-						<th><label for="pmpro_sws_banner_template"><?php esc_html_e( 'Banner Template', 'pmpro-sitewide-sales'); ?></label></th>
+						<th><label for="pmpro_sws_banner_template"><?php esc_html_e( 'Banner Template', 'pmpro-sitewide-sales' ); ?></label></th>
 						<td>
 							<select class="banner_select_template pmpro_sws_option" id="pmpro_sws_banner_template" name="pmpro_sws_banner_template">
-								<option value="0"><?php esc_html_e( 'None', 'pmpro-sitewide-sales'); ?></option>
+								<option value="0"><?php esc_html_e( 'None', 'pmpro-sitewide-sales' ); ?></option>
 								<?php
-									$templates = array(
-										'gradient' => 'Gradient',
-										'neon' => 'Neon',
-										'ocean' => 'Ocean',
-										'photo' => 'Photo',
-										'scroll' => 'Scroll',
-									);
-									$templates = apply_filters( 'pmpro_sws_banner_templates', $templates );
-									foreach ( $templates as $key => $value ) {
-										echo '<option value="' . esc_html( $key ) . '" ' . selected( $banner_template, esc_html( $key ) ) . '>' . esc_html( $value ) . '</option>';
-									}
+								$templates = array(
+									'gradient' => 'Gradient',
+									'neon'     => 'Neon',
+									'ocean'    => 'Ocean',
+									'photo'    => 'Photo',
+									'scroll'   => 'Scroll',
+								);
+								$templates = apply_filters( 'pmpro_sws_banner_templates', $templates );
+								foreach ( $templates as $key => $value ) {
+									echo '<option value="' . esc_html( $key ) . '" ' . selected( $banner_template, esc_html( $key ) ) . '>' . esc_html( $value ) . '</option>';
+								}
 								?>
 							</select>
 							<p><small class="pmpro_lite"><?php esc_html_e( 'Stylish templates available for your theme.', 'pmpro-sitewide-sales' ); ?></small></p>
@@ -589,22 +618,30 @@ class PMPro_SWS_MetaBoxes {
 					<th scope="row" valign="top"><label><?php esc_html_e( 'Custom Banner CSS', 'pmpro-sitewide-sales' ); ?></label></th>
 					<td>
 						<textarea class="pmpro_sws_option" name="pmpro_sws_css_option"><?php esc_html_e( $css_option, 'pmpro-sitewide-sales' ); ?></textarea>
-						<p><small class="pmpro_lite"><?php esc_html_e( 'Optional. Use this area to add custom styles to modify the banner appearance.', 'pmpro-sitewide-sales'); ?></small></p>
+						<p><small class="pmpro_lite"><?php esc_html_e( 'Optional. Use this area to add custom styles to modify the banner appearance.', 'pmpro-sitewide-sales' ); ?></small></p>
 
-						<p id="pmpro_sws_css_selectors_description" class="description" <?php if ( empty($use_banner) || $use_banner == 'no' ) {?>style="display:none;"<?php } ?>><?php esc_html_e( 'Use these selectors to alter the appearance of your banners.', 'pmpro-sitewide-sales' ); ?></p>
-						<?php foreach( $registered_banners as $key => $registered_banner ) { ?>
-							<div data-pmprosws-banner="<?php echo esc_attr($key);?>" class="pmpro_sws_banner_css_selectors" <?php if( $key != $use_banner ) {?>style="display: none;"<?php } ?>>
+						<p id="pmpro_sws_css_selectors_description" class="description" 
+						<?php
+						if ( empty( $use_banner ) || $use_banner == 'no' ) {
+							?>
+ style="display:none;"<?php } ?>><?php esc_html_e( 'Use these selectors to alter the appearance of your banners.', 'pmpro-sitewide-sales' ); ?></p>
+						<?php foreach ( $registered_banners as $key => $registered_banner ) { ?>
+							<div data-pmprosws-banner="<?php echo esc_attr( $key ); ?>" class="pmpro_sws_banner_css_selectors" 
+																  <?php
+																	if ( $key != $use_banner ) {
+																		?>
+ style="display: none;"<?php } ?>>
 							<?php
 								$css_selectors = $registered_banner['css_selectors'];
-								if ( is_string( $css_selectors ) ) {
-									echo $css_selectors;
-								} elseif ( is_array( $css_selectors ) ) {
-									foreach ( $css_selectors as $css_selector ) {
-										if ( is_string( $css_selector ) ) {
-											echo $css_selector . ' { }<br/>';
-										}
+							if ( is_string( $css_selectors ) ) {
+								echo $css_selectors;
+							} elseif ( is_array( $css_selectors ) ) {
+								foreach ( $css_selectors as $css_selector ) {
+									if ( is_string( $css_selector ) ) {
+										echo $css_selector . ' { }<br/>';
 									}
 								}
+							}
 							?>
 							</div>
 						<?php } ?>
@@ -616,11 +653,11 @@ class PMPro_SWS_MetaBoxes {
 						<input type="hidden" name="pmpro_sws_hide_for_levels_exists" value="1" />
 						<select multiple class="pmpro_sws_option" id="pmpro_sws_hide_levels_select" name="pmpro_sws_hide_for_levels[]" style="width:12em">
 						<?php
-							$all_levels    = pmpro_getAllLevels( true, true );
-							foreach ( $all_levels as $level ) {
-								$selected_modifier = in_array( $level->id, $hide_for_levels ) ? ' selected="selected"' : '';
-								echo '<option value=' . esc_html( $level->id ) . esc_html( $selected_modifier ) . '>' . esc_html( $level->name ) . '</option>';
-							}
+							$all_levels = pmpro_getAllLevels( true, true );
+						foreach ( $all_levels as $level ) {
+							$selected_modifier = in_array( $level->id, $hide_for_levels ) ? ' selected="selected"' : '';
+							echo '<option value=' . esc_html( $level->id ) . esc_html( $selected_modifier ) . '>' . esc_html( $level->name ) . '</option>';
+						}
 						?>
 						</select>
 						<p><small class="pmpro_lite"><?php esc_html_e( 'This setting will hide the banner for members of the selected levels.', 'pmpro-sitewide-sales' ); ?></small></p>
@@ -634,7 +671,7 @@ class PMPro_SWS_MetaBoxes {
 					<td>
 						<input type="hidden" name="pmpro_sws_hide_on_checkout_exists" value="1" />
 						<input class="pmpro_sws_option" type="checkbox" id="pmpro_sws_hide_on_checkout" name="pmpro_sws_hide_on_checkout" <?php checked( $hide_on_checkout, 1 ); ?>> <label for="pmpro_sws_hide_on_checkout"><?php esc_html_e( 'Check this box to hide the banner on checkout pages.', 'pmpro-sitewide-sales' ); ?></label>
-						<p><small class="pmpro_lite"><?php esc_html_e( "Recommended: Leave checked so only users using your landing page will pay the sale price.", 'pmpro-sitewide-sales' ); ?></small></p>
+						<p><small class="pmpro_lite"><?php esc_html_e( 'Recommended: Leave checked so only users using your landing page will pay the sale price.', 'pmpro-sitewide-sales' ); ?></small></p>
 					</td>
 				</tr>
 			</tbody>
@@ -650,10 +687,11 @@ class PMPro_SWS_MetaBoxes {
 			<h1 class="pmpro_sws_reports-box-title"><?php esc_html_e( 'Overall Sale Performance', 'pmpro-sitewide-sales' ); ?></h1>
 			<p>
 			<?php
-				printf( wp_kses_post( 'All visitors from %s to %s.', 'pmpro-sitewide-sales' ),
-						date( get_option( 'date_format' ), strtotime( $stats['start_date'], current_time( 'timestamp' ) ) ),
-						date( get_option( 'date_format' ), strtotime( $stats['end_date'], current_time( 'timestamp' ) ) )
-					);
+				printf(
+					wp_kses_post( 'All visitors from %s to %s.', 'pmpro-sitewide-sales' ),
+					date( get_option( 'date_format' ), strtotime( $stats['start_date'], current_time( 'timestamp' ) ) ),
+					date( get_option( 'date_format' ), strtotime( $stats['end_date'], current_time( 'timestamp' ) ) )
+				);
 			?>
 			</p>
 			<hr />
@@ -666,17 +704,20 @@ class PMPro_SWS_MetaBoxes {
 					<h1><?php echo esc_attr( $stats['landing_page_visits'] ); ?></h1>
 					<p>
 						<?php
-							printf( wp_kses_post( '<a href="%s" title="%s">Landing</a> Page Visits', 'pmpro-sitewide-sales' ),
+							printf(
+								wp_kses_post( '<a href="%s" title="%s">Landing</a> Page Visits', 'pmpro-sitewide-sales' ),
 								$stats['landing_page_url'],
 								$stats['landing_page_title']
-							); ?>
+							);
+						?>
 					</p>
 				</div>
 				<div id="pmpro_sws_reports-data-section_sales" class="pmpro_sws_reports-data-section">
 					<h1><?php echo esc_attr( $stats['checkout_conversions_with_code'] ); ?></h1>
 					<p>
 						<?php
-							printf( wp_kses_post( 'Checkouts using <a href="%s">%s</a>', 'pmpro-sitewide-sales' ),
+							printf(
+								wp_kses_post( 'Checkouts using <a href="%s">%s</a>', 'pmpro-sitewide-sales' ),
 								admin_url( 'admin.php?page=pmpro-discountcodes&edit=' . $stats['discount_code_id'] ),
 								$stats['discount_code']
 							);
@@ -690,7 +731,7 @@ class PMPro_SWS_MetaBoxes {
 			</div>
 			<p><?php echo '<a class="button button-secondary" href="' . admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports&pmpro_sws_sitewide_sale_id=' . $post->ID ) . '">' . __( 'View Reports', 'pmpro-sitewide-sales' ) . '</a>'; ?></p>
 		</div>
-	<?php
+		<?php
 	}
 
 	/**
@@ -727,7 +768,7 @@ class PMPro_SWS_MetaBoxes {
 		}
 
 		// Add nonce for security and authentication.
-		$nonce_name   = isset( $_POST['custom_nonce'] ) ? sanitize_text_field( $_POST['custom_nonce'] ): '';
+		$nonce_name   = isset( $_POST['custom_nonce'] ) ? sanitize_text_field( $_POST['custom_nonce'] ) : '';
 		$nonce_action = 'custom_nonce_action';
 
 		// Check if nonce is set.
@@ -741,7 +782,7 @@ class PMPro_SWS_MetaBoxes {
 		}
 
 		// Make sure the post title is not blank
-		if( isset( $_POST['post_title'] ) && empty( $_POST['post_title'] ) ) {
+		if ( isset( $_POST['post_title'] ) && empty( $_POST['post_title'] ) ) {
 			$post->post_title = sanitize_post_field(
 				'post_title',
 				esc_html__( 'Sitewide Sale', 'pmpro-sitewide-sales' ),
@@ -757,7 +798,7 @@ class PMPro_SWS_MetaBoxes {
 		if ( ! empty( $_POST['pmpro_sws_landing_page_post_id'] ) ) {
 			update_post_meta( $post_id, 'pmpro_sws_landing_page_post_id', intval( $_POST['pmpro_sws_landing_page_post_id'] ) );
 			update_post_meta( intval( $_POST['pmpro_sws_landing_page_post_id'] ), 'pmpro_sws_sitewide_sale_id', $post_id );
-		} elseif( isset( $_POST['pmpro_sws_landing_page_post_id'] ) ) {
+		} elseif ( isset( $_POST['pmpro_sws_landing_page_post_id'] ) ) {
 			update_post_meta( $post_id, 'pmpro_sws_landing_page_post_id', false );
 			delete_post_meta( intval( $_REQUEST['pmpro_sws_old_landing_page_post_id'] ), 'pmpro_sws_sitewide_sale_id' );
 		}
@@ -777,16 +818,16 @@ class PMPro_SWS_MetaBoxes {
 				isset( $_POST['pmpro_sws_end_month'] ) && is_numeric( $_POST['pmpro_sws_end_month'] ) &&
 				isset( $_POST['pmpro_sws_end_year'] ) && is_numeric( $_POST['pmpro_sws_end_year'] )
 		) {
-			$start_day = intval($_POST['pmpro_sws_start_day']);
-			$start_month = intval($_POST['pmpro_sws_start_month']);
-			$start_year = intval($_POST['pmpro_sws_start_year']);
-			$end_day = intval($_POST['pmpro_sws_end_day']);
-			$end_month = intval($_POST['pmpro_sws_end_month']);
-			$end_year = intval($_POST['pmpro_sws_end_year']);
+			$start_day   = intval( $_POST['pmpro_sws_start_day'] );
+			$start_month = intval( $_POST['pmpro_sws_start_month'] );
+			$start_year  = intval( $_POST['pmpro_sws_start_year'] );
+			$end_day     = intval( $_POST['pmpro_sws_end_day'] );
+			$end_month   = intval( $_POST['pmpro_sws_end_month'] );
+			$end_year    = intval( $_POST['pmpro_sws_end_year'] );
 
-			//fix up dates
-			$start_date = date_i18n("Y-m-d", strtotime($start_month . "/" . $start_day . "/" . $start_year, current_time("timestamp")));
-			$end_date = date_i18n("Y-m-d", strtotime($end_month . "/" . $end_day . "/" . $end_year, current_time("timestamp")));
+			// fix up dates
+			$start_date = date_i18n( 'Y-m-d', strtotime( $start_month . '/' . $start_day . '/' . $start_year, current_time( 'timestamp' ) ) );
+			$end_date   = date_i18n( 'Y-m-d', strtotime( $end_month . '/' . $end_day . '/' . $end_year, current_time( 'timestamp' ) ) );
 
 			update_post_meta( $post_id, 'pmpro_sws_start_date', $start_date );
 			update_post_meta( $post_id, 'pmpro_sws_end_date', $end_date );
@@ -815,7 +856,7 @@ class PMPro_SWS_MetaBoxes {
 
 		if ( ! empty( $_POST['pmpro_sws_banner_title'] ) ) {
 			update_post_meta( $post_id, 'pmpro_sws_banner_title', wp_kses_post( $_POST['pmpro_sws_banner_title'] ) );
-		} elseif( isset( $_POST['pmpro_sws_banner_title'] ) ) {
+		} elseif ( isset( $_POST['pmpro_sws_banner_title'] ) ) {
 			update_post_meta( $post_id, 'pmpro_sws_banner_title', $post->post_title );
 		}
 
@@ -826,9 +867,9 @@ class PMPro_SWS_MetaBoxes {
 			add_action( 'save_post', array( __CLASS__, 'save_sws_metaboxes' ), 10, 2 );
 		}
 
-		if ( ! empty ( $_POST['pmpro_sws_link_text'] ) ) {
+		if ( ! empty( $_POST['pmpro_sws_link_text'] ) ) {
 			update_post_meta( $post_id, 'pmpro_sws_link_text', sanitize_text_field( $_POST['pmpro_sws_link_text'] ) );
-		} elseif( isset( $_POST['pmpro_sws_link_text'] ) ) {
+		} elseif ( isset( $_POST['pmpro_sws_link_text'] ) ) {
 			update_post_meta( $post_id, 'pmpro_sws_link_text', 'Buy Now' );
 		}
 
@@ -947,7 +988,7 @@ class PMPro_SWS_MetaBoxes {
 			// Get id of sitewide sale to redirect to.
 			$sitewide_sale_id = explode( 'pmpro_sws_callback=', $url )[1];
 			$sitewide_sale_id = explode( '$', $sitewide_sale_id )[0];
-			$location = esc_url( admin_url( 'post.php?post=' . $sitewide_sale_id . '&action=edit' ) );
+			$location         = esc_url( admin_url( 'post.php?post=' . $sitewide_sale_id . '&action=edit' ) );
 		}
 		return $location;
 	}
@@ -960,39 +1001,53 @@ class PMPro_SWS_MetaBoxes {
 
 		check_ajax_referer( 'pmpro_sws_create_discount_code', 'nonce' );
 
-		if ( ! function_exists('pmpro_getDiscountCode') ) {
+		if ( ! function_exists( 'pmpro_getDiscountCode' ) ) {
 			exit;
 		}
 
 		$sitewide_sale_id = intval( $_REQUEST['pmpro_sws_id'] );
 		if ( empty( $sitewide_sale_id ) ) {
-			echo json_encode( array( 'status' => 'error', 'error' => esc_html__( 'No sitewide sale ID given. Try doing it manually.', 'pmpro-sitewide-sales') ) );
+			echo json_encode(
+				array(
+					'status' => 'error',
+					'error'  => esc_html__(
+						'No sitewide sale ID given. Try doing it manually.',
+						'pmpro-sitewide-sales'
+					),
+				)
+			);
 			exit;
 		}
 
 		$wpdb->insert(
 			$wpdb->pmpro_discount_codes,
 			array(
-				'id'=>0,
-				'code' => pmpro_getDiscountCode(),
-				'starts' => sanitize_text_field( $_REQUEST['pmpro_sws_start'] ),
+				'id'      => 0,
+				'code'    => pmpro_getDiscountCode(),
+				'starts'  => sanitize_text_field( $_REQUEST['pmpro_sws_start'] ),
 				'expires' => sanitize_text_field( $_REQUEST['pmpro_sws_end'] ),
-				'uses' => 0
+				'uses'    => 0,
 			),
 			array(
 				'%d',
 				'%s',
 				'%s',
 				'%s',
-				'%d'
+				'%d',
 			)
 		);
 
 		if ( ! empty( $wpdb->last_error ) ) {
-			$r = array( 'status' => 'error', 'error' => esc_html__( 'Error inserting discount code. Try doing it manually.', 'pmpro-sitewide-sales' ) );
+			$r = array(
+				'status' => 'error',
+				'error'  => esc_html__( 'Error inserting discount code. Try doing it manually.', 'pmpro-sitewide-sales' ),
+			);
 		} else {
-			$discount_code = $wpdb->get_row( "SELECT * FROM $wpdb->pmpro_discount_codes WHERE id = '" . intval( $wpdb->insert_id ) . "' LIMIT 1");
-			$r = array( 'status' => 'success', 'code' => $discount_code );
+			$discount_code = $wpdb->get_row( "SELECT * FROM $wpdb->pmpro_discount_codes WHERE id = '" . intval( $wpdb->insert_id ) . "' LIMIT 1" );
+			$r             = array(
+				'status' => 'success',
+				'code'   => $discount_code,
+			);
 		}
 
 		echo json_encode( $r );
@@ -1007,7 +1062,15 @@ class PMPro_SWS_MetaBoxes {
 
 		$sitewide_sale_id = intval( $_REQUEST['pmpro_sws_id'] );
 		if ( empty( $sitewide_sale_id ) ) {
-			echo json_encode( array( 'status' => 'error', 'error' => esc_html__( 'No sitewide sale ID given. Try doing it manually.', 'pmpro-sitewide-sales') ) );
+			echo json_encode(
+				array(
+					'status' => 'error',
+					'error'  => esc_html__(
+						'No sitewide sale ID given. Try doing it manually.',
+						'pmpro-sitewide-sales'
+					),
+				)
+			);
 			exit;
 		}
 
@@ -1016,18 +1079,25 @@ class PMPro_SWS_MetaBoxes {
 			$landing_page_title = esc_html__( 'Sitewide Sale Landing Page', 'pmpro-sitewide-sales' );
 		}
 
-		$landing_page_post_id = wp_insert_post( array(
-			'post_title' => $landing_page_title,
-			'post_content' => '[pmpro_sws]',
-			'post_type' => 'page',
-			'post_status' => 'draft',
+		$landing_page_post_id = wp_insert_post(
+			array(
+				'post_title'   => $landing_page_title,
+				'post_content' => '[pmpro_sws]',
+				'post_type'    => 'page',
+				'post_status'  => 'draft',
 			)
 		);
 
 		if ( empty( $landing_page_post_id ) ) {
-			$r = array( 'status' => 'error', 'error' => esc_html__( 'Error inserting post. Try doing it manually.', 'pmpro-sitewide-sales' ) );
+			$r = array(
+				'status' => 'error',
+				'error'  => esc_html__( 'Error inserting post. Try doing it manually.', 'pmpro-sitewide-sales' ),
+			);
 		} else {
-			$r = array( 'status' => 'success', 'post' => get_post( $landing_page_post_id ) );
+			$r = array(
+				'status' => 'success',
+				'post'   => get_post( $landing_page_post_id ),
+			);
 		}
 
 		echo json_encode( $r );
