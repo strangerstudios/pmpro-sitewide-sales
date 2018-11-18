@@ -286,11 +286,13 @@ class PMPro_SWS_MetaBoxes {
 							<?php
 							if ( $code_found ) {
 								$edit_code_url = admin_url( 'admin.php?page=pmpro-discountcodes&edit=' . $current_discount );
-								?>
-									<a target="_blank" class="button button-secondary" id="pmpro_sws_edit_discount_code" href="<?php echo esc_url( $edit_code_url ); ?>"><?php esc_html_e( 'edit code', 'pmpro-sitewide-sales' ); ?></a>
-									<?php
-									esc_html_e( ' or ', 'pmpro-sitewide-sales' );
+							} else {
+								$edit_code_url = '#';
 							}
+							?>
+								<a target="_blank" class="button button-secondary" id="pmpro_sws_edit_discount_code" href="<?php echo esc_url( $edit_code_url ); ?>"><?php esc_html_e( 'edit code', 'pmpro-sitewide-sales' ); ?></a>
+								<?php
+								esc_html_e( ' or ', 'pmpro-sitewide-sales' );
 							?>
 							</span>
 							<button type="button" id="pmpro_sws_create_discount_code" class="button button-secondary"><?php esc_html_e( 'create a new discount code', 'pmpro-sitewide-sales' ); ?></button>
