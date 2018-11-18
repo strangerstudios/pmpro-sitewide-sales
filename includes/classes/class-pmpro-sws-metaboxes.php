@@ -209,7 +209,7 @@ class PMPro_SWS_MetaBoxes {
 				<tr>
 					<th scope="row" valign="top"><label for="pmpro_sws_start_date"><?php _e( 'Sale Start Date', 'pmpro-sitewide-sales' ); ?>:</label></th>
 					<td>
-						<select name="pmpro_sws_start_month">
+						<select id="pmpro_sws_start_month" name="pmpro_sws_start_month">
 							<?php
 							for ( $i = 1; $i < 13; $i++ ) {
 								?>
@@ -222,15 +222,15 @@ class PMPro_SWS_MetaBoxes {
 							}
 							?>
 						</select>
-						<input name="pmpro_sws_start_day" type="text" size="2" value="<?php echo esc_html( $start_day ); ?>" />
-						<input name="pmpro_sws_start_year" type="text" size="4" value="<?php echo esc_html( $start_year ); ?>" />
+						<input id="pmpro_sws_start_day" name="pmpro_sws_start_day" type="text" size="2" value="<?php echo esc_html( $start_day ); ?>" />
+						<input id="pmpro_sws_start_year" name="pmpro_sws_start_year" type="text" size="4" value="<?php echo esc_html( $start_year ); ?>" />
 						<p><small class="pmpro_lite"><?php esc_html_e( 'Set this date to the first day of your sale.', 'pmpro-sitewide-sales' ); ?></small></p>
 					</td>
 				</tr>
 				<tr>
 					<th scope="row" valign="top"><label for="pmpro_sws_end_date"><?php _e( 'Sale End Date', 'pmpro-sitewide-sales' ); ?>:</label></th>
 					<td>
-						<select name="pmpro_sws_end_month">
+						<select id="pmpro_sws_end_month" name="pmpro_sws_end_month">
 							<?php
 							for ( $i = 1; $i < 13; $i++ ) {
 								?>
@@ -243,8 +243,8 @@ class PMPro_SWS_MetaBoxes {
 							}
 							?>
 						</select>
-						<input name="pmpro_sws_end_day" type="text" size="2" value="<?php echo esc_html( $end_day ); ?>" />
-						<input name="pmpro_sws_end_year" type="text" size="4" value="<?php echo esc_html( $end_year ); ?>" />
+						<input id="pmpro_sws_end_day" name="pmpro_sws_end_day" type="text" size="2" value="<?php echo esc_html( $end_day ); ?>" />
+						<input id="pmpro_sws_end_year" name="pmpro_sws_end_year" type="text" size="4" value="<?php echo esc_html( $end_year ); ?>" />
 						<p><small class="pmpro_lite"><?php esc_html_e( 'Set this date to the last full day of your sale.', 'pmpro-sitewide-sales' ); ?></small></p>
 					</td>
 				</tr>
