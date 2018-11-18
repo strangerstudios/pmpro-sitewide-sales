@@ -144,7 +144,7 @@ class PMPro_SWS_Banners {
 			$start_date = get_post_meta( $active_sitewide_sale, 'pmpro_sws_start_date', true );
 			$end_date   = get_post_meta( $active_sitewide_sale, 'pmpro_sws_end_date', true );
 			$today      = date( 'Y-m-d', current_time( 'timestamp' ) );
-			if ( $today < $start_date || $today >= $end_date ) {
+			if ( $today < $start_date || $today > $end_date ) {
 				return;
 			}
 		}
