@@ -412,6 +412,7 @@ class PMPro_SWS_MetaBoxes {
 									'ocean'    => 'Ocean',
 									'photo'    => 'Photo',
 									'scroll'   => 'Scroll',
+									'vintage'  => 'Vintage',
 								);
 								$templates = apply_filters( 'pmpro_sws_landing_page_templates', $templates );
 								foreach ( $templates as $key => $value ) {
@@ -584,6 +585,7 @@ class PMPro_SWS_MetaBoxes {
 									'ocean'    => 'Ocean',
 									'photo'    => 'Photo',
 									'scroll'   => 'Scroll',
+									'vintage'  => 'Vintage',
 								);
 								$templates = apply_filters( 'pmpro_sws_banner_templates', $templates );
 								foreach ( $templates as $key => $value ) {

@@ -620,3 +620,110 @@ body.pmpro-sitewide-sale-landing-page-scroll {
 #pmpro_sitewide_sale_landing_page_template-scroll #pmpro_form .pmpro_checkout .pmpro_checkout-fields {
 	padding:  0;
 }
+
+/* Vintage Theme */
+.pmpro_sws_banner_template-vintage {
+	background: #1d2a2f url(../../images/green-dust-and-scratches.png) repeat;
+	color: #e5dfbd;
+	letter-spacing: 2px;
+	text-shadow: 2px 2px 0px rgba(0,0,0,0.3);
+	text-transform: uppercase;
+}
+.pmpro_sws_banner_template-vintage h3 {
+	color: #e5dfbd;
+	font-family: 'Lobster', sans-serif;
+	font-size: 30px;
+	font-variant: small-caps;
+	font-weight: 400;
+	line-height: 40px;
+	margin: 0;
+	padding: 0;
+	text-shadow: 5px 5px 0px rgba(0,0,0,0.3);
+	text-transform: none;
+}
+.pmpro_sws_banner_template-vintage a.dismiss:before {
+	color: #666;
+}
+
+body.pmpro-sitewide-sale-landing-page-vintage {
+	background: #1d2a2f url(../../images/green-dust-and-scratches.png) repeat;
+	padding: 2.9rem 0;
+}
+#pmpro_sitewide_sale_landing_page_template-vintage {
+	margin: 0;
+}
+#pmpro_sitewide_sale_landing_page_template-vintage .pmpro_sws_landing_content {
+	color: #e5dfbd;
+	letter-spacing: 2px;
+	text-align: center;
+	text-shadow: 3px 3px 0px rgba(0,0,0,0.3);
+	text-transform: uppercase;
+}
+#pmpro_sitewide_sale_landing_page_template-vintage .pmpro_sws_landing_content h1 {
+	border-top: 10px double #e5dfbd;
+	border-bottom: 10px double #e5dfbd;
+	color: #e5dfbd;
+	font-family: 'Lobster', sans-serif;
+	font-size: 125px;
+	font-variant: small-caps;
+	font-weight: 400;
+	line-height: 120px;
+	margin: 40px 0;
+	padding: 60px 0 70px 0;
+	text-shadow: 10px 10px 0px rgba(0,0,0,0.3);
+	text-transform: none;
+}
+#pmpro_sitewide_sale_landing_page_template-vintage .pmpro_sws_landing_content h1:before {
+	content: "\f005";
+	display: block;
+	font-family: "Font Awesome 5 Free";
+	font-size: 40px;
+	font-weight: 700;
+	line-height: 60px;
+	margin-top: -100px;
+	text-align: center;
+	text-shadow: none;
+}
+#pmpro_sitewide_sale_landing_page_template-vintage .pmpro_sws_landing_content h1:after {
+	content: "\f005";
+	display: block;
+	font-family: "Font Awesome 5 Free";
+	font-size: 40px;
+	font-weight: 700;
+	line-height: 60px;
+	margin-bottom: -100px;
+	text-align: center;
+	text-shadow: none;
+}
+#pmpro_sitewide_sale_landing_page_template-vintage .pmpro_sws_landing_content h2 {
+	color: #e5dfbd;
+	font-weight: 300;
+	letter-spacing: 5px;
+	line-height: 55px;
+	margin: 0;
+	padding: 0;
+	text-transform: uppercase;
+}
+#pmpro_sitewide_sale_landing_page_template-vintage #pmpro_form {
+	max-width: 800px;
+}
+#pmpro_sitewide_sale_landing_page_template-vintage #pmpro_form hr {
+	display: none;
+}
+#pmpro_sitewide_sale_landing_page_template-vintage form#pmpro_form .pmpro_checkout {
+	background: #FFF;
+	margin: 2rem 0;
+}
+#pmpro_sitewide_sale_landing_page_template-vintage form#pmpro_form .pmpro_checkout h3 {
+	background: #e5dfbd;
+	border: none;
+	color: #1d2a2f;
+}
+#pmpro_sitewide_sale_landing_page_template-vintage form#pmpro_form .pmpro_checkout h3 span.pmpro_checkout-h3-name {
+	font-weight: 300;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+}
+#pmpro_sitewide_sale_landing_page_template-vintage form#pmpro_form .pmpro_checkout .pmpro_sslseal {
+	text-align: center;
+}
