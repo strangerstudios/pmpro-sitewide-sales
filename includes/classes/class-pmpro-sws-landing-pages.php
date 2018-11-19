@@ -189,12 +189,12 @@ class PMPro_SWS_Landing_Pages {
 		}
 
 		if ( $sale_content === 'pre-sale' ) {
-			$landing_content = get_post_meta( $sitewide_sale->ID, 'pmpro_sws_pre_sale_content', true );
+			$landing_content = apply_filters( 'the_content', get_post_meta( $sitewide_sale->ID, 'pmpro_sws_pre_sale_content', true ) );
 			$r              .= '<div class="pmpro_sws_landing_content pmpro_sws_landing_content_pre-sale">';
 			$r              .= $landing_content;
 			$r              .= '</div> <!-- .pmpro_sws_landing_content -->';
 		} elseif ( $sale_content === 'post-sale' ) {
-			$landing_content = get_post_meta( $sitewide_sale->ID, 'pmpro_sws_post_sale_content', true );
+			$landing_content = apply_filters( 'the_content', get_post_meta( $sitewide_sale->ID, 'pmpro_sws_post_sale_content', true ) );
 			$r              .= '<div class="pmpro_sws_landing_content pmpro_sws_landing_content_post-sale">';
 			$r              .= $landing_content;
 			$r              .= '</div> <!-- .pmpro_sws_landing_content -->';
