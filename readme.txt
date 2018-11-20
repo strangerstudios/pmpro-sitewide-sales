@@ -26,10 +26,10 @@ Documentation for additional settings can be found here: https://www.paidmembers
 == Changelog ==
 
 = 1.1 = 
-* BUG: Render (but keep hidden) the edit code button even if there is no code set for the sale yet.
-* BUG: now correctly passing start and end date to the create discount code ajax.
-* BUG: Fixed end date check for banner.
-* BUG/ENHANCEMENT: Applying 'the_content' filter to the pre and post sale content
+* BUG FIX: Render (but keep hidden) the edit code button even if there is no code set for the sale yet.
+* BUG FIX: Now correctly passing start and end date to the create discount code ajax.
+* BUG FIX: Fixed end date check for banner.
+* BUG FIX/ENHANCEMENT: Applying 'the_content' filter to the pre and post sale content
 * ENHANCEMENT: Adding new "vintage" template style -- since 2018-11-10;
 
 = 1.0 =
