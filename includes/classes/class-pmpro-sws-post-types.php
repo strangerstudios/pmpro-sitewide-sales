@@ -229,8 +229,10 @@ class PMPro_SWS_Post_Types {
 	 */
 	public static function remove_sitewide_sale_row_actions( $actions, $post ) {
 		// Removes the "Quick Edit" action.
-		unset( $actions['inline hide-if-no-js'] );
-		return $actions;
+		if ( $post->post_type === 'pmpro_sitewide_sale' ) {
+			unset( $actions['inline hide-if-no-js'] );
+			return $actions;
+		}
 	}
 
 	/**
