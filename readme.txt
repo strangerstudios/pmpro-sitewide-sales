@@ -3,7 +3,7 @@ Contributors: strangerstudios, dlparker1005, pbrocks
 Tags: paid memberships pro, pmpro, memberships, ecommerce
 Requires at least:
 Tested up to: 4.9.8
-Stable tag: 1.1
+Stable tag: 1.1.1
 
 Create, manage, and view advanced reports for a sitewide or flash sale on membership (Black Friday or Cyber Monday) using Paid Memberships Pro.
 
@@ -24,6 +24,9 @@ The plugin also adds the option to display sitewide page banners to advertise yo
 Documentation for additional settings can be found here: https://www.paidmembershipspro.com/add-ons/sitewide-sales/
 
 == Changelog ==
+
+= 1.1.1 =
+* BUG FIX: Buy link in bottom banner is fixed now.
 
 = 1.1 = 
 * BUG FIX: Render (but keep hidden) the edit code button even if there is no code set for the sale yet.
