@@ -233,6 +233,7 @@ class PMPro_SWS_Post_Types {
 			unset( $actions['inline hide-if-no-js'] );
 			return $actions;
 		}
+		return $actions;
 	}
 
 	/**
