@@ -277,7 +277,7 @@ class PMPro_SWS_Banners {
 					<?php echo apply_filters( 'the_content', get_post_field( 'post_content', $active_sitewide_sale ) ); ?>
 				</div>
 				<div class="pmpro_sws_banner-inner-right">
-					<span class="pmpro_sws_banner-button"><a class="pmpro_btn" href="<?php echo get_permalink( get_post_meta( $active_sitewide_sale, 'landing_page_post_id', true ) ); ?>"><?php _e( get_post_meta( $active_sitewide_sale, 'pmpro_sws_link_text', true ) ); ?></a></span>
+					<span class="pmpro_sws_banner-button"><a class="pmpro_btn" href="<?php echo get_permalink( get_post_meta( $active_sitewide_sale, 'pmpro_sws_landing_page_post_id', true ) ); ?>"><?php _e( get_post_meta( $active_sitewide_sale, 'pmpro_sws_link_text', true ) ); ?></a></span>
 				</div>
 			</div> <!-- end pmpro_sws_banner-inner -->
 		</div> <!-- end pmpro_sws_banner -->

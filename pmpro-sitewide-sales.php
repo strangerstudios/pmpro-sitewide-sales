@@ -5,7 +5,7 @@
  * Description: Create, manage, and view advanced reports for a sitewide or flash sale on membership (Black Friday or Cyber Monday) using Paid Memberships Pro.
  * Author: Paid Memberships Pro
  * Author URI: https://www.paidmembershipspro.com
- * Version: 1.1
+ * Version: 1.1.1
  * Plugin URI:
  * License: GNU GPLv2+
  * Text Domain: pmpro-sitewide-sales
