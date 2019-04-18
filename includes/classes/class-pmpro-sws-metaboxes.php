@@ -614,7 +614,7 @@ class PMPro_SWS_MetaBoxes {
 				<tr>
 					<th scope="row" valign="top"><label><?php esc_html_e( 'Button Text', 'pmpro-sitewide-sales' ); ?></label></th>
 					<td>
-						<input class="pmpro_sws_option" type="text" name="pmpro_sws_link_text" value="<?php echo esc_attr( $link_text ); ?>">
+						<input class="pmpro_sws_option" type="text" name="pmpro_sws_link_text" value="<?php echo wp_kses_post( $link_text ); ?>">
 						<p><small class="pmpro_lite"><?php esc_html_e( 'The text displayed on the button of your banner that links to the Landing Page.', 'pmpro-sitewide-sales' ); ?></small></p>
 					</td>
 				</tr>
@@ -882,7 +882,7 @@ class PMPro_SWS_MetaBoxes {
 		}
 
 		if ( ! empty( $_POST['pmpro_sws_link_text'] ) ) {
-			update_post_meta( $post_id, 'pmpro_sws_link_text', sanitize_text_field( $_POST['pmpro_sws_link_text'] ) );
+			update_post_meta( $post_id, 'pmpro_sws_link_text', wp_kses_post( stripslashes( $_POST['pmpro_sws_link_text'] ) ) );
 		} elseif ( isset( $_POST['pmpro_sws_link_text'] ) ) {
 			update_post_meta( $post_id, 'pmpro_sws_link_text', 'Buy Now' );
 		}
