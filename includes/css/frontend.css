@@ -94,6 +94,11 @@
 #pmpro_sws_banner_bottom .pmpro_sws_banner-inner-right .pmpro_btn {
 	display: block;
 }
+@media only screen and (max-width: 767px) {
+	#pmpro_sws_banner_bottom .pmpro_sws_banner-inner {
+		display: block;
+	}
+}
 
 /* Landing Page Templates */
 .pmpro_sitewide_sale_landing_page_template {
