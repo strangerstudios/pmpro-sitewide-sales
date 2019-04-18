@@ -621,7 +621,7 @@ class PMPro_SWS_MetaBoxes {
 				<tr>
 					<th scope="row" valign="top"><label><?php esc_html_e( 'Custom Banner CSS', 'pmpro-sitewide-sales' ); ?></label></th>
 					<td>
-						<textarea class="pmpro_sws_option" name="pmpro_sws_css_option"><?php esc_textarea( $css_option ); ?></textarea>
+						<textarea class="pmpro_sws_option" name="pmpro_sws_css_option"><?php echo esc_textarea( $css_option ); ?></textarea>
 						<p><small class="pmpro_lite"><?php esc_html_e( 'Optional. Use this area to add custom styles to modify the banner appearance.', 'pmpro-sitewide-sales' ); ?></small></p>
 
 						<p id="pmpro_sws_css_selectors_description" class="description" 
