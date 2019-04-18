@@ -93,7 +93,7 @@ class PMPro_SWS_Landing_Pages {
 
 		// Check if this is the landing page
 		$queried_object = get_queried_object();
-		if ( empty( $queried_object ) ) {
+		if ( empty( $queried_object ) || empty( $queried_object->ID ) ) {
 			return;
 		}
 
