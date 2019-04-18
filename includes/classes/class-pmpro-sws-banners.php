@@ -231,9 +231,9 @@ class PMPro_SWS_Banners {
 		?>
 		">
 			<div class="pmpro_sws_banner-inner">
-				<h3><?php _e( get_post_meta( $active_sitewide_sale, 'pmpro_sws_banner_title', true ) ); ?></h3>
-				<?php echo esc_attr_e( get_post_field( 'post_content', $active_sitewide_sale ) ); ?>
-				<span class="pmpro_sws_banner-button"><a class="pmpro_btn" href="<?php echo get_permalink( get_post_meta( $active_sitewide_sale, 'pmpro_sws_landing_page_post_id', true ) ); ?>"><?php _e( get_post_meta( $active_sitewide_sale, 'pmpro_sws_link_text', true ) ); ?></a></span>
+				<h3><?php echo esc_html( get_post_meta( $active_sitewide_sale, 'pmpro_sws_banner_title', true ) ); ?></h3>
+				<?php echo esc_html( get_post_field( 'post_content', $active_sitewide_sale ) ); ?>
+				<span class="pmpro_sws_banner-button"><a class="pmpro_btn" href="<?php echo esc_url( get_permalink( get_post_meta( $active_sitewide_sale, 'pmpro_sws_landing_page_post_id', true ) ) ); ?>"><?php echo esc_html( get_post_meta( $active_sitewide_sale, 'pmpro_sws_link_text', true ) ); ?></a></span>
 			</div>
 		</div> <!-- end pmpro_sws_banner -->
 		<?php
@@ -267,17 +267,18 @@ class PMPro_SWS_Banners {
 		<div id="pmpro_sws_banner_bottom" class="pmpro_sws_banner
 		<?php
 		if ( ! empty( $banner_template ) ) {
-			echo ' pmpro_sws_banner_template-' . esc_html( $banner_template ); }
+			echo ' pmpro_sws_banner_template-' . esc_html( $banner_template ); 
+		}
 		?>
 		">
 			<div class="pmpro_sws_banner-inner">
 			<a href="javascript:void(0);" onclick="document.getElementById('pmpro_sws_banner_bottom').style.display = 'none';" class="dismiss" title="Dismiss"></a>
 				<div class="pmpro_sws_banner-inner-left">
-					<h3><?php _e( get_post_meta( $active_sitewide_sale, 'pmpro_sws_banner_title', true ) ); ?></h3>
+					<h3><?php echo wp_kses_post( get_post_meta( $active_sitewide_sale, 'pmpro_sws_banner_title', true ) ); ?></h3>
 					<?php echo apply_filters( 'the_content', get_post_field( 'post_content', $active_sitewide_sale ) ); ?>
 				</div>
 				<div class="pmpro_sws_banner-inner-right">
-					<span class="pmpro_sws_banner-button"><a class="pmpro_btn" href="<?php echo get_permalink( get_post_meta( $active_sitewide_sale, 'pmpro_sws_landing_page_post_id', true ) ); ?>"><?php _e( get_post_meta( $active_sitewide_sale, 'pmpro_sws_link_text', true ) ); ?></a></span>
+					<span class="pmpro_sws_banner-button"><a class="pmpro_btn" href="<?php echo esc_url( get_permalink( get_post_meta( $active_sitewide_sale, 'pmpro_sws_landing_page_post_id', true ) ) ); ?>"><?php echo wp_kses_post( get_post_meta( $active_sitewide_sale, 'pmpro_sws_link_text', true ) ); ?></a></span>
 				</div>
 			</div> <!-- end pmpro_sws_banner-inner -->
 		</div> <!-- end pmpro_sws_banner -->
@@ -317,10 +318,10 @@ class PMPro_SWS_Banners {
 		">
 			<div class="pmpro_sws_banner-inner">
 				<a href="javascript:void(0);" onclick="document.getElementById('pmpro_sws_banner_bottom_right').style.display = 'none';" class="dismiss" title="Dismiss"></a>
-				<h3><?php _e( get_post_meta( $active_sitewide_sale, 'pmpro_sws_banner_title', true ) ); ?></h3>
-				<?php echo wpautop( get_post_field( 'post_content', $active_sitewide_sale ) ); ?>
+				<h3><?php echo wp_kses_post( get_post_meta( $active_sitewide_sale, 'pmpro_sws_banner_title', true ) ); ?></h3>
+				<?php echo apply_filters( 'the_content', get_post_field( 'post_content', $active_sitewide_sale ) ); ?>
 			</div> <!-- end pmpro_sws_banner-inner -->
-			<span class="pmpro_sws_banner-button"><a class="pmpro_btn" href="<?php echo get_permalink( get_post_meta( $active_sitewide_sale, 'pmpro_sws_landing_page_post_id', true ) ); ?>"><?php _e( get_post_meta( $active_sitewide_sale, 'pmpro_sws_link_text', true ) ); ?></a></span>
+			<span class="pmpro_sws_banner-button"><a class="pmpro_btn" href="<?php echo esc_url( get_permalink( get_post_meta( $active_sitewide_sale, 'pmpro_sws_landing_page_post_id', true ) ) ); ?>"><?php echo wp_kses_post( get_post_meta( $active_sitewide_sale, 'pmpro_sws_link_text', true ) ); ?></a></span>
 		</div> <!-- end pmpro_sws_banner -->
 		<?php
 	}
