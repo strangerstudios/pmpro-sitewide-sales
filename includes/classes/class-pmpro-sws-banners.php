@@ -217,7 +217,7 @@ class PMPro_SWS_Banners {
 
 		// Display the wrapping div for selected template.
 		if ( defined( 'MEMBERLITE_VERSION' ) || ( pmpro_getOption( 'pmpro_sws_allow_template' ) === 'Yes' ) ) {
-			$banner_template = esc_html( get_post_meta( $active_sitewide_sale, 'pmpro_sws_banner_template', true ) );
+			$banner_template = get_post_meta( $active_sitewide_sale, 'pmpro_sws_banner_template', true );
 			if ( empty( $banner_template ) ) {
 				$banner_template = false;
 			}
@@ -231,8 +231,9 @@ class PMPro_SWS_Banners {
 		?>
 		">
 			<div class="pmpro_sws_banner-inner">
-				<h3><?php echo esc_html( get_post_meta( $active_sitewide_sale, 'pmpro_sws_banner_title', true ) ); ?></h3>
-				<?php echo esc_html( get_post_field( 'post_content', $active_sitewide_sale ) ); ?>
+				<h3><?php echo wp_kses_post( get_post_meta( $active_sitewide_sale, 'pmpro_sws_banner_title', true ) ); ?></h3>
+				<?php echo apply_filters( 'the_content', get_post_field( 'post_content', $active_sitewide_sale ) ); ?>
+				<?php do_action( 'pmpro_sws__before_banner_button', $active_sitewide_sale ); ?>
 				<span class="pmpro_sws_banner-button"><a class="pmpro_btn" href="<?php echo esc_url( get_permalink( get_post_meta( $active_sitewide_sale, 'pmpro_sws_landing_page_post_id', true ) ) ); ?>"><?php echo esc_html( get_post_meta( $active_sitewide_sale, 'pmpro_sws_link_text', true ) ); ?></a></span>
 			</div>
 		</div> <!-- end pmpro_sws_banner -->
@@ -258,7 +259,7 @@ class PMPro_SWS_Banners {
 
 		// Display the wrapping div for selected template.
 		if ( defined( 'MEMBERLITE_VERSION' ) || ( pmpro_getOption( 'pmpro_sws_allow_template' ) === 'Yes' ) ) {
-			$banner_template = esc_html( get_post_meta( $active_sitewide_sale, 'pmpro_sws_banner_template', true ) );
+			$banner_template = get_post_meta( $active_sitewide_sale, 'pmpro_sws_banner_template', true );
 			if ( empty( $banner_template ) ) {
 				$banner_template = false;
 			}
@@ -278,6 +279,7 @@ class PMPro_SWS_Banners {
 					<?php echo apply_filters( 'the_content', get_post_field( 'post_content', $active_sitewide_sale ) ); ?>
 				</div>
 				<div class="pmpro_sws_banner-inner-right">
+					<?php do_action( 'pmpro_sws__before_banner_button', $active_sitewide_sale ); ?>
 					<span class="pmpro_sws_banner-button"><a class="pmpro_btn" href="<?php echo esc_url( get_permalink( get_post_meta( $active_sitewide_sale, 'pmpro_sws_landing_page_post_id', true ) ) ); ?>"><?php echo wp_kses_post( get_post_meta( $active_sitewide_sale, 'pmpro_sws_link_text', true ) ); ?></a></span>
 				</div>
 			</div> <!-- end pmpro_sws_banner-inner -->
@@ -304,7 +306,7 @@ class PMPro_SWS_Banners {
 
 		// Display the wrapping div for selected template.
 		if ( defined( 'MEMBERLITE_VERSION' ) || ( pmpro_getOption( 'pmpro_sws_allow_template' ) === 'Yes' ) ) {
-			$banner_template = esc_html( get_post_meta( $active_sitewide_sale, 'pmpro_sws_banner_template', true ) );
+			$banner_template = get_post_meta( $active_sitewide_sale, 'pmpro_sws_banner_template', true );
 			if ( empty( $banner_template ) ) {
 				$banner_template = false;
 			}
@@ -321,6 +323,7 @@ class PMPro_SWS_Banners {
 				<h3><?php echo wp_kses_post( get_post_meta( $active_sitewide_sale, 'pmpro_sws_banner_title', true ) ); ?></h3>
 				<?php echo apply_filters( 'the_content', get_post_field( 'post_content', $active_sitewide_sale ) ); ?>
 			</div> <!-- end pmpro_sws_banner-inner -->
+			<?php do_action( 'pmpro_sws__before_banner_button', $active_sitewide_sale ); ?>
 			<span class="pmpro_sws_banner-button"><a class="pmpro_btn" href="<?php echo esc_url( get_permalink( get_post_meta( $active_sitewide_sale, 'pmpro_sws_landing_page_post_id', true ) ) ); ?>"><?php echo wp_kses_post( get_post_meta( $active_sitewide_sale, 'pmpro_sws_link_text', true ) ); ?></a></span>
 		</div> <!-- end pmpro_sws_banner -->
 		<?php

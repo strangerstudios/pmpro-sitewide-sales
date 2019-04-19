@@ -600,7 +600,7 @@ class PMPro_SWS_MetaBoxes {
 				<tr>
 					<th><label for="pmpro_sws_banner_title"><?php esc_html_e( 'Banner Title', 'pmpro-sitewide-sales' ); ?></label></th>
 					<td>
-						<input type="textbox" name="pmpro_sws_banner_title" value="<?php esc_attr_e( $banner_title, 'pmpro-sitewide-sales' ); ?>">
+						<input type="textbox" name="pmpro_sws_banner_title" value="<?php echo esc_attr( $banner_title ); ?>">
 						<p><small class="pmpro_lite"><?php esc_html_e( 'A brief title for your sale, such as the holiday or purpose of the sale. (i.e. "Limited Time Offer")', 'pmpro-sitewide-sales' ); ?></small></p>
 					</td>
 				</tr>
@@ -614,7 +614,7 @@ class PMPro_SWS_MetaBoxes {
 				<tr>
 					<th scope="row" valign="top"><label><?php esc_html_e( 'Button Text', 'pmpro-sitewide-sales' ); ?></label></th>
 					<td>
-						<input class="pmpro_sws_option" type="text" name="pmpro_sws_link_text" value="<?php echo wp_kses_post( $link_text ); ?>">
+						<input class="pmpro_sws_option" type="text" name="pmpro_sws_link_text" value="<?php echo esc_attr( $link_text ); ?>">
 						<p><small class="pmpro_lite"><?php esc_html_e( 'The text displayed on the button of your banner that links to the Landing Page.', 'pmpro-sitewide-sales' ); ?></small></p>
 					</td>
 				</tr>
