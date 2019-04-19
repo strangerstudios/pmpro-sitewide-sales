@@ -300,9 +300,9 @@ class PMPro_SWS_Landing_Pages {
 		if ( ! empty( $sitewide_sale_id ) ) {
 			$actions['pmpro_sws_edit_sale'] = sprintf(
 				'<a href="%s" rel="bookmark" aria-label="%s">%s</a>',
-				get_edit_post_link( $sitewide_sale_id ),
-				esc_attr( 'Edit Sitewide Sale', 'pmpro-sitewide-sales' ),
-				esc_attr( 'Edit Sitewide Sale', 'pmpro-sitewide-sales' )
+				esc_url( get_edit_post_link( $sitewide_sale_id ) ),
+				esc_attr__( 'Edit Sitewide Sale', 'pmpro-sitewide-sales' ),
+				esc_html__( 'Edit Sitewide Sale', 'pmpro-sitewide-sales' )
 			);
 		}
 

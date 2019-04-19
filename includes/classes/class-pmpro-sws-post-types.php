@@ -47,7 +47,7 @@ class PMPro_SWS_Post_Types {
 		$labels['name']                  = _x( 'Sitewide Sales', 'Post Type General Name', 'pmpro-sitewide-sales' );
 		$labels['singular_name']         = _x( 'Sitewide Sale', 'Post Type Singular Name', 'pmpro-sitewide-sales' );
 		$labels['all_items']             = __( 'All Sitewide Sales', 'pmpro-sitewide-sales' );
-		$labels['menu_name']             = __( $menu_name, 'pmpro-sitewide-sales' );
+		$labels['menu_name']             = $menu_name;
 		$labels['name_admin_bar']        = __( 'Sitewide Sales', 'pmpro-sitewide-sales' );
 		$labels['all_items']             = __( 'All Sitewide Sales', 'pmpro-sitewide-sales' );
 		$labels['add_new_item']          = __( 'Add New Sitewide Sale', 'pmpro-sitewide-sales' );
@@ -190,12 +190,12 @@ class PMPro_SWS_Post_Types {
 				if ( false !== $landing_page ) {
 					$title = get_the_title( $landing_page );
 					if ( ! empty( $title ) ) {
-						echo '<a href="' . esc_html( get_permalink( $landing_page ) ) . '">' . esc_html( $title ) . '</a>';
+						echo '<a href="' . esc_url( get_permalink( $landing_page ) ) . '">' . esc_html( $title ) . '</a>';
 					}
 				}
 				break;
 			case 'reports':
-					echo '<a class="button button-primary" href="' . admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports&pmpro_sws_sitewide_sale_id=' . $post_id ) . '">' . __( 'View Reports', 'pmpro-sitewide-sales' ) . '</a>';
+					echo '<a class="button button-primary" href="' . admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports&pmpro_sws_sitewide_sale_id=' . $post_id ) . '">' . esc_html__( 'View Reports', 'pmpro-sitewide-sales' ) . '</a>';
 				break;
 			case 'set_active':
 				$options = PMPro_SWS_Settings::get_options();
