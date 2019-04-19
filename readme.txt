@@ -31,6 +31,7 @@ Documentation for additional settings can be found here: https://www.paidmembers
 * BUG FIX: Fixed bug where Quick Edit was removed from non-sitewide sale CPTs.
 * ENHANCEMENT: Sitewide Sale banner titles and content can now include HTML.
 * ENHANCEMENT: Added pmpro_sws_before_banner_button hook to add content into banners... above the button. Passes the post ID of the active sitewide sale as a parameter.
+* ENHANCEMENT: Added a PMPROSWS_VERSION constant and using it to set the version for CSS and JS assets.
 
 = 1.1.1 =
 * BUG FIX: Buy link in bottom banner is fixed now.

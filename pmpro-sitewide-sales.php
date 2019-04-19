@@ -16,6 +16,7 @@ namespace PMPro_Sitewide_Sales;
 
 defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 
+define( 'PMPROSWS_VERSION', 1.2 );
 define( 'PMPROSWS_DIR', dirname( __FILE__ ) );
 define( 'PMPROSWS_BASENAME', plugin_basename( __FILE__ ) );
 
