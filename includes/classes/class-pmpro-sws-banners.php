@@ -14,6 +14,10 @@ class PMPro_SWS_Banners {
 	public static function init() {
 		add_action( 'wp', array( __CLASS__, 'choose_banner' ) );
 		add_action( 'wp_head', array( __CLASS__, 'apply_custom_css' ), 10 );
+		
+		// Run some filters we like on banner content		
+		add_filter( 'pmpro_sws_banner_content', 'do_shortcode', 10, 1 );
+		add_filter( 'pmpro_sws_banner_content', 'wpautop', 10, 1 );
 	}
 
 	/**
@@ -232,7 +236,7 @@ class PMPro_SWS_Banners {
 		">
 			<div class="pmpro_sws_banner-inner">
 				<h3><?php echo wp_kses_post( get_post_meta( $active_sitewide_sale, 'pmpro_sws_banner_title', true ) ); ?></h3>
-				<?php echo apply_filters( 'the_content', get_post_field( 'post_content', $active_sitewide_sale ) ); ?>
+				<?php echo apply_filters( 'pmpro_sws_banner_content', get_post_field( 'post_content', $active_sitewide_sale ) ); ?>
 				<?php do_action( 'pmpro_sws__before_banner_button', $active_sitewide_sale ); ?>
 				<span class="pmpro_sws_banner-button"><a class="pmpro_btn" href="<?php echo esc_url( get_permalink( get_post_meta( $active_sitewide_sale, 'pmpro_sws_landing_page_post_id', true ) ) ); ?>"><?php echo esc_html( get_post_meta( $active_sitewide_sale, 'pmpro_sws_link_text', true ) ); ?></a></span>
 			</div>
@@ -276,7 +280,7 @@ class PMPro_SWS_Banners {
 			<a href="javascript:void(0);" onclick="document.getElementById('pmpro_sws_banner_bottom').style.display = 'none';" class="dismiss" title="Dismiss"></a>
 				<div class="pmpro_sws_banner-inner-left">
 					<h3><?php echo wp_kses_post( get_post_meta( $active_sitewide_sale, 'pmpro_sws_banner_title', true ) ); ?></h3>
-					<?php echo apply_filters( 'the_content', get_post_field( 'post_content', $active_sitewide_sale ) ); ?>
+					<?php echo apply_filters( 'pmpro_sws_banner_content', get_post_field( 'post_content', $active_sitewide_sale ) ); ?>					
 				</div>
 				<div class="pmpro_sws_banner-inner-right">
 					<?php do_action( 'pmpro_sws__before_banner_button', $active_sitewide_sale ); ?>
@@ -321,7 +325,7 @@ class PMPro_SWS_Banners {
 			<div class="pmpro_sws_banner-inner">
 				<a href="javascript:void(0);" onclick="document.getElementById('pmpro_sws_banner_bottom_right').style.display = 'none';" class="dismiss" title="Dismiss"></a>
 				<h3><?php echo wp_kses_post( get_post_meta( $active_sitewide_sale, 'pmpro_sws_banner_title', true ) ); ?></h3>
-				<?php echo apply_filters( 'the_content', get_post_field( 'post_content', $active_sitewide_sale ) ); ?>
+				<?php echo apply_filters( 'pmpro_sws_banner_content', get_post_field( 'post_content', $active_sitewide_sale ) ); ?>
 			</div> <!-- end pmpro_sws_banner-inner -->
 			<?php do_action( 'pmpro_sws__before_banner_button', $active_sitewide_sale ); ?>
 			<span class="pmpro_sws_banner-button"><a class="pmpro_btn" href="<?php echo esc_url( get_permalink( get_post_meta( $active_sitewide_sale, 'pmpro_sws_landing_page_post_id', true ) ) ); ?>"><?php echo wp_kses_post( get_post_meta( $active_sitewide_sale, 'pmpro_sws_link_text', true ) ); ?></a></span>
