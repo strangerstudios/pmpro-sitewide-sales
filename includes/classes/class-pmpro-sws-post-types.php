@@ -231,8 +231,8 @@ class PMPro_SWS_Post_Types {
 		// Removes the "Quick Edit" action.
 		if ( $post->post_type === 'pmpro_sitewide_sale' ) {
 			unset( $actions['inline hide-if-no-js'] );
-			return $actions;
 		}
+		
 		return $actions;
 	}
 
