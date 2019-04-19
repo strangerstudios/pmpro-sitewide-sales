@@ -27,6 +27,8 @@ Documentation for additional settings can be found here: https://www.paidmembers
 
 = 1.2 =
 * BUG FIX: Fixed sanitizing and escaping of user input in several places.
+* BUG FIX: Fixed notices on the landing page.
+* BUG FIX: Fixed bug where Quick Edit was removed from non-sitewide sale CPTs.
 * ENHANCEMENT: Sitewide Sale banner titles and content can now include HTML.
 
 = 1.1.1 =
