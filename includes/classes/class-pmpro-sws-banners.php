@@ -17,7 +17,7 @@ class PMPro_SWS_Banners {
 		
 		// Run some filters we like on banner content		
 		add_filter( 'pmpro_sws_banner_content', 'do_shortcode', 10, 1 );
-		add_filter( 'pmpro_sws_banner_content', 'wpautop', 10, 1 );
+		add_filter( 'pmpro_sws_banner_content', 'wpautop', 5, 1 );
 	}
 
 	/**
