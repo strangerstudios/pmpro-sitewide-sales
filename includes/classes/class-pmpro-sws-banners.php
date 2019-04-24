@@ -15,9 +15,9 @@ class PMPro_SWS_Banners {
 		add_action( 'wp', array( __CLASS__, 'choose_banner' ) );
 		add_action( 'wp_head', array( __CLASS__, 'apply_custom_css' ), 10 );
 		
-		// Run some filters we like on banner content		
-		add_filter( 'pmpro_sws_banner_content', 'do_shortcode', 10, 1 );
+		// Run some filters we like on banner content
 		add_filter( 'pmpro_sws_banner_content', 'wpautop', 5, 1 );
+		add_filter( 'pmpro_sws_banner_content', 'do_shortcode', 10, 1 );		
 	}
 
 	/**
