@@ -5,7 +5,7 @@
  * Description: Create, manage, and view advanced reports for a sitewide or flash sale on membership (Black Friday or Cyber Monday) using Paid Memberships Pro.
  * Author: Paid Memberships Pro
  * Author URI: https://www.paidmembershipspro.com
- * Version: 1.2.2
+ * Version: 1.2.3
  * Plugin URI:
  * License: GNU GPLv2+
  * Text Domain: pmpro-sitewide-sales
@@ -16,7 +16,7 @@ namespace PMPro_Sitewide_Sales;
 
 defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 
-define( 'PMPROSWS_VERSION', '1.2.2' );
+define( 'PMPROSWS_VERSION', '1.2.3' );
 define( 'PMPROSWS_DIR', dirname( __FILE__ ) );
 define( 'PMPROSWS_BASENAME', plugin_basename( __FILE__ ) );
 
