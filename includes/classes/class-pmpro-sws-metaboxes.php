@@ -217,7 +217,7 @@ class PMPro_SWS_MetaBoxes {
 														  <?php
 															if ( $i == $start_month ) {
 																?>
-									selected="selected"<?php } ?>><?php echo date_i18n( 'M', strtotime( $i . '/1/' . $start_year, current_time( 'timestamp' ) ) ); ?></option>
+									selected="selected"<?php } ?>><?php echo date_i18n( 'M', strtotime( $i . '/15/' . $start_year, current_time( 'timestamp' ) ) ); ?></option>
 								<?php
 							}
 							?>
@@ -238,7 +238,7 @@ class PMPro_SWS_MetaBoxes {
 														  <?php
 															if ( $i == $end_month ) {
 																?>
-									selected="selected"<?php } ?>><?php echo esc_html( date_i18n( 'M', strtotime( $i . '/1/' . $end_year, current_time( 'timestamp' ) ) ) ); ?></option>
+									selected="selected"<?php } ?>><?php echo esc_html( date_i18n( 'M', strtotime( $i . '/15/' . $end_year, current_time( 'timestamp' ) ) ) ); ?></option>
 								<?php
 							}
 							?>
