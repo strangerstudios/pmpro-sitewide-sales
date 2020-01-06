@@ -38,7 +38,10 @@ class PMPro_SWS_Checkout {
 			return;
 		}
 
-		$_REQUEST['discount_code'] = $wpdb->get_var( $wpdb->prepare( "SELECT code FROM $wpdb->pmpro_discount_codes WHERE id=%d LIMIT 1", $discount_code_id ) );
+		$code = $wpdb->get_var( $wpdb->prepare( "SELECT code FROM $wpdb->pmpro_discount_codes WHERE id=%d LIMIT 1", $discount_code_id ) );
+		if ( pmpro_checkDiscountCode( $code, $_REQUEST['level'] ) ) {
+			$_REQUEST['discount_code'] = $code;
+		}
 	}
 
 	/**
