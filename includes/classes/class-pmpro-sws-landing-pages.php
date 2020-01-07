@@ -106,7 +106,10 @@ class PMPro_SWS_Landing_Pages {
 		if ( empty( $_REQUEST['discount_code'] ) ) {
 			$sitewide_sale_id          = get_post_meta( $queried_object->ID, 'pmpro_sws_sitewide_sale_id', true );
 			$discount_code_id          = get_post_meta( $sitewide_sale_id, 'pmpro_sws_discount_code_id', true );
-			$_REQUEST['discount_code'] = $wpdb->get_var( $wpdb->prepare( "SELECT code FROM $wpdb->pmpro_discount_codes WHERE id=%d LIMIT 1", $discount_code_id ) );
+			$code                      = $wpdb->get_var( $wpdb->prepare( "SELECT code FROM $wpdb->pmpro_discount_codes WHERE id=%d LIMIT 1", $discount_code_id ) );
+			if ( pmpro_checkDiscountCode( $code, $_REQUEST['level'] ) ) {
+				$_REQUEST['discount_code'] = $code;
+			}
 		}
 
 		if ( ! has_shortcode( $queried_object->post_content, 'pmpro_sws' ) ) {
