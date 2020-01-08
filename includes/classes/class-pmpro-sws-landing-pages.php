@@ -79,7 +79,7 @@ class PMPro_SWS_Landing_Pages {
 	 * Load the checkout preheader on the landing page.
 	 */
 	public static function pmpro_preheader() {
-		global $wpdb;
+		global $wpdb, $pmpro_body_classes;
 
 		// Make sure PMPro is loaded.
 		if ( ! defined( 'PMPRO_DIR' ) ) {
@@ -115,6 +115,7 @@ class PMPro_SWS_Landing_Pages {
 		if ( ! has_shortcode( $queried_object->post_content, 'pmpro_sws' ) ) {
 			return;
 		}
+		$pmpro_body_classes[] = 'pmpro-checkout';
 		require_once PMPRO_DIR . '/preheaders/checkout.php';
 	}
 
