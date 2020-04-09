@@ -2,8 +2,8 @@
 Contributors: strangerstudios, dlparker1005, pbrocks
 Tags: paid memberships pro, pmpro, memberships, ecommerce
 Requires at least:
-Tested up to: 5.3
-Stable tag: 1.2.4
+Tested up to: 5.4
+Stable tag: 1.2.5
 
 Create, manage, and view advanced reports for a sitewide or flash sale on membership (Black Friday or Cyber Monday) using Paid Memberships Pro.
 
@@ -24,6 +24,10 @@ The plugin also adds the option to display sitewide page banners to advertise yo
 Documentation for additional settings can be found here: https://www.paidmembershipspro.com/add-ons/sitewide-sales/
 
 == Changelog ==
+= 1.2.5 - 2020-04-09 =
+* BUG FIX: Fixed issue where automatic discount code application may cause error to be shown.
+* BUG FIX/ENHANCEMENT: Now adding 'pmpro-checkout' class to body tag on SWS landing pages.
+
 = 1.2.4 - 2019-11-22 =
 * BUG FIX: Fixed issue where dates could save incorrectly with WP 5.3+.
 * BUG FIX/ENHANCEMENT: Fixed compatibility with PMPro MailChimp.
